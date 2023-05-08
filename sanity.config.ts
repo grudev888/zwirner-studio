@@ -1,18 +1,15 @@
 import {defineConfig} from 'sanity'
 import {deskTool} from 'sanity/desk'
+import {availability} from 'sanity-plugin-availability'
 import {visionTool} from '@sanity/vision'
-import {schemaTypes} from './schemas'
+import {schema} from './schemas'
+import {dataset, projectId} from './env'
+import {generalStructure} from './lib/desk/structure/structure'
 
 export default defineConfig({
-  name: 'default',
-  title: 'David Zwirner Project',
-
-  projectId: 'juzvn5an',
-  dataset: 'production',
-
-  plugins: [deskTool(), visionTool()],
-
-  schema: {
-    types: schemaTypes,
-  },
+  title: 'Zwirner Gallery Website',
+  projectId,
+  dataset,
+  plugins: [deskTool({ structure: generalStructure}), visionTool(), availability()],
+  schema,
 })
