@@ -25,7 +25,8 @@
     "react-is": "^18.2.0",
     "sanity": "^3.0.0",
     "sanity-plugin-availability": "^1.0.1",
-    "styled-components": "^5.2.0"
+    "styled-components": "^5.2.0",
+    "sync-dev-db": "sanity dataset export production production.tar.gz --overwrite && sanity dataset import production.tar.gz dev --replace && yarn del-cli --force ./production.tar.gz"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^5.0.0",
