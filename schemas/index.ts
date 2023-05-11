@@ -8,12 +8,13 @@ import bookType from './documents/book'
 import collection from './documents/collection'
 import event from './documents/event'
 import exhibition from './documents/exhibition'
-import footer from './documents/footer'
 import globalSEO from './documents/globalSEO'
 import locationType from './documents/location'
-import navigation from './documents/navigation'
 import pageType from './documents/page'
 import artistPage from './documents/pages/artistPage'
+import articlePage from './documents/pages/articlePage'
+import footer from './singletons/footer'
+import navigation from './singletons/navigation'
 import exhibitionPage from './documents/pages/exhibitionPage'
 import fairPage from './documents/pages/fairPage'
 import postType from './documents/post'
@@ -97,7 +98,12 @@ export const objects: ObjectDefinition[] = [
   menuItemPage,
 ]
 
-export const pageDocuments: DocumentDefinition[] = [artistPage, exhibitionPage, fairPage]
+export const pageDocuments: DocumentDefinition[] = [
+  artistPage,
+  exhibitionPage,
+  fairPage,
+  articlePage,
+]
 export const singletons: DocumentDefinition[] = [stories, home, collect, utopiaEditions, globalSEO]
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [

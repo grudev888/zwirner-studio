@@ -1,5 +1,5 @@
-import {DocumentTextIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
+import {DocumentTextIcon, ComposeIcon, SearchIcon} from '@sanity/icons'
 
 import authorType from './author'
 
@@ -17,7 +17,10 @@ export default defineType({
   name: 'article',
   title: 'Article',
   icon: DocumentTextIcon,
-
+  groups: [
+    {name: 'content', title: 'Content', icon: ComposeIcon, default: true},
+    {name: 'seo', title: 'SEO', icon: SearchIcon},
+  ],
   fields: [
     defineField({
       type: 'string',

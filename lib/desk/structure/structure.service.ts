@@ -19,7 +19,7 @@ interface StructureBuilderProps {
   preview?: PreviewProps
 }
 interface PreviewProps {
-  section: 'exhibitions' | 'fairs' | 'artists'
+  section: 'exhibitions' | 'fairs' | 'artists' | 'articles'
 }
 
 const queryByType: any = {

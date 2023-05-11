@@ -1,5 +1,5 @@
 import {ComposeIcon, EditIcon, MasterDetailIcon} from '@sanity/icons'
-import {defineArrayMember,defineField, defineType} from 'sanity'
+import {defineArrayMember, defineField, defineType} from 'sanity'
 
 export interface DzHeroCarouselSchemaProps {
   title: string
@@ -22,7 +22,6 @@ export default defineType({
       name: 'title',
       type: 'string',
       title: 'Component title',
-      group: 'content',
     }),
     defineField({
       name: 'content',
@@ -35,7 +34,7 @@ export default defineType({
       type: 'boolean',
       title: 'Enable Overrides',
       group: 'overrides',
-      initialValue: false
+      initialValue: false,
     }),
     defineField({
       name: 'headingOverride',

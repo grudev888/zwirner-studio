@@ -136,6 +136,17 @@ export const generalStructure = (S: StructureBuilder) =>
                   })
                 }),
               S.listItem()
+                .title('Article Pages')
+                .icon(DashboardIcon)
+                .child(() => {
+                  return getSectionsByYear({
+                    S,
+                    sectionTitle: 'Articles',
+                    type: 'articlePage',
+                    preview: {section: 'articles'},
+                  })
+                }),
+              S.listItem()
                 .title('Fair Pages')
                 .icon(DashboardIcon)
                 .child(() => {
@@ -314,47 +325,4 @@ export const generalStructure = (S: StructureBuilder) =>
                 .views([S.view.form(), S.view.component(ReferenceByTab).title('References')])
             )
         ),
-      ...S.documentTypeListItems()
-        .filter(
-          (listItem) =>
-            ![
-              'redirect',
-              'settings',
-              'navigation',
-              'footer',
-              'collect',
-              'stories',
-              'availableArtworks',
-              'utopiaEditions',
-              'artistPage',
-              'exhibitionPage',
-              'fairPage',
-              'artist',
-              'article',
-              'home',
-              'press',
-              'location',
-              'author',
-              'book',
-              'collection',
-              'exhibition',
-              'event',
-              'post',
-              'artwork',
-              'page',
-              'strings',
-              'globalSEO',
-            ].includes(listItem?.getId() ?? '')
-        )
-        .sort((a, b) => {
-          const nameA = a.getTitle()?.toUpperCase() ?? ''
-          const nameB = b.getTitle()?.toUpperCase() ?? ''
-          if (nameA < nameB) {
-            return -1
-          }
-          if (nameA > nameB) {
-            return 1
-          }
-          return 0
-        }),
     ])

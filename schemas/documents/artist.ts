@@ -6,6 +6,7 @@ export default defineType({
   title: 'Artist',
   icon: UserIcon,
   type: 'document',
+  preview: {select: {title: 'fullName', media: 'picture'}},
   fields: [
     defineField({
       name: 'firstName',
@@ -34,7 +35,7 @@ export default defineType({
     defineField({
       name: 'description',
       title: 'Description, bio',
-      type: 'text'
+      type: 'text',
     }),
     defineField({
       name: 'picture',
