@@ -17,7 +17,6 @@ export default defineType({
   name: 'article',
   title: 'Article',
   icon: DocumentTextIcon,
-
   fields: [
     defineField({
       type: 'string',
