@@ -325,7 +325,4 @@ export const generalStructure = (S: StructureBuilder) =>
                 .views([S.view.form(), S.view.component(ReferenceByTab).title('References')])
             )
         ),
-      ...S.documentTypeListItems().filter((listItem) =>
-        ([] as string[]).includes(listItem.getId() ?? '')
-      ),
     ])

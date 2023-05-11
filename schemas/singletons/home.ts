@@ -13,7 +13,7 @@ const allowedDocs = [
   fairPage.name,
   artistPage.name,
   articlePage.name,
-].map((type) => ({type}))
+]
 
 export default defineType({
   name: 'home',
@@ -41,43 +41,45 @@ export default defineType({
     defineField({
       name: 'header',
       title: 'Header Carousel',
-      type: 'dzHeroCarousel',
+      type: 'array',
+      of: allowedDocs.map((type) => ({type: 'reference', name: type, to: {type}})),
       group: 'content',
     }),
     defineField({
       name: 'featured',
       title: 'Featured Item',
       type: 'reference',
-      to: allowedDocs,
+      to: allowedDocs.map((type) => ({type})),
       group: 'content',
     }),
     defineField({
       name: 'firstCarousel',
       title: 'Body Carousel 1',
       type: 'array',
-      of: allowedDocs,
+      of: allowedDocs.map((type) => ({type: 'reference', name: type, to: {type}})),
       group: 'content',
     }),
     defineField({
       name: 'secondCarousel',
       title: 'Body Carousel 2',
       type: 'array',
-      of: allowedDocs,
+      of: allowedDocs.map((type) => ({type: 'reference', name: type, to: {type}})),
       group: 'content',
     }),
     defineField({
       name: 'articles',
       title: 'Article Grid',
       type: 'array',
-      of: allowedDocs,
+      of: [{type: 'reference', name: 'article', to: {type: 'articlePage'}}],
       group: 'content',
     }),
+    defineField({name: 'interstitial', title: 'Intestitial', type: 'dzInterstitial'}),
     defineField({
-      name: 'location',
-      title: 'Location',
+      name: 'locations',
+      title: 'Locations',
       group: 'content',
-      type: 'reference',
-      to: [{type: 'location'}],
+      type: 'array',
+      of: [{type: 'location'}],
     }),
   ],
 })

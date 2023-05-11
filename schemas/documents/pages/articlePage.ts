@@ -45,6 +45,7 @@ export default defineType({
       fields: [
         {
           name: 'alt',
+          title: 'Alternative text',
           type: 'string',
           validation: (rule) => rule.required(),
         },
