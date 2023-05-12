@@ -77,6 +77,30 @@ export default defineType({
       initialValue: false
     }),
     defineField({
+      name: 'title',
+      type: 'string',
+      title: 'Component title',
+      group: 'content',
+    }),
+    defineField({
+      name: 'titleOverride',
+      type: 'string',
+      title: 'Component title',
+      group: 'overrides',
+    }),
+    defineField({
+      name: 'ctaOverride',
+      type: 'string',
+      title: 'CTA title',
+      group: 'overrides',
+    }),
+    defineField({
+      name: 'subtitleOverride',
+      type: 'string',
+      title: 'Component subtitle',
+      group: 'overrides',
+    }),
+    defineField({
       name: 'imageOverride',
       type: 'image',
       title: 'Image',
