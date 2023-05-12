@@ -32,7 +32,7 @@ export default defineType({
     defineField({
       name: 'description',
       title: 'Description',
-      type: 'string',
+      type: 'text',
     }),
     defineField({
       name: 'startDate',
@@ -47,6 +47,26 @@ export default defineType({
         Rule.required()
           .min(Rule.valueOfField('startDate'))
           .error('The end date should be greater than the start date'),
+    }),
+    defineField({
+      title: 'Exhibition photos',
+      name: 'photos',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'image',
+          options: {
+            hotspot: true,
+          },
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alternative text',
+            },
+          ],
+        }),
+      ],
     }),
     defineField({
       name: 'events',
