@@ -26,7 +26,7 @@ export default defineField({
       title: 'Address 2',
       type: 'string',
       validation: Rule =>[
-        Rule.required().min(5).error('An address of min. 5 characters is required'),
+        Rule.min(5).error('An address of min. 5 characters is required'),
         Rule.max(50).warning('Please, double check the length of this address')
       ]
     }),
