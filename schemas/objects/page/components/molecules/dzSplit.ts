@@ -77,12 +77,6 @@ export default defineType({
       initialValue: false
     }),
     defineField({
-      name: 'title',
-      type: 'string',
-      title: 'Component title',
-      group: 'content',
-    }),
-    defineField({
       name: 'titleOverride',
       type: 'string',
       title: 'Component title',
