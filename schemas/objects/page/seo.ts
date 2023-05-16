@@ -87,7 +87,7 @@ export default defineType({
       description: 'The preferred URL for this page.  If left empty, will default to page slug.',
       type: `slug`,
       options: {
-        source: 'title',
+        source: (val: any) => val.slug?.current || val.title || '',
         isUnique: (value, context) => context.defaultIsUnique(value, context),
         slugify: (input) => {
           const normalized = input.trim().replace(/\s+/g, '-').toLowerCase()

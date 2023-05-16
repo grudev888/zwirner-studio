@@ -7,13 +7,7 @@ import artistPage from '../documents/pages/artistPage'
 import exhibitionPage from '../documents/pages/exhibitionPage'
 import fairPage from '../documents/pages/fairPage'
 
-const allowedDocs = [
-  page.name,
-  exhibitionPage.name,
-  fairPage.name,
-  artistPage.name,
-  articlePage.name,
-]
+const allowedDocs = [page, exhibitionPage, fairPage, artistPage, articlePage]
 
 export default defineType({
   name: 'home',
@@ -42,28 +36,33 @@ export default defineType({
       name: 'header',
       title: 'Header Carousel',
       type: 'array',
-      of: allowedDocs.map((type) => ({type: 'reference', name: type, to: {type}})),
+      of: allowedDocs.map(({name}) => ({type: 'reference', name, to: {type: name}})),
       group: 'content',
     }),
     defineField({
       name: 'featured',
       title: 'Featured Item',
       type: 'reference',
-      to: allowedDocs.map((type) => ({type})),
+      to: allowedDocs.map(({name}) => ({type: name as string})),
       group: 'content',
     }),
     defineField({
       name: 'firstCarousel',
       title: 'Body Carousel 1',
       type: 'array',
-      of: allowedDocs.map((type) => ({type: 'reference', name: type, to: {type}})),
+      of: allowedDocs.map(({name, title}) => ({
+        type: 'reference',
+        name,
+        title,
+        to: {type: name},
+      })),
       group: 'content',
     }),
     defineField({
       name: 'secondCarousel',
       title: 'Body Carousel 2',
       type: 'array',
-      of: allowedDocs.map((type) => ({type: 'reference', name: type, to: {type}})),
+      of: allowedDocs.map(({name, title}) => ({type: 'reference', name, title, to: {type: name}})),
       group: 'content',
     }),
     defineField({
@@ -73,7 +72,7 @@ export default defineType({
       of: [{type: 'reference', name: 'article', to: {type: 'articlePage'}}],
       group: 'content',
     }),
-    defineField({name: 'interstitial', title: 'Intestitial', type: 'dzInterstitial'}),
+    defineField({name: 'interstitial', title: 'Interstitial', type: 'dzInterstitial'}),
     defineField({
       name: 'locations',
       title: 'Locations',
