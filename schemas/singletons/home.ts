@@ -29,7 +29,7 @@ export default defineType({
       title: 'Title',
       type: 'string',
       group: 'content',
-      validation: (Rule) => Rule.required(),
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'header',
@@ -77,7 +77,7 @@ export default defineType({
       title: 'Locations',
       group: 'content',
       type: 'array',
-      of: [{type: 'location'}],
+      of: [{type: 'reference', name: 'location', to: {type: 'location'}}],
     }),
   ],
 })
