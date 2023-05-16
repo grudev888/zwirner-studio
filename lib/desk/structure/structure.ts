@@ -142,8 +142,7 @@ export const generalStructure = (S: StructureBuilder) =>
                   return getSectionsByYear({
                     S,
                     sectionTitle: 'Articles',
-                    type: 'articlePage',
-                    preview: {section: 'articles'},
+                    type: 'article',
                   })
                 }),
               S.listItem()

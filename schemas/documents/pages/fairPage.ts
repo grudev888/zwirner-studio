@@ -26,7 +26,7 @@ export default defineType({
       name: 'slug',
       title: 'Slug',
       description:
-        'To generate a unique slug based on the exhibition title, please add an exhibition first.',
+        'To generate a unique slug based on the exhibition title, please add an exhibition first. This will also be the canonical URL value.',
       type: 'slug',
       options: {
         source: (object: any, context) => {

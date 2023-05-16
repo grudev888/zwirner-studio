@@ -2,12 +2,11 @@ import {ComposeIcon, MasterDetailIcon, SearchIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
 
 import page from '../documents/page'
-import articlePage from '../documents/pages/articlePage'
 import artistPage from '../documents/pages/artistPage'
 import exhibitionPage from '../documents/pages/exhibitionPage'
 import fairPage from '../documents/pages/fairPage'
 
-const allowedDocs = [page, exhibitionPage, fairPage, artistPage, articlePage]
+const allowedDocs = [page, exhibitionPage, fairPage, artistPage]
 
 export default defineType({
   name: 'home',
@@ -69,7 +68,7 @@ export default defineType({
       name: 'articles',
       title: 'Article Grid',
       type: 'array',
-      of: [{type: 'reference', name: 'article', to: {type: 'articlePage'}}],
+      of: [{type: 'reference', name: 'article', to: {type: 'article'}}],
       group: 'content',
     }),
     defineField({name: 'interstitial', title: 'Interstitial', type: 'dzInterstitial'}),

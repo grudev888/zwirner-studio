@@ -12,7 +12,6 @@ import globalSEO from './documents/globalSEO'
 import locationType from './documents/location'
 import pageType from './documents/page'
 import artistPage from './documents/pages/artistPage'
-import articlePage from './documents/pages/articlePage'
 import footer from './singletons/footer'
 import navigation from './singletons/navigation'
 import exhibitionPage from './documents/pages/exhibitionPage'
@@ -98,12 +97,7 @@ export const objects: ObjectDefinition[] = [
   menuItemPage,
 ]
 
-export const pageDocuments: DocumentDefinition[] = [
-  artistPage,
-  exhibitionPage,
-  fairPage,
-  articlePage,
-]
+export const pageDocuments: DocumentDefinition[] = [artistPage, exhibitionPage, fairPage]
 export const singletons: DocumentDefinition[] = [stories, home, collect, utopiaEditions, globalSEO]
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [

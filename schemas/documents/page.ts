@@ -22,6 +22,7 @@ export default defineType({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
+      description: 'This will also be the canonical URL value.',
       options: {
         source: 'title',
         maxLength: 96,
@@ -46,7 +47,6 @@ export default defineType({
           title: 'Row',
           type: 'row',
         }),
-
       ],
     }),
   ],

@@ -34,7 +34,7 @@ export default defineType({
       name: 'slug',
       title: 'Slug',
       description:
-        'To generate a unique slug based on the artist full name, please add an artist first.',
+        'To generate a unique slug based on the artist full name, please add an artist first. This will also be the canonical URL value.',
       type: 'slug',
       options: {
         source: (object: any, context) => {
