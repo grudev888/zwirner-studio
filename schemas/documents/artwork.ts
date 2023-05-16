@@ -109,9 +109,12 @@ export default defineType({
     }),
   ],
   preview: {
-    select: {title: 'title', photos: 'photos'},
-    prepare({title, photos}) {
-      return {title, media: photos?.[0]}
+    select: {
+      title: 'title',
+      images: 'photos',
+    },
+    prepare({title, images}) {
+      return {title, media: images?.[0] ?? ThLargeIcon}
     },
   },
 })

@@ -1,4 +1,4 @@
-import {BlockElementIcon} from '@sanity/icons'
+import {BlockElementIcon, SearchIcon, ComposeIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
 
 export default defineType({
@@ -6,7 +6,10 @@ export default defineType({
   title: 'Available Works',
   type: 'document',
   icon: BlockElementIcon,
-  preview: {select: {title: 'title'}},
+  groups: [
+    {name: 'content', title: 'Content', icon: ComposeIcon, default: true},
+    {name: 'seo', title: 'SEO', icon: SearchIcon},
+  ],
   fields: [
     defineField({
       name: 'title',
@@ -14,6 +17,25 @@ export default defineType({
       title: 'Title',
       type: 'string',
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'displayNumberOfResults',
+      type: 'boolean',
+      title: 'Display # of results',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'artworks',
+      title: 'Artworks Grid',
+      type: 'array',
+      of: [{type: 'reference', name: 'artwork', to: {type: 'artwork'}}],
+      group: 'content',
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      group: 'seo',
     }),
   ],
 })

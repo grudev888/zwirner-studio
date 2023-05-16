@@ -122,4 +122,13 @@ export default defineType({
       type: 'string',
     }),
   ],
+  preview: {
+    select: {
+      title: 'title',
+      images: 'photos',
+    },
+    prepare({title, images}) {
+      return {title, media: images?.[0] ?? DashboardIcon}
+    },
+  },
 })

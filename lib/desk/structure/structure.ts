@@ -7,6 +7,7 @@ import {
   LinkRemovedIcon,
   PinIcon,
   TagIcon,
+  ComposeIcon,
   ThLargeIcon,
   TiersIcon,
   TrendUpwardIcon,
@@ -179,6 +180,20 @@ export const generalStructure = (S: StructureBuilder) =>
             ])
         ),
       S.divider(),
+      S.listItem()
+        .title('Articles')
+        .icon(ComposeIcon)
+        .child(
+          S.documentList()
+            .title('Articles')
+            .filter('_type == "article"')
+            .defaultOrdering([{field: 'title', direction: 'asc'}])
+            .child(
+              S.document()
+                .schemaType('article')
+                .views([S.view.form(), S.view.component(ReferenceByTab).title('References')])
+            )
+        ),
       S.listItem()
         .title('Artists')
         .icon(DocumentsIcon)
