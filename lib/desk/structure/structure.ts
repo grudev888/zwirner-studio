@@ -95,6 +95,23 @@ export const generalStructure = (S: StructureBuilder) =>
                 .title('Utopia Editions')
                 .icon(BlockElementIcon)
                 .child(S.document().schemaType('utopiaEditions').documentId('utopiaEditions')),
+              S.listItem()
+                .title('Consignments')
+                .icon(BlockElementIcon)
+                .child(
+                  S.document()
+                    .schemaType('consignments')
+                    .documentId('consignments')
+                    .views([
+                      S.view.form(),
+                      S.view
+                        .component(PreviewIframe)
+                        .options({
+                          url: `${envHost}/api/sanity/preview`,
+                        })
+                        .title('Preview'),
+                    ])
+                ),
               S.divider(),
               S.listItem()
                 .title('Artist Pages')
