@@ -1,9 +1,6 @@
 import {ComposeIcon, MasterDetailIcon, SearchIcon} from '@sanity/icons'
 import {defineArrayMember, defineField, defineType} from 'sanity'
-import artistPage from '../documents/pages/artistPage'
-import exhibitionPage from '../documents/pages/exhibitionPage'
-import article from '../documents/article'
-import fairPage from '../documents/pages/fairPage'
+import artwork from '../documents/artwork'
 
 export default defineType({
   name: 'consignments',
@@ -73,12 +70,7 @@ export default defineType({
       of: [
         defineArrayMember({
           type: 'reference',
-          to: [
-            {type: artistPage.name},
-            {type: exhibitionPage.name},
-            {type: article.name},
-            {type: fairPage.name},
-          ],
+          to: [{type: artwork.name}],
         }),
       ],
     }),
