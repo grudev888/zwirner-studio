@@ -79,9 +79,9 @@ export default defineType({
         }),
         defineArrayMember({
           icon: BlockquoteIcon,
-          name: 'paragraph',
+          name: 'custom',
           type: 'object',
-          title: 'Paragraph',
+          title: 'Custom',
           fields: [
             defineField({type: 'string', name: 'title', title: 'Title'}),
             defineField({
