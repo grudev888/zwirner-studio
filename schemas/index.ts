@@ -62,6 +62,7 @@ import menuItemLink from './objects/navigation/menuItemLink'
 import menuItemPage from './objects/navigation/menuItemPage'
 import consignments from './singletons/consignments'
 import dzConsignment from './objects/page/components/molecules/dzConsignment'
+import dzCardMedia from './objects/page/components/molecules/dzCard/dzCardMedia'
 
 export const utilsObjects: ObjectDefinition[] = [
   textComplex,
@@ -82,6 +83,7 @@ export const pageComponents: ObjectDefinition[] = [
   dzHeroCarousel,
   dzCarousel,
   dzConsignment,
+  dzCardMedia,
 ].map(addCommonFields)
 
 export const objects: ObjectDefinition[] = [
