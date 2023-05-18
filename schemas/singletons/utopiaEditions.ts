@@ -154,7 +154,6 @@ export default defineType({
       validation: (rule) => rule.required().min(1),
       of: [
         defineArrayMember({
-          name: 'image',
           title: 'Image',
           type: dzCardMedia.name,
           validation: (rule) => rule.required(),
