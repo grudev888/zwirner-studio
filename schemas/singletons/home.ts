@@ -5,8 +5,9 @@ import page from '../documents/page'
 import artistPage from '../documents/pages/artistPage'
 import exhibitionPage from '../documents/pages/exhibitionPage'
 import fairPage from '../documents/pages/fairPage'
+import article from '../documents/article'
 
-const allowedDocs = [page, exhibitionPage, fairPage, artistPage]
+const allowedDocs = [page, exhibitionPage, fairPage, artistPage, article]
 
 export default defineType({
   name: 'home',
