@@ -6,6 +6,8 @@ import artistPage from '../documents/pages/artistPage'
 import exhibitionPage from '../documents/pages/exhibitionPage'
 import fairPage from '../documents/pages/fairPage'
 import article from '../documents/article'
+import location from '../documents/location'
+import dzInterstitial from '../objects/page/components/molecules/dzInterstitial'
 
 const allowedDocs = [page, exhibitionPage, fairPage, artistPage, article]
 
@@ -36,7 +38,7 @@ export default defineType({
       name: 'header',
       title: 'Header Carousel',
       type: 'array',
-      of: allowedDocs.map(({name}) => ({type: 'reference', name, to: {type: name}})),
+      of: allowedDocs.map(({name, title}) => ({type: 'reference', name, title, to: {type: name}})),
       group: 'content',
     }),
     defineField({
@@ -69,16 +71,18 @@ export default defineType({
       name: 'articles',
       title: 'Article Grid',
       type: 'array',
-      of: [{type: 'reference', name: 'article', to: {type: 'article'}}],
+      of: [{type: 'reference', name: article.name, title: article.title, to: {type: article.name}}],
       group: 'content',
     }),
-    defineField({name: 'interstitial', title: 'Interstitial', type: 'dzInterstitial'}),
+    defineField({name: 'interstitial', title: 'Interstitial', type: dzInterstitial.name}),
     defineField({
       name: 'locations',
       title: 'Locations',
       group: 'content',
       type: 'array',
-      of: [{type: 'reference', name: 'location', to: {type: 'location'}}],
+      of: [
+        {type: 'reference', name: location.name, title: location.title, to: {type: location.name}},
+      ],
     }),
   ],
 })
