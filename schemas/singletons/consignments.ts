@@ -1,5 +1,5 @@
 import {ComposeIcon, MasterDetailIcon, SearchIcon} from '@sanity/icons'
-import {defineArrayMember, defineField, defineType} from 'sanity'
+import {StringRule, defineArrayMember, defineField, defineType} from 'sanity'
 import artwork from '../documents/artwork'
 
 export default defineType({
@@ -23,7 +23,7 @@ export default defineType({
       title: 'Title',
       type: 'string',
       group: 'content',
-      validation: (rule) => rule.required(),
+      validation: (rule: StringRule) => rule.required(),
     }),
     defineField({
       name: 'editorial',
