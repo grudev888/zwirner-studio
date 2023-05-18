@@ -109,11 +109,9 @@ export default defineType({
     }),
   ],
   preview: {
-    select: {
-      title: 'title',
-    },
-    prepare({title}) {
-      return {title}
+    select: {title: 'title', photos: 'photos'},
+    prepare({title, photos}) {
+      return {title, media: photos?.[0]}
     },
   },
 })

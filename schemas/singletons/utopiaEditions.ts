@@ -1,4 +1,4 @@
-import {ComposeIcon, SearchIcon} from '@sanity/icons'
+import {ComposeIcon, SearchIcon, MasterDetailIcon} from '@sanity/icons'
 import {BlockElementIcon} from '@sanity/icons'
 import {defineArrayMember, defineField, defineType} from 'sanity'
 import artwork from '../documents/artwork'
@@ -102,18 +102,32 @@ export default defineType({
       title: 'Prints grid',
       options: {collapsible: true, collapsed: true},
       validation: (rule) => rule.required(),
+      groups: [
+        {name: 'content', title: 'Content', icon: ComposeIcon, default: true},
+        {name: 'attributes', title: 'Attributes', icon: MasterDetailIcon},
+      ],
       fields: [
         defineField({
           name: 'Title',
           title: 'Title',
           type: 'string',
           initialValue: 'Browse Prints from Utopia Editions',
+          group: 'content',
           validation: (rule) => rule.required(),
+        }),
+        defineField({
+          name: 'columns',
+          title: 'Columns',
+          type: 'number',
+          initialValue: 4,
+          group: 'attributes',
+          validation: (rule) => rule.required().min(1),
         }),
         defineField({
           name: 'artworks',
           title: 'Prints',
           type: 'array',
+          group: 'content',
           of: [defineArrayMember({type: 'reference', title: 'Artwork', to: {type: artwork.name}})],
           validation: (rule) => rule.required(),
         }),
