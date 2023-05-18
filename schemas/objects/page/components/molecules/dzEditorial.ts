@@ -77,34 +77,6 @@ export default defineType({
           type: 'reference',
           to: [{type: 'press'}],
         }),
-        defineArrayMember({
-          icon: BlockquoteIcon,
-          name: 'custom',
-          type: 'object',
-          title: 'Custom',
-          fields: [
-            defineField({type: 'string', name: 'title', title: 'Title'}),
-            defineField({
-              type: 'image',
-              name: 'image',
-              title: 'Image',
-              options: {hotspot: true},
-              fields: [
-                {
-                  name: 'alt',
-                  type: 'string',
-                  title: 'Alternative text',
-                },
-              ],
-            }),
-            defineField({
-              type: 'array',
-              name: 'description',
-              title: 'Description',
-              of: [{type: 'block'}],
-            }),
-          ],
-        }),
       ],
     }),
 
