@@ -147,8 +147,8 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'Media Cards',
-      title: 'Images',
+      name: 'cards',
+      title: 'Media Cards',
       type: 'array',
       options: {layout: 'grid'},
       validation: (rule) => rule.required().min(1),
