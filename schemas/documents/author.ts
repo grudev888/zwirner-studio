@@ -26,6 +26,11 @@ export default defineType({
           type: 'string',
           title: 'Alternative text',
         },
+        {
+          name: 'url',
+          type: 'string',
+          title: 'Url redirect',
+        },
       ],
       validation: (rule) => rule.required(),
     }),
