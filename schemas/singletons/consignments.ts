@@ -1,5 +1,5 @@
 import {ComposeIcon, MasterDetailIcon, SearchIcon} from '@sanity/icons'
-import {StringRule, defineArrayMember, defineField, defineType} from 'sanity'
+import {defineArrayMember, defineField, defineType} from 'sanity'
 import artwork from '../documents/artwork'
 
 export default defineType({
@@ -23,13 +23,22 @@ export default defineType({
       title: 'Title',
       type: 'string',
       group: 'content',
-      validation: (rule: StringRule) => rule.required(),
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'hero',
+      title: 'Hero',
+      type: 'dzHero',
+      group: 'content',
+      options: {collapsed: true, collapsible: true},
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'editorial',
       title: 'Editorial',
       type: 'dzEditorial',
       group: 'content',
+      options: {collapsed: true, collapsible: true},
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -37,6 +46,7 @@ export default defineType({
       title: 'Consignments',
       type: 'dzConsignment',
       group: 'content',
+      options: {collapsed: true, collapsible: true},
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -44,6 +54,7 @@ export default defineType({
       title: 'Hero',
       type: 'dzHero',
       group: 'content',
+      options: {collapsed: true, collapsible: true},
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -51,6 +62,7 @@ export default defineType({
       title: 'Interstitial',
       type: 'dzInterstitial',
       group: 'content',
+      options: {collapsed: true, collapsible: true},
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -59,7 +71,18 @@ export default defineType({
       type: 'array',
       group: 'content',
       validation: (rule) => rule.required().length(5),
-      of: [defineArrayMember({type: 'dzEditorial', title: 'Editorial'})],
+      of: [
+        defineArrayMember({
+          type: 'object',
+          title: 'Element',
+          name: 'element',
+          preview: {select: {title: 'editorial.title'}},
+          fields: [
+            defineField({type: 'dzHero', name: 'hero', title: 'Hero'}),
+            defineField({type: 'dzEditorial', name: 'editorial', title: 'Editorial'}),
+          ],
+        }),
+      ],
     }),
     defineField({
       name: 'works',
@@ -80,6 +103,7 @@ export default defineType({
       title: 'Interstitial',
       type: 'dzInterstitial',
       group: 'content',
+      options: {collapsed: true, collapsible: true},
       validation: (rule) => rule.required(),
     }),
   ],
