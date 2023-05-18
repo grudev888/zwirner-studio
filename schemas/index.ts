@@ -34,7 +34,6 @@ import dzHeroCarousel from './objects/page/components/molecules/DzHeroCarousel'
 import dzInterstitial from './objects/page/components/molecules/dzInterstitial'
 import dzSplit from './objects/page/components/molecules/dzSplit'
 import dzTitle from './objects/page/components/molecules/dzTitle'
-import editorialContent from './objects/page/editorialContent'
 import grid from './objects/page/grid'
 import row from './objects/page/layout'
 import pageBuilderComponents from './objects/page/pageBuilderComponents'
@@ -61,6 +60,8 @@ import {addCommonFields} from './common/fields'
 import menu from './objects/navigation/menu'
 import menuItemLink from './objects/navigation/menuItemLink'
 import menuItemPage from './objects/navigation/menuItemPage'
+import consignments from './singletons/consignments'
+import dzConsignment from './objects/page/components/molecules/dzConsignment'
 
 export const utilsObjects: ObjectDefinition[] = [
   textComplex,
@@ -80,6 +81,7 @@ export const pageComponents: ObjectDefinition[] = [
   dzTitle,
   dzHeroCarousel,
   dzCarousel,
+  dzConsignment,
 ].map(addCommonFields)
 
 export const objects: ObjectDefinition[] = [
@@ -123,12 +125,12 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     dateRange,
     redirects,
     footer,
+    consignments,
     navigation,
     settings,
     availableArtworks,
     pageContent,
     pageContentList,
-    editorialContent,
     pageBuilderComponents,
     ...pageDocuments,
     ...objects,

@@ -26,7 +26,6 @@ export default defineType({
       type: 'string',
       title: 'Component title',
       group: 'content',
-      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'content',
@@ -39,7 +38,7 @@ export default defineType({
       type: 'boolean',
       title: 'Enable Overrides',
       group: 'overrides',
-      initialValue: false
+      initialValue: false,
     }),
     defineField({
       name: 'headingOverride',
