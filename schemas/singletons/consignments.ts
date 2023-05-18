@@ -71,6 +71,7 @@ export default defineType({
         defineArrayMember({
           type: 'reference',
           to: [{type: artwork.name}],
+          title: 'Artworks',
         }),
       ],
     }),
