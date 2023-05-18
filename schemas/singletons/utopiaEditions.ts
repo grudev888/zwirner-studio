@@ -2,6 +2,11 @@ import {ComposeIcon, SearchIcon, MasterDetailIcon} from '@sanity/icons'
 import {BlockElementIcon} from '@sanity/icons'
 import {defineArrayMember, defineField, defineType} from 'sanity'
 import artwork from '../documents/artwork'
+import dzCardMedia from '../objects/page/components/molecules/dzCard/dzCardMedia'
+import seo from '../objects/page/seo'
+import dzHero from '../objects/page/components/molecules/dzHero'
+import dzEditorial from '../objects/page/components/molecules/dzEditorial'
+import dzInterstitial from '../objects/page/components/molecules/dzInterstitial'
 
 export default defineType({
   name: 'utopiaEditions',
@@ -17,7 +22,7 @@ export default defineType({
     defineField({
       name: 'seo',
       title: 'SEO',
-      type: 'seo',
+      type: seo.name,
       group: 'seo',
     }),
     defineField({
@@ -28,7 +33,7 @@ export default defineType({
     }),
     defineField({
       name: 'hero',
-      type: 'dzHero',
+      type: dzHero.name,
       title: 'Hero',
       options: {collapsible: true, collapsed: true},
       validation: (rule) => rule.required(),
@@ -41,7 +46,7 @@ export default defineType({
       fields: [
         defineField({
           name: 'content',
-          type: 'dzEditorial',
+          type: dzEditorial.name,
           title: 'Content',
           validation: (rule) => rule.required(),
         }),
@@ -68,7 +73,7 @@ export default defineType({
         }),
         defineField({
           name: 'hero',
-          type: 'dzHero',
+          type: dzHero.name,
           title: 'Hero',
           validation: (rule) => rule.required(),
         }),
@@ -90,7 +95,7 @@ export default defineType({
         }),
         defineField({
           name: 'hero',
-          type: 'dzHero',
+          type: dzHero.name,
           title: 'Hero',
           validation: (rule) => rule.required(),
         }),
@@ -136,7 +141,7 @@ export default defineType({
     defineField({
       name: 'interstitial',
       title: 'Interstitial',
-      type: 'dzInterstitial',
+      type: dzInterstitial.name,
       group: 'content',
       options: {collapsible: true, collapsed: true},
       validation: (rule) => rule.required(),
@@ -151,12 +156,7 @@ export default defineType({
         defineArrayMember({
           name: 'image',
           title: 'Image',
-          type: 'image',
-          options: {hotspot: true},
-          fields: [
-            {name: 'alt', type: 'string', title: 'Alternative text'},
-            {name: 'caption', type: 'string', title: 'Caption'},
-          ],
+          type: dzCardMedia.name,
           validation: (rule) => rule.required(),
         }),
       ],
