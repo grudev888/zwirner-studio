@@ -46,7 +46,7 @@ export default defineType({
     defineField({
       name: 'nowAvailable',
       type: 'object',
-      title: 'Now available carousel',
+      title: 'Now Available Carousel',
       validation: (rule: ObjectRule) => rule.required(),
       fields: [
         defineField({
@@ -68,7 +68,7 @@ export default defineType({
     defineField({
       name: 'comingSoon',
       type: 'object',
-      title: 'Coming soon carousel',
+      title: 'Coming Soon Carousel',
       validation: (rule: ObjectRule) => rule.required(),
       fields: [
         defineField({
