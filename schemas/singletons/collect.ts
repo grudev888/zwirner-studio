@@ -1,12 +1,11 @@
 import {ComposeIcon, SearchIcon} from '@sanity/icons'
 import {BlockElementIcon} from '@sanity/icons'
-import {defineField, defineType} from 'sanity'
-import dzHero from '../objects/page/components/molecules/dzHero'
-import dzCarousel from '../objects/page/components/molecules/dzCarousel'
-import dzEditorial from '../objects/page/components/molecules/dzEditorial'
+import {StringRule, defineArrayMember, defineField, defineType} from 'sanity'
+import * as DzHero from '../objects/page/components/molecules/dzHero'
 import dzConsignment from '../objects/page/components/molecules/dzConsignment'
-import dzSplit from '../objects/page/components/molecules/dzSplit'
 import dzInterstitial from '../objects/page/components/molecules/dzInterstitial'
+import exhibition from '../documents/exhibition'
+import artwork from '../documents/artwork'
 
 export default defineType({
   name: 'collect',
@@ -30,56 +29,118 @@ export default defineType({
       title: 'Title',
       type: 'string',
       group: 'content',
-      validation: (Rule) => Rule.required(),
+      validation: (rule: StringRule) => rule.required(),
     }),
     defineField({
-      name: 'hero',
-      type: dzHero.name,
-      title: 'Hero',
-      options: {collapsible: true, collapsed: true},
+      ...DzHero.builder([exhibition]),
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'onlineExhibitions',
-      type: dzCarousel.name,
-      title: 'Online Exhibitions',
-      options: {collapsible: true, collapsed: true},
+      name: 'exhibitionCarousel',
+      group: 'content',
+      type: 'array',
+      title: 'Exhibition Carousel',
+      of: [
+        defineArrayMember({
+          type: 'reference',
+          title: 'Exhibitions and Fairs',
+          to: {type: exhibition.name},
+        }),
+      ],
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'upcomingFairs',
-      type: dzCarousel.name,
-      title: 'Upcoming Fairs',
-      options: {collapsible: true, collapsed: true},
+      name: 'fairCarousel',
+      type: 'array',
+      group: 'content',
+      title: 'Fair Carousel',
       validation: (rule) => rule.required(),
+      of: [
+        defineArrayMember({
+          type: 'reference',
+          title: 'Exhibitions and Fairs',
+          to: {type: exhibition.name},
+        }),
+      ],
     }),
     defineField({
       name: 'featuredArtworks',
-      type: dzCarousel.name,
-      title: 'Featured Artworks',
-      options: {collapsible: true, collapsed: true},
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      type: dzEditorial.name,
-      name: 'editorial',
-      title: 'Editorial',
-      options: {collapsible: true, collapsed: true},
-    }),
-    defineField({
-      name: 'consignment',
-      title: 'Consignments',
-      type: dzConsignment.name,
+      type: 'array',
+      title: 'Featured Artworks Grid',
       group: 'content',
-      options: {collapsed: true, collapsible: true},
       validation: (rule) => rule.required(),
+      of: [
+        defineArrayMember({
+          type: 'reference',
+          title: 'Artworks',
+          to: {type: artwork.name},
+        }),
+      ],
     }),
     defineField({
-      type: dzSplit.name,
-      title: 'Split',
-      name: 'split',
+      type: 'object',
+      name: 'consignmentsFeature',
       group: 'content',
-      options: {collapsed: true, collapsible: true},
+      title: 'Consignments Feature',
+      fields: [
+        defineField({
+          type: 'string',
+          name: 'title',
+          title: 'Title',
+          validation: (rule) => rule.required(),
+        }),
+        defineField({
+          type: 'text',
+          name: 'content',
+          title: 'Content',
+          validation: (rule) => rule.required(),
+        }),
+        defineField({
+          name: 'consignments',
+          title: 'Consignments',
+          type: dzConsignment.name,
+          validation: (rule) => rule.required(),
+        }),
+      ],
+    }),
+    defineField({
+      type: 'object',
+      title: 'Utopia Feature',
+      name: 'utopiaFeature',
+      group: 'content',
+      validation: (rule) => rule.required(),
+      fields: [
+        defineField({
+          type: 'image',
+          name: 'image',
+          title: 'Image',
+          validation: (rule) => rule.required(),
+        }),
+        defineField({
+          type: 'string',
+          title: 'Title',
+          name: 'title',
+          validation: (rule) => rule.required(),
+        }),
+        defineField({
+          type: 'text',
+          name: 'text',
+          title: 'Text',
+          validation: (rule) => rule.required(),
+        }),
+        defineField({
+          type: 'url',
+          name: 'url',
+          title: 'URL',
+          validation: (rule) => rule.required().uri({allowRelative: true}),
+        }),
+      ],
+    }),
+    defineField({
+      type: dzInterstitial.name,
+      title: 'Platform Interstitial',
+      name: 'platformInterstitial',
+      group: 'content',
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -87,15 +148,6 @@ export default defineType({
       title: 'Interstitial',
       name: 'interstitial',
       group: 'content',
-      options: {collapsed: true, collapsible: true},
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      type: dzInterstitial.name,
-      title: 'Footer Interstitial',
-      name: 'footerInterstitial',
-      group: 'content',
-      options: {collapsed: true, collapsible: true},
       validation: (rule) => rule.required(),
     }),
   ],

@@ -1,11 +1,11 @@
-import {ComposeIcon, EditIcon,MasterDetailIcon} from '@sanity/icons'
+import {ComposeIcon, LinkIcon, MasterDetailIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
 
 export interface DzInterstitialTypeProps {
   title: string
   split: boolean
-  imageOverride?: any
-  enableOverrides: boolean
+  image?: any
+  enables: boolean
 }
 
 export default defineType({
@@ -15,62 +15,47 @@ export default defineType({
   icon: MasterDetailIcon,
   groups: [
     {name: 'content', title: 'Content', icon: ComposeIcon, default: true},
-    {name: 'overrides', title: 'Overrides', icon: EditIcon},
+    {name: 'references', title: 'References', icon: LinkIcon},
   ],
   fields: [
     defineField({
       name: 'title',
       type: 'string',
       title: 'Component title',
-      group: 'content',
+      group: ['references', 'content'],
     }),
     defineField({
       name: 'split',
       title: 'Split',
       type: 'boolean',
-      group: 'content',
+      group: 'references',
       initialValue: false,
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'content',
+      name: 'references',
       title: 'Content',
       type: 'pageContent',
+      group: 'references',
+    }),
+    defineField({
+      name: 'cta',
+      type: 'string',
+      title: 'CTA title',
       group: 'content',
     }),
     defineField({
-      name: 'enableOverrides',
-      type: 'boolean',
-      title: 'Enable Overrides',
-      group: 'overrides',
-      initialValue: false
-    }),
-    defineField({
-      name: 'titleOverride',
-      type: 'string',
-      title: 'Component title',
-      group: 'overrides',
-    }),
-    defineField({
-      name: 'ctaOverride',
-      type: 'string',
-      title: 'CTA title',
-      group: 'overrides',
-    }),
-    defineField({
-      name: 'subtitleOverride',
+      name: 'subtitle',
       type: 'string',
       title: 'Component subtitle',
-      group: 'overrides',
+      group: 'content',
     }),
     defineField({
-      name: 'imageOverride',
+      name: 'image',
       type: 'image',
       title: 'Image',
-      group: 'overrides',
-      options: {
-        hotspot: true,
-      },
+      group: 'content',
+      options: {hotspot: true},
       fields: [
         {
           name: 'alt',

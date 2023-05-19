@@ -1,5 +1,8 @@
 import {ComposeIcon, EditIcon, MasterDetailIcon} from '@sanity/icons'
-import {defineField, defineType} from 'sanity'
+import {defineArrayMember, defineField, defineType} from 'sanity'
+import artist from '../../../../documents/artist'
+import artwork from '../../../../documents/artwork'
+import exhibition from '../../../../documents/exhibition'
 
 export interface DzHeroSchemaProps {
   title: string
@@ -11,7 +14,7 @@ export interface DzHeroSchemaProps {
   enableOverrides: boolean
 }
 
-export default defineType({
+export const builder = (references = [artist, artwork, exhibition]) => ({
   name: 'dzHero',
   title: 'Hero',
   type: 'object',
@@ -28,10 +31,20 @@ export default defineType({
       group: 'content',
     }),
     defineField({
-      name: 'content',
+      name: 'pageContent',
       title: 'Content',
-      type: 'pageContent',
       group: 'content',
+      type: 'array',
+      icon: MasterDetailIcon,
+      validation: (rule) => rule.max(1),
+      of: references.map((reference) =>
+        defineArrayMember({
+          name: reference.name,
+          title: reference.title,
+          type: 'reference',
+          to: [{type: reference.name}],
+        })
+      ),
     }),
     defineField({
       name: 'enableOverrides',
@@ -39,30 +52,6 @@ export default defineType({
       title: 'Enable Overrides',
       group: 'overrides',
       initialValue: false,
-    }),
-    defineField({
-      name: 'headingOverride',
-      type: 'string',
-      title: 'Heading',
-      group: 'overrides',
-    }),
-    defineField({
-      name: 'subHeadingOverride',
-      type: 'string',
-      title: 'SubHeading',
-      group: 'overrides',
-    }),
-    defineField({
-      name: 'secondaryTitleOverride',
-      type: 'string',
-      title: 'Secondary Title',
-      group: 'overrides',
-    }),
-    defineField({
-      name: 'descriptionOverride',
-      type: 'string',
-      title: 'Description',
-      group: 'overrides',
     }),
     defineField({
       name: 'imageOverride',
@@ -85,5 +74,45 @@ export default defineType({
         },
       ],
     }),
+    defineField({
+      name: 'categoryOverride',
+      type: 'string',
+      title: 'Category',
+      group: 'overrides',
+    }),
+    defineField({
+      name: 'headingOverride',
+      type: 'string',
+      title: 'Title',
+      group: 'overrides',
+    }),
+    defineField({
+      name: 'subHeadingOverride',
+      type: 'string',
+      title: 'Subtitle',
+      group: 'overrides',
+    }),
+    defineField({
+      name: 'secondaryTitleOverride',
+      type: 'string',
+      title: 'Secondary Title',
+      group: 'overrides',
+    }),
+    defineField({
+      name: 'descriptionOverride',
+      type: 'string',
+      title: 'Description',
+      group: 'overrides',
+    }),
+    defineField({name: 'CTAOverride', type: 'string', title: 'CTA Title', group: 'overrides'}),
+    defineField({
+      name: 'linkCTAOverride',
+      type: 'url',
+      title: 'Link CTA',
+      group: 'overrides',
+      validation: (rule) => rule.uri({allowRelative: true}),
+    }),
   ],
 })
+
+export default defineType(builder())
