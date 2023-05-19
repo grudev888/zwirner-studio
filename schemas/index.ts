@@ -56,7 +56,7 @@ import home from './singletons/home'
 import settings from './singletons/settings'
 import stories from './singletons/stories'
 import utopiaEditions from './singletons/utopiaEditions'
-import {addCommonFields} from './common/fields'
+import {addComponentId} from './common/fields'
 import menu from './objects/navigation/menu'
 import menuItemLink from './objects/navigation/menuItemLink'
 import menuItemPage from './objects/navigation/menuItemPage'
@@ -86,7 +86,7 @@ export const pageComponents: ObjectDefinition[] = [
   dzConsignment,
   dzButton,
   dzCardMedia,
-].map(addCommonFields)
+].map(addComponentId)
 
 export const objects: ObjectDefinition[] = [
   drawingType,

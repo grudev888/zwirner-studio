@@ -1,9 +1,12 @@
-import {ComposeIcon, SearchIcon, MasterDetailIcon} from '@sanity/icons'
+import {ComposeIcon, SearchIcon} from '@sanity/icons'
 import {BlockElementIcon} from '@sanity/icons'
-import {defineArrayMember, defineField, defineType} from 'sanity'
+import {ObjectRule, defineArrayMember, defineField, defineType} from 'sanity'
 import artwork from '../documents/artwork'
 import seo from '../objects/page/seo'
-import dzButton from '../objects/page/components/atoms/dzButton'
+import media from '../objects/utils/media'
+import exhibitionPage from '../documents/pages/exhibitionPage'
+import {defineGridField} from '../common/fields'
+import dzInterstitial from '../objects/page/components/molecules/dzInterstitial'
 
 export default defineType({
   name: 'utopiaEditions',
@@ -29,35 +32,22 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'hero',
-      type: 'image',
-      title: 'Hero',
-      fields: [defineField({name: 'alt', title: 'Alternative text', type: 'string'})],
+      type: media.name,
+      name: 'headerMedia',
+      title: 'Header Media',
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'editorial',
-      type: 'object',
-      title: 'Editorial',
-      fields: [
-        defineField({
-          name: 'content',
-          type: 'text',
-          title: 'Content',
-          validation: (rule) => rule.required(),
-        }),
-        defineField({
-          type: dzButton.name,
-          name: 'Button',
-          title: 'Button',
-          validation: (rule) => rule.required(),
-        }),
-      ],
+      name: 'newReleasesInterstitial',
+      type: dzInterstitial.name,
+      title: 'Interstitial',
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'nowAvailable',
       type: 'object',
-      title: 'Now available',
+      title: 'Now available carousel',
+      validation: (rule: ObjectRule) => rule.required(),
       fields: [
         defineField({
           name: 'title',
@@ -67,10 +57,10 @@ export default defineType({
           validation: (rule) => rule.required(),
         }),
         defineField({
-          name: 'artworks',
-          type: 'reference',
-          title: 'Artwork',
-          to: [{type: artwork.name}],
+          name: 'exhibitions',
+          type: 'array',
+          title: 'Exhibitions',
+          of: [{type: 'reference', title: 'Exhibition', to: [{type: exhibitionPage.name}]}],
           validation: (rule) => rule.required(),
         }),
       ],
@@ -78,8 +68,8 @@ export default defineType({
     defineField({
       name: 'comingSoon',
       type: 'object',
-      title: 'Coming soon',
-      validation: (rule) => rule.required(),
+      title: 'Coming soon carousel',
+      validation: (rule: ObjectRule) => rule.required(),
       fields: [
         defineField({
           name: 'title',
@@ -89,45 +79,31 @@ export default defineType({
           validation: (rule) => rule.required(),
         }),
         defineField({
-          name: 'artworks',
-          type: 'reference',
-          title: 'Artwork',
-          to: [{type: artwork.name}],
+          name: 'exhibitions',
+          type: 'array',
+          title: 'Exhibitions',
+          of: [{type: 'reference', title: 'Exhibition', to: [{type: exhibitionPage.name}]}],
           validation: (rule) => rule.required(),
         }),
       ],
     }),
-    defineField({
-      name: 'prints',
+    defineGridField({
+      name: 'artworksGrid',
       type: 'object',
-      title: 'Prints grid',
-      validation: (rule) => rule.required(),
-      groups: [
-        {name: 'content', title: 'Content', icon: ComposeIcon, default: true},
-        {name: 'attributes', title: 'Attributes', icon: MasterDetailIcon},
-      ],
+      title: 'Grid',
+      validation: (rule: ObjectRule) => rule.required(),
       fields: [
         defineField({
           name: 'Title',
           title: 'Title',
           type: 'string',
           initialValue: 'Browse Prints from Utopia Editions',
-          group: 'content',
           validation: (rule) => rule.required(),
-        }),
-        defineField({
-          name: 'columns',
-          title: 'Items per row',
-          type: 'number',
-          initialValue: 4,
-          group: 'attributes',
-          validation: (rule) => rule.required().min(1),
         }),
         defineField({
           name: 'artworks',
           title: 'Artworks',
           type: 'array',
-          group: 'content',
           of: [defineArrayMember({type: 'reference', title: 'Artwork', to: {type: artwork.name}})],
           validation: (rule) => rule.required(),
         }),
@@ -136,38 +112,23 @@ export default defineType({
     defineField({
       name: 'interstitial',
       title: 'Interstitial',
-      type: 'object',
+      type: dzInterstitial.name,
       group: 'content',
       validation: (rule) => rule.required(),
-      fields: [
-        defineField({
-          type: 'text',
-          name: 'content',
-          title: 'Content',
-          validation: (rule) => rule.required(),
-        }),
-        defineField({
-          type: dzButton.name,
-          name: 'Button',
-          title: 'Button',
-          validation: (rule) => rule.required(),
-        }),
-      ],
     }),
     defineField({
-      name: 'cards',
-      title: 'Media Cards',
+      name: 'mediaCarousel',
+      title: 'Carousel',
       type: 'array',
       validation: (rule) => rule.required().min(1),
       of: [
         defineArrayMember({
-          type: 'image',
-          title: 'Image',
+          type: 'object',
+          preview: {select: {title: 'caption', media: 'media.image'}},
           fields: [
-            defineField({name: 'alt', title: 'Alternative text', type: 'string'}),
-            defineField({name: 'caption', title: 'Caption', type: 'string'}),
+            defineField({type: media.name, name: 'media', title: 'Media'}),
+            defineField({type: 'string', title: 'Caption', name: 'caption'}),
           ],
-          validation: (rule) => rule.required(),
         }),
       ],
     }),
