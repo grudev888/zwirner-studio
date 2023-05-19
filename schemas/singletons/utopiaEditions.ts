@@ -2,11 +2,8 @@ import {ComposeIcon, SearchIcon, MasterDetailIcon} from '@sanity/icons'
 import {BlockElementIcon} from '@sanity/icons'
 import {defineArrayMember, defineField, defineType} from 'sanity'
 import artwork from '../documents/artwork'
-import dzCardMedia from '../objects/page/components/molecules/dzCard/dzCardMedia'
 import seo from '../objects/page/seo'
-import dzHero from '../objects/page/components/molecules/dzHero'
-import dzEditorial from '../objects/page/components/molecules/dzEditorial'
-import dzInterstitial from '../objects/page/components/molecules/dzInterstitial'
+import dzButton from '../objects/page/components/atoms/dzButton'
 
 export default defineType({
   name: 'utopiaEditions',
@@ -33,25 +30,24 @@ export default defineType({
     }),
     defineField({
       name: 'hero',
-      type: dzHero.name,
+      type: 'image',
       title: 'Hero',
-      options: {collapsible: true, collapsed: true},
+      fields: [defineField({name: 'alt', title: 'Alternative text', type: 'string'})],
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'editorial',
       type: 'object',
       title: 'Editorial',
-      options: {collapsible: true, collapsed: true},
       fields: [
         defineField({
           name: 'content',
-          type: dzEditorial.name,
+          type: 'text',
           title: 'Content',
           validation: (rule) => rule.required(),
         }),
         defineField({
-          type: 'dzButton',
+          type: dzButton.name,
           name: 'Button',
           title: 'Button',
           validation: (rule) => rule.required(),
@@ -62,7 +58,6 @@ export default defineType({
       name: 'nowAvailable',
       type: 'object',
       title: 'Now available',
-      options: {collapsible: true, collapsed: true},
       fields: [
         defineField({
           name: 'title',
@@ -72,9 +67,10 @@ export default defineType({
           validation: (rule) => rule.required(),
         }),
         defineField({
-          name: 'hero',
-          type: dzHero.name,
-          title: 'Hero',
+          name: 'artworks',
+          type: 'reference',
+          title: 'Artwork',
+          to: [{type: artwork.name}],
           validation: (rule) => rule.required(),
         }),
       ],
@@ -83,7 +79,6 @@ export default defineType({
       name: 'comingSoon',
       type: 'object',
       title: 'Coming soon',
-      options: {collapsible: true, collapsed: true},
       validation: (rule) => rule.required(),
       fields: [
         defineField({
@@ -94,9 +89,10 @@ export default defineType({
           validation: (rule) => rule.required(),
         }),
         defineField({
-          name: 'hero',
-          type: dzHero.name,
-          title: 'Hero',
+          name: 'artworks',
+          type: 'reference',
+          title: 'Artwork',
+          to: [{type: artwork.name}],
           validation: (rule) => rule.required(),
         }),
       ],
@@ -105,7 +101,6 @@ export default defineType({
       name: 'prints',
       type: 'object',
       title: 'Prints grid',
-      options: {collapsible: true, collapsed: true},
       validation: (rule) => rule.required(),
       groups: [
         {name: 'content', title: 'Content', icon: ComposeIcon, default: true},
@@ -122,7 +117,7 @@ export default defineType({
         }),
         defineField({
           name: 'columns',
-          title: 'Columns',
+          title: 'Items per row',
           type: 'number',
           initialValue: 4,
           group: 'attributes',
@@ -130,7 +125,7 @@ export default defineType({
         }),
         defineField({
           name: 'artworks',
-          title: 'Prints',
+          title: 'Artworks',
           type: 'array',
           group: 'content',
           of: [defineArrayMember({type: 'reference', title: 'Artwork', to: {type: artwork.name}})],
@@ -141,20 +136,37 @@ export default defineType({
     defineField({
       name: 'interstitial',
       title: 'Interstitial',
-      type: dzInterstitial.name,
+      type: 'object',
       group: 'content',
-      options: {collapsible: true, collapsed: true},
       validation: (rule) => rule.required(),
+      fields: [
+        defineField({
+          type: 'text',
+          name: 'content',
+          title: 'Content',
+          validation: (rule) => rule.required(),
+        }),
+        defineField({
+          type: dzButton.name,
+          name: 'Button',
+          title: 'Button',
+          validation: (rule) => rule.required(),
+        }),
+      ],
     }),
     defineField({
       name: 'cards',
       title: 'Media Cards',
       type: 'array',
-      options: {layout: 'grid'},
       validation: (rule) => rule.required().min(1),
       of: [
         defineArrayMember({
-          type: dzCardMedia.name,
+          type: 'image',
+          title: 'Image',
+          fields: [
+            defineField({name: 'alt', title: 'Alternative text', type: 'string'}),
+            defineField({name: 'caption', title: 'Caption', type: 'string'}),
+          ],
           validation: (rule) => rule.required(),
         }),
       ],
