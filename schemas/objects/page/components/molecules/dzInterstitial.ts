@@ -1,11 +1,11 @@
-import {ComposeIcon, LinkIcon, MasterDetailIcon} from '@sanity/icons'
+import {ComposeIcon, EditIcon,MasterDetailIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
 
 export interface DzInterstitialTypeProps {
   title: string
   split: boolean
-  image?: any
-  enables: boolean
+  imageOverride?: any
+  enableOverrides: boolean
 }
 
 export default defineType({
@@ -15,47 +15,62 @@ export default defineType({
   icon: MasterDetailIcon,
   groups: [
     {name: 'content', title: 'Content', icon: ComposeIcon, default: true},
-    {name: 'references', title: 'References', icon: LinkIcon},
+    {name: 'overrides', title: 'Overrides', icon: EditIcon},
   ],
   fields: [
     defineField({
       name: 'title',
       type: 'string',
       title: 'Component title',
-      group: ['references', 'content'],
+      group: 'content',
     }),
     defineField({
       name: 'split',
       title: 'Split',
       type: 'boolean',
-      group: 'references',
+      group: 'content',
       initialValue: false,
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'references',
+      name: 'content',
       title: 'Content',
       type: 'pageContent',
-      group: 'references',
+      group: 'content',
     }),
     defineField({
-      name: 'cta',
+      name: 'enableOverrides',
+      type: 'boolean',
+      title: 'Enable Overrides',
+      group: 'overrides',
+      initialValue: false
+    }),
+    defineField({
+      name: 'titleOverride',
+      type: 'string',
+      title: 'Component title',
+      group: 'overrides',
+    }),
+    defineField({
+      name: 'ctaOverride',
       type: 'string',
       title: 'CTA title',
-      group: 'content',
+      group: 'overrides',
     }),
     defineField({
-      name: 'subtitle',
+      name: 'subtitleOverride',
       type: 'string',
       title: 'Component subtitle',
-      group: 'content',
+      group: 'overrides',
     }),
     defineField({
-      name: 'image',
+      name: 'imageOverride',
       type: 'image',
       title: 'Image',
-      group: 'content',
-      options: {hotspot: true},
+      group: 'overrides',
+      options: {
+        hotspot: true,
+      },
       fields: [
         {
           name: 'alt',
