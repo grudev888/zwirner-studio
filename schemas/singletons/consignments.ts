@@ -1,6 +1,10 @@
 import {ComposeIcon, MasterDetailIcon, SearchIcon} from '@sanity/icons'
-import {StringRule, defineArrayMember, defineField, defineType} from 'sanity'
+import {defineArrayMember, defineField, defineType} from 'sanity'
 import artwork from '../documents/artwork'
+import dzCardMedia from '../objects/page/components/molecules/dzCard/dzCardMedia'
+import dzEditorial from '../objects/page/components/molecules/dzEditorial'
+import dzConsignment from '../objects/page/components/molecules/dzConsignment'
+import dzInterstitial from '../objects/page/components/molecules/dzInterstitial'
 
 export default defineType({
   name: 'consignments',
@@ -23,43 +27,72 @@ export default defineType({
       title: 'Title',
       type: 'string',
       group: 'content',
-      validation: (rule: StringRule) => rule.required(),
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'mediaCard',
+      title: 'Media Card',
+      type: dzCardMedia.name,
+      group: 'content',
+      options: {collapsed: true, collapsible: true},
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'editorial',
       title: 'Editorial',
-      type: 'dzEditorial',
+      type: dzEditorial.name,
       group: 'content',
+      options: {collapsed: true, collapsible: true},
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'consignment',
       title: 'Consignments',
-      type: 'dzConsignment',
+      type: dzConsignment.name,
       group: 'content',
+      options: {collapsed: true, collapsible: true},
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'secondHero',
-      title: 'Hero',
-      type: 'dzHero',
+      name: 'secondMediaCard',
+      title: 'Media Card',
+      type: dzCardMedia.name,
       group: 'content',
+      options: {collapsed: true, collapsible: true},
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'interstitial',
       title: 'Interstitial',
-      type: 'dzInterstitial',
+      type: dzInterstitial.name,
       group: 'content',
+      options: {collapsed: true, collapsible: true},
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'middleHeros',
-      title: 'Middle Heros',
+      name: 'middleMediaCards',
+      title: 'Middle Media Cards',
       type: 'array',
       group: 'content',
       validation: (rule) => rule.required().length(5),
-      of: [defineArrayMember({type: 'dzEditorial', title: 'Editorial'})],
+      of: [
+        defineArrayMember({
+          name: 'media',
+          title: 'Media',
+          type: 'object',
+          preview: {
+            select: {
+              title: `editorial.title`,
+              cardMedia: 'cardMedia',
+              media: 'cardMedia.imageOverride',
+            },
+          },
+          fields: [
+            defineField({type: dzCardMedia.name, name: 'cardMedia'}),
+            defineField({type: dzEditorial.name, name: 'editorial'}),
+          ],
+        }),
+      ],
     }),
     defineField({
       name: 'works',
@@ -78,8 +111,9 @@ export default defineType({
     defineField({
       name: 'footerInterstitial',
       title: 'Interstitial',
-      type: 'dzInterstitial',
+      type: dzInterstitial.name,
       group: 'content',
+      options: {collapsed: true, collapsible: true},
       validation: (rule) => rule.required(),
     }),
   ],
