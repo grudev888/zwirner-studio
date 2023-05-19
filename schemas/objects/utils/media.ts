@@ -1,11 +1,13 @@
-import {defineField} from 'sanity'
+import {defineField, defineType} from 'sanity'
 
 export const MEDIA_TYPES = {
   IMAGE: 'image',
   VIDEO: 'video',
 }
 
-export default defineField({
+export const VIDEO_PROVIDERS = {vimeo: 'vimeo', youtube: 'youtube', custom: 'custom'}
+
+export const builder = (videoProviders = Object.values(VIDEO_PROVIDERS)) => ({
   name: 'media',
   title: 'Media',
   type: 'object',
@@ -33,7 +35,7 @@ export default defineField({
       name: 'provider',
       title: 'Provider',
       type: 'string',
-      options: {list: ['vimeo', 'youtube', 'custom']},
+      options: {list: videoProviders},
       hidden: ({parent}) => parent?.type === MEDIA_TYPES.IMAGE || !parent?.type,
     }),
     defineField({
@@ -56,3 +58,5 @@ export default defineField({
     }),
   ],
 })
+
+export default defineType(builder())

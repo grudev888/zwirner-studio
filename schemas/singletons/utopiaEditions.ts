@@ -3,7 +3,7 @@ import {BlockElementIcon} from '@sanity/icons'
 import {ObjectRule, defineArrayMember, defineField, defineType} from 'sanity'
 import artwork from '../documents/artwork'
 import seo from '../objects/page/seo'
-import media from '../objects/utils/media'
+import * as Media from '../objects/utils/media'
 import exhibitionPage from '../documents/pages/exhibitionPage'
 import {defineGridField} from '../common/fields'
 import dzInterstitial from '../objects/page/components/molecules/dzInterstitial'
@@ -32,9 +32,7 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      type: media.name,
-      name: 'headerMedia',
-      title: 'Header Media',
+      ...Media.builder([Media.VIDEO_PROVIDERS.custom]),
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -120,13 +118,12 @@ export default defineType({
       name: 'mediaCarousel',
       title: 'Carousel',
       type: 'array',
-      validation: (rule) => rule.required().min(1),
       of: [
         defineArrayMember({
           type: 'object',
           preview: {select: {title: 'caption', media: 'media.image'}},
           fields: [
-            defineField({type: media.name, name: 'media', title: 'Media'}),
+            defineField({type: Media.default.name, name: 'media', title: 'Media'}),
             defineField({type: 'string', title: 'Caption', name: 'caption'}),
           ],
         }),
