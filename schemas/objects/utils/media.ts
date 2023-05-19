@@ -25,41 +25,34 @@ export default defineField({
       name: 'image',
       title: 'Image',
       type: 'image',
+      options: {hotspot: true},
       fields: [defineField({name: 'alt', title: 'Alternative text', type: 'string'})],
-      hidden: ({parent}) => {
-        return parent?.type === MEDIA_TYPES.VIDEO || !parent?.type
-      },
+      hidden: ({parent}) => parent?.type === MEDIA_TYPES.VIDEO || !parent?.type,
     }),
     defineField({
       name: 'provider',
       title: 'Provider',
       type: 'string',
       options: {list: ['vimeo', 'youtube', 'custom']},
-      hidden: ({parent}) => {
-        return parent?.type === MEDIA_TYPES.IMAGE || !parent?.type
-      },
+      hidden: ({parent}) => parent?.type === MEDIA_TYPES.IMAGE || !parent?.type,
     }),
     defineField({
       name: 'video',
       title: 'Video',
       type: 'file',
       options: {accept: 'video/mp4,video/x-m4v,video/*'},
-      hidden: ({parent}) => {
-        return parent?.type === MEDIA_TYPES.IMAGE || !parent?.type || parent?.provider !== 'custom'
-      },
+      hidden: ({parent}) =>
+        parent?.type === MEDIA_TYPES.IMAGE || !parent?.type || parent?.provider !== 'custom',
     }),
     defineField({
       name: 'externalVideo',
       title: 'Video URL',
       type: 'url',
       options: {accept: 'video/mp4,video/x-m4v,video/*'},
-      hidden: ({parent}) => {
-        return (
-          parent?.type === MEDIA_TYPES.IMAGE ||
-          !parent?.type ||
-          !['vimeo', 'youtube'].includes(parent?.provider)
-        )
-      },
+      hidden: ({parent}) =>
+        parent?.type === MEDIA_TYPES.IMAGE ||
+        !parent?.type ||
+        !['vimeo', 'youtube'].includes(parent?.provider),
     }),
   ],
 })
