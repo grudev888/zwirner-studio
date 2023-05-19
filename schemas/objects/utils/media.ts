@@ -25,10 +25,9 @@ export default defineField({
       name: 'image',
       title: 'Image',
       type: 'image',
+      options: {hotspot: true},
       fields: [defineField({name: 'alt', title: 'Alternative text', type: 'string'})],
-      hidden: ({parent}) => {
-        return parent?.type === MEDIA_TYPES.VIDEO || !parent?.type
-      },
+      hidden: ({parent}) => parent?.type === MEDIA_TYPES.VIDEO || !parent?.type,
     }),
     defineField({
       name: 'provider',
