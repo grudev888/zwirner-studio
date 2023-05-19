@@ -1,6 +1,12 @@
 import {ComposeIcon, SearchIcon} from '@sanity/icons'
 import {BlockElementIcon} from '@sanity/icons'
-import {defineArrayMember,defineField, defineType} from 'sanity'
+import {defineField, defineType} from 'sanity'
+import dzHero from '../objects/page/components/molecules/dzHero'
+import dzCarousel from '../objects/page/components/molecules/dzCarousel'
+import dzEditorial from '../objects/page/components/molecules/dzEditorial'
+import dzConsignment from '../objects/page/components/molecules/dzConsignment'
+import dzSplit from '../objects/page/components/molecules/dzSplit'
+import dzInterstitial from '../objects/page/components/molecules/dzInterstitial'
 
 export default defineType({
   name: 'collect',
@@ -27,17 +33,70 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'grid',
-      title: 'Grid',
-      type: 'array',
+      name: 'hero',
+      type: dzHero.name,
+      title: 'Hero',
+      options: {collapsible: true, collapsed: true},
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'onlineExhibitions',
+      type: dzCarousel.name,
+      title: 'Online Exhibitions',
+      options: {collapsible: true, collapsed: true},
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'upcomingFairs',
+      type: dzCarousel.name,
+      title: 'Upcoming Fairs',
+      options: {collapsible: true, collapsed: true},
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'featuredArtworks',
+      type: dzCarousel.name,
+      title: 'Featured Artworks',
+      options: {collapsible: true, collapsed: true},
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      type: dzEditorial.name,
+      name: 'editorial',
+      title: 'Editorial',
+      options: {collapsible: true, collapsed: true},
+    }),
+    defineField({
+      name: 'consignment',
+      title: 'Consignments',
+      type: dzConsignment.name,
       group: 'content',
-      of: [
-        defineArrayMember({
-          name: 'grid',
-          title: 'Grid',
-          type: 'grid',
-        }),
-      ],
+      options: {collapsed: true, collapsible: true},
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      type: dzSplit.name,
+      title: 'Split',
+      name: 'split',
+      group: 'content',
+      options: {collapsed: true, collapsible: true},
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      type: dzInterstitial.name,
+      title: 'Interstitial',
+      name: 'interstitial',
+      group: 'content',
+      options: {collapsed: true, collapsible: true},
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      type: dzInterstitial.name,
+      title: 'Footer Interstitial',
+      name: 'footerInterstitial',
+      group: 'content',
+      options: {collapsed: true, collapsible: true},
+      validation: (rule) => rule.required(),
     }),
   ],
 })
