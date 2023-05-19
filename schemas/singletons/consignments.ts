@@ -1,10 +1,9 @@
 import {ComposeIcon, MasterDetailIcon, SearchIcon} from '@sanity/icons'
 import {defineArrayMember, defineField, defineType} from 'sanity'
-import artwork from '../documents/artwork'
-import dzCardMedia from '../objects/page/components/molecules/dzCard/dzCardMedia'
-import dzEditorial from '../objects/page/components/molecules/dzEditorial'
 import dzConsignment from '../objects/page/components/molecules/dzConsignment'
 import dzInterstitial from '../objects/page/components/molecules/dzInterstitial'
+import media from '../objects/utils/media'
+import artist from '../documents/artist'
 
 export default defineType({
   name: 'consignments',
@@ -30,35 +29,35 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'mediaCard',
-      title: 'Media Card',
-      type: dzCardMedia.name,
+      name: 'headerMedia',
+      title: 'Header Media',
+      type: media.name,
       group: 'content',
-      options: {collapsed: true, collapsible: true},
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'editorial',
-      title: 'Editorial',
-      type: dzEditorial.name,
+      name: 'aboutText',
+      title: 'About Text',
+      type: 'object',
       group: 'content',
-      options: {collapsed: true, collapsible: true},
       validation: (rule) => rule.required(),
+      fields: [
+        defineField({type: 'string', title: 'Title', name: 'title'}),
+        defineField({type: 'text', title: 'Content', name: 'content'}),
+      ],
     }),
     defineField({
-      name: 'consignment',
-      title: 'Consignments',
+      name: 'consignmentForm',
+      title: 'Consignment Form',
       type: dzConsignment.name,
       group: 'content',
-      options: {collapsed: true, collapsible: true},
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'secondMediaCard',
-      title: 'Media Card',
-      type: dzCardMedia.name,
+      name: 'featuredMedia',
+      title: 'Featured Media',
+      type: media.name,
       group: 'content',
-      options: {collapsed: true, collapsible: true},
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -66,45 +65,58 @@ export default defineType({
       title: 'Interstitial',
       type: dzInterstitial.name,
       group: 'content',
-      options: {collapsed: true, collapsible: true},
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'middleMediaCards',
-      title: 'Middle Media Cards',
+      name: 'body',
+      title: 'Body',
       type: 'array',
       group: 'content',
       validation: (rule) => rule.required().length(5),
       of: [
         defineArrayMember({
-          name: 'media',
-          title: 'Media',
+          name: 'element',
+          title: 'Element',
           type: 'object',
           preview: {
             select: {
-              title: `editorial.title`,
-              cardMedia: 'cardMedia',
-              media: 'cardMedia.imageOverride',
+              title: 'text.title',
+              media: 'image',
             },
           },
           fields: [
-            defineField({type: dzCardMedia.name, name: 'cardMedia'}),
-            defineField({type: dzEditorial.name, name: 'editorial'}),
+            defineField({
+              type: 'image',
+              name: 'image',
+              fields: [defineField({name: 'alt', title: 'Alternative text', type: 'string'})],
+              options: {hotspot: true},
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: 'text',
+              type: 'object',
+              title: 'Text',
+              validation: (rule) => rule.required(),
+              fields: [
+                defineField({type: 'string', title: 'Title', name: 'title'}),
+                defineField({type: 'text', title: 'Content', name: 'content'}),
+              ],
+            }),
           ],
         }),
       ],
     }),
     defineField({
-      name: 'works',
-      title: 'Exceptional works',
+      name: 'bodyCarousel',
+      title: 'Body Carousel',
       type: 'array',
       group: 'content',
       validation: (rule) => rule.required().min(1),
       of: [
         defineArrayMember({
           type: 'reference',
-          to: [{type: artwork.name}],
-          title: 'Artworks',
+          to: [{type: artist.name}],
+          title: 'Artist',
         }),
       ],
     }),
@@ -113,7 +125,6 @@ export default defineType({
       title: 'Interstitial',
       type: dzInterstitial.name,
       group: 'content',
-      options: {collapsed: true, collapsible: true},
       validation: (rule) => rule.required(),
     }),
   ],
