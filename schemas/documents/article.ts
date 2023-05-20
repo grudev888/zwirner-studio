@@ -38,19 +38,8 @@ export default defineType({
     defineField({
       name: 'slug',
       title: 'Slug',
-      description:
-        'To generate a unique slug based on the article name. This will also be the canonical URL value.',
-      type: 'slug',
-      options: {
-        source: (object: any) => {
-          const defaultSlug = object?.title ?? ''
-          if (!defaultSlug) throw new Error('Please add a title to create a unique slug.')
-          return defaultSlug.slice(0, 95)
-        },
-        maxLength: 96,
-      },
+      type: 'slugUrl',
       group: 'content',
-      validation: (rule: SlugRule) => rule.required(),
     }),
     defineField({
       name: 'mainImage',

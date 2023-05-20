@@ -60,8 +60,9 @@ import {addCommonFields} from './common/fields'
 import menu from './objects/navigation/menu'
 import menuItemLink from './objects/navigation/menuItemLink'
 import menuItemPage from './objects/navigation/menuItemPage'
+import slugUrl from './objects/utils/slugUrl'
 
-export const utilsObjects: ObjectDefinition[] = [
+export const utilsObjects: SchemaTypeDefinition[] = [
   textComplex,
   cta,
   link,
@@ -69,6 +70,7 @@ export const utilsObjects: ObjectDefinition[] = [
   brickAndMortar,
   jsonLD,
   breadcrumbItem,
+  slugUrl,
 ]
 export const pageComponents: ObjectDefinition[] = [
   dzHero,

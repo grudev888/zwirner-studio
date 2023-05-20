@@ -21,14 +21,8 @@ export default defineType({
     defineField({
       name: 'slug',
       title: 'Slug',
-      type: 'slug',
-      description: 'This will also be the canonical URL value.',
-      options: {
-        source: 'title',
-        maxLength: 96,
-      },
+      type: 'slugUrl',
       group: 'content',
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'seo',

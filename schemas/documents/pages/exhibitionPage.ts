@@ -4,6 +4,7 @@ import {defineField, defineType} from 'sanity'
 import {apiVersion} from '../../../env'
 import {exhibitionById} from '../../../queries/exhibition.queries'
 import exhibition from '../../../schemas/documents/exhibition'
+import slugUrl from '../../objects/utils/slugUrl'
 
 export default defineType({
   name: 'exhibitionPage',
@@ -25,27 +26,26 @@ export default defineType({
     defineField({
       name: 'slug',
       title: 'Slug',
-      description:
-        'To generate a unique slug based on the exhibition title, please add an exhibition first. This will also be the canonical URL value.',
-      type: 'slug',
+      type: 'slugUrl',
       options: {
-        source: (object: any, context) => {
+        ...slugUrl.options,
+        source: (object: any, context: any) => {
           const exhibitionRef = object?.exhibition?._ref
           const defaultSlug = object?.title ?? ''
-          if (!defaultSlug)
+
+          if (!exhibitionRef && !defaultSlug)
             throw new Error('Please add a title or an exhibition to create a unique slug.')
-          if (exhibitionRef) {
-            const {getClient} = context
-            const client = getClient({apiVersion})
-            const params = {exhibitionId: exhibitionRef}
-            return client.fetch(exhibitionById, params).then((result) => {
-              const [exhibition] = result ?? []
-              return exhibition?.title ?? defaultSlug
-            })
-          }
-          return defaultSlug
+
+          if (!exhibitionRef) return defaultSlug
+
+          const {getClient} = context
+          const client = getClient({apiVersion})
+          const params = {exhibitionId: exhibitionRef}
+          return client.fetch(exhibitionById, params).then((result: any) => {
+            const [exhibition] = result ?? []
+            return exhibition?.title ?? defaultSlug
+          })
         },
-        maxLength: 96,
       },
       group: 'content',
       validation: (Rule) => Rule.required(),
