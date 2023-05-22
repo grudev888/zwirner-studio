@@ -1,9 +1,9 @@
 import {ComposeIcon, MasterDetailIcon, SearchIcon} from '@sanity/icons'
 import {defineArrayMember, defineField, defineType} from 'sanity'
 import dzConsignment from '../objects/page/components/molecules/dzConsignment'
-import dzInterstitial from '../objects/page/components/molecules/dzInterstitial'
 import media from '../objects/utils/media'
 import artist from '../documents/artist'
+import interstitial from '../objects/page/components/interstitial'
 
 export default defineType({
   name: 'consignments',
@@ -63,7 +63,7 @@ export default defineType({
     defineField({
       name: 'interstitial',
       title: 'Interstitial',
-      type: dzInterstitial.name,
+      type: interstitial.name,
       group: 'content',
       validation: (rule) => rule.required(),
     }),
@@ -123,7 +123,7 @@ export default defineType({
     defineField({
       name: 'footerInterstitial',
       title: 'Interstitial',
-      type: dzInterstitial.name,
+      type: interstitial.name,
       group: 'content',
       validation: (rule) => rule.required(),
     }),
