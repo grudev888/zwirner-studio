@@ -6,7 +6,7 @@ import seo from '../objects/page/seo'
 import * as Media from '../objects/utils/media'
 import exhibitionPage from '../documents/pages/exhibitionPage'
 import {defineGridField} from '../common/fields'
-import dzInterstitial from '../objects/page/components/molecules/dzInterstitial'
+import interstitial from '../objects/page/components/interstitial'
 
 export default defineType({
   name: 'utopiaEditions',
@@ -37,7 +37,7 @@ export default defineType({
     }),
     defineField({
       name: 'newReleasesInterstitial',
-      type: dzInterstitial.name,
+      type: interstitial.name,
       title: 'Interstitial',
       validation: (rule) => rule.required(),
     }),
@@ -110,7 +110,7 @@ export default defineType({
     defineField({
       name: 'interstitial',
       title: 'Interstitial',
-      type: dzInterstitial.name,
+      type: interstitial.name,
       group: 'content',
       validation: (rule) => rule.required(),
     }),
