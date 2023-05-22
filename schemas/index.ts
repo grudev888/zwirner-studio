@@ -64,6 +64,7 @@ import consignments from './singletons/consignments'
 import dzConsignment from './objects/page/components/molecules/dzConsignment'
 import dzButton from './objects/page/components/atoms/dzButton'
 import dzCardMedia from './objects/page/components/molecules/dzCard/dzCardMedia'
+import interstitial from './objects/page/components/interstitial'
 
 export const utilsObjects: ObjectDefinition[] = [
   textComplex,
@@ -102,6 +103,7 @@ export const objects: ObjectDefinition[] = [
   menu,
   menuItemLink,
   menuItemPage,
+  interstitial,
 ]
 
 export const pageDocuments: DocumentDefinition[] = [
@@ -110,7 +112,9 @@ export const pageDocuments: DocumentDefinition[] = [
   fairPage,
   articlePage,
 ]
+
 export const singletons: DocumentDefinition[] = [stories, home, collect, utopiaEditions, globalSEO]
+
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
     article,
