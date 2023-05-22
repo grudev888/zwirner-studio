@@ -3,9 +3,9 @@ import {BlockElementIcon} from '@sanity/icons'
 import {StringRule, defineArrayMember, defineField, defineType} from 'sanity'
 import * as DzHero from '../objects/page/components/molecules/dzHero'
 import dzConsignment from '../objects/page/components/molecules/dzConsignment'
-import dzInterstitial from '../objects/page/components/molecules/dzInterstitial'
 import exhibition from '../documents/exhibition'
 import artwork from '../documents/artwork'
+import interstitial from '../objects/page/components/interstitial'
 
 export default defineType({
   name: 'collect',
@@ -137,14 +137,14 @@ export default defineType({
       ],
     }),
     defineField({
-      type: dzInterstitial.name,
+      type: interstitial.name,
       title: 'Platform Interstitial',
       name: 'platformInterstitial',
       group: 'content',
       validation: (rule) => rule.required(),
     }),
     defineField({
-      type: dzInterstitial.name,
+      type: interstitial.name,
       title: 'Interstitial',
       name: 'interstitial',
       group: 'content',
