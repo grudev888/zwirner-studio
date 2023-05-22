@@ -13,7 +13,6 @@ export default defineType({
   fields: [
     defineField({
       name: 'title',
-      description: 'This field is a title',
       title: 'Title',
       type: 'string',
       validation: (rule) => rule.required(),
