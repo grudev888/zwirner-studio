@@ -13,6 +13,11 @@ export default defineType({
       title: 'Title',
     }),
     defineField({
+      name: 'subtitle',
+      type: 'string',
+      title: 'Subtitle',
+    }),
+    defineField({
       name: 'split',
       title: 'Split',
       type: 'boolean',
