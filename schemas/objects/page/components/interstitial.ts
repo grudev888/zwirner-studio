@@ -1,5 +1,5 @@
 import {MasterDetailIcon} from '@sanity/icons'
-import {defineField, defineType} from 'sanity'
+import {ObjectDefinition, defineField, defineType} from 'sanity'
 
 const fields = [
   defineField({
@@ -68,4 +68,4 @@ export const builder = (params = {}, options?: {excludeFields: string[]}) => {
   }
 }
 
-export default defineType(builder())
+export default defineType(builder()) as ObjectDefinition
