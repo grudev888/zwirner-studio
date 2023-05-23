@@ -41,18 +41,21 @@ export default defineType({
       name: 'title',
       title: 'Title',
       group: 'content',
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slugUrl',
       group: 'content',
+      validation: (rule) => rule.required(),
     }),
     defineField({
       type: 'string',
       name: 'type',
       group: 'content',
       title: 'Article type',
+      validation: (rule) => rule.required(),
       options: {
         list: [
           {title: 'Internal news', value: 'internal-news'},
@@ -67,6 +70,7 @@ export default defineType({
           name: 'image',
           title: 'Header Image',
           group: 'content',
+          validation: (rule: ObjectRule) => rule.required(),
         },
         {type: Media.MEDIA_TYPES.IMAGE}
       )
@@ -76,6 +80,7 @@ export default defineType({
       title: 'Article body',
       group: 'content',
       type: 'array',
+      validation: (rule) => rule.required(),
       of: [
         defineArrayMember({type: 'block', name: 'block'}),
         defineArrayMember(
