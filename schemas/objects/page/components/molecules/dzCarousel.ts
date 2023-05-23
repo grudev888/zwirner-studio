@@ -19,7 +19,6 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      type: 'array',
       name: 'content',
       title: 'Content',
       type: 'pageContent',

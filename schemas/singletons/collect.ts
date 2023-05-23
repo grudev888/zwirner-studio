@@ -1,7 +1,7 @@
 import {ComposeIcon, SearchIcon} from '@sanity/icons'
 import {BlockElementIcon} from '@sanity/icons'
-import {StringRule, defineArrayMember, defineField, defineType} from 'sanity'
-import * as DzHero from '../objects/page/components/molecules/dzHero'
+import {ArrayRule, ObjectRule, StringRule, defineArrayMember, defineField, defineType} from 'sanity'
+import * as Hero from '../objects/page/components/hero'
 import dzConsignment from '../objects/page/components/molecules/dzConsignment'
 import exhibition from '../documents/exhibition'
 import artwork from '../documents/artwork'
@@ -31,15 +31,23 @@ export default defineType({
       group: 'content',
       validation: (rule: StringRule) => rule.required(),
     }),
+    defineField(
+      Hero.builder(
+        {
+          name: 'hero',
+          title: 'Hero',
+          description: 'Hero module',
+          validation: (rule: ObjectRule) => rule.required(),
+        },
+        {references: [exhibition as Hero.Reference], excludeFields: ['content']}
+      )
+    ),
     defineField({
-      ...DzHero.builder([exhibition]),
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'exhibitionCarousel',
+      name: 'exhibitions',
       group: 'content',
       type: 'array',
-      title: 'Exhibition Carousel',
+      title: 'Exhibitions',
+      description: 'Carousel module',
       of: [
         defineArrayMember({
           type: 'reference',
@@ -47,13 +55,14 @@ export default defineType({
           to: {type: exhibition.name},
         }),
       ],
-      validation: (rule) => rule.required(),
+      validation: (rule: ArrayRule<any>) => rule.required(),
     }),
     defineField({
-      name: 'fairCarousel',
+      name: 'fairs',
       type: 'array',
       group: 'content',
-      title: 'Fair Carousel',
+      title: 'Fairs',
+      description: 'Carousel module',
       validation: (rule) => rule.required(),
       of: [
         defineArrayMember({
@@ -66,9 +75,10 @@ export default defineType({
     defineField({
       name: 'featuredArtworks',
       type: 'array',
-      title: 'Featured Artworks Grid',
+      title: 'Featured Artworks',
+      description: 'Grid module',
       group: 'content',
-      validation: (rule) => rule.required(),
+      validation: (rule: ArrayRule<any>) => rule.required(),
       of: [
         defineArrayMember({
           type: 'reference',
@@ -105,8 +115,9 @@ export default defineType({
     }),
     defineField({
       type: 'object',
-      title: 'Utopia Feature',
       name: 'utopiaFeature',
+      title: 'Utopia Feature',
+      description: 'Split module',
       group: 'content',
       validation: (rule) => rule.required(),
       fields: [
@@ -140,6 +151,7 @@ export default defineType({
       type: interstitial.name,
       title: 'Platform Interstitial',
       name: 'platformInterstitial',
+      description: 'Interstitial module',
       group: 'content',
       validation: (rule) => rule.required(),
     }),
@@ -147,6 +159,7 @@ export default defineType({
       type: interstitial.name,
       title: 'Interstitial',
       name: 'interstitial',
+      description: 'Interstitial module',
       group: 'content',
       validation: (rule) => rule.required(),
     }),
