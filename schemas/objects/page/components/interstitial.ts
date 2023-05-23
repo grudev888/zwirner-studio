@@ -27,6 +27,7 @@ const fields = [
     name: 'ctaLink',
     type: 'object',
     title: 'CTA Link',
+    options: {collapsible: false},
     fields: [
       defineField({
         name: 'href',
