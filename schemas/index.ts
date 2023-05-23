@@ -34,7 +34,6 @@ import dzHeroCarousel from './objects/page/components/molecules/DzHeroCarousel'
 import dzInterstitial from './objects/page/components/molecules/dzInterstitial'
 import dzSplit from './objects/page/components/molecules/dzSplit'
 import dzTitle from './objects/page/components/molecules/dzTitle'
-import editorialContent from './objects/page/editorialContent'
 import grid from './objects/page/grid'
 import row from './objects/page/layout'
 import pageBuilderComponents from './objects/page/pageBuilderComponents'
@@ -57,10 +56,14 @@ import home from './singletons/home'
 import settings from './singletons/settings'
 import stories from './singletons/stories'
 import utopiaEditions from './singletons/utopiaEditions'
-import {addCommonFields} from './common/fields'
 import menu from './objects/navigation/menu'
 import menuItemLink from './objects/navigation/menuItemLink'
 import menuItemPage from './objects/navigation/menuItemPage'
+import consignments from './singletons/consignments'
+import dzConsignment from './objects/page/components/molecules/dzConsignment'
+import dzButton from './objects/page/components/atoms/dzButton'
+import dzCardMedia from './objects/page/components/molecules/dzCard/dzCardMedia'
+import interstitial from './objects/page/components/interstitial'
 
 export const utilsObjects: ObjectDefinition[] = [
   textComplex,
@@ -71,6 +74,7 @@ export const utilsObjects: ObjectDefinition[] = [
   jsonLD,
   breadcrumbItem,
 ]
+
 export const pageComponents: ObjectDefinition[] = [
   dzHero,
   dzCard,
@@ -80,7 +84,11 @@ export const pageComponents: ObjectDefinition[] = [
   dzTitle,
   dzHeroCarousel,
   dzCarousel,
-].map(addCommonFields)
+  dzButton,
+  dzCardMedia,
+  dzConsignment,
+  interstitial,
+]
 
 export const objects: ObjectDefinition[] = [
   drawingType,
@@ -104,7 +112,9 @@ export const pageDocuments: DocumentDefinition[] = [
   fairPage,
   articlePage,
 ]
+
 export const singletons: DocumentDefinition[] = [stories, home, collect, utopiaEditions, globalSEO]
+
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
     article,
@@ -123,12 +133,12 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     dateRange,
     redirects,
     footer,
+    consignments,
     navigation,
     settings,
     availableArtworks,
     pageContent,
     pageContentList,
-    editorialContent,
     pageBuilderComponents,
     ...pageDocuments,
     ...objects,

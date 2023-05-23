@@ -1,19 +1,19 @@
-import {ComposeIcon, EditIcon, MasterDetailIcon} from '@sanity/icons'
+import {ComposeIcon, EditIcon, MasterDetailIcon, BlockquoteIcon} from '@sanity/icons'
 // Todo: import from the design system import {EditorialType} from '@zwirner/design-system'
-import {defineField, defineType} from 'sanity'
+import {defineArrayMember, defineField, defineType} from 'sanity'
 export const EDITORIAL_TYPES = {
   SIMPLE: 'simple',
   COMPLEX: 'complex',
   QUOTE: 'quote',
-};
+}
 
 export const EDITORIAL_TYPES_NAMES = [
   EDITORIAL_TYPES.SIMPLE,
   EDITORIAL_TYPES.COMPLEX,
   EDITORIAL_TYPES.QUOTE,
-] as const;
+] as const
 
-export type EditorialType = typeof EDITORIAL_TYPES_NAMES[number];
+export type EditorialType = (typeof EDITORIAL_TYPES_NAMES)[number]
 
 import {TextComplexSchemaType} from '../../../../../schemas/objects/utils/textComplex'
 
@@ -30,6 +30,7 @@ export default defineType({
   title: 'Editorial',
   type: 'object',
   icon: MasterDetailIcon,
+  preview: {select: {title: 'title'}},
   groups: [
     {name: 'content', title: 'Content', icon: ComposeIcon, default: true},
     {name: 'overrides', title: 'Overrides', icon: EditIcon},
@@ -60,15 +61,32 @@ export default defineType({
     defineField({
       name: 'content',
       title: 'Editorial Content',
-      type: 'editorialContent',
       group: 'content',
+      type: 'array',
+      icon: MasterDetailIcon,
+      validation: (rule) => rule.max(1),
+      of: [
+        defineArrayMember({
+          name: 'book',
+          title: 'Book',
+          type: 'reference',
+          to: [{type: 'book'}],
+        }),
+        defineArrayMember({
+          name: 'press',
+          title: 'Press',
+          type: 'reference',
+          to: [{type: 'press'}],
+        }),
+      ],
     }),
+
     defineField({
       name: 'enableOverrides',
       type: 'boolean',
       title: 'Enable Overrides',
       group: 'overrides',
-      initialValue: false
+      initialValue: false,
     }),
     defineField({
       name: 'editorialTextOverrides',
