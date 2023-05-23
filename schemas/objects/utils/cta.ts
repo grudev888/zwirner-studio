@@ -44,6 +44,7 @@ export default defineField({
       name: 'link',
       type: 'object',
       title: 'CTA Link',
+      options: {collapsible: false},
       fields: [
         defineField({
           name: 'href',
