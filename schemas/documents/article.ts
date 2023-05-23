@@ -31,7 +31,23 @@ export default defineType({
       name: 'images',
       title: 'Images',
       type: 'array',
-      of: [{type: 'image'}],
+      of: [
+        {
+          type: 'image',
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alternative text',
+            },
+            {
+              name: 'url',
+              type: 'string',
+              title: 'Url redirect',
+            },
+          ],
+        },
+      ],
     }),
     defineField({
       name: 'author',

@@ -55,7 +55,7 @@ export default defineType({
       name: 'photos',
       type: 'array',
       of: [
-        defineArrayMember({
+        {
           type: 'image',
           options: {
             hotspot: true,
@@ -66,8 +66,13 @@ export default defineType({
               type: 'string',
               title: 'Alternative text',
             },
+            {
+              name: 'url',
+              type: 'string',
+              title: 'Url redirect',
+            },
           ],
-        }),
+        },
       ],
     }),
     defineField({
@@ -107,11 +112,23 @@ export default defineType({
         ],
       },
     }),
+    defineField({
+      name: 'price',
+      title: 'Price',
+      type: 'number',
+      validation: (rule) => rule.positive().greaterThan(0),
+      readOnly: ({currentUser}) => {
+        return !currentUser?.roles.find(({name}) => name !== 'administrator')
+      },
+    }),
   ],
   preview: {
-    select: {title: 'title', photos: 'photos'},
-    prepare({title, photos}) {
-      return {title, media: photos?.[0]}
+    select: {
+      title: 'title',
+      images: 'photos',
+    },
+    prepare({title, images}) {
+      return {title, media: images?.[0] ?? ThLargeIcon}
     },
   },
 })

@@ -7,6 +7,7 @@ import {
   LinkRemovedIcon,
   PinIcon,
   TagIcon,
+  ComposeIcon,
   ThLargeIcon,
   TiersIcon,
   TrendUpwardIcon,
@@ -89,7 +90,18 @@ export const generalStructure = (S: StructureBuilder) =>
                 .title('Available Artworks')
                 .icon(ThLargeIcon)
                 .child(
-                  S.document().schemaType('availableArtworks').documentId('availableArtworks')
+                  S.document()
+                    .schemaType('availableArtworks')
+                    .documentId('availableArtworks')
+                    .views([
+                      S.view.form(),
+                      S.view
+                        .component(PreviewIframe)
+                        .options({
+                          url: `${envHost}/api/sanity/preview?section=available-artworks`,
+                        })
+                        .title('Preview'),
+                    ])
                 ),
               S.listItem()
                 .title('Utopia Editions')
@@ -179,6 +191,20 @@ export const generalStructure = (S: StructureBuilder) =>
             ])
         ),
       S.divider(),
+      S.listItem()
+        .title('Articles')
+        .icon(ComposeIcon)
+        .child(
+          S.documentList()
+            .title('Articles')
+            .filter('_type == "article"')
+            .defaultOrdering([{field: 'title', direction: 'asc'}])
+            .child(
+              S.document()
+                .schemaType('article')
+                .views([S.view.form(), S.view.component(ReferenceByTab).title('References')])
+            )
+        ),
       S.listItem()
         .title('Artists')
         .icon(DocumentsIcon)

@@ -45,9 +45,13 @@ export default defineType({
       fields: [
         {
           name: 'alt',
-          title: 'Alternative text',
           type: 'string',
-          validation: (rule) => rule.required(),
+          title: 'Alternative text',
+        },
+        {
+          name: 'url',
+          type: 'string',
+          title: 'Url redirect',
         },
       ],
     }),

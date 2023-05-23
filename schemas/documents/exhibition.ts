@@ -13,10 +13,6 @@ export default defineType({
   title: 'Exhibitions and Fairs ',
   icon: DashboardIcon,
   type: 'document',
-  preview: {
-    select: {title: 'title', photos: 'photos'},
-    prepare: ({title, photos}) => ({title, media: photos?.[0]}),
-  },
   fields: [
     defineField({
       name: 'title',
@@ -67,6 +63,11 @@ export default defineType({
               name: 'alt',
               type: 'string',
               title: 'Alternative text',
+            },
+            {
+              name: 'url',
+              type: 'string',
+              title: 'Url redirect',
             },
           ],
         }),
@@ -122,4 +123,13 @@ export default defineType({
       type: 'string',
     }),
   ],
+  preview: {
+    select: {
+      title: 'title',
+      photos: 'photos',
+    },
+    prepare({title, photos}) {
+      return {title, media: photos?.[0] ?? DashboardIcon}
+    },
+  },
 })

@@ -35,7 +35,14 @@ export const builder = (
         title: 'Image',
         type: 'image',
         options: {hotspot: true},
-        fields: [defineField({name: 'alt', title: 'Alternative text', type: 'string'})],
+        fields: [
+          defineField({name: 'alt', title: 'Alternative text', type: 'string'}),
+          defineField({
+            name: 'url',
+            type: 'string',
+            title: 'Url redirect',
+          }),
+        ],
         hidden: ({parent}) => parent?.type === MEDIA_TYPES.VIDEO || !parent?.type,
       }),
       defineField({
