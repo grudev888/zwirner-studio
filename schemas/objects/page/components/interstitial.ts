@@ -56,11 +56,9 @@ const fields = [
   }),
 ]
 
-export const builder = (params = {}, options?: {excludeFields: string[]}) => {
+export const builder = (params: any, options?: {excludeFields: string[]}) => {
   const {excludeFields} = options || {excludeFields: []}
   return {
-    name: 'interstitial',
-    title: 'Interstitial',
     type: 'object',
     icon: MasterDetailIcon,
     fields: fields.filter((field) => !excludeFields.includes(field.name)),
@@ -68,4 +66,6 @@ export const builder = (params = {}, options?: {excludeFields: string[]}) => {
   }
 }
 
-export default defineType(builder()) as ObjectDefinition
+export default defineType(
+  builder({name: 'interstitial', title: 'Interstitial'})
+) as ObjectDefinition
