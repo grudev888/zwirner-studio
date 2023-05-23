@@ -83,7 +83,6 @@ export const pageComponents: ObjectDefinition[] = [
   dzTitle,
   dzHeroCarousel,
   dzCarousel,
-  dzConsignment,
   dzCardMedia,
 ].map(addCommonFields)
 
@@ -102,6 +101,7 @@ export const objects: ObjectDefinition[] = [
   menuItemLink,
   menuItemPage,
   interstitial,
+  dzConsignment,
 ]
 
 export const pageDocuments: DocumentDefinition[] = [
