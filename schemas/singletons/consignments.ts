@@ -42,7 +42,7 @@ export default defineType({
       description: 'Editorial module',
       type: 'object',
       group: 'content',
-      validation: (rule) => rule.required(),
+      validation: (rule: ObjectRule) => rule.required(),
       fields: [
         defineField({type: 'string', title: 'Title', name: 'title'}),
         defineField({type: 'text', title: 'Content', name: 'content'}),

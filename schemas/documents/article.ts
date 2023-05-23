@@ -1,7 +1,15 @@
-import {SlugRule, defineField, defineType} from 'sanity'
-import {DocumentTextIcon, ComposeIcon, SearchIcon} from '@sanity/icons'
+import {ObjectRule, defineArrayMember, defineField, defineType} from 'sanity'
+import {DocumentTextIcon, ComposeIcon, SearchIcon, ImageIcon} from '@sanity/icons'
 
-import authorType from './author'
+import location from './location'
+import event from './event'
+import * as Interstitial from '../objects/page/components/primitives/interstitial'
+import exhibition from './exhibition'
+import page from './page'
+import fairPage from './pages/fairPage'
+import artist from './artist'
+import artwork from './artwork'
+import * as Media from '../objects/utils/media'
 
 export interface ArticleSchema {
   title?: string
@@ -29,99 +37,112 @@ export default defineType({
       group: 'content',
     }),
     defineField({
-      name: 'subtitle',
-      title: 'Subtitle',
-      type: 'string',
-      group: 'content',
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slugUrl',
       group: 'content',
     }),
-    defineField({
-      name: 'mainImage',
-      title: 'Main Image',
-      type: 'image',
-      group: 'content',
-      fields: [
+    defineField(
+      Media.builder(
         {
-          name: 'alt',
-          title: 'Alternative text',
-          type: 'string',
-          validation: (rule) => rule.required(),
+          name: 'image',
+          title: 'Header Image',
+          group: 'content',
         },
-      ],
-    }),
+        {type: Media.MEDIA_TYPES.IMAGE}
+      )
+    ),
     defineField({
-      name: 'images',
-      title: 'Images',
+      name: 'body',
+      title: 'Article body',
       type: 'array',
-      group: 'content',
       of: [
-        {
-          type: 'image',
-          fields: [
+        defineArrayMember({type: 'block', name: 'block'}),
+        defineArrayMember(
+          Media.builder(
             {
-              name: 'alt',
-              type: 'string',
-              title: 'Alternative text',
+              name: 'bodyImage',
+              icon: ImageIcon,
+              title: 'Image',
+              preview: {select: {media: 'image', title: 'image.caption'}},
+              validation: (rule: ObjectRule) => rule.required(),
             },
             {
-              name: 'url',
-              type: 'string',
-              title: 'Url redirect',
-            },
-          ],
-        },
+              type: Media.MEDIA_TYPES.IMAGE,
+              image: {
+                additionalFields: [
+                  defineField({
+                    type: 'string',
+                    name: 'caption',
+                    title: 'Caption',
+                    validation: (rule) => rule.required(),
+                  }),
+                ],
+              },
+            }
+          )
+        ),
       ],
-    }),
-    defineField({
-      name: 'author',
-      title: 'Author',
-      type: 'reference',
-      group: 'content',
-      to: [{type: authorType.name}],
     }),
     defineField({
       type: 'string',
-      name: 'publisherName',
-      title: 'Publisher Name',
-      group: 'content',
+      name: 'type',
+      title: 'Article type',
+      options: {
+        list: [
+          {title: 'Internal news', value: 'internal-news'},
+          {title: 'Press release', value: 'press-release'},
+          {title: 'External news', value: 'external-news'},
+        ],
+      },
     }),
     defineField({
-      name: 'description',
-      title: 'Description, bio',
-      type: 'text',
-      group: 'content',
+      name: 'location',
+      title: 'Location',
+      type: 'reference',
+      to: [{type: location.name, title: 'Location'}],
     }),
     defineField({
-      name: 'publisherLogo',
-      title: 'Publisher Logo',
-      type: 'image',
-      group: 'content',
-      options: {hotspot: true},
-      fields: [
+      type: 'reference',
+      name: 'event',
+      title: 'Event',
+      to: [{type: event.name, title: 'Event'}],
+    }),
+    defineField({
+      name: 'pressReleasePDF',
+      title: 'Press release PDF',
+      type: 'file',
+      options: {accept: 'application/pdf'},
+    }),
+    defineField(
+      Interstitial.builder(
         {
-          name: 'alt',
-          type: 'string',
-          title: 'Alternative text',
+          name: 'interstitial',
+          title: 'Interstitial',
         },
+        {excludeFields: ['subtitle']}
+      )
+    ),
+    defineField({
+      name: 'articles',
+      title: 'Linked Articles',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          name: 'article',
+          title: 'Linked article',
+          description: 'Articles, exhibitions, fairs, pages, artists, and artworks are allowed',
+          type: 'reference',
+          to: [
+            {type: 'article'},
+            {type: exhibition.name},
+            {type: page.name},
+            {type: fairPage.name},
+            {type: artist.name},
+            {type: artwork.name},
+          ],
+        }),
       ],
-    }),
-    defineField({
-      name: 'components',
-      title: 'Components',
-      type: 'pageBuilderComponents',
-      group: 'content',
-    }),
-    defineField({
-      name: 'seo',
-      title: 'SEO',
-      type: 'seo',
-      group: 'seo',
     }),
   ],
 })

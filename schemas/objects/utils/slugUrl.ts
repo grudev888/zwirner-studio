@@ -1,4 +1,5 @@
 import {defineType} from 'sanity'
+import {slugify} from '../../../lib/util/strings'
 
 export default defineType({
   name: 'slugUrl',
@@ -15,12 +16,7 @@ export default defineType({
     maxLength: 96,
     isUnique: (value, context) => context.defaultIsUnique(value, context),
     slugify: (input) => {
-      const normalized = input
-        .trim()
-        .replace(/[^\w]+/g, ' ')
-        .replace(/\s+/g, '-')
-        .toLowerCase()
-        .slice(0, 95)
+      const normalized = slugify(input).slice(0, 95)
       const hasSlash = input.substring(0, 1) === '/'
       return hasSlash ? normalized : `/${normalized}`
     },

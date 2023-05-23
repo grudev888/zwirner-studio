@@ -165,15 +165,22 @@ export const generalStructure = (S: StructureBuilder) =>
                   })
                 }),
               S.listItem()
-                .title('Article Pages')
-                .icon(DashboardIcon)
-                .child(() => {
-                  return getSectionsByYear({
-                    S,
-                    sectionTitle: 'Articles',
-                    type: 'article',
-                  })
-                }),
+                .title('Articles')
+                .icon(ComposeIcon)
+                .child(
+                  S.documentList()
+                    .title('Articles')
+                    .filter('_type == "article"')
+                    .defaultOrdering([{field: 'title', direction: 'asc'}])
+                    .child(
+                      S.document()
+                        .schemaType('article')
+                        .views([
+                          S.view.form(),
+                          S.view.component(ReferenceByTab).title('References'),
+                        ])
+                    )
+                ),
               S.listItem()
                 .title('Fair Pages')
                 .icon(DashboardIcon)
@@ -190,20 +197,6 @@ export const generalStructure = (S: StructureBuilder) =>
             ])
         ),
       S.divider(),
-      S.listItem()
-        .title('Articles')
-        .icon(ComposeIcon)
-        .child(
-          S.documentList()
-            .title('Articles')
-            .filter('_type == "article"')
-            .defaultOrdering([{field: 'title', direction: 'asc'}])
-            .child(
-              S.document()
-                .schemaType('article')
-                .views([S.view.form(), S.view.component(ReferenceByTab).title('References')])
-            )
-        ),
       S.listItem()
         .title('Artists')
         .icon(DocumentsIcon)
