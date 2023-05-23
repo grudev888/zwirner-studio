@@ -13,6 +13,10 @@ export default defineType({
   title: 'Exhibitions and Fairs ',
   icon: DashboardIcon,
   type: 'document',
+  preview: {
+    select: {title: 'title', photos: 'photos'},
+    prepare: ({title, photos}) => ({title, media: photos?.[0]}),
+  },
   fields: [
     defineField({
       name: 'title',

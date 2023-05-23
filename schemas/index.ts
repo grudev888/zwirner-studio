@@ -56,12 +56,12 @@ import home from './singletons/home'
 import settings from './singletons/settings'
 import stories from './singletons/stories'
 import utopiaEditions from './singletons/utopiaEditions'
-import {addCommonFields} from './common/fields'
 import menu from './objects/navigation/menu'
 import menuItemLink from './objects/navigation/menuItemLink'
 import menuItemPage from './objects/navigation/menuItemPage'
 import consignments from './singletons/consignments'
 import dzConsignment from './objects/page/components/molecules/dzConsignment'
+import dzButton from './objects/page/components/atoms/dzButton'
 import dzCardMedia from './objects/page/components/molecules/dzCard/dzCardMedia'
 import interstitial from './objects/page/components/interstitial'
 
@@ -74,6 +74,7 @@ export const utilsObjects: ObjectDefinition[] = [
   jsonLD,
   breadcrumbItem,
 ]
+
 export const pageComponents: ObjectDefinition[] = [
   dzHero,
   dzCard,
@@ -83,8 +84,11 @@ export const pageComponents: ObjectDefinition[] = [
   dzTitle,
   dzHeroCarousel,
   dzCarousel,
+  dzButton,
   dzCardMedia,
-].map(addCommonFields)
+  dzConsignment,
+  interstitial,
+]
 
 export const objects: ObjectDefinition[] = [
   drawingType,
@@ -100,8 +104,6 @@ export const objects: ObjectDefinition[] = [
   menu,
   menuItemLink,
   menuItemPage,
-  interstitial,
-  dzConsignment,
 ]
 
 export const pageDocuments: DocumentDefinition[] = [

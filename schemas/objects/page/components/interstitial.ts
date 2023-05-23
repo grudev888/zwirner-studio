@@ -1,5 +1,5 @@
 import {MasterDetailIcon} from '@sanity/icons'
-import {defineField, defineType} from 'sanity'
+import {ObjectDefinition, defineField, defineType} from 'sanity'
 
 const fields = [
   defineField({
@@ -27,6 +27,7 @@ const fields = [
     name: 'ctaLink',
     type: 'object',
     title: 'CTA Link',
+    options: {collapsible: false},
     fields: [
       defineField({
         name: 'href',
@@ -56,7 +57,10 @@ const fields = [
   }),
 ]
 
-export const builder = (params: any, options?: {excludeFields: string[]}) => {
+export const builder = (
+  params: {name: string; title: string; [key: string]: any},
+  options?: {excludeFields: string[]}
+) => {
   const {excludeFields} = options || {excludeFields: []}
   return {
     type: 'object',
@@ -66,4 +70,6 @@ export const builder = (params: any, options?: {excludeFields: string[]}) => {
   }
 }
 
-export default defineType(builder({name: 'interstitial', title: 'Interstitial'}))
+export default defineType(
+  builder({name: 'interstitial', title: 'Interstitial'})
+) as ObjectDefinition

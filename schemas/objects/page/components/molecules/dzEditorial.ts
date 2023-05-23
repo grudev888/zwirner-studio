@@ -30,6 +30,7 @@ export default defineType({
   title: 'Editorial',
   type: 'object',
   icon: MasterDetailIcon,
+  preview: {select: {title: 'title'}},
   groups: [
     {name: 'content', title: 'Content', icon: ComposeIcon, default: true},
     {name: 'overrides', title: 'Overrides', icon: EditIcon},
