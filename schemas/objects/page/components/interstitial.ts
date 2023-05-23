@@ -56,7 +56,10 @@ const fields = [
   }),
 ]
 
-export const builder = (params: any, options?: {excludeFields: string[]}) => {
+export const builder = (
+  params: {name: string; title: string; [key: string]: any},
+  options?: {excludeFields: string[]}
+) => {
   const {excludeFields} = options || {excludeFields: []}
   return {
     type: 'object',

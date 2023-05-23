@@ -6,7 +6,7 @@ import seo from '../objects/page/seo'
 import * as Media from '../objects/utils/media'
 import exhibitionPage from '../documents/pages/exhibitionPage'
 import {defineGridField} from '../common/fields'
-import interstitial from '../objects/page/components/interstitial'
+import * as Interstitial from '../objects/page/components/interstitial'
 
 export default defineType({
   name: 'utopiaEditions',
@@ -31,20 +31,33 @@ export default defineType({
       type: 'string',
       validation: (rule) => rule.required(),
     }),
-    defineField({
-      ...Media.builder([Media.VIDEO_PROVIDERS.custom]),
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'newReleasesInterstitial',
-      type: interstitial.name,
-      title: 'Interstitial',
-      validation: (rule) => rule.required(),
-    }),
+    defineField(
+      Media.builder(
+        {
+          name: 'media',
+          title: 'Header Media',
+          description: 'Media module',
+          validation: (rule: ObjectRule) => rule.required(),
+        },
+        {videoProviders: [Media.VIDEO_PROVIDERS.custom]}
+      )
+    ),
+    defineField(
+      Interstitial.builder(
+        {
+          name: 'newReleasesInterstitial',
+          title: 'Interstitial',
+          description: 'Interstitial module',
+          validation: (rule: ObjectRule) => rule.required(),
+        },
+        {excludeFields: ['subtitle']}
+      )
+    ),
     defineField({
       name: 'nowAvailable',
       type: 'object',
-      title: 'Now Available Carousel',
+      title: 'Now Available',
+      description: 'Carousel module',
       validation: (rule: ObjectRule) => rule.required(),
       fields: [
         defineField({
@@ -66,7 +79,8 @@ export default defineType({
     defineField({
       name: 'comingSoon',
       type: 'object',
-      title: 'Coming Soon Carousel',
+      title: 'Coming Soon',
+      description: 'Carousel module',
       validation: (rule: ObjectRule) => rule.required(),
       fields: [
         defineField({
@@ -89,6 +103,7 @@ export default defineType({
       name: 'artworksGrid',
       type: 'object',
       title: 'Grid',
+      description: 'Grid module',
       validation: (rule: ObjectRule) => rule.required(),
       fields: [
         defineField({
@@ -107,16 +122,22 @@ export default defineType({
         }),
       ],
     }),
-    defineField({
-      name: 'interstitial',
-      title: 'Interstitial',
-      type: interstitial.name,
-      group: 'content',
-      validation: (rule) => rule.required(),
-    }),
+    defineField(
+      Interstitial.builder(
+        {
+          name: 'interstitial',
+          title: 'Interstitial',
+          description: 'Interstitial module',
+          group: 'content',
+          validation: (rule: ObjectRule) => rule.required(),
+        },
+        {excludeFields: ['subtitle']}
+      )
+    ),
     defineField({
       name: 'mediaCarousel',
-      title: 'Carousel',
+      title: 'Media',
+      description: 'Carousel module',
       type: 'array',
       of: [
         defineArrayMember({

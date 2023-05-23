@@ -1,7 +1,7 @@
 import {MasterDetailIcon, ComposeIcon} from '@sanity/icons'
 import {defineField, ObjectDefinition} from 'sanity'
 
-export const addComponentId = (schema: ObjectDefinition) => ({
+export const withComponentId = (schema: ObjectDefinition) => ({
   ...schema,
   groups: [
     ...(schema.groups || []),
@@ -68,6 +68,7 @@ export const defineGridField = (schema: any) => {
         type: 'number',
         initialValue: 4,
         group: 'attributes',
+        options: {layout: 'dropdown', list: [1, 2, 3, 4]},
         validation: (rule) => rule.required().min(1),
       }),
     ],

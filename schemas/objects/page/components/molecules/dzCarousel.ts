@@ -1,4 +1,4 @@
-import {ComposeIcon, EditIcon, MasterDetailIcon} from '@sanity/icons'
+import {MasterDetailIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
 
 export interface DzCarouselSchemaProps {

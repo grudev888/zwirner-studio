@@ -56,7 +56,6 @@ import home from './singletons/home'
 import settings from './singletons/settings'
 import stories from './singletons/stories'
 import utopiaEditions from './singletons/utopiaEditions'
-import {addComponentId} from './common/fields'
 import menu from './objects/navigation/menu'
 import menuItemLink from './objects/navigation/menuItemLink'
 import menuItemPage from './objects/navigation/menuItemPage'
@@ -75,6 +74,7 @@ export const utilsObjects: ObjectDefinition[] = [
   jsonLD,
   breadcrumbItem,
 ]
+
 export const pageComponents: ObjectDefinition[] = [
   dzHero,
   dzCard,
@@ -86,7 +86,9 @@ export const pageComponents: ObjectDefinition[] = [
   dzCarousel,
   dzButton,
   dzCardMedia,
-].map(addComponentId)
+  dzConsignment,
+  interstitial,
+]
 
 export const objects: ObjectDefinition[] = [
   drawingType,
@@ -102,8 +104,6 @@ export const objects: ObjectDefinition[] = [
   menu,
   menuItemLink,
   menuItemPage,
-  interstitial,
-  dzConsignment,
 ]
 
 export const pageDocuments: DocumentDefinition[] = [
