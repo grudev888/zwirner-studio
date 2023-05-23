@@ -1,5 +1,5 @@
 import {ComposeIcon, EditIcon, MasterDetailIcon} from '@sanity/icons'
-import {defineArrayMember, defineField, defineType} from 'sanity'
+import {ObjectDefinition, defineArrayMember, defineField, defineType} from 'sanity'
 import artist from '../../../../documents/artist'
 import artwork from '../../../../documents/artwork'
 import exhibition from '../../../../documents/exhibition'
@@ -115,4 +115,4 @@ export const builder = (references = [artist, artwork, exhibition]) => ({
   ],
 })
 
-export default defineType(builder())
+export default defineType(builder()) as ObjectDefinition

@@ -1,11 +1,11 @@
 import {ComposeIcon, SearchIcon} from '@sanity/icons'
 import {BlockElementIcon} from '@sanity/icons'
 import {ArrayRule, ObjectRule, StringRule, defineArrayMember, defineField, defineType} from 'sanity'
-import * as Hero from '../objects/page/components/hero'
+import * as Hero from '../objects/page/components/primitives/hero'
 import dzConsignment from '../objects/page/components/molecules/dzConsignment'
 import exhibition from '../documents/exhibition'
 import artwork from '../documents/artwork'
-import interstitial from '../objects/page/components/interstitial'
+import interstitial from '../objects/page/components/primitives/interstitial'
 
 export default defineType({
   name: 'collect',

@@ -3,7 +3,7 @@ import {ObjectRule, defineArrayMember, defineField, defineType} from 'sanity'
 import dzConsignment from '../objects/page/components/molecules/dzConsignment'
 import media from '../objects/utils/media'
 import artist from '../documents/artist'
-import * as Interstitial from '../objects/page/components/interstitial'
+import * as Interstitial from '../objects/page/components/primitives/interstitial'
 
 export default defineType({
   name: 'consignments',

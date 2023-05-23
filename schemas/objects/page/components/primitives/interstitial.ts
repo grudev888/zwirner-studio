@@ -1,6 +1,6 @@
 import {MasterDetailIcon} from '@sanity/icons'
 import {ObjectDefinition, defineField, defineType} from 'sanity'
-import cta from '../../utils/cta'
+import cta from '../../../utils/cta'
 
 const fields = [
   defineField({name: 'title', type: 'string', title: 'Title'}),

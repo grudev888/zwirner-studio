@@ -1,9 +1,9 @@
 import {MasterDetailIcon} from '@sanity/icons'
-import {ArrayOfType, defineArrayMember, defineField, defineType} from 'sanity'
-import artist from '../../../documents/artist'
-import artwork from '../../../documents/artwork'
-import exhibition from '../../../documents/exhibition'
-import cta from '../../utils/cta'
+import {ArrayOfType, ObjectDefinition, defineArrayMember, defineField, defineType} from 'sanity'
+import artist from '../../../../documents/artist'
+import artwork from '../../../../documents/artwork'
+import exhibition from '../../../../documents/exhibition'
+import cta from '../../../utils/cta'
 
 export type Reference = ArrayOfType & {name: string}
 
@@ -53,4 +53,4 @@ export const builder = (
   }
 }
 
-export default defineType(builder({name: 'hero', title: 'Hero'}))
+export default defineType(builder({name: 'hero', title: 'Hero'})) as ObjectDefinition
