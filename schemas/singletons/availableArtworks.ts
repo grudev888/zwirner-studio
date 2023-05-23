@@ -27,7 +27,7 @@ export default defineType({
       name: 'artworks',
       title: 'Artworks Grid',
       type: 'array',
-      of: [{type: 'reference', name: 'artwork', to: {type: 'artwork'}}],
+      of: [{type: 'reference', title: 'Artworks', name: 'artwork', to: {type: 'artwork'}}],
       group: 'content',
     }),
     defineField({
