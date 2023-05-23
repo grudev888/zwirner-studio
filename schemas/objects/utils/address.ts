@@ -16,19 +16,19 @@ export default defineField({
       name: 'addressLine',
       title: 'Address 1',
       type: 'string',
-      validation: Rule =>[
-        Rule.required().min(5).error('An address of min. 5 characters is required'),
-        Rule.max(50).warning('Please, double check the length of this address')
-      ]
+      validation: (rule) => [
+        rule.required().min(5).error('An address of min. 5 characters is required'),
+        rule.max(50).warning('Please, double check the length of this address'),
+      ],
     }),
     defineField({
       name: 'addressLine2',
       title: 'Address 2',
       type: 'string',
-      validation: Rule =>[
-        Rule.min(5).error('An address of min. 5 characters is required'),
-        Rule.max(50).warning('Please, double check the length of this address')
-      ]
+      validation: (rule) => [
+        rule.min(5).error('An address of min. 5 characters is required'),
+        rule.max(50).warning('Please, double check the length of this address'),
+      ],
     }),
     defineField({
       name: 'country',

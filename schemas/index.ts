@@ -12,7 +12,6 @@ import globalSEO from './documents/globalSEO'
 import locationType from './documents/location'
 import pageType from './documents/page'
 import artistPage from './documents/pages/artistPage'
-import articlePage from './documents/pages/articlePage'
 import footer from './singletons/footer'
 import navigation from './singletons/navigation'
 import exhibitionPage from './documents/pages/exhibitionPage'
@@ -59,6 +58,7 @@ import utopiaEditions from './singletons/utopiaEditions'
 import menu from './objects/navigation/menu'
 import menuItemLink from './objects/navigation/menuItemLink'
 import menuItemPage from './objects/navigation/menuItemPage'
+import slugUrl from './objects/utils/slugUrl'
 import consignments from './singletons/consignments'
 import dzConsignment from './objects/page/components/molecules/dzConsignment'
 import dzButton from './objects/page/components/atoms/dzButton'
@@ -66,7 +66,7 @@ import dzCardMedia from './objects/page/components/molecules/dzCard/dzCardMedia'
 import interstitial from './objects/page/components/primitives/interstitial'
 import hero from './objects/page/components/primitives/hero'
 
-export const utilsObjects: ObjectDefinition[] = [
+export const utilsObjects: SchemaTypeDefinition[] = [
   textComplex,
   cta,
   link,
@@ -74,6 +74,7 @@ export const utilsObjects: ObjectDefinition[] = [
   brickAndMortar,
   jsonLD,
   breadcrumbItem,
+  slugUrl,
 ]
 
 export const primitiveComponents: ObjectDefinition[] = [interstitial, hero]
@@ -108,12 +109,7 @@ export const objects: ObjectDefinition[] = [
   menuItemPage,
 ]
 
-export const pageDocuments: DocumentDefinition[] = [
-  artistPage,
-  exhibitionPage,
-  fairPage,
-  articlePage,
-]
+export const pageDocuments: DocumentDefinition[] = [artistPage, exhibitionPage, fairPage]
 
 export const singletons: DocumentDefinition[] = [stories, home, collect, utopiaEditions, globalSEO]
 

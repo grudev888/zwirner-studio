@@ -1,4 +1,4 @@
-import {defineField, defineType} from 'sanity'
+import {SlugRule, defineField, defineType} from 'sanity'
 import {DocumentTextIcon, ComposeIcon, SearchIcon} from '@sanity/icons'
 
 import authorType from './author'
@@ -26,11 +26,40 @@ export default defineType({
       type: 'string',
       name: 'title',
       title: 'Title',
+      group: 'content',
+    }),
+    defineField({
+      name: 'subtitle',
+      title: 'Subtitle',
+      type: 'string',
+      group: 'content',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slugUrl',
+      group: 'content',
+    }),
+    defineField({
+      name: 'mainImage',
+      title: 'Main Image',
+      type: 'image',
+      group: 'content',
+      fields: [
+        {
+          name: 'alt',
+          title: 'Alternative text',
+          type: 'string',
+          validation: (rule) => rule.required(),
+        },
+      ],
     }),
     defineField({
       name: 'images',
       title: 'Images',
       type: 'array',
+      group: 'content',
       of: [
         {
           type: 'image',
@@ -53,25 +82,27 @@ export default defineType({
       name: 'author',
       title: 'Author',
       type: 'reference',
+      group: 'content',
       to: [{type: authorType.name}],
     }),
     defineField({
       type: 'string',
       name: 'publisherName',
       title: 'Publisher Name',
+      group: 'content',
     }),
     defineField({
       name: 'description',
       title: 'Description, bio',
       type: 'text',
+      group: 'content',
     }),
     defineField({
       name: 'publisherLogo',
       title: 'Publisher Logo',
       type: 'image',
-      options: {
-        hotspot: true,
-      },
+      group: 'content',
+      options: {hotspot: true},
       fields: [
         {
           name: 'alt',
@@ -79,6 +110,18 @@ export default defineType({
           title: 'Alternative text',
         },
       ],
+    }),
+    defineField({
+      name: 'components',
+      title: 'Components',
+      type: 'pageBuilderComponents',
+      group: 'content',
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      group: 'seo',
     }),
   ],
 })

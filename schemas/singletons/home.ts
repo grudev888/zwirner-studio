@@ -2,18 +2,14 @@ import {ComposeIcon, MasterDetailIcon, SearchIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
 
 import page from '../documents/page'
-import articlePage from '../documents/pages/articlePage'
 import artistPage from '../documents/pages/artistPage'
 import exhibitionPage from '../documents/pages/exhibitionPage'
 import fairPage from '../documents/pages/fairPage'
+import article from '../documents/article'
+import location from '../documents/location'
+import dzInterstitial from '../objects/page/components/molecules/dzInterstitial'
 
-const allowedDocs = [
-  page.name,
-  exhibitionPage.name,
-  fairPage.name,
-  artistPage.name,
-  articlePage.name,
-]
+const allowedDocs = [page, exhibitionPage, fairPage, artistPage, article]
 
 export default defineType({
   name: 'home',
@@ -42,44 +38,51 @@ export default defineType({
       name: 'header',
       title: 'Header Carousel',
       type: 'array',
-      of: allowedDocs.map((type) => ({type: 'reference', name: type, to: {type}})),
+      of: allowedDocs.map(({name, title}) => ({type: 'reference', name, title, to: {type: name}})),
       group: 'content',
     }),
     defineField({
       name: 'featured',
       title: 'Featured Item',
       type: 'reference',
-      to: allowedDocs.map((type) => ({type})),
+      to: allowedDocs.map(({name}) => ({type: name as string})),
       group: 'content',
     }),
     defineField({
       name: 'firstCarousel',
       title: 'Body Carousel 1',
       type: 'array',
-      of: allowedDocs.map((type) => ({type: 'reference', name: type, to: {type}})),
+      of: allowedDocs.map(({name, title}) => ({
+        type: 'reference',
+        name,
+        title,
+        to: {type: name},
+      })),
       group: 'content',
     }),
     defineField({
       name: 'secondCarousel',
       title: 'Body Carousel 2',
       type: 'array',
-      of: allowedDocs.map((type) => ({type: 'reference', name: type, to: {type}})),
+      of: allowedDocs.map(({name, title}) => ({type: 'reference', name, title, to: {type: name}})),
       group: 'content',
     }),
     defineField({
       name: 'articles',
       title: 'Article Grid',
       type: 'array',
-      of: [{type: 'reference', name: 'article', to: {type: 'articlePage'}}],
+      of: [{type: 'reference', name: article.name, title: article.title, to: {type: article.name}}],
       group: 'content',
     }),
-    defineField({name: 'interstitial', title: 'Interstitial', type: 'dzInterstitial'}),
+    defineField({name: 'interstitial', title: 'Interstitial', type: dzInterstitial.name}),
     defineField({
       name: 'locations',
       title: 'Locations',
       group: 'content',
       type: 'array',
-      of: [{type: 'reference', name: 'location', to: {type: 'location'}}],
+      of: [
+        {type: 'reference', name: location.name, title: location.title, to: {type: location.name}},
+      ],
     }),
   ],
 })

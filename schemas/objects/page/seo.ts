@@ -82,33 +82,6 @@ export default defineType({
       ],
     }),
     defineField({
-      name: `canonicalURL`,
-      title: `Canonical URL`,
-      description: 'The preferred URL for this page.  If left empty, will default to page slug.',
-      type: `slug`,
-      options: {
-        source: 'title',
-        isUnique: (value, context) => context.defaultIsUnique(value, context),
-        slugify: (input) => {
-          const normalized = input.trim().replace(/\s+/g, '-').toLowerCase()
-          const hasSlash = input.substring(0, 1) === '/'
-          return hasSlash ? normalized : `/${normalized}`
-        },
-      },
-      validation: (Rule) =>
-        Rule.custom((slug) => {
-          const {current = ''} = slug ?? {}
-          if (!current) return 'The canonical URL cannot be empty.'
-          const spaceCount = current.split(' ').length - 1
-          if (spaceCount) return 'The canonical URL cannot have spaces.'
-          const isNotLowerCase = current.toLowerCase() !== current
-          if (isNotLowerCase) return 'The canonical URL must be in lowercase.'
-          const hasSlash = current.substring(0, 1) !== '/'
-          if (hasSlash) return "The canonical URL must start with '/'"
-          return true
-        }),
-    }),
-    defineField({
       name: 'robotsNoIndex',
       description: `Hide this page from search engines and the sitemap.`,
       type: 'boolean',

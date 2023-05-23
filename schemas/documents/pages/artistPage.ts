@@ -1,6 +1,7 @@
 import {BlockElementIcon, ComposeIcon, SearchIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
 
+import slugUrl from '../../objects/utils/slugUrl'
 import {apiVersion} from '../../../env'
 import {artistById} from '../../../queries/artist.queries'
 
@@ -33,30 +34,29 @@ export default defineType({
     defineField({
       name: 'slug',
       title: 'Slug',
-      description:
-        'To generate a unique slug based on the artist full name, please add an artist first.',
-      type: 'slug',
+      type: 'slugUrl',
       options: {
-        source: (object: any, context) => {
+        ...slugUrl.options,
+        source: (object: any, context: any) => {
           const artistRef = object?.artist?._ref
           const defaultSlug = object?.title ?? ''
-          if (!defaultSlug)
+
+          if (!defaultSlug && !artistRef)
             throw new Error('Please add a title or an artist to create a unique slug.')
-          if (artistRef) {
-            const {getClient} = context
-            const client = getClient({apiVersion})
-            const params = {artistId: artistRef}
-            return client.fetch(artistById, params).then((result) => {
-              const [artist] = result ?? []
-              return artist?.fullName ?? defaultSlug
-            })
-          }
-          return defaultSlug
+
+          if (!artistRef) return defaultSlug
+
+          const {getClient} = context
+          const client = getClient({apiVersion})
+          const params = {artistId: artistRef}
+
+          return client.fetch(artistById, params).then((result: any) => {
+            const [artist] = result ?? []
+            return artist?.fullName ?? defaultSlug
+          })
         },
-        maxLength: 96,
       },
       group: 'content',
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'seo',
