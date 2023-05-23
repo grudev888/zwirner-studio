@@ -63,7 +63,8 @@ import consignments from './singletons/consignments'
 import dzConsignment from './objects/page/components/molecules/dzConsignment'
 import dzButton from './objects/page/components/atoms/dzButton'
 import dzCardMedia from './objects/page/components/molecules/dzCard/dzCardMedia'
-import interstitial from './objects/page/components/interstitial'
+import interstitial from './objects/page/components/primitives/interstitial'
+import hero from './objects/page/components/primitives/hero'
 
 export const utilsObjects: ObjectDefinition[] = [
   textComplex,
@@ -74,6 +75,8 @@ export const utilsObjects: ObjectDefinition[] = [
   jsonLD,
   breadcrumbItem,
 ]
+
+export const primitiveComponents: ObjectDefinition[] = [interstitial, hero]
 
 export const pageComponents: ObjectDefinition[] = [
   dzHero,
@@ -87,7 +90,6 @@ export const pageComponents: ObjectDefinition[] = [
   dzButton,
   dzCardMedia,
   dzConsignment,
-  interstitial,
 ]
 
 export const objects: ObjectDefinition[] = [
@@ -143,6 +145,7 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     ...pageDocuments,
     ...objects,
     ...pageComponents,
+    ...primitiveComponents,
     ...singletons,
     ...utilsObjects,
   ],

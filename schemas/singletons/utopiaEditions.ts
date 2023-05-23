@@ -6,7 +6,7 @@ import seo from '../objects/page/seo'
 import * as Media from '../objects/utils/media'
 import exhibitionPage from '../documents/pages/exhibitionPage'
 import {defineGridField} from '../common/fields'
-import * as Interstitial from '../objects/page/components/interstitial'
+import * as Interstitial from '../objects/page/components/primitives/interstitial'
 
 export default defineType({
   name: 'utopiaEditions',

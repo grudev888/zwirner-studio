@@ -1,5 +1,5 @@
-import {MasterDetailIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
+import {MasterDetailIcon} from '@sanity/icons'
 
 export interface DzCarouselSchemaProps {
   title: string
