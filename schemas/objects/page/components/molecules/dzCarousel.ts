@@ -1,6 +1,5 @@
-import {ComposeIcon, EditIcon, MasterDetailIcon} from '@sanity/icons'
-import {defineArrayMember, defineField, defineType} from 'sanity'
-import dzCard from './dzCard'
+import {defineField, defineType} from 'sanity'
+import {MasterDetailIcon} from '@sanity/icons'
 
 export interface DzCarouselSchemaProps {
   title: string
