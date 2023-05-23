@@ -1,9 +1,9 @@
 import {ComposeIcon, MasterDetailIcon, SearchIcon} from '@sanity/icons'
-import {defineArrayMember, defineField, defineType} from 'sanity'
+import {ObjectRule, defineArrayMember, defineField, defineType} from 'sanity'
 import dzConsignment from '../objects/page/components/molecules/dzConsignment'
 import media from '../objects/utils/media'
 import artist from '../documents/artist'
-import interstitial from '../objects/page/components/interstitial'
+import * as Interstitial from '../objects/page/components/interstitial'
 
 export default defineType({
   name: 'consignments',
@@ -31,6 +31,7 @@ export default defineType({
     defineField({
       name: 'headerMedia',
       title: 'Header Media',
+      description: 'Media module',
       type: media.name,
       group: 'content',
       validation: (rule) => rule.required(),
@@ -38,6 +39,7 @@ export default defineType({
     defineField({
       name: 'aboutText',
       title: 'About Text',
+      description: 'Editorial module',
       type: 'object',
       group: 'content',
       validation: (rule) => rule.required(),
@@ -56,20 +58,27 @@ export default defineType({
     defineField({
       name: 'featuredMedia',
       title: 'Featured Media',
+      description: 'Media module',
       type: media.name,
       group: 'content',
       validation: (rule) => rule.required(),
     }),
-    defineField({
-      name: 'interstitial',
-      title: 'Interstitial',
-      type: interstitial.name,
-      group: 'content',
-      validation: (rule) => rule.required(),
-    }),
+    defineField(
+      Interstitial.builder(
+        {
+          name: 'interstitial',
+          title: 'Interstitial',
+          description: 'Interstitial module',
+          group: 'content',
+          validation: (rule: ObjectRule) => rule.required(),
+        },
+        {excludeFields: ['subtitle']}
+      )
+    ),
     defineField({
       name: 'body',
       title: 'Body',
+      description: 'Media and editorial modules',
       type: 'array',
       group: 'content',
       validation: (rule) => rule.required().length(5),
@@ -109,6 +118,7 @@ export default defineType({
     defineField({
       name: 'bodyCarousel',
       title: 'Body Carousel',
+      description: 'Carousel module',
       type: 'array',
       group: 'content',
       validation: (rule) => rule.required().min(1),
@@ -120,12 +130,17 @@ export default defineType({
         }),
       ],
     }),
-    defineField({
-      name: 'footerInterstitial',
-      title: 'Interstitial',
-      type: interstitial.name,
-      group: 'content',
-      validation: (rule) => rule.required(),
-    }),
+    defineField(
+      Interstitial.builder(
+        {
+          name: 'footerInterstitial',
+          title: 'Interstitial',
+          description: 'Interstitial module',
+          group: 'content',
+          validation: (rule: ObjectRule) => rule.required(),
+        },
+        {excludeFields: ['subtitle']}
+      )
+    ),
   ],
 })

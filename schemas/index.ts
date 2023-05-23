@@ -84,7 +84,6 @@ export const pageComponents: ObjectDefinition[] = [
   dzTitle,
   dzHeroCarousel,
   dzCarousel,
-  dzConsignment,
   dzButton,
   dzCardMedia,
 ].map(addComponentId)
@@ -104,6 +103,7 @@ export const objects: ObjectDefinition[] = [
   menuItemLink,
   menuItemPage,
   interstitial,
+  dzConsignment,
 ]
 
 export const pageDocuments: DocumentDefinition[] = [
