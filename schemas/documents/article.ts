@@ -31,6 +31,12 @@ export default defineType({
   ],
   fields: [
     defineField({
+      type: 'seo',
+      name: 'seo',
+      title: 'SEO',
+      group: 'seo',
+    }),
+    defineField({
       type: 'string',
       name: 'title',
       title: 'Title',
@@ -41,6 +47,19 @@ export default defineType({
       title: 'Slug',
       type: 'slugUrl',
       group: 'content',
+    }),
+    defineField({
+      type: 'string',
+      name: 'type',
+      group: 'content',
+      title: 'Article type',
+      options: {
+        list: [
+          {title: 'Internal news', value: 'internal-news'},
+          {title: 'Press release', value: 'press-release'},
+          {title: 'External news', value: 'external-news'},
+        ],
+      },
     }),
     defineField(
       Media.builder(
@@ -55,6 +74,7 @@ export default defineType({
     defineField({
       name: 'body',
       title: 'Article body',
+      group: 'content',
       type: 'array',
       of: [
         defineArrayMember({type: 'block', name: 'block'}),
@@ -85,25 +105,15 @@ export default defineType({
       ],
     }),
     defineField({
-      type: 'string',
-      name: 'type',
-      title: 'Article type',
-      options: {
-        list: [
-          {title: 'Internal news', value: 'internal-news'},
-          {title: 'Press release', value: 'press-release'},
-          {title: 'External news', value: 'external-news'},
-        ],
-      },
-    }),
-    defineField({
       name: 'location',
       title: 'Location',
+      group: 'content',
       type: 'reference',
       to: [{type: location.name, title: 'Location'}],
     }),
     defineField({
       type: 'reference',
+      group: 'content',
       name: 'event',
       title: 'Event',
       to: [{type: event.name, title: 'Event'}],
@@ -111,6 +121,7 @@ export default defineType({
     defineField({
       name: 'pressReleasePDF',
       title: 'Press release PDF',
+      group: 'content',
       type: 'file',
       options: {accept: 'application/pdf'},
     }),
@@ -118,6 +129,7 @@ export default defineType({
       Interstitial.builder(
         {
           name: 'interstitial',
+          group: 'content',
           title: 'Interstitial',
         },
         {excludeFields: ['subtitle']}
@@ -126,6 +138,7 @@ export default defineType({
     defineField({
       name: 'articles',
       title: 'Linked Articles',
+      group: 'content',
       type: 'array',
       of: [
         defineArrayMember({
