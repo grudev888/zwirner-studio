@@ -11,13 +11,8 @@ export default defineType({
   title: 'Text complex',
   name: 'textComplex',
   type: 'object',
+  preview: {select: {title: 'text'}},
   fields: [
-    defineField({
-      name: 'text',
-      type: 'string',
-      title: 'Text',
-      validation: (rule) => rule.required(),
-    }),
     defineField({
       title: 'Type',
       name: 'textType',
@@ -29,6 +24,12 @@ export default defineType({
         ],
       },
       initialValue: 'simple',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'text',
+      type: 'text',
+      title: 'Text',
       validation: (rule) => rule.required(),
     }),
   ],

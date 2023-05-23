@@ -74,6 +74,11 @@ export default defineType({
               type: 'string',
               title: 'Alternative text',
             },
+            {
+              name: 'url',
+              type: 'string',
+              title: 'Url redirect',
+            },
           ],
         },
       ],
@@ -114,4 +119,13 @@ export default defineType({
       },
     }),
   ],
+  preview: {
+    select: {
+      title: 'title',
+      images: 'photos',
+    },
+    prepare({title, images}) {
+      return {title, media: images?.[0] ?? BookIcon}
+    },
+  },
 })

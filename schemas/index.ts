@@ -33,7 +33,6 @@ import dzHeroCarousel from './objects/page/components/molecules/DzHeroCarousel'
 import dzInterstitial from './objects/page/components/molecules/dzInterstitial'
 import dzSplit from './objects/page/components/molecules/dzSplit'
 import dzTitle from './objects/page/components/molecules/dzTitle'
-import editorialContent from './objects/page/editorialContent'
 import grid from './objects/page/grid'
 import row from './objects/page/layout'
 import pageBuilderComponents from './objects/page/pageBuilderComponents'
@@ -56,11 +55,16 @@ import home from './singletons/home'
 import settings from './singletons/settings'
 import stories from './singletons/stories'
 import utopiaEditions from './singletons/utopiaEditions'
-import {addCommonFields} from './common/fields'
 import menu from './objects/navigation/menu'
 import menuItemLink from './objects/navigation/menuItemLink'
 import menuItemPage from './objects/navigation/menuItemPage'
 import slugUrl from './objects/utils/slugUrl'
+import consignments from './singletons/consignments'
+import dzConsignment from './objects/page/components/molecules/dzConsignment'
+import dzButton from './objects/page/components/atoms/dzButton'
+import dzCardMedia from './objects/page/components/molecules/dzCard/dzCardMedia'
+import interstitial from './objects/page/components/primitives/interstitial'
+import hero from './objects/page/components/primitives/hero'
 
 export const utilsObjects: SchemaTypeDefinition[] = [
   textComplex,
@@ -72,6 +76,9 @@ export const utilsObjects: SchemaTypeDefinition[] = [
   breadcrumbItem,
   slugUrl,
 ]
+
+export const primitiveComponents: ObjectDefinition[] = [interstitial, hero]
+
 export const pageComponents: ObjectDefinition[] = [
   dzHero,
   dzCard,
@@ -81,7 +88,10 @@ export const pageComponents: ObjectDefinition[] = [
   dzTitle,
   dzHeroCarousel,
   dzCarousel,
-].map(addCommonFields)
+  dzButton,
+  dzCardMedia,
+  dzConsignment,
+]
 
 export const objects: ObjectDefinition[] = [
   drawingType,
@@ -100,7 +110,9 @@ export const objects: ObjectDefinition[] = [
 ]
 
 export const pageDocuments: DocumentDefinition[] = [artistPage, exhibitionPage, fairPage]
+
 export const singletons: DocumentDefinition[] = [stories, home, collect, utopiaEditions, globalSEO]
+
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
     article,
@@ -119,16 +131,17 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     dateRange,
     redirects,
     footer,
+    consignments,
     navigation,
     settings,
     availableArtworks,
     pageContent,
     pageContentList,
-    editorialContent,
     pageBuilderComponents,
     ...pageDocuments,
     ...objects,
     ...pageComponents,
+    ...primitiveComponents,
     ...singletons,
     ...utilsObjects,
   ],

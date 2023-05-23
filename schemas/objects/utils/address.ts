@@ -40,7 +40,6 @@ export default defineField({
       name: 'state',
       title: 'Province/State',
       type: 'string',
-      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'city',

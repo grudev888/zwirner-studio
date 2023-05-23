@@ -11,6 +11,10 @@ export default defineType({
   title: 'Exhibition Page',
   type: 'document',
   icon: BlockElementIcon,
+  preview: {
+    select: {title: 'title', photos: 'exhibition.photos'},
+    prepare: ({title, photos}) => ({title, media: photos?.[0]}),
+  },
   groups: [
     {name: 'content', title: 'Content', icon: ComposeIcon, default: true},
     {name: 'seo', title: 'SEO', icon: SearchIcon},

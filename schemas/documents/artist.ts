@@ -79,7 +79,23 @@ export default defineType({
       title: 'Artist photos',
       name: 'photos',
       type: 'array',
-      of: [{type: 'image'}],
+      of: [
+        {
+          type: 'image',
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alternative text',
+            },
+            {
+              name: 'url',
+              type: 'string',
+              title: 'Url redirect',
+            },
+          ],
+        },
+      ],
     }),
     defineField({
       title: 'Social media',
