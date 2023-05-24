@@ -46,14 +46,14 @@ export const builder = (
       fields: [
         defineField({
           name: 'alt',
-          title: 'Alternative text',
+          title: 'Alternative Text',
           type: 'string',
           validation: (rule) => rule.required(),
         }),
         defineField({
           name: 'url',
           type: 'string',
-          title: 'Url redirect',
+          title: 'Url Redirect',
         }),
         ...(options?.image?.additionalFields || []),
       ],

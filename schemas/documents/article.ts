@@ -54,13 +54,13 @@ export default defineType({
       type: 'string',
       name: 'type',
       group: 'content',
-      title: 'Article type',
+      title: 'Article Type',
       validation: (rule) => rule.required(),
       options: {
         list: [
-          {title: 'Internal news', value: 'internal-news'},
-          {title: 'Press release', value: 'press-release'},
-          {title: 'External news', value: 'external-news'},
+          {title: 'Internal News', value: 'internal-news'},
+          {title: 'Press Release', value: 'press-release'},
+          {title: 'External News', value: 'external-news'},
         ],
       },
     }),
@@ -77,7 +77,7 @@ export default defineType({
     ),
     defineField({
       name: 'body',
-      title: 'Article body',
+      title: 'Article Body',
       group: 'content',
       type: 'array',
       validation: (rule) => rule.required(),
@@ -125,7 +125,7 @@ export default defineType({
     }),
     defineField({
       name: 'pressReleasePDF',
-      title: 'Press release PDF',
+      title: 'Press Release PDF',
       group: 'content',
       type: 'file',
       options: {accept: 'application/pdf'},
@@ -148,7 +148,7 @@ export default defineType({
       of: [
         defineArrayMember({
           name: 'article',
-          title: 'Linked article',
+          title: 'Linked Article',
           description: 'Articles, exhibitions, fairs, pages, artists, and artworks are allowed',
           type: 'reference',
           to: [
