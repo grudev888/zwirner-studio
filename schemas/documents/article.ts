@@ -1,4 +1,10 @@
-import {ObjectRule, defineArrayMember, defineField, defineType} from 'sanity'
+import {
+  ConditionalPropertyCallbackContext,
+  ObjectRule,
+  defineArrayMember,
+  defineField,
+  defineType,
+} from 'sanity'
 import {DocumentTextIcon, ComposeIcon, SearchIcon, ImageIcon} from '@sanity/icons'
 
 import location from './location'
@@ -44,25 +50,17 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      type: 'date',
+      title: 'Published at',
+      name: 'publishedAt',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slugUrl',
       group: 'content',
       validation: (rule) => rule.required(),
-    }),
-    defineField({
-      type: 'string',
-      name: 'type',
-      group: 'content',
-      title: 'Article Type',
-      validation: (rule) => rule.required(),
-      options: {
-        list: [
-          {title: 'Internal News', value: 'internal-news'},
-          {title: 'Press Release', value: 'press-release'},
-          {title: 'External News', value: 'external-news'},
-        ],
-      },
     }),
     defineField(
       Media.builder(
@@ -76,11 +74,29 @@ export default defineType({
       )
     ),
     defineField({
+      type: 'string',
+      name: 'type',
+      group: 'content',
+      title: 'Article Type',
+      validation: (rule) => rule.required(),
+      options: {
+        list: [
+          {title: 'Internal News', value: 'internalNews'},
+          {title: 'Press Release', value: 'pressRelease'},
+          {title: 'External News', value: 'externalNews'},
+        ],
+      },
+    }),
+    defineField({
       name: 'body',
       title: 'Article Body',
       group: 'content',
       type: 'array',
-      validation: (rule) => rule.required(),
+      validation: (rule) =>
+        rule.custom((value, context) =>
+          (context.parent as any).type !== 'externalNews' && !value ? 'Required' : true
+        ),
+      hidden: (context) => context.parent.type === 'externalNews',
       of: [
         defineArrayMember({type: 'block', name: 'block'}),
         defineArrayMember(
@@ -115,12 +131,14 @@ export default defineType({
       group: 'content',
       type: 'reference',
       to: [{type: location.name, title: 'Location'}],
+      hidden: (context) => context.parent.type === 'externalNews',
     }),
     defineField({
       type: 'reference',
       group: 'content',
       name: 'event',
       title: 'Event',
+      hidden: (context) => context.parent.type === 'externalNews',
       to: [{type: event.name, title: 'Event'}],
     }),
     defineField({
@@ -128,6 +146,7 @@ export default defineType({
       title: 'Press Release PDF',
       group: 'content',
       type: 'file',
+      hidden: (context) => context.parent.type === 'externalNews',
       options: {accept: 'application/pdf'},
     }),
     defineField(
@@ -136,6 +155,8 @@ export default defineType({
           name: 'interstitial',
           group: 'content',
           title: 'Interstitial',
+          hidden: (context: ConditionalPropertyCallbackContext) =>
+            context.parent.type === 'externalNews',
         },
         {excludeFields: ['subtitle']}
       )
@@ -144,6 +165,7 @@ export default defineType({
       name: 'articles',
       title: 'Linked Articles',
       group: 'content',
+      hidden: (context) => context.parent.type === 'externalNews',
       type: 'array',
       of: [
         defineArrayMember({
@@ -161,6 +183,17 @@ export default defineType({
           ],
         }),
       ],
+    }),
+    defineField({
+      name: 'externalURL',
+      title: 'External URL',
+      group: 'content',
+      hidden: (context) => context.parent.type !== 'externalNews',
+      validation: (rule) =>
+        rule.custom((value, context) =>
+          (context.parent as any).type === 'externalNews' && !value ? 'Required' : true
+        ),
+      type: 'url',
     }),
   ],
 })
