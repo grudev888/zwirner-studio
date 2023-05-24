@@ -20,6 +20,12 @@ import {ReferenceByTab} from './../../overrides/overrides'
 import {PreviewIframe} from './../../preview/customIframe/previewIframe'
 import {getSectionsByYear} from './structure.service'
 
+import article from '../../../schemas/documents/article'
+import exhibitionPage from '../../../schemas/documents/pages/exhibitionPage'
+import fairPage from '../../../schemas/documents/pages/fairPage'
+import press from '../../../schemas/documents/press'
+import exhibition from '../../../schemas/documents/exhibition'
+
 export const generalStructure = (S: StructureBuilder) =>
   S.list()
     .title('Content')
@@ -157,43 +163,20 @@ export const generalStructure = (S: StructureBuilder) =>
                 .child(() => {
                   return getSectionsByYear({
                     S,
-                    sectionTitle: 'Exhibition',
-                    type: 'exhibitionPage',
-                    preview: {
-                      section: 'exhibitions',
-                    },
+                    document: exhibitionPage,
+                    preview: {section: 'exhibitions'},
                   })
                 }),
               S.listItem()
                 .title('Articles')
                 .icon(ComposeIcon)
-                .child(
-                  S.documentList()
-                    .title('Articles')
-                    .filter('_type == "article"')
-                    .defaultOrdering([{field: 'title', direction: 'asc'}])
-                    .child(
-                      S.document()
-                        .schemaType('article')
-                        .views([
-                          S.view.form(),
-                          S.view.component(ReferenceByTab).title('References'),
-                        ])
-                    )
-                ),
+                .child(() => getSectionsByYear({S, document: article})),
               S.listItem()
                 .title('Fair Pages')
                 .icon(DashboardIcon)
-                .child(() => {
-                  return getSectionsByYear({
-                    S,
-                    sectionTitle: 'Fair',
-                    type: 'fairPage',
-                    preview: {
-                      section: 'fairs',
-                    },
-                  })
-                }),
+                .child(() =>
+                  getSectionsByYear({S, document: fairPage, preview: {section: 'fairs'}})
+                ),
             ])
         ),
       S.divider(),
@@ -314,13 +297,7 @@ export const generalStructure = (S: StructureBuilder) =>
       S.listItem()
         .title('Exhibitions and Fairs')
         .icon(DashboardIcon)
-        .child(() => {
-          return getSectionsByYear({
-            S,
-            sectionTitle: 'Exhibitions & Fairs',
-            type: 'exhibition',
-          })
-        }),
+        .child(() => getSectionsByYear({S, document: exhibition})),
       S.listItem()
         .title('Posts')
         .icon(BookIcon)
@@ -338,13 +315,7 @@ export const generalStructure = (S: StructureBuilder) =>
       S.listItem()
         .title('Press')
         .icon(DocumentsIcon)
-        .child(() => {
-          return getSectionsByYear({
-            S,
-            sectionTitle: 'Press',
-            type: 'press',
-          })
-        }),
+        .child(() => getSectionsByYear({S, document: press})),
       S.listItem()
         .title('Locations')
         .icon(PinIcon)
