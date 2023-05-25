@@ -1,7 +1,21 @@
-import {SlugRule, defineField, defineType} from 'sanity'
-import {DocumentTextIcon, ComposeIcon, SearchIcon} from '@sanity/icons'
+import {
+  ConditionalPropertyCallbackContext,
+  ObjectRule,
+  defineArrayMember,
+  defineField,
+  defineType,
+} from 'sanity'
+import {DocumentTextIcon, ComposeIcon, SearchIcon, ImageIcon} from '@sanity/icons'
 
-import authorType from './author'
+import location from './location'
+import event from './event'
+import * as Interstitial from '../objects/page/components/primitives/interstitial'
+import exhibition from './exhibition'
+import page from './page'
+import fairPage from './pages/fairPage'
+import artist from './artist'
+import artwork from './artwork'
+import * as Media from '../objects/utils/media'
 
 export interface ArticleSchema {
   title?: string
@@ -23,16 +37,22 @@ export default defineType({
   ],
   fields: [
     defineField({
+      type: 'seo',
+      name: 'seo',
+      title: 'SEO',
+      group: 'seo',
+    }),
+    defineField({
       type: 'string',
       name: 'title',
       title: 'Title',
       group: 'content',
+      validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'subtitle',
-      title: 'Subtitle',
-      type: 'string',
-      group: 'content',
+      type: 'date',
+      title: 'Date',
+      name: 'date',
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -40,88 +60,140 @@ export default defineType({
       title: 'Slug',
       type: 'slugUrl',
       group: 'content',
+      validation: (rule) => rule.required(),
     }),
-    defineField({
-      name: 'mainImage',
-      title: 'Main Image',
-      type: 'image',
-      group: 'content',
-      fields: [
+    defineField(
+      Media.builder(
         {
-          name: 'alt',
-          title: 'Alternative text',
-          type: 'string',
-          validation: (rule) => rule.required(),
+          name: 'image',
+          title: 'Header Image',
+          group: 'content',
+          validation: (rule: ObjectRule) => rule.required(),
         },
-      ],
-    }),
-    defineField({
-      name: 'images',
-      title: 'Images',
-      type: 'array',
-      group: 'content',
-      of: [
-        {
-          type: 'image',
-          fields: [
-            {
-              name: 'alt',
-              type: 'string',
-              title: 'Alternative text',
-            },
-            {
-              name: 'url',
-              type: 'string',
-              title: 'Url redirect',
-            },
-          ],
-        },
-      ],
-    }),
-    defineField({
-      name: 'author',
-      title: 'Author',
-      type: 'reference',
-      group: 'content',
-      to: [{type: authorType.name}],
-    }),
+        {type: Media.MEDIA_TYPES.IMAGE}
+      )
+    ),
     defineField({
       type: 'string',
-      name: 'publisherName',
-      title: 'Publisher Name',
+      name: 'type',
       group: 'content',
+      title: 'Article Type',
+      validation: (rule) => rule.required(),
+      options: {
+        list: [
+          {title: 'Internal News', value: 'internalNews'},
+          {title: 'Press Release', value: 'pressRelease'},
+          {title: 'External News', value: 'externalNews'},
+        ],
+      },
     }),
     defineField({
-      name: 'description',
-      title: 'Description, bio',
-      type: 'text',
+      name: 'body',
+      title: 'Article Body',
       group: 'content',
-    }),
-    defineField({
-      name: 'publisherLogo',
-      title: 'Publisher Logo',
-      type: 'image',
-      group: 'content',
-      options: {hotspot: true},
-      fields: [
-        {
-          name: 'alt',
-          type: 'string',
-          title: 'Alternative text',
-        },
+      type: 'array',
+      validation: (rule) =>
+        rule.custom((value, context) =>
+          (context.parent as any).type !== 'externalNews' && !value ? 'Required' : true
+        ),
+      hidden: (context) => context.parent.type === 'externalNews',
+      of: [
+        defineArrayMember({type: 'block', name: 'block'}),
+        defineArrayMember(
+          Media.builder(
+            {
+              name: 'bodyImage',
+              icon: ImageIcon,
+              title: 'Image',
+              preview: {select: {media: 'image', title: 'image.caption'}},
+              validation: (rule: ObjectRule) => rule.required(),
+            },
+            {
+              type: Media.MEDIA_TYPES.IMAGE,
+              image: {
+                additionalFields: [
+                  defineField({
+                    type: 'string',
+                    name: 'caption',
+                    title: 'Caption',
+                    validation: (rule) => rule.required(),
+                  }),
+                ],
+              },
+            }
+          )
+        ),
       ],
     }),
     defineField({
-      name: 'components',
-      title: 'Components',
-      type: 'pageBuilderComponents',
+      name: 'location',
+      title: 'Location',
       group: 'content',
+      type: 'reference',
+      to: [{type: location.name, title: 'Location'}],
+      hidden: (context) => context.parent.type === 'externalNews',
     }),
     defineField({
-      name: 'seo',
-      title: 'SEO',
-      type: 'seo',
-      group: 'seo',
+      type: 'reference',
+      group: 'content',
+      name: 'event',
+      title: 'Event',
+      hidden: (context) => context.parent.type === 'externalNews',
+      to: [{type: event.name, title: 'Event'}],
+    }),
+    defineField({
+      name: 'pressReleasePDF',
+      title: 'Press Release PDF',
+      group: 'content',
+      type: 'file',
+      hidden: (context) => context.parent.type === 'externalNews',
+      options: {accept: 'application/pdf'},
+    }),
+    defineField(
+      Interstitial.builder(
+        {
+          name: 'interstitial',
+          group: 'content',
+          title: 'Interstitial',
+          hidden: (context: ConditionalPropertyCallbackContext) =>
+            context.parent.type === 'externalNews',
+        },
+        {excludeFields: ['subtitle']}
+      )
+    ),
+    defineField({
+      name: 'articles',
+      title: 'Linked Articles',
+      group: 'content',
+      hidden: (context) => context.parent.type === 'externalNews',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          name: 'article',
+          title: 'Linked Article',
+          description: 'Articles, exhibitions, fairs, pages, artists, and artworks are allowed',
+          type: 'reference',
+          to: [
+            {type: 'article'},
+            {type: exhibition.name},
+            {type: page.name},
+            {type: fairPage.name},
+            {type: artist.name},
+            {type: artwork.name},
+          ],
+        }),
+      ],
+    }),
+    defineField({
+      name: 'externalURL',
+      title: 'External URL',
+      group: 'content',
+      hidden: (context) => context.parent.type !== 'externalNews',
+      validation: (rule) =>
+        rule.custom((value, context) =>
+          (context.parent as any).type === 'externalNews' && !value ? 'Required' : true
+        ),
+      type: 'url',
     }),
   ],
 })

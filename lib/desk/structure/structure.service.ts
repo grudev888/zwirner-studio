@@ -11,11 +11,14 @@ import exhibition from '../../../schemas/documents/exhibition'
 import exhibitionPage from '../../../schemas/documents/pages/exhibitionPage'
 import fairPage from '../../../schemas/documents/pages/fairPage'
 import press from '../../../schemas/documents/press'
+import {capitalize} from '../../util/strings'
+import {DocumentDefinition} from 'sanity'
+import article from '../../../schemas/documents/article'
+import {getArticleByDate} from '../../../queries/article.queries'
 
 interface StructureBuilderProps {
   S: StructureBuilder
-  sectionTitle: string
-  type: string
+  document: DocumentDefinition
   preview?: PreviewProps
 }
 interface PreviewProps {
@@ -27,41 +30,45 @@ const queryByType: any = {
   [fairPage.name]: getEndDateFairPagesDate,
   [press.name]: getPressByDate,
   [exhibition.name]: getExhibitionByDate,
+  [article.name]: getArticleByDate,
 }
 export async function getSectionsByYear({
   S,
-  sectionTitle,
-  type,
+  document,
   preview,
 }: StructureBuilderProps): Promise<ListBuilder | DocumentListBuilder> {
+  const name = document.name
+  const title = document.title || capitalize(name)
+
   const defaultView = S.documentList()
-    .title(`${sectionTitle} Pages Posted`)
-    .filter(`_type == "${type}"`)
+    .title(`${title} Pages Posted`)
+    .filter(`_type == "${name}"`)
     .defaultOrdering([{field: 'publishedAt', direction: 'asc'}])
-  const {context} = S
-  const client = context.getClient({apiVersion})
+
+  const client = S.context.getClient({apiVersion})
+
   if (!client) {
     return S.documentList()
-      .title(`${sectionTitle} Pages Posted`)
-      .filter(`_type == "${type}"`)
+      .title(`${title} Pages Posted`)
+      .filter(`_type == "${name}"`)
       .defaultOrdering([{field: 'publishedAt', direction: 'asc'}])
   }
 
-  const docs = (await client.fetch(queryByType[type])) || []
-  const years: any = {}
+  const docs = (await client.fetch(queryByType[name])) || []
+  if (!docs.length) return defaultView
+
+  const years: Record<string, Array<string>> = {}
 
   docs.forEach(({date, _id}: any) => {
     const dateFormatted = date ? new Date(date) : new Date()
-    const year = dateFormatted.getFullYear()
-    if (!years[year]) {
+    const year = dateFormatted.getFullYear().toString()
+
+    if (!Array.isArray(years[year])) {
       years[year] = []
     }
+
     years[year].push(_id)
   })
-
-  if (!docs.length) {
-    return defaultView
-  }
 
   const includePreview = preview
     ? [
@@ -77,30 +84,33 @@ export async function getSectionsByYear({
     : []
 
   return S.list()
-    .title(`${sectionTitle} by year`)
+    .title(`${title} by year`)
     .id('year')
     .items(
-      Object.keys(years).map((year) => {
-        return S.listItem()
-          .id(year)
-          .title(year)
-          .child(
-            S.documentList()
-              .schemaType(type)
-              .title(`${sectionTitle} from ${year}`)
-              .filter(`_id in $ids`)
-              .params({ids: years[year]})
-              .child((childId) =>
-                S.document()
-                  .id(childId)
-                  .schemaType(type)
-                  .views([
-                    S.view.form(),
-                    ...includePreview,
-                    S.view.component(ReferenceByTab).title('References'),
-                  ])
-              )
-          )
-      })
+      Object.keys(years)
+        .sort()
+        .reverse()
+        .map((year) =>
+          S.listItem()
+            .id(year)
+            .title(year)
+            .child(
+              S.documentList()
+                .schemaType(name)
+                .title(`${title} from ${year}`)
+                .filter(`_id in $ids`)
+                .params({ids: years[year]})
+                .child((childId) =>
+                  S.document()
+                    .id(childId)
+                    .schemaType(name)
+                    .views([
+                      S.view.form(),
+                      ...includePreview,
+                      S.view.component(ReferenceByTab).title('References'),
+                    ])
+                )
+            )
+        )
     )
 }
