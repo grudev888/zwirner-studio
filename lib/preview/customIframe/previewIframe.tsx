@@ -1,10 +1,10 @@
 import {Listbox} from '@headlessui/react'
-import {ChevronDownIcon, CopyIcon, LaunchIcon, MobileDeviceIcon} from '@sanity/icons'
+import {ChevronDownIcon, CopyIcon, UndoIcon, LaunchIcon, MobileDeviceIcon} from '@sanity/icons'
 import {TransferIcon} from '@sanity/icons'
 import {useState} from 'react'
 import {UserViewComponent} from 'sanity/desk'
 import {cn} from '../../classnames'
-import "../../../styles/tailwind.output.css"
+import '../../../styles/tailwind.output.css'
 
 const styles: any = {
   container: `
@@ -13,7 +13,7 @@ const styles: any = {
     flex-col
     bg-black-20
   `,
-  headerMenu:`
+  headerMenu: `
     flex
     max-h-11
     w-full
@@ -36,7 +36,7 @@ const styles: any = {
     hover:bg-black-100
     hover:text-white-100
   `,
-  copyBtn:`
+  copyBtn: `
     flex
     items-center
     rounded-md
@@ -45,11 +45,11 @@ const styles: any = {
     text-white-100
     hover:bg-black-100
   `,
-  copyIcon:`
+  copyIcon: `
     min-h-[1.25rem]
     min-w-[1.25rem]
   `,
-  openBtn:`
+  openBtn: `
     flex
     items-center
     gap-2
@@ -59,13 +59,13 @@ const styles: any = {
     text-sm
     text-white-100
   `,
-  inputUrl:`
+  inputUrl: `
     w-full
     text-sm
     text-black-80
     outline-none
   `,
-  mobileViewer:`
+  mobileViewer: `
     flex
     min-h-[2.5rem]
     w-full
@@ -74,17 +74,17 @@ const styles: any = {
     gap-4
     bg-white-100
   `,
-  openMobile:`
+  openMobile: `
     bg-black-100
     text-white-100
   `,
-  visualizeScreen:`
+  visualizeScreen: `
     flex
     items-center
     justify-center
     gap-1
   `,
-  inputViewport:`
+  inputViewport: `
     max-w-[5rem]
     rounded-md
     bg-black-20
@@ -92,7 +92,7 @@ const styles: any = {
     text-center
     text-sm
   `,
-  rotateViewport:`
+  rotateViewport: `
     my-2
     flex
     cursor-pointer
@@ -104,18 +104,18 @@ const styles: any = {
     hover:bg-black-100
     hover:text-white-100
   `,
-  rotateIcon:`
+  rotateIcon: `
     min-h-[1.25rem]
     min-w-[1.25rem]
   `,
-  selectionSection:`
+  selectionSection: `
     relative
     flex
     content-center
     items-center
     gap-2
   `,
-  selector:`
+  selector: `
     flex
     items-center
     gap-1
@@ -124,30 +124,29 @@ const styles: any = {
     px-2
     text-sm
   `,
-  selectorOptions:`
+  selectorOptions: `
     absolute
     top-8
     right-0
     rounded-md
     bg-white-100
   `,
-  selectorOption:`
+  selectorOption: `
     cursor-pointer
     p-2
     text-sm
     hover:bg-black-20
     ui-selected:bg-black-40
   `,
-  optionSelected:`
+  optionSelected: `
     bg-black-60
   `,
-  frame:`
+  frame: `
     h-full
     max-h-[100%]
     w-full
-  `
+  `,
 }
-
 
 // TODO: import it from the design system
 const breakpoints = [
@@ -314,6 +313,7 @@ const breakpoints = [
 ]
 
 export const PreviewIframe: UserViewComponent = ({options, document}) => {
+  const [iframeKey, setIframeKey] = useState(1)
   const [openMobile, setOpenMobile] = useState(false)
   const [rotateViewport, setRotateViewport] = useState(false)
   const [selectedBreakpoint, setSelectedBreakpoint] = useState(breakpoints[10])
@@ -343,6 +343,14 @@ export const PreviewIframe: UserViewComponent = ({options, document}) => {
           <MobileDeviceIcon className={cn(styles.copyIcon)} />
         </div>
         <input className={cn(styles.inputUrl)} value={source} readOnly />
+        <button
+          className={cn(styles.copyBtn)}
+          onClick={() => {
+            setIframeKey((key) => key + 1)
+          }}
+        >
+          <UndoIcon className={cn(styles.copyIcon)} />
+        </button>
         <button
           className={cn(styles.copyBtn)}
           onClick={() => {
@@ -407,6 +415,7 @@ export const PreviewIframe: UserViewComponent = ({options, document}) => {
       ) : null}
 
       <iframe
+        key={iframeKey}
         className={cn(styles.frame)}
         style={mobileIframeStyle}
         title={`preview`}
