@@ -87,7 +87,20 @@ export const generalStructure = (S: StructureBuilder) =>
               S.listItem()
                 .title('Collect')
                 .icon(BlockElementIcon)
-                .child(S.document().schemaType('collect').documentId('collect')),
+                .child(
+                  S.document()
+                    .schemaType('collect')
+                    .documentId('collect')
+                    .views([
+                      S.view.form(),
+                      S.view
+                        .component(PreviewIframe)
+                        .options({
+                          url: `${envHost}/api/sanity/preview?section=collect`,
+                        })
+                        .title('Preview'),
+                    ])
+                ),
               S.listItem()
                 .title('Stories')
                 .icon(BlockElementIcon)
@@ -112,7 +125,20 @@ export const generalStructure = (S: StructureBuilder) =>
               S.listItem()
                 .title('Utopia Editions')
                 .icon(BlockElementIcon)
-                .child(S.document().schemaType('utopiaEditions').documentId('utopiaEditions')),
+                .child(
+                  S.document()
+                    .schemaType('utopiaEditions')
+                    .documentId('utopiaEditions')
+                    .views([
+                      S.view.form(),
+                      S.view
+                        .component(PreviewIframe)
+                        .options({
+                          url: `${envHost}/api/sanity/preview?section=utopia-editions`,
+                        })
+                        .title('Preview'),
+                    ])
+                ),
               S.listItem()
                 .title('Consignments')
                 .icon(BlockElementIcon)
@@ -125,7 +151,7 @@ export const generalStructure = (S: StructureBuilder) =>
                       S.view
                         .component(PreviewIframe)
                         .options({
-                          url: `${envHost}/api/sanity/preview`,
+                          url: `${envHost}/api/sanity/preview?section=consignments`,
                         })
                         .title('Preview'),
                     ])
