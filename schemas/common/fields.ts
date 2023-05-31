@@ -1,5 +1,5 @@
 import {MasterDetailIcon, ComposeIcon} from '@sanity/icons'
-import {defineField, ObjectDefinition} from 'sanity'
+import {ArrayDefinition, defineField, FieldDefinition, ObjectDefinition} from 'sanity'
 
 export const withComponentId = (schema: ObjectDefinition) => ({
   ...schema,
@@ -20,7 +20,7 @@ export const withComponentId = (schema: ObjectDefinition) => ({
   ],
 })
 
-export const defineCarouselField = (schema: any) => {
+export const defineCarouselField = (schema: ObjectDefinition) => {
   if (schema.type !== 'object') throw new Error('Carousel fields should be objects')
 
   const attributesGroup = schema.groups?.find(({name}: {name: string}) => name === 'attributes')
@@ -47,21 +47,35 @@ export const defineCarouselField = (schema: any) => {
   }
 }
 
-export const defineGridField = (schema: any) => {
-  if (schema.type !== 'object') throw new Error('Carousel fields should be objects')
+export const defineGridField = (schema: ObjectDefinition | ArrayDefinition): FieldDefinition => {
+  if (schema.type !== 'object' && schema.type !== 'array')
+    throw new Error('Carousel should an object or an array')
 
-  const attributesGroup = schema.groups?.find(({name}: {name: string}) => name === 'attributes')
-  const contentGroup = schema.groups?.find(({name}: {name: string}) => name === 'content')
+  const object =
+    schema.type === 'object'
+      ? schema
+      : defineField({
+          type: 'object',
+          name: `${schema.name}Grid`,
+          fields: [defineField(schema)],
+        })
 
-  return {
-    ...schema,
+  const attributesGroup = object.groups?.find(({name}: {name: string}) => name === 'attributes')
+  const contentGroup = object.groups?.find(({name}: {name: string}) => name === 'content')
+
+  return defineField({
+    ...object,
     groups: [
-      ...(schema.groups || []),
-      !contentGroup && {name: 'content', title: 'Content', icon: ComposeIcon, default: true},
-      !attributesGroup && {name: 'attributes', title: 'Attributes', icon: MasterDetailIcon},
+      ...(object.groups || []),
+      !contentGroup
+        ? {name: 'content', title: 'Content', icon: ComposeIcon, default: true}
+        : contentGroup,
+      !attributesGroup
+        ? {name: 'attributes', title: 'Attributes', icon: MasterDetailIcon}
+        : attributesGroup,
     ],
     fields: [
-      ...schema.fields.map((field: any) => ({...field, group: field.group || 'content'})),
+      ...object.fields.map((field: any) => ({...field, group: field.group || 'content'})),
       defineField({
         name: 'itemsPerRow',
         title: 'Items per row',
@@ -72,5 +86,5 @@ export const defineGridField = (schema: any) => {
         validation: (rule) => rule.required().min(1),
       }),
     ],
-  }
+  })
 }
