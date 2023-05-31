@@ -1,5 +1,6 @@
 import {BlockElementIcon, SearchIcon, ComposeIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
+import { defineGridField } from '../common/fields'
 
 export default defineType({
   name: 'availableArtworks',
@@ -22,8 +23,9 @@ export default defineType({
       type: 'boolean',
       title: 'Display # of results',
       initialValue: false,
+      group: 'content',
     }),
-    defineField({
+    defineGridField({
       name: 'artworks',
       title: 'Artworks Grid',
       type: 'array',
