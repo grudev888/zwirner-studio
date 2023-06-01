@@ -14,5 +14,9 @@ export default defineType({
       name: 'Menu',
       type: menu.name,
     }),
+    defineField({
+      name: 'MenuMobile',
+      type: menu.name,
+    }),
   ],
 })
