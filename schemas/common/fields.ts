@@ -55,6 +55,7 @@ export const defineGridField = (schema: ObjectDefinition | ArrayDefinition): Fie
     schema.type === 'object'
       ? schema
       : defineField({
+          group: schema.group,
           type: 'object',
           name: `${schema.name}Grid`,
           fields: [defineField(schema)],
