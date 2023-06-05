@@ -21,6 +21,15 @@ export default defineType({
           fields: [
             defineField({type: 'string', name: 'title', title: 'Title'}),
             defineField({
+              type: 'array',
+              name: 'itemLink',
+              title: 'Link',
+              of: [
+                defineArrayMember({type: 'menuItemPage', name: 'menuItemPage'}),
+                defineArrayMember({type: 'menuItemLink', name: 'menuItemLink'}),
+              ],
+            }),
+            defineField({
               name: 'submenu',
               title: 'Submenu',
               type: 'menu',
