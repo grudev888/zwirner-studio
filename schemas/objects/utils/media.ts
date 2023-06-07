@@ -1,5 +1,6 @@
 import {FieldDefinition, defineField, defineType} from 'sanity'
 import {capitalize} from '../../../lib/util/strings'
+import {getPropFromPath} from '../../../lib/util/sanity'
 
 export enum MEDIA_TYPES {
   IMAGE = 'image',
@@ -48,7 +49,13 @@ export const builder = (
           name: 'alt',
           title: 'Alternative Text',
           type: 'string',
-          validation: (rule) => rule.required(),
+          validation: (rule) => {
+            return rule.custom((value, context) => {
+              if (!context.document || !context.path) return true
+              const parent = getPropFromPath(context.document, context.path?.slice(0, -2))
+              return parent.type === MEDIA_TYPES.IMAGE && !value ? 'Required' : true
+            })
+          },
         }),
         defineField({
           name: 'url',
