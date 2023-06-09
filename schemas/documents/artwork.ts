@@ -99,7 +99,12 @@ export default defineType({
     defineField({
       name: 'dimensions',
       title: 'Dimensions',
-      type: 'string',
+      type: 'text',
+    }),
+    defineField({
+      name: 'framed',
+      title: 'Framed',
+      type: 'boolean',
     }),
     defineField({
       name: 'availability',
