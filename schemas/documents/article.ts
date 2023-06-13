@@ -5,17 +5,20 @@ import {
   defineField,
   defineType,
 } from 'sanity'
-import {DocumentTextIcon, ComposeIcon, SearchIcon, ImageIcon} from '@sanity/icons'
+import {DocumentTextIcon, ComposeIcon, SearchIcon, ImageIcon, RemoveIcon} from '@sanity/icons'
 
 import location from './location'
 import event from './event'
 import * as Interstitial from '../objects/page/components/primitives/interstitial'
 import exhibition from './exhibition'
-import page from './page'
 import fairPage from './pages/fairPage'
-import artist from './artist'
-import artwork from './artwork'
+import slugUrl, {validateSlugFormatRule} from '../objects/utils/slugUrl'
+// TBD
+// import page from './page'
+// import artist from './artist'
+// import artwork from './artwork'
 import * as Media from '../objects/utils/media'
+import {GreyFootNote, GreyFootNoteDecorator} from '../../components/block/GreyFootnote'
 
 export interface ArticleSchema {
   title?: string
@@ -50,29 +53,18 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      type: 'text',
+      name: 'description',
+      title: 'Description',
+      group: 'content',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       type: 'date',
       title: 'Date',
       name: 'date',
       validation: (rule) => rule.required(),
     }),
-    defineField({
-      name: 'slug',
-      title: 'Slug',
-      type: 'slugUrl',
-      group: 'content',
-      validation: (rule) => rule.required(),
-    }),
-    defineField(
-      Media.builder(
-        {
-          name: 'image',
-          title: 'Header Image',
-          group: 'content',
-          validation: (rule: ObjectRule) => rule.required(),
-        },
-        {type: Media.MEDIA_TYPES.IMAGE}
-      )
-    ),
     defineField({
       type: 'string',
       name: 'type',
@@ -88,6 +80,50 @@ export default defineType({
       },
     }),
     defineField({
+      type: 'string',
+      name: 'category',
+      title: 'Category',
+      group: 'content',
+      hidden: (context) => context.parent.type !== 'externalNews',
+      options: {
+        list: [
+          {title: 'Press', value: 'Press'},
+          {title: 'News', value: 'News'},
+          {title: 'Event', value: 'Event'},
+          {title: 'Exhibition', value: 'Exhibition'},
+        ],
+      },
+      initialValue: 'News',
+    }),
+    defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slugUrl',
+      group: 'content',
+      validation: (rule) => {
+        return [
+          rule.custom((value, context) => {
+            return (context.parent as any).type !== 'externalNews' && !value ? 'Required' : true
+          }),
+          validateSlugFormatRule(rule, {optional: true}),
+        ]
+      },
+      hidden: (context) => context.parent.type === 'externalNews',
+      ...slugUrl.options,
+    }),
+    defineField(
+      Media.builder(
+        {
+          name: 'image',
+          title: 'Header Image',
+          group: 'content',
+          validation: (rule: ObjectRule) => rule.required(),
+        },
+        {type: Media.MEDIA_TYPES.IMAGE}
+      )
+    ),
+
+    defineField({
       name: 'body',
       title: 'Article Body',
       group: 'content',
@@ -98,7 +134,22 @@ export default defineType({
         ),
       hidden: (context) => context.parent.type === 'externalNews',
       of: [
-        defineArrayMember({type: 'block', name: 'block'}),
+        defineArrayMember({
+          type: 'block',
+          name: 'block',
+          marks: {
+            decorators: [
+              {title: 'Strong', value: 'strong'},
+              {title: 'Emphasis', value: 'em'},
+              {
+                title: 'Grey Note',
+                value: 'greyNote',
+                icon: GreyFootNote,
+                component: GreyFootNoteDecorator,
+              },
+            ],
+          },
+        }),
         defineArrayMember(
           Media.builder(
             {
@@ -171,15 +222,17 @@ export default defineType({
         defineArrayMember({
           name: 'article',
           title: 'Linked Article',
-          description: 'Articles, exhibitions, fairs, pages, artists, and artworks are allowed',
+          description: 'Articles, exhibitions, fairs',
+          // description: 'Articles, exhibitions, fairs, pages, artists, and artworks are allowed',
           type: 'reference',
           to: [
             {type: 'article'},
+            // TBD
             {type: exhibition.name},
-            {type: page.name},
             {type: fairPage.name},
-            {type: artist.name},
-            {type: artwork.name},
+            // {type: page.name},
+            // {type: artist.name},
+            // {type: artwork.name},
           ],
         }),
       ],
@@ -196,4 +249,13 @@ export default defineType({
       type: 'url',
     }),
   ],
+  preview: {
+    select: {
+      title: 'title',
+      image: 'image',
+    },
+    prepare({title, image}) {
+      return {title, media: image?.image ?? DocumentTextIcon}
+    },
+  },
 })

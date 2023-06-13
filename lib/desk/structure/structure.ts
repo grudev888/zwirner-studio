@@ -196,7 +196,7 @@ export const generalStructure = (S: StructureBuilder) =>
               S.listItem()
                 .title('Articles')
                 .icon(ComposeIcon)
-                .child(() => getSectionsByYear({S, document: article})),
+                .child(() => getSectionsByYear({S, document: article, preview: {section: 'news'}})),
               S.listItem()
                 .title('Fair Pages')
                 .icon(DashboardIcon)

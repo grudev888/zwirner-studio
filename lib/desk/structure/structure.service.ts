@@ -22,7 +22,7 @@ interface StructureBuilderProps {
   preview?: PreviewProps
 }
 interface PreviewProps {
-  section: 'exhibitions' | 'fairs' | 'artists' | 'articles'
+  section: 'exhibitions' | 'fairs' | 'artists' | 'news'
 }
 
 const queryByType: any = {
@@ -76,7 +76,11 @@ export async function getSectionsByYear({
           .component(PreviewIframe)
           .options({
             url: (doc: any) => {
-              return `${envHost}/api/sanity/preview?slug=${doc?.slug?.current}&section=${preview.section}`
+              const currentSlug = doc?.slug?.current
+              const slugToUse = currentSlug?.startsWith('/')
+                ? currentSlug.substring(1)
+                : currentSlug
+              return `${envHost}/api/sanity/preview?slug=${slugToUse}&section=${preview.section}`
             },
           })
           .title('Preview'),
