@@ -38,7 +38,7 @@ export default defineType({
       type: 'boolean',
       name: 'newTab',
       title: 'Open in a new tab?',
-      initialValue: true,
+      initialValue: false,
     }),
     ...menuCommonFields,
   ],

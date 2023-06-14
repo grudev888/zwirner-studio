@@ -21,12 +21,21 @@ export default defineType({
           fields: [
             defineField({type: 'string', name: 'title', title: 'Title'}),
             defineField({
-              type: 'array',
-              name: 'itemLink',
-              title: 'Link',
-              of: [
-                defineArrayMember({type: 'menuItemPage', name: 'menuItemPage'}),
-                defineArrayMember({type: 'menuItemLink', name: 'menuItemLink'}),
+              type: 'object',
+              name: 'rootLink',
+              title: 'Submenu Link',
+              fields: [
+                defineField({
+                  name: 'link',
+                  title: 'Link',
+                  type: 'url',
+                }),
+                defineField({
+                  type: 'boolean',
+                  name: 'newTab',
+                  title: 'Open in a new tab?',
+                  initialValue: false,
+                }),
               ],
             }),
             defineField({
