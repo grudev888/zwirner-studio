@@ -31,7 +31,7 @@ export const generalStructure = (S: StructureBuilder) =>
     .title('Content')
     .items([
       S.listItem()
-        .title('Settings')
+        .title('Web Settings')
         .icon(CogIcon)
         .child(
           S.list()
@@ -46,22 +46,22 @@ export const generalStructure = (S: StructureBuilder) =>
                 .icon(LinkRemovedIcon)
                 .child(S.documentList().title('Page Redirects').filter('_type == "redirect"')),
               S.listItem()
-                .title('Strings')
+                .title('Global Strings')
                 .icon(TiersIcon)
                 .child(S.documentList().title('Strings').filter('_type == "strings"')),
               S.listItem()
-                .title('Header')
+                .title('Main Navigation')
                 .icon(BlockElementIcon)
                 .child(S.document().schemaType('navigation').documentId('navigation')),
               S.listItem()
-                .title('Footer')
+                .title('Footer Links')
                 .icon(BlockElementIcon)
                 .child(S.document().schemaType('footer').documentId('footer')),
             ])
         ),
       S.divider(),
       S.listItem()
-        .title('Pages')
+        .title('Web Pages')
         .icon(DocumentsIcon)
         .child(
           S.list()
@@ -324,24 +324,6 @@ export const generalStructure = (S: StructureBuilder) =>
         .title('Exhibitions and Fairs')
         .icon(DashboardIcon)
         .child(() => getSectionsByYear({S, document: exhibition})),
-      S.listItem()
-        .title('Posts')
-        .icon(BookIcon)
-        .child(
-          S.documentList()
-            .title('Posts')
-            .filter('_type == "post"')
-            .defaultOrdering([{field: 'title', direction: 'asc'}])
-            .child(
-              S.document()
-                .schemaType('post')
-                .views([S.view.form(), S.view.component(ReferenceByTab).title('References')])
-            )
-        ),
-      S.listItem()
-        .title('Press')
-        .icon(DocumentsIcon)
-        .child(() => getSectionsByYear({S, document: press})),
       S.listItem()
         .title('Locations')
         .icon(PinIcon)
