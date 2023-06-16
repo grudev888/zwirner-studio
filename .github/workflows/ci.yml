@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 19
+
+      - name: Install Dependencies and Build
+        uses: bahmutov/npm-install@v1
+        with:
+          install-command: yarn --frozen-lockfile --silent
+  lint:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 19
+
+      - name: Install Dependencies and Build
+        uses: bahmutov/npm-install@v1
+        with:
+          install-command: yarn --frozen-lockfile --silent
+
+      - name: Lint
+        run: yarn lint
