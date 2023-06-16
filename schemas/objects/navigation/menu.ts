@@ -16,26 +16,18 @@ export default defineType({
         defineArrayMember({
           type: 'object',
           name: 'menuItemSubmenu',
-          title: 'Submenu',
+          title: 'Menu Item',
           preview: {select: {title: 'title'}},
           fields: [
             defineField({type: 'string', name: 'title', title: 'Title'}),
             defineField({
-              type: 'object',
+              type: 'array',
               name: 'rootLink',
-              title: 'Submenu Link',
-              fields: [
-                defineField({
-                  name: 'link',
-                  title: 'Link',
-                  type: 'url',
-                }),
-                defineField({
-                  type: 'boolean',
-                  name: 'newTab',
-                  title: 'Open in a new tab?',
-                  initialValue: false,
-                }),
+              title: 'Menu Link',
+              validation: (rule) => rule.length(1),
+              of: [
+                defineArrayMember({type: 'menuItemPage', name: 'menuItemPage'}),
+                defineArrayMember({type: 'menuItemLink', name: 'menuItemLink'}),
               ],
             }),
             defineField({
