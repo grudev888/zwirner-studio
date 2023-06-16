@@ -1,3 +1,5 @@
+![Continuous Integration](https://github.com/Zwirner/design-system/actions/workflows/ci.yml/badge.svg)
+
 Duplicate the `.env.local.example` file and rename it as `.env`. Ask engineering for the following variables:
 - `SANITY_STUDIO_PROJECT_ID` 
 - `SANITY_STUDIO_TEST_DATABASE`
