@@ -26,3 +26,8 @@ Run this script to sync the dev database with prod
 ```bash
 yarn sync-dev-db
 ```
+
+# Continuous Integration
+
+- Every new PR to the `main` branch triggers the `CI` workflow that builds and 
+  lints the project. Also, every push to the `main` triggers the `CI` workflow.
