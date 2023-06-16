@@ -31,17 +31,21 @@ export default defineType({
       group: 'content',
       validation: (rule: StringRule) => rule.required(),
     }),
-    defineField(
-      Hero.builder(
-        {
-          name: 'hero',
-          title: 'Hero',
-          description: 'Hero module',
-          validation: (rule: ObjectRule) => rule.required(),
-        },
-        {references: [exhibition as Hero.Reference], excludeFields: ['content']}
-      )
-    ),
+    defineField({
+      name: 'hero',
+      group: 'content',
+      type: 'array',
+      title: 'Hero',
+      description: 'Hero section',
+      of: [
+        defineArrayMember({
+          type: 'reference',
+          title: 'Exhibitions',
+          to: [{type: 'exhibitionPage'}, {type: 'fairPage'}],
+        }),
+      ],
+      validation: (rule: ArrayRule<any>) => rule.required().length(1),
+    }),
     defineField({
       name: 'exhibitions',
       group: 'content',
