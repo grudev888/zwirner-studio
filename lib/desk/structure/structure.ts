@@ -6,12 +6,13 @@ import {
   DocumentsIcon,
   LinkRemovedIcon,
   PinIcon,
-  TagIcon,
   ComposeIcon,
   ThLargeIcon,
   TiersIcon,
   TrendUpwardIcon,
   UsersIcon,
+  ImagesIcon,
+  StackCompactIcon,
 } from '@sanity/icons'
 import {StructureBuilder} from 'sanity/desk'
 
@@ -23,8 +24,8 @@ import {getSectionsByYear} from './structure.service'
 import article from '../../../schemas/documents/article'
 import exhibitionPage from '../../../schemas/documents/pages/exhibitionPage'
 import fairPage from '../../../schemas/documents/pages/fairPage'
-import press from '../../../schemas/documents/press'
 import exhibition from '../../../schemas/documents/exhibition'
+import artist from '../../../schemas/documents/artist'
 
 export const generalStructure = (S: StructureBuilder) =>
   S.list()
@@ -35,7 +36,7 @@ export const generalStructure = (S: StructureBuilder) =>
         .icon(CogIcon)
         .child(
           S.list()
-            .title('Settings Documents')
+            .title('Web Settings')
             .items([
               S.listItem()
                 .title('Global SEO')
@@ -65,7 +66,7 @@ export const generalStructure = (S: StructureBuilder) =>
         .icon(DocumentsIcon)
         .child(
           S.list()
-            .title('Pages')
+            .title('Web Pages')
             .items([
               S.listItem()
                 .title('Home')
@@ -158,6 +159,10 @@ export const generalStructure = (S: StructureBuilder) =>
                 ),
               S.divider(),
               S.listItem()
+                .title('Articles')
+                .icon(ComposeIcon)
+                .child(() => getSectionsByYear({S, document: article, preview: {section: 'news'}})),
+              S.listItem()
                 .title('Artist Pages')
                 .icon(UsersIcon)
                 .child(
@@ -193,10 +198,7 @@ export const generalStructure = (S: StructureBuilder) =>
                     preview: {section: 'exhibitions'},
                   })
                 }),
-              S.listItem()
-                .title('Articles')
-                .icon(ComposeIcon)
-                .child(() => getSectionsByYear({S, document: article, preview: {section: 'news'}})),
+              
               S.listItem()
                 .title('Fair Pages')
                 .icon(DashboardIcon)
@@ -208,7 +210,7 @@ export const generalStructure = (S: StructureBuilder) =>
       S.divider(),
       S.listItem()
         .title('Artists')
-        .icon(DocumentsIcon)
+        .icon(UsersIcon)
         .child(
           S.list()
             .title('Artists')
@@ -251,10 +253,10 @@ export const generalStructure = (S: StructureBuilder) =>
             ])
         ),
       S.listItem()
-        .title('Artworks')
-        .icon(ThLargeIcon)
+        .title('All Artworks')
+        .icon(ImagesIcon)
         .child(
-          S.documentList()
+          S.documentTypeList('artwork')
             .title('Artworks')
             .filter('_type == "artwork"')
             .defaultOrdering([{field: 'title', direction: 'asc'}])
@@ -262,6 +264,19 @@ export const generalStructure = (S: StructureBuilder) =>
               S.document()
                 .schemaType('artwork')
                 .views([S.view.form(), S.view.component(ReferenceByTab).title('References')])
+            )
+        ),
+      S.listItem()
+        .title('Artworks by Artist')
+        .icon(ImagesIcon)
+        .child(
+          S.documentTypeList('artist')
+            .title('Artworks by Artist')
+            .child(artistId =>
+              S.documentList()
+                .title('Artworks')
+                .filter('_type == "artwork" && $artistId in artists[]._ref')
+                .params({artistId})
             )
         ),
       S.listItem()
@@ -294,7 +309,7 @@ export const generalStructure = (S: StructureBuilder) =>
         ),
       S.listItem()
         .title('Collections')
-        .icon(UsersIcon)
+        .icon(StackCompactIcon)
         .child(
           S.documentList()
             .title('Collections')
@@ -303,20 +318,6 @@ export const generalStructure = (S: StructureBuilder) =>
             .child(
               S.document()
                 .schemaType('collection')
-                .views([S.view.form(), S.view.component(ReferenceByTab).title('References')])
-            )
-        ),
-      S.listItem()
-        .title('Events')
-        .icon(TagIcon)
-        .child(
-          S.documentList()
-            .title('Events')
-            .filter('_type == "event"')
-            .defaultOrdering([{field: 'title', direction: 'asc'}])
-            .child(
-              S.document()
-                .schemaType('event')
                 .views([S.view.form(), S.view.component(ReferenceByTab).title('References')])
             )
         ),
