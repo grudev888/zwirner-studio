@@ -9,6 +9,7 @@
     "start": "sanity start",
     "build": "yarn tailwind:build && sanity build",
     "deploy": "sanity deploy",
+    "lint": "eslint . --max-warnings=0",
     "deploy-graphql": "sanity graphql deploy",
     "tailwind:build": "npx tailwindcss build ./styles/tailwind.css -o ./styles/tailwind.output.css --minify",
     "sync-dev-db": "sanity dataset export production production.tar.gz --overwrite && sanity dataset import production.tar.gz dev --replace && yarn del-cli --force ./production.tar.gz"

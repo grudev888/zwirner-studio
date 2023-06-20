@@ -1,3 +1,5 @@
+![Continuous Integration](https://github.com/Zwirner/design-system/actions/workflows/ci.yml/badge.svg)
+
 Duplicate the `.env.local.example` file and rename it as `.env`. Ask engineering for the following variables:
 - `SANITY_STUDIO_PROJECT_ID` 
 - `SANITY_STUDIO_TEST_DATABASE`
@@ -26,3 +28,8 @@ Run this script to sync the dev database with prod
 ```bash
 yarn sync-dev-db
 ```
+
+# Continuous Integration
+
+- Every new PR to the `main` branch triggers the `CI` workflow that builds and 
+  lints the project. Also, every push to the `main` triggers the `CI` workflow.
