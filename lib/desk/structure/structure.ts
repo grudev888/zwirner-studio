@@ -25,7 +25,6 @@ import article from '../../../schemas/documents/article'
 import exhibitionPage from '../../../schemas/documents/pages/exhibitionPage'
 import fairPage from '../../../schemas/documents/pages/fairPage'
 import exhibition from '../../../schemas/documents/exhibition'
-import artist from '../../../schemas/documents/artist'
 
 export const generalStructure = (S: StructureBuilder) =>
   S.list()
