@@ -16,7 +16,6 @@ import footer from './singletons/footer'
 import navigation from './singletons/navigation'
 import exhibitionPage from './documents/pages/exhibitionPage'
 import fairPage from './documents/pages/fairPage'
-import postType from './documents/post'
 import press from './documents/press'
 import redirects from './documents/redirects'
 import strings from './documents/strings'
@@ -126,7 +125,6 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     strings,
     exhibition,
     artist,
-    postType,
     authorType,
     dateRange,
     redirects,
