@@ -5,6 +5,7 @@ import artist from './documents/artist'
 import artwork from './documents/artwork'
 import authorType from './documents/author'
 import bookType from './documents/book'
+import podcast from './documents/podcast'
 import collection from './documents/collection'
 import event from './documents/event'
 import exhibition from './documents/exhibition'
@@ -118,6 +119,7 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     press,
     pageType,
     bookType,
+    podcast,
     locationType,
     event,
     artwork,
