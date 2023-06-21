@@ -13,6 +13,7 @@ import {
   UsersIcon,
   ImagesIcon,
   StackCompactIcon,
+  ActivityIcon,
 } from '@sanity/icons'
 import {StructureBuilder} from 'sanity/desk'
 
@@ -338,5 +339,13 @@ export const generalStructure = (S: StructureBuilder) =>
                 .schemaType('location')
                 .views([S.view.form(), S.view.component(ReferenceByTab).title('References')])
             )
+        ),
+        S.listItem()
+        .title('Podcasts')
+        .icon(ActivityIcon)
+        .child(
+          S.documentTypeList('podcast')
+            .title('Podcasts')
+            .defaultOrdering([{field: 'dateSelection', direction: 'asc'}])
         ),
     ])
