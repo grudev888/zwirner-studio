@@ -39,7 +39,20 @@ export default defineType({
       title: 'Description',
       type: 'array',
       of: [
-        {type: 'block'},
+        {
+            type: 'block',
+            styles: [
+              {title: 'Normal', value: 'normal'},
+            ],
+            lists: [],
+            marks: {
+              decorators: [
+                {title: 'Emphasis', value: 'em'},
+                {title: 'Underline', value: 'underline'},
+              ],
+            },
+
+          },
       ],
     }),
     defineField({
