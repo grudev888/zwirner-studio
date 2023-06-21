@@ -27,10 +27,36 @@ export default defineType({
       type: 'text',
     }),
     defineField({
+      name: 'publisher',
+      title: 'Publisher',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'isbn',
+      title: 'ISBN',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      title: 'Publish Date',
+      name: 'dateSelection',
+      type: 'date',
+      description: 'The date the book was published. If the publish date is only a year, select any date in that year. If the book is not yet published, please select the date it will be published.',
+    }),
+    defineField({
         title: 'Books URL',
         name: 'booksUrl',
         type: 'url',
         description: 'The URL to the book on www.davidzwirnerbooks.com',
+    }),
+    defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'array',
+      of: [
+        {type: 'block'},
+      ],
     }),
     defineField({
       name: 'artists',
@@ -57,32 +83,6 @@ export default defineType({
       ],
     }),
     defineField({
-      name: 'publisher',
-      title: 'Publisher',
-      type: 'string',
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'isbn',
-      title: 'ISBN',
-      type: 'string',
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'description',
-      title: 'Description',
-      type: 'array',
-      of: [
-        {type: 'block'},
-      ],
-    }),
-    defineField({
-      title: 'Publish Date',
-      name: 'dateSelection',
-      type: 'date',
-      description: 'The date the book was published. If the publish date is only a year, select any date in that year. If the book is not yet published, please select the date it will be published.',
-    }),
-    defineField({
       title: 'Images',
       name: 'photos',
       type: 'array',
@@ -101,16 +101,7 @@ export default defineType({
           ],
         },
       ],
-    }),
-    defineField({
-      name: 'price',
-      type: 'number',
-      title: 'Price',
-      validation: (rule) => rule.required(),
-      readOnly: ({currentUser}) => {
-        return !currentUser?.roles.find(({name}) => name !== 'administrator')
-      },
-    }),
+    })
   ],
   preview: {
     select: {
