@@ -24,7 +24,10 @@ export default defineType({
     defineField({
       name: 'tagline',
       title: 'Tagline',
-      type: 'text',
+      type: 'array',
+      of: [
+        {type: 'block'},
+      ],
     }),
     defineField({
       name: 'publisher',
