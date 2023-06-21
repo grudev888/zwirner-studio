@@ -17,6 +17,48 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'subtitle',
+      title: 'Subtitle',
+      type: 'string',
+    }),
+    defineField({
+      name: 'tagline',
+      title: 'Tagline',
+      type: 'text',
+    }),
+    defineField({
+      name: 'publisher',
+      title: 'Publisher',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'isbn',
+      title: 'ISBN',
+      type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      title: 'Publish Date',
+      name: 'dateSelection',
+      type: 'date',
+      description: 'The date the book was published. If the publish date is only a year, select any date in that year. If the book is not yet published, please select the date it will be published.',
+    }),
+    defineField({
+        title: 'Books URL',
+        name: 'booksUrl',
+        type: 'url',
+        description: 'The URL to the book on www.davidzwirnerbooks.com',
+    }),
+    defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'array',
+      of: [
+        {type: 'block'},
+      ],
+    }),
+    defineField({
       name: 'artists',
       title: 'Artists',
       type: 'array',
@@ -35,62 +77,13 @@ export default defineType({
       of: [
         {
           type: 'reference',
-          title: 'Author',
+          title: 'Authors',
           to: [{type: author.name}],
         },
       ],
     }),
     defineField({
-      name: 'publisher',
-      title: 'Publisher',
-      type: 'string',
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'isbn',
-      title: 'ISBN',
-      type: 'string',
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'summary',
-      title: 'Summary',
-      type: 'string',
-    }),
-    defineField({
-      name: 'description',
-      title: 'Description, body',
-      type: 'array',
-      of: [
-        {type: 'block'},
-        {
-          type: 'image',
-          options: {
-            hotspot: true,
-          },
-          fields: [
-            {
-              name: 'alt',
-              type: 'string',
-              title: 'Alternative text',
-            },
-            {
-              name: 'url',
-              type: 'string',
-              title: 'Url redirect',
-            },
-          ],
-        },
-      ],
-    }),
-    defineField({
-      title: 'publishDate',
-      name: 'dateSelection',
-      type: 'dateSelection',
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      title: 'Book photos',
+      title: 'Images',
       name: 'photos',
       type: 'array',
       of: [
@@ -108,16 +101,7 @@ export default defineType({
           ],
         },
       ],
-    }),
-    defineField({
-      name: 'price',
-      type: 'number',
-      title: 'Price',
-      validation: (rule) => rule.required(),
-      readOnly: ({currentUser}) => {
-        return !currentUser?.roles.find(({name}) => name !== 'administrator')
-      },
-    }),
+    })
   ],
   preview: {
     select: {
