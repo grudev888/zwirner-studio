@@ -1,11 +1,10 @@
 import {
   ConditionalPropertyCallbackContext,
-  ObjectRule,
   defineArrayMember,
   defineField,
   defineType,
 } from 'sanity'
-import {DocumentTextIcon, ComposeIcon, SearchIcon, ImageIcon, RemoveIcon} from '@sanity/icons'
+import {DocumentTextIcon, ComposeIcon, SearchIcon, ImageIcon} from '@sanity/icons'
 
 import location from './location'
 import event from './event'
@@ -84,7 +83,6 @@ export default defineType({
       name: 'category',
       title: 'Category',
       group: 'content',
-      hidden: (context) => context.parent.type !== 'externalNews',
       options: {
         list: [
           {title: 'Press', value: 'Press'},
@@ -117,12 +115,10 @@ export default defineType({
           name: 'image',
           title: 'Header Image',
           group: 'content',
-          validation: (rule: ObjectRule) => rule.required(),
         },
-        {type: Media.MEDIA_TYPES.IMAGE}
+        {type: Media.MediaTypes.IMAGE, required: true}
       )
     ),
-
     defineField({
       name: 'body',
       title: 'Article Body',
@@ -157,10 +153,9 @@ export default defineType({
               icon: ImageIcon,
               title: 'Image',
               preview: {select: {media: 'image', title: 'image.caption'}},
-              validation: (rule: ObjectRule) => rule.required(),
             },
             {
-              type: Media.MEDIA_TYPES.IMAGE,
+              type: Media.MediaTypes.IMAGE,
               image: {
                 additionalFields: [
                   defineField({
@@ -243,9 +238,16 @@ export default defineType({
       group: 'content',
       hidden: (context) => context.parent.type !== 'externalNews',
       validation: (rule) =>
-        rule.custom((value, context) =>
-          (context.parent as any).type === 'externalNews' && !value ? 'Required' : true
-        ),
+        rule.custom((value, context) => {
+          if ((context.parent as any).type === 'externalNews') {
+            if (!value) return {message: 'Required'}
+
+            if (!value.startsWith('https://') && !value.startsWith('http://'))
+              return {message: 'URL protocol missing (http:// or https://)'}
+          }
+
+          return true
+        }),
       type: 'url',
     }),
   ],

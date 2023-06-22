@@ -39,7 +39,7 @@ export default defineType({
           description: 'Media module',
           validation: (rule: ObjectRule) => rule.required(),
         },
-        {video: {providers: [Media.VIDEO_PROVIDERS.custom]}}
+        {video: {providers: [Media.VideoProviders.custom]}}
       )
     ),
     defineField(

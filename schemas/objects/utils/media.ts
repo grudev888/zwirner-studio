@@ -1,22 +1,23 @@
-import {FieldDefinition, defineField, defineType} from 'sanity'
+import {FieldDefinition, ObjectRule, defineField, defineType} from 'sanity'
 import {capitalize} from '../../../lib/util/strings'
 import {getPropFromPath} from '../../../lib/util/sanity'
 
-export enum MEDIA_TYPES {
+export enum MediaTypes {
   IMAGE = 'image',
   VIDEO = 'video',
 }
 
-export enum VIDEO_PROVIDERS {
+export enum VideoProviders {
   vimeo = 'vimeo',
   youtube = 'youtube',
   custom = 'custom',
 }
 
 export type MediaOptions = {
-  type?: MEDIA_TYPES
-  video?: {providers?: VIDEO_PROVIDERS[]}
+  type?: MediaTypes
+  video?: {providers?: VideoProviders[]}
   image?: {additionalFields?: FieldDefinition[]}
+  required?: boolean
 }
 
 export const builder = (
@@ -34,7 +35,7 @@ export const builder = (
       initialValue: options?.type,
       hidden: !!options?.type,
       options: {
-        list: Object.values(MEDIA_TYPES)
+        list: Object.values(MediaTypes)
           .filter((type) => (!!options?.type ? type === options?.type : true))
           .map((type) => ({title: capitalize(type), value: type})),
       },
@@ -53,7 +54,7 @@ export const builder = (
             return rule.custom((value, context) => {
               if (!context.document || !context.path) return true
               const parent = getPropFromPath(context.document, context.path?.slice(0, -2))
-              return parent.type === MEDIA_TYPES.IMAGE && !value ? 'Required' : true
+              return parent.type === MediaTypes.IMAGE && !value ? 'Required' : true
             })
           },
         }),
@@ -64,14 +65,14 @@ export const builder = (
         }),
         ...(options?.image?.additionalFields || []),
       ],
-      hidden: ({parent}) => parent?.type === MEDIA_TYPES.VIDEO || !parent?.type,
+      hidden: ({parent}) => parent?.type === MediaTypes.VIDEO || !parent?.type,
     }),
     defineField({
       name: 'provider',
       title: 'Provider',
       type: 'string',
-      options: {list: options?.video?.providers || Object.values(VIDEO_PROVIDERS)},
-      hidden: ({parent}) => parent?.type === MEDIA_TYPES.IMAGE || !parent?.type,
+      options: {list: options?.video?.providers || Object.values(VideoProviders)},
+      hidden: ({parent}) => parent?.type === MediaTypes.IMAGE || !parent?.type,
     }),
     defineField({
       name: 'video',
@@ -79,19 +80,33 @@ export const builder = (
       type: 'file',
       options: {accept: 'video/mp4,video/x-m4v,video/*'},
       hidden: ({parent}) =>
-        parent?.type === MEDIA_TYPES.IMAGE || !parent?.type || parent?.provider !== 'custom',
+        parent?.type === MediaTypes.IMAGE || !parent?.type || parent?.provider !== 'custom',
     }),
     defineField({
       name: 'externalVideo',
       title: 'Video URL',
       type: 'url',
       hidden: ({parent}) =>
-        parent?.type === MEDIA_TYPES.IMAGE ||
+        parent?.type === MediaTypes.IMAGE ||
         !parent?.type ||
         !['vimeo', 'youtube'].includes(parent?.provider),
     }),
   ],
   ...params,
+  validation: (rule: ObjectRule) => [
+    ...((Array.isArray(params.validation) ? params.validation : [params.validation]) || []),
+    options?.required === true &&
+      rule.custom((value) => {
+        if (!value) return {message: `${params.name} is required`}
+
+        if (value.type === MediaTypes.IMAGE && !value.image) return {message: `Required`}
+
+        if (value.type === MediaTypes.VIDEO && !value.video && !value.externalURL)
+          return {message: `Required`}
+
+        return true
+      }),
+  ],
 })
 
 export default defineType(builder({name: 'media', title: 'Media'}))
