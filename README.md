@@ -43,4 +43,5 @@ and actions used in workflows. If there is a new versions, Dependabot opens a PR
 ## Secrets
 
 - `DZDEPENDABOT_GH_TOKEN` - personal access token of the `dzdependabot` account
-with the `packages:read` permission.
+with the `packages:read` permission. It is required to check for new versions 
+packages published in our private repositories, e.g. `design-system`.
