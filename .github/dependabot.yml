@@ -6,6 +6,11 @@ registries:
     token: ${{secrets.DZDEPENDABOT_GH_TOKEN}}
 
 updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
   - package-ecosystem: "npm"
     directory: "/"
     registries:
