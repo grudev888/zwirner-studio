@@ -39,9 +39,3 @@ yarn sync-dev-db
 The Dependabot configuration is located in the `.github/dependabot.yml`. It is 
 configured to check weekly for new versions of dependencies in the `package.json`
 and actions used in the workflows. If there is a new version, Dependabot opens a PR.
-
-## Secrets
-
-- `DZDEPENDABOT_GH_TOKEN` - personal access token of the `dzdependabot` account
-with the `packages:read` permission. It is required to check for new versions of
-packages published in our private repositories, e.g. `design-system`.

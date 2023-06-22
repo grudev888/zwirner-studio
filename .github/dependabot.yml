@@ -1,10 +1,4 @@
 version: 2
-registries:
-  gh-packages:
-    type: npm-registry
-    url: https://npm.pkg.github.com
-    token: ${{secrets.DZDEPENDABOT_GH_TOKEN}}
-
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -13,7 +7,5 @@ updates:
 
   - package-ecosystem: "npm"
     directory: "/"
-    registries:
-      - gh-packages
     schedule:
       interval: "weekly"
