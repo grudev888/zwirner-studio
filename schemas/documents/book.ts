@@ -24,7 +24,23 @@ export default defineType({
     defineField({
       name: 'tagline',
       title: 'Tagline',
-      type: 'text',
+      type: 'array',
+      of: [
+        {
+            type: 'block',
+            styles: [
+              {title: 'Normal', value: 'normal'},
+            ],
+            lists: [],
+            marks: {
+              decorators: [
+                {title: 'Emphasis', value: 'em'},
+                {title: 'Underline', value: 'underline'},
+              ],
+            },
+
+          },
+      ],
     }),
     defineField({
       name: 'publisher',
@@ -55,7 +71,21 @@ export default defineType({
       title: 'Description',
       type: 'array',
       of: [
-        {type: 'block'},
+        {
+            type: 'block',
+            styles: [
+              {title: 'Normal', value: 'normal'},
+            ],
+            marks: {
+              decorators: [
+                {title: 'Strong', value: 'strong'},
+                {title: 'Emphasis', value: 'em'},
+                {title: 'Underline', value: 'underline'},
+              ],
+            },
+
+          },
+          {type: 'image'},
       ],
     }),
     defineField({
