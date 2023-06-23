@@ -96,10 +96,10 @@ export const builder = (
   validation: (rule: ObjectRule) => [
     ...((Array.isArray(params.validation) ? params.validation : [params.validation]) || []),
     options?.required === true &&
-      rule.custom((value) => {
+      rule.custom((value: any) => {
         if (!value) return {message: `${params.name} is required`}
 
-        if (value.type === MediaTypes.IMAGE && !value.image) return {message: `Required`}
+        if (value.type === MediaTypes.IMAGE && !value.image?.asset) return {message: `Required`}
 
         if (value.type === MediaTypes.VIDEO && !value.video && !value.externalURL)
           return {message: `Required`}
