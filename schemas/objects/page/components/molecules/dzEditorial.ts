@@ -1,4 +1,4 @@
-import {ComposeIcon, EditIcon, MasterDetailIcon, BlockquoteIcon} from '@sanity/icons'
+import {ComposeIcon, EditIcon, MasterDetailIcon} from '@sanity/icons'
 // Todo: import from the design system import {EditorialType} from '@zwirner/design-system'
 import {defineArrayMember, defineField, defineType} from 'sanity'
 export const EDITORIAL_TYPES = {

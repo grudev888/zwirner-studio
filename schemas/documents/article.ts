@@ -9,13 +9,9 @@ import {DocumentTextIcon, ComposeIcon, SearchIcon, ImageIcon} from '@sanity/icon
 import location from './location'
 import event from './event'
 import * as Interstitial from '../objects/page/components/primitives/interstitial'
-import exhibition from './exhibition'
 import fairPage from './pages/fairPage'
+import exhibitionPage from './pages/exhibitionPage'
 import slugUrl, {validateSlugFormatRule} from '../objects/utils/slugUrl'
-// TBD
-// import page from './page'
-// import artist from './artist'
-// import artwork from './artwork'
 import * as Media from '../objects/utils/media'
 import {GreyFootNote, GreyFootNoteDecorator} from '../../components/block/GreyFootnote'
 
@@ -220,15 +216,7 @@ export default defineType({
           description: 'Articles, exhibitions, fairs',
           // description: 'Articles, exhibitions, fairs, pages, artists, and artworks are allowed',
           type: 'reference',
-          to: [
-            {type: 'article'},
-            // TBD
-            {type: exhibition.name},
-            {type: fairPage.name},
-            // {type: page.name},
-            // {type: artist.name},
-            // {type: artwork.name},
-          ],
+          to: [{type: 'article'}, {type: exhibitionPage.name}, {type: fairPage.name}],
         }),
       ],
     }),
