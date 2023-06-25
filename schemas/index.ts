@@ -111,9 +111,9 @@ export const objects: ObjectDefinition[] = [
 
 export const pageDocuments: DocumentDefinition[] = [artistPage, exhibitionPage, fairPage]
 
-export const singletons: DocumentDefinition[] = [stories, home, collect, utopiaEditions, globalSEO]
+export const singletons: DocumentDefinition[] = [settings, stories, home, collect, utopiaEditions, globalSEO, availableArtworks, navigation, consignments, footer]
 
-export const schema: {types: SchemaTypeDefinition[]} = {
+export const schema: {types: SchemaTypeDefinition[] } = {
   types: [
     article,
     press,
@@ -130,11 +130,6 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     authorType,
     dateRange,
     redirects,
-    footer,
-    consignments,
-    navigation,
-    settings,
-    availableArtworks,
     pageContent,
     pageContentList,
     pageBuilderComponents,
