@@ -1,6 +1,7 @@
 import {ActivityIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
-
+import {linkSchemaType  } from '../../schemas/objects/utils/link'
+import { component } from 'sanity/desk'
 
 export default defineType({
   name: 'podcast',
@@ -89,7 +90,7 @@ export default defineType({
       name: 'transcript',
       title: 'Transcript',
       type: 'file',
-      options: {accept: '.txt, application/msword'},
+      options: {accept: 'text/plain, application/msword, application/pdf'},
     }),
   ]
 })
