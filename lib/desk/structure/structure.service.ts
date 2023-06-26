@@ -41,7 +41,7 @@ export async function getSectionsByYear({
   const title = document.title || capitalize(name)
 
   const defaultView = S.documentList()
-    .title(`${title} Pages Posted`)
+    .title(`${title} Pages`)
     .filter(`_type == "${name}"`)
     .defaultOrdering([{field: 'publishedAt', direction: 'asc'}])
 
@@ -49,7 +49,7 @@ export async function getSectionsByYear({
 
   if (!client) {
     return S.documentList()
-      .title(`${title} Pages Posted`)
+      .title(`${title} Pages`)
       .filter(`_type == "${name}"`)
       .defaultOrdering([{field: 'publishedAt', direction: 'asc'}])
   }
