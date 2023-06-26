@@ -1,5 +1,6 @@
 import {BookIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
+import blockContentSimple from '../../schemas/objects/utils/blockContentSimple'
 
 import artistType from './artist'
 import author from './author'
@@ -22,22 +23,7 @@ export default defineType({
       description: 'The tagline that will appear on the book page. Will display in books cards',
       validation: (rule) => rule.required(),
       type: 'array',
-      of: [
-        {
-            type: 'block',
-            styles: [
-              {title: 'Normal', value: 'normal'},
-            ],
-            lists: [],
-            marks: {
-              decorators: [
-                {title: 'Emphasis', value: 'em'},
-                {title: 'Underline', value: 'underline'},
-              ],
-            },
-
-          },
-      ],
+      of: blockContentSimple,
     }),
     defineField({
       name: 'publisher',
