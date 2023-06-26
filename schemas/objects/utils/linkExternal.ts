@@ -1,10 +1,10 @@
-import {LinkIcon} from '@sanity/icons'
+import {LaunchIcon} from '@sanity/icons'
 
 export default {
   name: 'link',
   type: 'object',
   title: 'Link external URL',
-  icon: LinkIcon,
+  icon: LaunchIcon,
   fields: [
     {
       name: 'href',
