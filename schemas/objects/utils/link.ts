@@ -1,5 +1,4 @@
 import {defineField, defineType} from 'sanity'
-import {LinkIcon} from '@sanity/icons'
 
 interface externalLinkType {
   href: string
