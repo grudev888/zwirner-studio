@@ -198,12 +198,15 @@ export const generalStructure = (S: StructureBuilder) =>
                     preview: {section: 'exhibitions'},
                   })
                 }),
-              
               S.listItem()
                 .title('Fair Pages')
                 .icon(DashboardIcon)
                 .child(() =>
-                  getSectionsByYear({S, document: fairPage, preview: {section: 'fairs'}})
+                  getSectionsByYear({
+                    S, 
+                    document: fairPage, 
+                    preview: {section: 'fairs'},
+                  })
                 ),
             ])
         ),
