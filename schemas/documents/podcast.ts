@@ -1,6 +1,6 @@
 import {ActivityIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
-
+import blockContentSimple from '../../schemas/objects/utils/blockContentSimple'
 
 export default defineType({
   name: 'podcast',
@@ -38,22 +38,7 @@ export default defineType({
       name: 'description',
       title: 'Description',
       type: 'array',
-      of: [
-        {
-            type: 'block',
-            styles: [
-              {title: 'Normal', value: 'normal'},
-            ],
-            lists: [],
-            marks: {
-              decorators: [
-                {title: 'Emphasis', value: 'em'},
-                {title: 'Underline', value: 'underline'},
-              ],
-            },
-
-          },
-      ],
+      of: blockContentSimple,
     }),
     defineField({
       name: 'itunesUrl',
@@ -89,7 +74,7 @@ export default defineType({
       name: 'transcript',
       title: 'Transcript',
       type: 'file',
-      options: {accept: '.txt, application/msword'},
+      options: {accept: 'text/plain, application/msword, application/pdf'},
     }),
   ]
 })
