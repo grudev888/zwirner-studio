@@ -8,7 +8,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  refresh-datasets:
+  refresh-dataset:
     name: Refresh dataset
     runs-on: ubuntu-latest
     strategy:
