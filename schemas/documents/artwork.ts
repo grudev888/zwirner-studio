@@ -76,15 +76,17 @@ export default defineType({
       ],
     }),
     defineField({
-      title: 'Artworks Type to fill',
-      name: 'artworkTypeToFill',
-      type: 'array',
-      of: [
-        defineArrayMember({type: drawing.name}),
-        defineArrayMember({type: painting.name}),
-        defineArrayMember({type: photography.name}),
-        defineArrayMember({type: sculpture.name}),
-      ],
+      title: 'Artworks Type',
+      name: 'artworkType',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Drawing', value: 'drawing'},
+          {title: 'Painting', value: 'painting'},
+          {title: 'Photography', value: 'photography'},
+          {title: 'Sculpture', value: 'sculpture'},
+        ],
+      },
     }),
     defineField({
       name: 'medium',
