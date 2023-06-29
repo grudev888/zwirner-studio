@@ -6,6 +6,11 @@ import page from '../../documents/page'
 import artistPage from '../../documents/pages/artistPage'
 import exhibitionPage from '../../documents/pages/exhibitionPage'
 import fairPage from '../../documents/pages/fairPage'
+import availableArtworks from '../../singletons/availableArtworks'
+import collect from '../../singletons/collect'
+import consignments from '../../singletons/consignments'
+import stories from '../../singletons/stories'
+import utopiaEditions from '../../singletons/utopiaEditions'
 import {menuCommonFields} from '../utils/menu'
 
 export default defineType({
@@ -24,6 +29,11 @@ export default defineType({
         {type: artistPage.name},
         {type: exhibitionPage.name},
         {type: fairPage.name},
+        {type: availableArtworks.name},
+        {type: collect.name},
+        {type: consignments.name},
+        {type: stories.name},
+        {type: utopiaEditions.name},
       ],
     }),
     defineField({
