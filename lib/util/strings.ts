@@ -6,3 +6,10 @@ export const slugify = (str: string): string =>
     .replace(/[^\w]+/g, ' ')
     .replace(/\s+/g, '-')
     .toLowerCase()
+
+export const randomIntString = (length = 5) => {
+  return Math.floor(
+    Number(String(1).padEnd(length, '0')) +
+    Math.random() *  Math.floor(Number(String(9).padEnd(length, '0')))
+  )
+}
