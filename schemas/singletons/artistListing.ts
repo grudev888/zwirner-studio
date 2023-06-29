@@ -1,6 +1,6 @@
 import {ComposeIcon, SearchIcon} from '@sanity/icons'
 import {BlockElementIcon} from '@sanity/icons'
-import {ArrayRule, ObjectRule, StringRule, defineArrayMember, defineField, defineType} from 'sanity'
+import {StringRule, defineField, defineType} from 'sanity'
 import interstitial from '../objects/page/components/primitives/interstitial'
 
 export default defineType({
