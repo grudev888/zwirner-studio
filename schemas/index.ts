@@ -13,6 +13,7 @@ import globalSEO from './documents/globalSEO'
 import locationType from './documents/location'
 import pageType from './documents/page'
 import artistPage from './documents/pages/artistPage'
+import artworkPage from './documents/pages/artworkPage'
 import footer from './singletons/footer'
 import navigation from './singletons/navigation'
 import exhibitionPage from './documents/pages/exhibitionPage'
@@ -115,6 +116,7 @@ export const singletons: DocumentDefinition[] = [stories, home, collect, utopiaE
 
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
+    artworkPage,
     article,
     press,
     pageType,
