@@ -8,7 +8,7 @@ const schemaTypeToSection = (type: string) => ({
   artistPage: 'artists',
   exhibitionPage: 'exhibitions',
   fairPage: 'fairs',
-  artworks: 'artworks',
+  artwork: 'artworks',
 })
 
 export const defaultDocumentNode: DefaultDocumentNodeResolver = (S, {schemaType}) => {

@@ -5,6 +5,14 @@ import dateSelection from '../objects/utils/dateSelection'
 import {randomIntString} from '../../lib/util/strings'
 import {ThLargeIcon,ComposeIcon, SearchIcon} from '@sanity/icons'
 import artistType from './artist'
+import blockContentSimple from '../../schemas/objects/utils/blockContentSimple'
+
+const CTAOptionsList = [
+  {title: 'None', value: 'none'},
+  {title: 'Inquire', value: 'inquire'},
+  {title: 'E-Comm', value: 'e-comm'},
+  {title: 'Custom', value: 'custom'},
+]
 
 // Check If we will need prefilled fields
 export default defineType({
@@ -24,25 +32,14 @@ export default defineType({
       group: 'seo',
     }),
     defineField({
-      name: 'artists',
-      title: 'Artists',
-      group: 'content',
-      type: 'array',
-      of: [
-        defineArrayMember({
-          type: 'reference',
-          title: 'Artist',
-          to: [{type: artistType.name}],
-        }),
-      ],
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
       name: 'title',
       title: 'Title',
       group: 'content',
       type: 'string',
-      validation: (rule) => rule.required(),
+      validation: Rule => [
+        Rule.required(),
+        Rule.max(300).warning('The title is longer than our standard character count, an ellipsis will appear on tile view.')
+      ]
     }),
     defineField({
       name: 'displayTitle',
@@ -73,6 +70,20 @@ export default defineType({
       }
     }),
     defineField({
+      name: 'artists',
+      title: 'Artists',
+      group: 'content',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'reference',
+          title: 'Artist',
+          to: [{type: artistType.name}],
+        }),
+      ],
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       title: 'Date',
       name: 'dateSelection',
       group: 'content',
@@ -93,7 +104,7 @@ export default defineType({
       ],
     }),
     defineField({
-      title: 'Artwork photos',
+      title: 'Artwork Media',
       name: 'photos',
       group: 'content',
       type: 'array',
@@ -178,6 +189,107 @@ export default defineType({
       readOnly: ({currentUser}) => {
         return !currentUser?.roles.find(({name}) => name !== 'administrator')
       },
+    }),
+    defineField({
+      name: 'currency',
+      title: 'Currency',
+      group: 'content',
+      type: 'string',
+      options: {
+        list: ['USD', 'EUR', 'GBP', 'HKD']
+      }
+    }),
+    defineField({
+      name: 'artworkCTA',
+      title: 'Artwork CTA',
+      group: 'content',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'CTA',
+          title: 'CTA',
+          type: 'string',
+          initialValue: 'none',
+          options: {
+            list: CTAOptionsList,
+          },
+        }),
+        defineField({
+          name: 'CTAText',
+          title: 'CTA Text',
+          type: 'string',
+          hidden: ({ parent }) => parent?.CTA === 'none'
+        }),
+        defineField({
+          name: 'CTALink',
+          title: 'CTA Link',
+          type: 'url',
+          hidden: ({ parent }) => parent?.CTA !== 'custom'
+        }),
+        defineField({
+          name: 'secondaryCTA',
+          title: 'Secondary CTA',
+          type: 'string',
+          initialValue: 'none',
+          options: {
+            list: CTAOptionsList,
+          },
+        }),
+        defineField({
+          name: 'SecondaryCTAText',
+          title: 'Secondary CTA Text',
+          type: 'string',
+          hidden: ({ parent }) => parent?.secondaryCTA === 'none'
+        }),
+        defineField({
+          name: 'SecondaryCTALink',
+          title: 'Secondary CTA Link',
+          type: 'url',
+          hidden: ({ parent }) => parent?.secondaryCTA !== 'custom'
+        }),
+      ],
+    }),
+    defineField({
+      name: 'additionalCaption',
+      title: 'Additional Caption',
+      group: 'content',
+      type: 'array',
+      of: blockContentSimple,
+    }),
+    defineField({
+      name: 'editionInformation',
+      title: 'Edition Information',
+      group: 'content',
+      type: 'array',
+      of: blockContentSimple,
+    }),
+    defineField({
+      name: 'copyrightInformation',
+      title: 'Copyright Information',
+      group: 'content',
+      type: 'array',
+      of: blockContentSimple,
+    }),
+    defineField({
+      name: 'salesInformation',
+      title: 'Sales Information',
+      group: 'content',
+      type: 'array',
+      of: blockContentSimple,
+    }),
+    defineField({
+      name: 'productInformation',
+      title: 'Product Information',
+      group: 'content',
+      type: 'array',
+      of: blockContentSimple,
+    }),
+    defineField({
+      name: 'description',
+      title: 'Description',
+      group: 'content',
+      type: 'array',
+      of: blockContentSimple,
     }),
   ],
   preview: {
