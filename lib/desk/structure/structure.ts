@@ -122,7 +122,20 @@ export const generalStructure = (S: StructureBuilder) =>
               S.listItem()
                 .title('Stories')
                 .icon(BlockElementIcon)
-                .child(S.document().schemaType('stories').documentId('stories')),
+                .child(
+                  S.document()
+                    .schemaType('stories')
+                    .documentId('stories')
+                    .views([
+                      S.view.form(),
+                      S.view
+                        .component(PreviewIframe)
+                        .options({
+                          url: `${envHost}/api/sanity/preview?section=stories`,
+                        })
+                        .title('Preview'),
+                    ])
+                ),
               S.listItem()
                 .title('Available Artworks')
                 .icon(ThLargeIcon)
@@ -220,8 +233,8 @@ export const generalStructure = (S: StructureBuilder) =>
                 .icon(DashboardIcon)
                 .child(() =>
                   getSectionsByYear({
-                    S, 
-                    document: fairPage, 
+                    S,
+                    document: fairPage,
                     preview: {section: 'fairs'},
                   })
                 ),
@@ -292,7 +305,7 @@ export const generalStructure = (S: StructureBuilder) =>
         .child(
           S.documentTypeList('artist')
             .title('Artworks by Artist')
-            .child(artistId =>
+            .child((artistId) =>
               S.documentList()
                 .title('Artworks')
                 .filter('_type == "artwork" && $artistId in artists[]._ref')
@@ -360,7 +373,7 @@ export const generalStructure = (S: StructureBuilder) =>
                 .views([S.view.form(), S.view.component(ReferenceByTab).title('References')])
             )
         ),
-        S.listItem()
+      S.listItem()
         .title('Podcasts')
         .icon(ActivityIcon)
         .child(

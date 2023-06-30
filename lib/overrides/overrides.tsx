@@ -10,6 +10,7 @@ import {
 import {UserViewComponent} from 'sanity/desk'
 import {cn} from '../classnames'
 import {pageDocuments} from '../../schemas'
+import {UserViewProps} from '../desk/types'
 
 const styles = {
   mainContainer: `
@@ -19,18 +20,18 @@ const styles = {
     text-lg
     p-2
   `,
-  sectionContainer:`
+  sectionContainer: `
     flex
     flex-col
     gap-1
     mb-3
   `,
-  title:`
+  title: `
     text-md
     font-bold
     py-3
-  `
-};
+  `,
+}
 
 type ReferenceListProps = {
   referringDocuments: SanityDocument[]
@@ -105,7 +106,7 @@ function ReferencesList({referringDocuments}: ReferenceListProps) {
   return (
     <div>
       {Object.entries(referencesByType).map((listItem) => {
-        const [_, section] = listItem
+        const section = listItem?.[1]
         const {title, data} = section ?? {}
         if (title && Array.isArray(data) && data.length) {
           return (
@@ -132,7 +133,7 @@ function ReferencesList({referringDocuments}: ReferenceListProps) {
   )
 }
 
-export const ReferenceByTab: UserViewComponent = (props) => {
+export const ReferenceByTab: UserViewComponent = (props: UserViewProps) => {
   return (
     <div className={cn(styles.mainContainer)}>
       <WithReferringDocuments id={props.documentId}>
