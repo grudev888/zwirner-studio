@@ -85,6 +85,23 @@ export const generalStructure = (S: StructureBuilder) =>
                         .title('Preview'),
                     ])
                 ),
+                S.listItem()
+                .title('Artists')
+                .icon(BlockElementIcon)
+                .child(
+                  S.document()
+                    .schemaType('artistListing')
+                    .documentId('artistListing')
+                    .views([
+                      S.view.form(),
+                      S.view
+                        .component(PreviewIframe)
+                        .options({
+                          url: `${envHost}/api/sanity/preview?section=artists`,
+                        })
+                        .title('Preview'),
+                    ])
+                ),
               S.listItem()
                 .title('Collect')
                 .icon(BlockElementIcon)
