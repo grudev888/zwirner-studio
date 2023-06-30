@@ -108,6 +108,7 @@ export default defineType({
       title: 'Featured Podcast',
       description: 'Split podcast module',
       type: 'reference',
+      group: 'content',
       to: [{type: podcast.name}],
     }),
     defineField({
