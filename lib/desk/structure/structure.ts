@@ -189,32 +189,6 @@ export const generalStructure = (S: StructureBuilder) =>
                     )
                 ),
               S.listItem()
-                .title('Artwork Pages')
-                .icon(UsersIcon)
-                .child(
-                  S.documentList()
-                    .title('Artwork Pages')
-                    .filter('_type == "artworkPage"')
-                    .defaultOrdering([{field: 'title', direction: 'asc'}])
-                    .child((childId) =>
-                      S.document()
-                        .id(childId)
-                        .schemaType('artworkPage')
-                        .views([
-                          S.view.form(),
-                          S.view
-                            .component(PreviewIframe)
-                            .options({
-                              url: (doc: any) => {
-                                return `${envHost}/api/sanity/preview?slug=${doc?.slug?.current}&section=artworks`
-                              },
-                            })
-                            .title('Preview'),
-                          S.view.component(ReferenceByTab).title('References'),
-                        ])
-                    )
-                ),
-              S.listItem()
                 .title('Exhibition Pages')
                 .icon(DashboardIcon)
                 .child(() => {
@@ -301,6 +275,7 @@ export const generalStructure = (S: StructureBuilder) =>
         .child(
           S.documentTypeList('artist')
             .title('Artworks by Artist')
+            .defaultOrdering([{field: 'lastName', direction: 'asc'}])
             .child(artistId =>
               S.documentList()
                 .title('Artworks')

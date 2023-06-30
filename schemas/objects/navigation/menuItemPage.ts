@@ -7,7 +7,6 @@ import artistPage from '../../documents/pages/artistPage'
 import exhibitionPage from '../../documents/pages/exhibitionPage'
 import fairPage from '../../documents/pages/fairPage'
 import {menuCommonFields} from '../utils/menu'
-import artworkPage from '../../documents/pages/artworkPage'
 
 export default defineType({
   type: 'object',
@@ -25,7 +24,6 @@ export default defineType({
         {type: artistPage.name},
         {type: exhibitionPage.name},
         {type: fairPage.name},
-        {type: artworkPage.name}
       ],
     }),
     defineField({

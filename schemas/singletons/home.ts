@@ -8,9 +8,9 @@ import fairPage from '../documents/pages/fairPage'
 import article from '../documents/article'
 import location from '../documents/location'
 import dzInterstitial from '../objects/page/components/molecules/dzInterstitial'
-import artworkPage from '../documents/pages/artworkPage'
+import artwork from '../documents/artwork'
 
-const allowedDocs = [page, exhibitionPage, fairPage, artistPage, article, artworkPage]
+const allowedDocs = [page, exhibitionPage, fairPage, artistPage, article, artwork]
 
 export default defineType({
   name: 'home',

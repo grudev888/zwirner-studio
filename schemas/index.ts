@@ -13,7 +13,6 @@ import globalSEO from './documents/globalSEO'
 import locationType from './documents/location'
 import pageType from './documents/page'
 import artistPage from './documents/pages/artistPage'
-import artworkPage from './documents/pages/artworkPage'
 import footer from './singletons/footer'
 import navigation from './singletons/navigation'
 import exhibitionPage from './documents/pages/exhibitionPage'
@@ -21,10 +20,6 @@ import fairPage from './documents/pages/fairPage'
 import press from './documents/press'
 import redirects from './documents/redirects'
 import strings from './documents/strings'
-import drawingType from './objects/artTypes/drawing'
-import paintingType from './objects/artTypes/painting'
-import photographType from './objects/artTypes/photography'
-import sculptureType from './objects/artTypes/sculpture'
 import social from './objects/data/social'
 import dzCard from './objects/page/components/molecules/dzCard'
 import dzCarousel from './objects/page/components/molecules/dzCarousel'
@@ -95,10 +90,6 @@ export const pageComponents: ObjectDefinition[] = [
 ]
 
 export const objects: ObjectDefinition[] = [
-  drawingType,
-  paintingType,
-  photographType,
-  sculptureType,
   social,
   addressType,
   dateSelection,
@@ -116,7 +107,6 @@ export const singletons: DocumentDefinition[] = [stories, home, collect, utopiaE
 
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
-    artworkPage,
     article,
     press,
     pageType,

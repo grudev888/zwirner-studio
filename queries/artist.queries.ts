@@ -5,3 +5,7 @@ export const artistById = groq`
   ...
 }`
 
+export const getArtistByName = groq`
+*[_type == "artist" && _name == $lastName ] {
+  ...
+}`
