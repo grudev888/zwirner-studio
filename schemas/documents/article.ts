@@ -212,9 +212,8 @@ export default defineType({
       of: [
         defineArrayMember({
           name: 'article',
-          title: 'Linked Article',
+          title: 'Linked Articles',
           description: 'Articles, exhibitions, fairs',
-          // description: 'Articles, exhibitions, fairs, pages, artists, and artworks are allowed',
           type: 'reference',
           to: [{type: 'article'}, {type: exhibitionPage.name}, {type: fairPage.name}],
         }),

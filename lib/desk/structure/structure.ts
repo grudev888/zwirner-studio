@@ -85,6 +85,23 @@ export const generalStructure = (S: StructureBuilder) =>
                         .title('Preview'),
                     ])
                 ),
+                S.listItem()
+                .title('Artists')
+                .icon(BlockElementIcon)
+                .child(
+                  S.document()
+                    .schemaType('artistListing')
+                    .documentId('artistListing')
+                    .views([
+                      S.view.form(),
+                      S.view
+                        .component(PreviewIframe)
+                        .options({
+                          url: `${envHost}/api/sanity/preview?section=artists`,
+                        })
+                        .title('Preview'),
+                    ])
+                ),
               S.listItem()
                 .title('Collect')
                 .icon(BlockElementIcon)
@@ -105,7 +122,20 @@ export const generalStructure = (S: StructureBuilder) =>
               S.listItem()
                 .title('Stories')
                 .icon(BlockElementIcon)
-                .child(S.document().schemaType('stories').documentId('stories')),
+                .child(
+                  S.document()
+                    .schemaType('stories')
+                    .documentId('stories')
+                    .views([
+                      S.view.form(),
+                      S.view
+                        .component(PreviewIframe)
+                        .options({
+                          url: `${envHost}/api/sanity/preview?section=stories`,
+                        })
+                        .title('Preview'),
+                    ])
+                ),
               S.listItem()
                 .title('Available Artworks')
                 .icon(ThLargeIcon)
@@ -203,8 +233,8 @@ export const generalStructure = (S: StructureBuilder) =>
                 .icon(DashboardIcon)
                 .child(() =>
                   getSectionsByYear({
-                    S, 
-                    document: fairPage, 
+                    S,
+                    document: fairPage,
                     preview: {section: 'fairs'},
                   })
                 ),
@@ -344,7 +374,7 @@ export const generalStructure = (S: StructureBuilder) =>
                 .views([S.view.form(), S.view.component(ReferenceByTab).title('References')])
             )
         ),
-        S.listItem()
+      S.listItem()
         .title('Podcasts')
         .icon(ActivityIcon)
         .child(

@@ -13,13 +13,23 @@ import globalSEO from './documents/globalSEO'
 import locationType from './documents/location'
 import pageType from './documents/page'
 import artistPage from './documents/pages/artistPage'
-import footer from './singletons/footer'
-import navigation from './singletons/navigation'
 import exhibitionPage from './documents/pages/exhibitionPage'
 import fairPage from './documents/pages/fairPage'
 import press from './documents/press'
 import redirects from './documents/redirects'
 import strings from './documents/strings'
+
+import footer from './singletons/footer'
+import navigation from './singletons/navigation'
+import availableArtworks from './singletons/availableArtworks'
+import collect from './singletons/collect'
+import home from './singletons/home'
+import settings from './singletons/settings'
+import stories from './singletons/stories'
+import utopiaEditions from './singletons/utopiaEditions'
+import consignments from './singletons/consignments'
+import artworkListing from './singletons/artistListing'
+
 import social from './objects/data/social'
 import dzCard from './objects/page/components/molecules/dzCard'
 import dzCarousel from './objects/page/components/molecules/dzCarousel'
@@ -45,17 +55,10 @@ import jsonLD from './objects/utils/jsonLdSchema'
 import link from './objects/utils/link'
 import media from './objects/utils/media'
 import textComplex from './objects/utils/textComplex'
-import availableArtworks from './singletons/availableArtworks'
-import collect from './singletons/collect'
-import home from './singletons/home'
-import settings from './singletons/settings'
-import stories from './singletons/stories'
-import utopiaEditions from './singletons/utopiaEditions'
 import menu from './objects/navigation/menu'
 import menuItemLink from './objects/navigation/menuItemLink'
 import menuItemPage from './objects/navigation/menuItemPage'
 import slugUrl from './objects/utils/slugUrl'
-import consignments from './singletons/consignments'
 import dzConsignment from './objects/page/components/molecules/dzConsignment'
 import dzButton from './objects/page/components/atoms/dzButton'
 import dzCardMedia from './objects/page/components/molecules/dzCard/dzCardMedia'
@@ -103,7 +106,7 @@ export const objects: ObjectDefinition[] = [
 
 export const pageDocuments: DocumentDefinition[] = [artistPage, exhibitionPage, fairPage]
 
-export const singletons: DocumentDefinition[] = [stories, home, collect, utopiaEditions, globalSEO]
+export const singletons: DocumentDefinition[] = [stories, home, collect, utopiaEditions, globalSEO, artworkListing]
 
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [

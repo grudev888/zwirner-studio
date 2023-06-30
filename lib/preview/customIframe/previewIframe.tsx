@@ -3,6 +3,7 @@ import {ChevronDownIcon, CopyIcon, UndoIcon, LaunchIcon, MobileDeviceIcon} from 
 import {TransferIcon} from '@sanity/icons'
 import {useState} from 'react'
 import {UserViewComponent} from 'sanity/desk'
+import {UserViewProps} from '../../desk/types'
 import {cn} from '../../classnames'
 import '../../../styles/tailwind.output.css'
 
@@ -312,7 +313,7 @@ const breakpoints = [
   },
 ]
 
-export const PreviewIframe: UserViewComponent = ({options, document}) => {
+export const PreviewIframe: UserViewComponent = ({options, document}: UserViewProps) => {
   const [iframeKey, setIframeKey] = useState(1)
   const [openMobile, setOpenMobile] = useState(false)
   const [rotateViewport, setRotateViewport] = useState(false)
