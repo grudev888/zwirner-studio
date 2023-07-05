@@ -1,18 +1,12 @@
 import {defineArrayMember, defineField, defineType} from 'sanity'
 
+import * as Media from '../objects/utils/media'
 import slugUrl from '../objects/utils/slugUrl'
 import dateSelection from '../objects/utils/dateSelection'
 import {randomIntString} from '../../lib/util/strings'
-import {ThLargeIcon,ComposeIcon, SearchIcon} from '@sanity/icons'
+import {ThLargeIcon,ComposeIcon,SearchIcon,ImageIcon,DocumentVideoIcon} from '@sanity/icons'
 import artistType from './artist'
 import blockContentSimple from '../../schemas/objects/utils/blockContentSimple'
-
-const CTAOptionsList = [
-  {title: 'None', value: 'none'},
-  {title: 'Inquire', value: 'inquire'},
-  {title: 'E-Comm', value: 'e-comm'},
-  {title: 'Custom', value: 'custom'},
-]
 
 // Check If we will need prefilled fields
 export default defineType({
@@ -91,19 +85,6 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'artworksEdition',
-      title: 'Artworks Edition',
-      group: 'content',
-      type: 'array',
-      of: [
-        defineArrayMember({
-          type: 'reference',
-          title: 'Artwork',
-          to: [{type: 'artwork'}],
-        }),
-      ],
-    }),
-    defineField({
       title: 'Artwork Media',
       name: 'photos',
       group: 'content',
@@ -111,6 +92,7 @@ export default defineType({
       of: [
         {
           type: 'image',
+          title: 'Legacy Image',
           options: {
             hotspot: true,
           },
@@ -127,6 +109,53 @@ export default defineType({
             },
           ],
         },
+        defineArrayMember(
+          Media.builder(
+            {
+              name: 'artImage',
+              icon: ImageIcon,
+              title: 'Image',
+              preview: {select: {media: 'image'}},
+            },
+            {
+              type: Media.MediaTypes.IMAGE,
+              image: {
+                additionalFields: [
+                  defineField({
+                    type: 'string',
+                    name: 'caption',
+                    title: 'Caption',
+                  }),
+                ],
+              },
+            }
+          )
+        ),
+        defineArrayMember(
+          Media.builder(
+            {
+              name: 'artVideo',
+              icon: DocumentVideoIcon,
+              title: 'Video',
+            },
+            {
+              type: Media.MediaTypes.VIDEO,
+            }
+          )
+        ),
+      ],
+    }),
+    defineField({
+      name: 'artworksEdition',
+      title: 'Artworks Edition',
+      group: 'content',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'reference',
+          title: 'Artwork',
+          to: [{type: 'artwork'}],
+        }),
       ],
     }),
     defineField({
@@ -160,13 +189,21 @@ export default defineType({
       name: 'dimensions',
       title: 'Dimensions',
       group: 'content',
-      type: 'text',
+      type: 'string',
     }),
     defineField({
       name: 'framed',
       title: 'Framed',
       group: 'content',
       type: 'boolean',
+      hidden: ({parent}) => parent?.artworkType === 'sculpture',
+    }),
+    defineField({
+      name: 'framedDimensions',
+      title: 'Framed Dimensions',
+      group: 'content',
+      type: 'string',
+      hidden: ({parent}) => !parent?.framed || parent?.artworkType === 'sculpture',
     }),
     defineField({
       name: 'availability',
@@ -179,6 +216,74 @@ export default defineType({
           {title: 'Unavailable', value: 'unavailable'},
         ],
       },
+    }),
+    defineField({
+      name: 'artworkCTA',
+      title: 'Artwork CTA',
+      group: 'content',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'CTA',
+          title: 'CTA',
+          type: 'string',
+          initialValue: 'none',
+          options: {
+            list:  [
+              {title: 'None', value: 'none'},
+              {title: 'Inquire', value: 'inquire'},
+              {title: 'E-Comm', value: 'ecomm'},
+              {title: 'Custom', value: 'custom'},
+            ],
+          },
+        }),
+        defineField({
+          name: 'CTAText',
+          title: 'CTA Text',
+          type: 'string',
+          validation: Rule => Rule.max(20),
+          hidden: ({ parent }) => parent?.CTA === 'none' || parent?.CTA === undefined
+        }),
+        defineField({
+          name: 'CTALink',
+          title: 'CTA Link',
+          type: 'url',
+          hidden: ({ parent }) => parent?.CTA !== 'custom',
+          validation: Rule => Rule.uri({
+            allowRelative: true,
+          }),
+        }),
+        defineField({
+          name: 'secondaryCTA',
+          title: 'Secondary CTA',
+          type: 'string',
+          initialValue: 'none',
+          options: {
+            list:  [
+              {title: 'None', value: 'none'},
+              {title: 'Inquire', value: 'inquire'},
+              {title: 'Custom', value: 'custom'},
+            ],
+          },
+          hidden: ({ parent }) => parent?.CTA === 'none' || parent?.CTA === undefined
+        }),
+        defineField({
+          name: 'SecondaryCTAText',
+          title: 'Secondary CTA Text',
+          type: 'string',
+          validation: Rule => Rule.max(20),
+          hidden: ({ parent }) => parent?.secondaryCTA === 'none' || parent?.secondaryCTA === undefined
+        }),
+        defineField({
+          name: 'SecondaryCTALink',
+          title: 'Secondary CTA Link',
+          type: 'url',
+          hidden: ({ parent }) => parent?.secondaryCTA !== 'custom',
+          validation: Rule => Rule.uri({
+            allowRelative: true,
+          }),
+        }),
+      ],
     }),
     defineField({
       name: 'price',
@@ -198,56 +303,6 @@ export default defineType({
       options: {
         list: ['USD', 'EUR', 'GBP', 'HKD']
       }
-    }),
-    defineField({
-      name: 'artworkCTA',
-      title: 'Artwork CTA',
-      group: 'content',
-      type: 'object',
-      fields: [
-        defineField({
-          name: 'CTA',
-          title: 'CTA',
-          type: 'string',
-          initialValue: 'none',
-          options: {
-            list: CTAOptionsList,
-          },
-        }),
-        defineField({
-          name: 'CTAText',
-          title: 'CTA Text',
-          type: 'string',
-          hidden: ({ parent }) => parent?.CTA === 'none'
-        }),
-        defineField({
-          name: 'CTALink',
-          title: 'CTA Link',
-          type: 'url',
-          hidden: ({ parent }) => parent?.CTA !== 'custom'
-        }),
-        defineField({
-          name: 'secondaryCTA',
-          title: 'Secondary CTA',
-          type: 'string',
-          initialValue: 'none',
-          options: {
-            list: CTAOptionsList,
-          },
-        }),
-        defineField({
-          name: 'SecondaryCTAText',
-          title: 'Secondary CTA Text',
-          type: 'string',
-          hidden: ({ parent }) => parent?.secondaryCTA === 'none'
-        }),
-        defineField({
-          name: 'SecondaryCTALink',
-          title: 'Secondary CTA Link',
-          type: 'url',
-          hidden: ({ parent }) => parent?.secondaryCTA !== 'custom'
-        }),
-      ],
     }),
     defineField({
       name: 'additionalCaption',
