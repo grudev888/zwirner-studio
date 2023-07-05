@@ -13,6 +13,9 @@ export default defineType({
       name: 'link',
       title: 'External Link',
       type: 'url',
+      validation: Rule => Rule.uri({
+        allowRelative: true,
+      })
     }),
     defineField({
       type: 'boolean',
