@@ -296,7 +296,17 @@ export const generalStructure = (S: StructureBuilder) =>
             .child(
               S.document()
                 .schemaType('artwork')
-                .views([S.view.form(), S.view.component(ReferenceByTab).title('References')])
+                .views([
+                  S.view.form(), 
+                  S.view
+                    .component(PreviewIframe)
+                    .options({
+                      url: (doc: any) => {
+                        return `${envHost}/api/sanity/preview?slug=${doc?.slug?.current}`
+                      },
+                    })
+                    .title('Preview'),
+                  S.view.component(ReferenceByTab).title('References')])
             )
         ),
       S.listItem()

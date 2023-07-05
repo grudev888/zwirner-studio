@@ -60,7 +60,6 @@ export default defineType({
           if (!defaultSlug) throw new Error('Please add a title to create a unique slug.')
           return defaultSlug.slice(0, 95)
         },
-        
       }
     }),
     defineField({
