@@ -104,33 +104,12 @@ export default defineType({
       ],
     }),
     defineField({
-      type: 'object',
       name: 'featuredPodcast',
       title: 'Featured Podcast',
       description: 'Split podcast module',
+      type: 'reference',
       group: 'content',
-      validation: (rule) => rule.required(),
-      fields: [
-        defineField({
-          name: 'podcastReference',
-          title: 'Featured Podcast',
-          description: 'Featured podcast reference',
-          type: 'reference',
-          to: [{type: podcast.name}],
-        }),
-        defineField({
-          type: 'string',
-          title: 'Title',
-          name: 'title',
-          validation: (rule) => rule.required(),
-        }),
-        defineField({
-          type: 'text',
-          name: 'text',
-          title: 'Text',
-          validation: (rule) => rule.required(),
-        }),
-      ],
+      to: [{type: podcast.name}],
     }),
     defineField({
       name: 'books',
