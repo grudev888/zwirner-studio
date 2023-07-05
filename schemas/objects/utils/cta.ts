@@ -38,7 +38,14 @@ export default defineField({
       name: 'action',
       type: 'string',
       title: 'CTA Type',
-      options: {list: ['Newsletter', 'Link']},
+      options: {list: ['Newsletter', 'Link', 'Download PDF', 'Link Content']},
+    }),
+    defineField({
+      name: 'file',
+      title: 'File Download',
+      type: 'file',
+      options: {accept: 'application/pdf'},
+      hidden: ({parent}) => parent?.action !== 'Download PDF',
     }),
     defineField({
       name: 'link',
