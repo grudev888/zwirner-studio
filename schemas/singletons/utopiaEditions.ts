@@ -46,8 +46,8 @@ export default defineType({
       Interstitial.builder(
         {
           name: 'newReleasesInterstitial',
-          title: 'Interstitial',
-          description: 'Interstitial module',
+          title: 'Introduction',
+          description: 'Custom Interstitial module',
           validation: (rule: ObjectRule) => rule.required(),
         },
         {excludeFields: ['subtitle']}
