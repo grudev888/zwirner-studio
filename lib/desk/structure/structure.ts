@@ -162,6 +162,33 @@ export const generalStructure = (S: StructureBuilder) =>
                 .title('Articles')
                 .icon(ComposeIcon)
                 .child(() => getSectionsByYear({S, document: article, preview: {section: 'news'}})),
+
+              S.listItem()
+                .title('Artist Detail')
+                .icon(UsersIcon)
+                .child(
+                  S.documentList()
+                    .title('Artist Detail')
+                    .filter('_type == "artistDetail"')
+                    .defaultOrdering([{field: 'title', direction: 'asc'}])
+                    .child((childId) =>
+                      S.document()
+                        .id(childId)
+                        .schemaType('artistDetail')
+                        .views([
+                          S.view.form(),
+                          S.view
+                            .component(PreviewIframe)
+                            .options({
+                              url: (doc: any) => {
+                                return `${envHost}/api/sanity/preview?slug=${doc?.slug?.current}&section=artists`
+                              },
+                            })
+                            .title('Preview'),
+                        ])
+                    )
+                ),
+
               S.listItem()
                 .title('Artist Pages')
                 .icon(UsersIcon)
@@ -198,7 +225,6 @@ export const generalStructure = (S: StructureBuilder) =>
                     preview: {section: 'exhibitions'},
                   })
                 }),
-              
               S.listItem()
                 .title('Fair Pages')
                 .icon(DashboardIcon)
@@ -272,7 +298,7 @@ export const generalStructure = (S: StructureBuilder) =>
         .child(
           S.documentTypeList('artist')
             .title('Artworks by Artist')
-            .child(artistId =>
+            .child((artistId) =>
               S.documentList()
                 .title('Artworks')
                 .filter('_type == "artwork" && $artistId in artists[]._ref')
@@ -340,7 +366,7 @@ export const generalStructure = (S: StructureBuilder) =>
                 .views([S.view.form(), S.view.component(ReferenceByTab).title('References')])
             )
         ),
-        S.listItem()
+      S.listItem()
         .title('Podcasts')
         .icon(ActivityIcon)
         .child(
