@@ -74,7 +74,12 @@ export default defineType({
       of: [{type: 'reference', name: article.name, title: article.title, to: {type: article.name}}],
       group: 'content',
     }),
-    defineField({name: 'interstitial', title: 'Interstitial', type: dzInterstitial.name}),
+    defineField({
+      name: 'interstitial', 
+      title: 'Interstitial', 
+      group: 'content',
+      type: dzInterstitial.name
+    }),
     defineField({
       name: 'locations',
       title: 'Locations',
