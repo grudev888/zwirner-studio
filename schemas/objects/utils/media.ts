@@ -1,4 +1,4 @@
-import {FieldDefinition, ObjectRule, defineField, defineType} from 'sanity'
+import {FieldDefinition, ObjectRule, SchemaTypeDefinition, defineField, defineType} from 'sanity'
 import {capitalize} from '../../../lib/util/strings'
 import {getPropFromPath} from '../../../lib/util/sanity'
 import {PresentationIcon} from '@sanity/icons'
@@ -117,4 +117,4 @@ export const builder = (
   ],
 })
 
-export default defineType(builder({name: 'media', title: 'Media'}))
+export default defineType(builder({name: 'media', title: 'Media'})) as SchemaTypeDefinition
