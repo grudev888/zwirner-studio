@@ -1,5 +1,4 @@
-import {SchemaTypeDefinition, defineArrayMember, defineField, isArray} from 'sanity'
-import {defineGridField} from '../../../../common/fields'
+import {SchemaTypeDefinition, defineArrayMember, defineField, defineType, isArray} from 'sanity'
 import artwork from '../../../../documents/artwork'
 
 const fields = (reference: SchemaTypeDefinition | SchemaTypeDefinition[]) => {
@@ -7,15 +6,27 @@ const fields = (reference: SchemaTypeDefinition | SchemaTypeDefinition[]) => {
 
   return [
     defineField({
-      name: 'Title',
+      name: 'title',
       title: 'Title',
       type: 'string',
-      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'displayNumberOfResults',
+      type: 'boolean',
+      title: 'Display # of results',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'itemsPerRow',
+      title: 'Max items per row',
+      type: 'number',
+      initialValue: 4,
+      options: {layout: 'dropdown', list: [1, 2, 3, 4]},
     }),
     ...(references
       ? [
           defineField({
-            name: 'item',
+            name: 'items',
             type: 'array',
             title: references.map(({title}) => title).join(', '),
             of: references.map((ref) =>
@@ -26,7 +37,6 @@ const fields = (reference: SchemaTypeDefinition | SchemaTypeDefinition[]) => {
                 to: [{type: ref.name}],
               })
             ),
-            validation: (rule) => rule.required(),
           }),
         ]
       : []),
@@ -35,16 +45,18 @@ const fields = (reference: SchemaTypeDefinition | SchemaTypeDefinition[]) => {
 
 export const builder = (
   params: {name: string; title: string; [key: string]: any},
-  options?: {reference?: SchemaTypeDefinition | SchemaTypeDefinition[]}
+  options?: {reference?: SchemaTypeDefinition | SchemaTypeDefinition[]; excludedFields?: string[]}
 ) => {
-  return defineGridField({
+  return {
     type: 'object',
-    fields: fields(options?.reference || artwork),
+    fields: fields(options?.reference || artwork).filter(
+      (field) => !options?.excludedFields?.includes?.(field.name)
+    ),
     ...params,
-  })
+  }
 }
 
-export default defineGridField({
+export default defineType({
   name: 'gridModule',
   type: 'object',
   fields: fields(artwork),

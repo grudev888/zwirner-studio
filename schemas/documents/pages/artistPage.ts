@@ -10,7 +10,7 @@ import carouselModule, {
   builder as carouselModuleBuilder,
 } from '../../objects/page/components/modules/carouselModule'
 import article from '../article'
-import book from '../book''
+import book from '../book'
 import artwork from '../artwork'
 import media from '../../objects/utils/media'
 import fairPage from './fairPage'

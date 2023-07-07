@@ -84,7 +84,6 @@ export const defineGridField = (schema: ObjectDefinition | ArrayDefinition): Fie
         initialValue: 4,
         group: 'attributes',
         options: {layout: 'dropdown', list: [1, 2, 3, 4]},
-        validation: (rule) => rule.required().min(1),
       }),
     ],
   })
