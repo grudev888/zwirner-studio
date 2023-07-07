@@ -5,8 +5,6 @@ import artwork from '../../../../documents/artwork'
 const fields = (reference: SchemaTypeDefinition | SchemaTypeDefinition[]) => {
   const references = isArray(reference) ? reference : [reference]
 
-  console.log(references)
-
   return [
     defineField({
       name: 'Title',
