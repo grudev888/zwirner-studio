@@ -1,11 +1,11 @@
-import {defineArrayMember, defineField, defineType} from 'sanity'
+import { SlugRule,SlugSourceContext,defineArrayMember, defineField, defineType} from 'sanity'
 
 import * as Media from '../objects/utils/media'
-import slugUrl from '../objects/utils/slugUrl'
+import {builder as slugBuilder} from '../objects/utils/slugUrl'
 import dateSelection from '../objects/utils/dateSelection'
 import {randomIntString} from '../../lib/util/strings'
 import {ThLargeIcon,ComposeIcon,SearchIcon,ImageIcon,DocumentVideoIcon} from '@sanity/icons'
-import artistType from './artist'
+import artist from './artist'
 import blockContentSimple from '../../schemas/objects/utils/blockContentSimple'
 
 // Check If we will need prefilled fields
@@ -48,20 +48,31 @@ export default defineType({
         ]
       }
     }),
-    defineField({
-      name: 'slug',
-      title: 'Slug',
-      type: 'slugUrl',
-      group: 'content',
-      options: {
-        ...slugUrl.options,
-        source: (object: any) => {
-          const defaultSlug = `${object?.title}-${object.dateSelection.year}-${randomIntString(5)}` ?? ''
-          if (!defaultSlug) throw new Error('Please add a title to create a unique slug.')
-          return defaultSlug.slice(0, 95)
+    // should be in format of /artist/[artist-slug]/[artwork-slug]
+    // artwork-slug should be title + year + random 5 digit number
+    defineField(
+      slugBuilder(
+        {
+          name: 'slug',
+          title: 'Slug',
+          group: 'content',
+          options: {
+            source: (object: any) => {
+              const defaultSlug = `${object?.title}-${object.dateSelection.year}-${randomIntString(5)}` ?? ''
+              if (!defaultSlug) throw new Error('Please add a title to create a unique slug.')
+              return defaultSlug.slice(0, 95)
+            },
+          }
         },
-      }
-    }),
+        {
+          optional: true,
+          prefix: async (parent) => {
+            const artistSlug = parent.artist?._ref.slug
+            return `/artists/${artistSlug}`
+          },
+        },
+      )
+    ),
     defineField({
       name: 'artists',
       title: 'Artists',
@@ -71,7 +82,7 @@ export default defineType({
         defineArrayMember({
           type: 'reference',
           title: 'Artist',
-          to: [{type: artistType.name}],
+          to: [{type: artist.name}],
         }),
       ],
       validation: (rule) => rule.required(),
