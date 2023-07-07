@@ -164,32 +164,6 @@ export const generalStructure = (S: StructureBuilder) =>
                 .child(() => getSectionsByYear({S, document: article, preview: {section: 'news'}})),
 
               S.listItem()
-                .title('Artist Detail')
-                .icon(UsersIcon)
-                .child(
-                  S.documentList()
-                    .title('Artist Detail')
-                    .filter('_type == "artistDetail"')
-                    .defaultOrdering([{field: 'title', direction: 'asc'}])
-                    .child((childId) =>
-                      S.document()
-                        .id(childId)
-                        .schemaType('artistDetail')
-                        .views([
-                          S.view.form(),
-                          S.view
-                            .component(PreviewIframe)
-                            .options({
-                              url: (doc: any) => {
-                                return `${envHost}/api/sanity/preview?slug=${doc?.slug?.current}&section=artists`
-                              },
-                            })
-                            .title('Preview'),
-                        ])
-                    )
-                ),
-
-              S.listItem()
                 .title('Artist Pages')
                 .icon(UsersIcon)
                 .child(

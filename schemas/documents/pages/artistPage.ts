@@ -1,82 +1,206 @@
-import {BlockElementIcon, ComposeIcon, SearchIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
-
-import slugUrl from '../../objects/utils/slugUrl'
-import {apiVersion} from '../../../env'
-import {artistById} from '../../../queries/artist.queries'
-
+import {UserIcon, DocumentsIcon} from '@sanity/icons'
 import artist from '../artist'
-
-export interface ArtistPageSchemaProps {
-  title: string
-  slug: any
-  seo: any
-  artist: any
-}
+import interstitial from '../../objects/page/components/primitives/interstitial'
+import gridModule, {
+  builder as gridModuleBuilder,
+} from '../../objects/page/components/modules/gridModule'
+import splitModule from '../../objects/page/components/modules/splitModule'
+import carouselModule, {
+  builder as carouselModuleBuilder,
+} from '../../objects/page/components/modules/carouselModule'
+import article from '../article'
+import book from '../book'
+import exhibition from '../exhibition'
+import artwork from '../artwork'
+import media from '../../objects/utils/media'
+import fairPage from './fairPage'
 
 export default defineType({
   name: 'artistPage',
   title: 'Artist Page',
-  type: 'document',
-  icon: BlockElementIcon,
   groups: [
-    {name: 'content', title: 'Content', icon: ComposeIcon, default: true},
-    {name: 'seo', title: 'SEO', icon: SearchIcon},
+    {name: 'content', title: 'Artist Page', icon: UserIcon, default: true},
+    {name: 'subpages', title: 'Sub-Pages', icon: DocumentsIcon},
   ],
+  type: 'document',
   fields: [
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string',
       group: 'content',
-      validation: (Rule) => Rule.required(),
+      type: 'string',
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'slug',
       title: 'Slug',
-      type: 'slugUrl',
-      options: {
-        ...slugUrl.options,
-        source: (object: any, context: any) => {
-          const artistRef = object?.artist?._ref
-          const defaultSlug = object?.title ?? ''
-
-          if (!defaultSlug && !artistRef)
-            throw new Error('Please add a title or an artist to create a unique slug.')
-
-          if (!artistRef) return defaultSlug
-
-          const {getClient} = context
-          const client = getClient({apiVersion})
-          const params = {artistId: artistRef}
-
-          return client.fetch(artistById, params).then((result: any) => {
-            const [artist] = result ?? []
-            return artist?.fullName ?? defaultSlug
-          })
-        },
-      },
       group: 'content',
-    }),
-    defineField({
-      name: 'seo',
-      title: 'SEO',
-      type: 'seo',
-      group: 'seo',
+      type: 'slugUrl',
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'artist',
       title: 'Artist',
-      type: 'reference',
       group: 'content',
-      to: [{type: artist.name}],
+      type: 'reference',
+      to: [{type: artist.name, title: 'Artist'}],
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'components',
-      title: 'Components',
-      type: 'pageBuilderComponents',
+      name: 'showHero',
+      title: 'Show Hero',
       group: 'content',
+      type: 'boolean',
+    }),
+    defineField({
+      name: 'hero',
+      title: 'Hero',
+      group: 'content',
+      type: splitModule.name,
+      hidden: (context) => context.parent.showHero !== true,
+    }),
+    defineField({
+      name: 'survey',
+      title: 'Survey',
+      group: 'content',
+      type: carouselModule.name,
+    }),
+    defineField({
+      name: 'availableWorksBooks',
+      title: 'Available Works/Books Split',
+      group: 'content',
+      type: splitModule.name,
+    }),
+    defineField({
+      name: 'availableWorks',
+      title: 'Available Works',
+      group: 'content',
+      type: gridModule.name,
+    }),
+    defineField({
+      name: 'availableWorksInterstitial',
+      title: 'Available Works Interstitial',
+      group: 'content',
+      type: interstitial.name,
+    }),
+    defineField(
+      gridModuleBuilder(
+        {
+          name: 'latestExhibitions',
+          title: 'Latest Exhibitions',
+          group: 'content',
+        },
+        {reference: exhibition}
+      )
+    ),
+    defineField({
+      name: 'exhibitionsInterstitial',
+      title: 'Exhibitions Interstitial',
+      group: 'content',
+      type: interstitial.name,
+    }),
+    defineField({
+      name: 'moveGuideUp',
+      title: 'Move Guide Up',
+      group: 'content',
+      type: 'boolean',
+    }),
+    defineField(
+      carouselModuleBuilder(
+        {
+          name: 'guide',
+          title: 'Guide',
+          group: 'content',
+        },
+        {reference: article}
+      )
+    ),
+    defineField(
+      gridModuleBuilder(
+        {
+          name: 'selectedPress',
+          title: 'Selected Press',
+          group: 'content',
+        },
+        {reference: article}
+      )
+    ),
+    defineField(
+      carouselModuleBuilder(
+        {
+          name: 'books',
+          title: 'Books',
+          group: 'content',
+        },
+        {reference: book}
+      )
+    ),
+    defineField({
+      name: 'interstitial',
+      title: 'Interstitial',
+      group: 'content',
+      type: 'interstitial',
+    }),
+
+    // Subpages
+
+    defineField(
+      gridModuleBuilder(
+        {
+          name: 'surveySubpage',
+          title: 'Survey',
+          group: 'subpages',
+        },
+        {reference: [artwork, media]}
+      )
+    ),
+
+    defineField(
+      gridModuleBuilder(
+        {
+          name: 'availableWorksSubpage',
+          title: 'Available Works',
+          group: 'subpages',
+        },
+        {reference: [artwork, media]}
+      )
+    ),
+
+    defineField({
+      name: 'exhibitionsInterstitialSubpage',
+      title: 'Exhibitions Interstitial',
+      group: 'subpages',
+      type: interstitial.name,
+    }),
+
+    defineField(
+      gridModuleBuilder(
+        {
+          name: 'guideSubpage',
+          title: 'Guide',
+          group: 'subpages',
+        },
+        {reference: [exhibition, fairPage, article]}
+      )
+    ),
+
+    defineField(
+      gridModuleBuilder(
+        {
+          name: 'pressSubpage',
+          title: 'Press',
+          group: 'subpages',
+        },
+        {reference: article}
+      )
+    ),
+
+    defineField({
+      name: 'pressInterstitialSubpage',
+      title: 'Press Interstitial',
+      group: 'subpages',
+      type: interstitial.name,
     }),
   ],
 })

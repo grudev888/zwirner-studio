@@ -66,7 +66,6 @@ import dzCardMedia from './objects/page/components/molecules/dzCard/dzCardMedia'
 import interstitial from './objects/page/components/primitives/interstitial'
 import hero from './objects/page/components/primitives/hero'
 import splitModule from './objects/page/components/modules/splitModule'
-import artistDetail from './documents/artistDetail'
 import carouselModule from './objects/page/components/modules/carouselModule'
 import gridModule from './objects/page/components/modules/gridModule'
 
@@ -115,12 +114,7 @@ export const objects: ObjectDefinition[] = [
   menuItemPage,
 ]
 
-export const pageDocuments: DocumentDefinition[] = [
-  artistPage,
-  exhibitionPage,
-  fairPage,
-  artistDetail,
-]
+export const pageDocuments: DocumentDefinition[] = [artistPage, exhibitionPage, fairPage]
 
 export const singletons: DocumentDefinition[] = [stories, home, collect, utopiaEditions, globalSEO]
 
