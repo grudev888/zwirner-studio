@@ -85,7 +85,7 @@ export const builder = (
   params: {name?: string; title: string; [key: string]: any},
   options?: ValidateOptions
 ): SlugDefinition => {
-  if (params.options.slugify) throw new Error('Overwrite the slugify method is forbidden')
+  if (params.options?.slugify) throw new Error('Overwrite the slugify method is forbidden')
 
   return {
     ...structure,
