@@ -62,7 +62,7 @@ const structure: SlugDefinition = {
   name: 'slugUrl',
   title: 'Slug',
   description:
-    'Unique slug based on the title. It will represent the page URL and the canonical URL for SEO purposes.',
+    'Unique slug based on the article name. It will represent the page URL and the canonical URL for SEO purposes.',
   type: 'slug',
   options: {
     source: (object: any, b: any) => {
@@ -96,6 +96,7 @@ export const builder = (
     ],
     options: {
       ...structure.options,
+      ...params.options,
       slugify: async (input, _, context) => {
         const prefix =
           (typeof options?.prefix === 'function'
