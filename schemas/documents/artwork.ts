@@ -1,4 +1,4 @@
-import { SlugRule,SlugSourceContext,defineArrayMember, defineField, defineType} from 'sanity'
+import {defineArrayMember, defineField, defineType} from 'sanity'
 
 import * as Media from '../objects/utils/media'
 import {builder as slugBuilder} from '../objects/utils/slugUrl'
@@ -7,6 +7,7 @@ import {randomIntString} from '../../lib/util/strings'
 import {ThLargeIcon,ComposeIcon,SearchIcon,ImageIcon,DocumentVideoIcon} from '@sanity/icons'
 import artist from './artist'
 import blockContentSimple from '../../schemas/objects/utils/blockContentSimple'
+
 
 // Check If we will need prefilled fields
 export default defineType({
@@ -66,9 +67,10 @@ export default defineType({
         },
         {
           optional: true,
-          prefix: async (parent) => {
-            const artistSlug = parent.artist?._ref.slug
-            return `/artists/${artistSlug}`
+          prefix: async (parent, client) => {
+            const artistId = parent.artists[0]?._ref
+            const artistPageSlug = await client.fetch(`*[_type == "artistPage" && artist._ref == "${artistId}"].slug.current`)
+            return artistPageSlug
           },
         },
       )
