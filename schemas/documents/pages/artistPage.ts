@@ -1,5 +1,5 @@
 import {defineField, defineType} from 'sanity'
-import {UserIcon, DocumentsIcon} from '@sanity/icons'
+import {UserIcon, DocumentsIcon, SearchIcon} from '@sanity/icons'
 import artist from '../artist'
 import interstitial from '../../objects/page/components/primitives/interstitial'
 import gridModule, {
@@ -22,9 +22,16 @@ export default defineType({
   groups: [
     {name: 'content', title: 'Artist Page', icon: UserIcon, default: true},
     {name: 'subpages', title: 'Sub-Pages', icon: DocumentsIcon},
+    {name: 'seo', title: 'SEO', icon: SearchIcon},
   ],
   type: 'document',
   fields: [
+    defineField({
+      type: 'seo',
+      name: 'seo',
+      title: 'SEO',
+      group: 'seo',
+    }),
     defineField({
       name: 'title',
       title: 'Title',
