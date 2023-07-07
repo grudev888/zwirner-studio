@@ -1,5 +1,7 @@
 import {
   ConditionalPropertyCallbackContext,
+  SlugRule,
+  SlugSourceContext,
   defineArrayMember,
   defineField,
   defineType,
@@ -11,7 +13,7 @@ import event from './event'
 import * as Interstitial from '../objects/page/components/primitives/interstitial'
 import fairPage from './pages/fairPage'
 import exhibitionPage from './pages/exhibitionPage'
-import slugUrl, {validateSlugFormatRule} from '../objects/utils/slugUrl'
+import {builder as slugBuilder} from '../objects/utils/slugUrl'
 import * as Media from '../objects/utils/media'
 import {GreyFootNote, GreyFootNoteDecorator} from '../../components/block/GreyFootnote'
 
@@ -89,22 +91,21 @@ export default defineType({
       },
       initialValue: 'News',
     }),
-    defineField({
-      name: 'slug',
-      title: 'Slug',
-      type: 'slugUrl',
-      group: 'content',
-      validation: (rule) => {
-        return [
-          rule.custom((value, context) => {
-            return (context.parent as any).type !== 'externalNews' && !value ? 'Required' : true
-          }),
-          validateSlugFormatRule(rule, {optional: true}),
-        ]
-      },
-      hidden: (context) => context.parent.type === 'externalNews',
-      ...slugUrl.options,
-    }),
+    defineField(
+      slugBuilder(
+        {
+          name: 'slug',
+          title: 'Slug',
+          group: 'content',
+          validation: (rule: SlugRule) =>
+            rule.custom((value, context) => {
+              return (context.parent as any).type !== 'externalNews' && !value ? 'Required' : true
+            }),
+          hidden: (context: SlugSourceContext) => (context.parent as any).type === 'externalNews',
+        },
+        {optional: true}
+      )
+    ),
     defineField(
       Media.builder(
         {

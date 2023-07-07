@@ -1,7 +1,7 @@
 import {BlockElementIcon, ComposeIcon, SearchIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
 
-import slugUrl from '../../objects/utils/slugUrl'
+import {builder as slugBuilder} from '../../objects/utils/slugUrl'
 import {apiVersion} from '../../../env'
 import {artistById} from '../../../queries/artist.queries'
 
@@ -31,33 +31,36 @@ export default defineType({
       group: 'content',
       validation: (Rule) => Rule.required(),
     }),
-    defineField({
-      name: 'slug',
-      title: 'Slug',
-      type: 'slugUrl',
-      options: {
-        ...slugUrl.options,
-        source: (object: any, context: any) => {
-          const artistRef = object?.artist?._ref
-          const defaultSlug = object?.title ?? ''
+    defineField(
+      slugBuilder(
+        {
+          name: 'slug',
+          title: 'Slug',
+          options: {
+            source: (object: any, context: any) => {
+              const artistRef = object?.artist?._ref
+              const defaultSlug = object?.title ?? ''
 
-          if (!defaultSlug && !artistRef)
-            throw new Error('Please add a title or an artist to create a unique slug.')
+              if (!defaultSlug && !artistRef)
+                throw new Error('Please add a title or an artist to create a unique slug.')
 
-          if (!artistRef) return defaultSlug
+              if (!artistRef) return defaultSlug
 
-          const {getClient} = context
-          const client = getClient({apiVersion})
-          const params = {artistId: artistRef}
+              const {getClient} = context
+              const client = getClient({apiVersion})
+              const params = {artistId: artistRef}
 
-          return client.fetch(artistById, params).then((result: any) => {
-            const [artist] = result ?? []
-            return artist?.fullName ?? defaultSlug
-          })
+              return client.fetch(artistById, params).then((result: any) => {
+                const [artist] = result ?? []
+                return artist?.fullName ?? defaultSlug
+              })
+            },
+          },
+          group: 'content',
         },
-      },
-      group: 'content',
-    }),
+        {prefix: '/artists'}
+      )
+    ),
     defineField({
       name: 'seo',
       title: 'SEO',
