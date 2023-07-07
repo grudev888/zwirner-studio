@@ -147,7 +147,7 @@ export default defineType({
     }),
     defineField({
       type: interstitial.name,
-      title: 'Mailing list Interstitial',
+      title: 'Interstitial',
       name: 'mailingListInterstitial',
       description: 'Interstitial module',
       group: 'content',

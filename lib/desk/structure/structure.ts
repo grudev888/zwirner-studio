@@ -26,6 +26,7 @@ import article from '../../../schemas/documents/article'
 import exhibitionPage from '../../../schemas/documents/pages/exhibitionPage'
 import fairPage from '../../../schemas/documents/pages/fairPage'
 import exhibition from '../../../schemas/documents/exhibition'
+import {getPreviewUrl} from './utils'
 
 export const generalStructure = (S: StructureBuilder) =>
   S.list()
@@ -85,7 +86,7 @@ export const generalStructure = (S: StructureBuilder) =>
                         .title('Preview'),
                     ])
                 ),
-                S.listItem()
+              S.listItem()
                 .title('Artists')
                 .icon(BlockElementIcon)
                 .child(
@@ -208,11 +209,7 @@ export const generalStructure = (S: StructureBuilder) =>
                           S.view.form(),
                           S.view
                             .component(PreviewIframe)
-                            .options({
-                              url: (doc: any) => {
-                                return `${envHost}/api/sanity/preview?slug=${doc?.slug?.current}&section=artists`
-                              },
-                            })
+                            .options({url: getPreviewUrl})
                             .title('Preview'),
                           S.view.component(ReferenceByTab).title('References'),
                         ])
