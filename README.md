@@ -33,3 +33,9 @@ yarn sync-dev-db
 
 - Every new PR to the `main` branch triggers the `CI` workflow that builds and 
   lints the project. Also, every push to the `main` triggers the `CI` workflow.
+
+# Automatic dependency bumps
+
+The Dependabot configuration is located in the `.github/dependabot.yml`. It is 
+configured to check weekly for new versions of dependencies in the `package.json`
+and actions used in the workflows. If there is a new version, Dependabot opens a PR.

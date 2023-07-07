@@ -93,18 +93,24 @@ export const builder = (
         !parent?.type ||
         !['vimeo', 'youtube'].includes(parent?.provider),
     }),
+    defineField({
+      name: 'podcastLink',
+      title: 'Podcast Iframe URL',
+      type: 'url',
+      hidden: ({parent}) => parent?.type === MediaTypes.IMAGE || parent?.type === MediaTypes.VIDEO,
+    }),
   ],
   ...params,
   validation: (rule: ObjectRule) => [
     ...((Array.isArray(params.validation) ? params.validation : [params.validation]) || []),
     options?.required === true &&
-      rule.custom((value) => {
+      rule.custom((value: any) => {
         if (!value) return {message: `${params.name} is required`}
 
-        if (value.type === MediaTypes.IMAGE && !value.image) return {message: `Required`}
-
-        if (value.type === MediaTypes.VIDEO && !value.video && !value.externalURL)
+        if (value.type === MediaTypes.IMAGE && !value.image?.asset) return {message: `Required`}
+        if (value.type === MediaTypes.VIDEO && !value.video && !value.externalVideo) {
           return {message: `Required`}
+        }
 
         return true
       }),

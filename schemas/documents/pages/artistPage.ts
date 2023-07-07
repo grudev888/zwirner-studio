@@ -1,5 +1,10 @@
 import {defineField, defineType} from 'sanity'
 import {UserIcon, DocumentsIcon, SearchIcon} from '@sanity/icons'
+
+import {builder as slugBuilder} from '../../objects/utils/slugUrl'
+import {apiVersion} from '../../../env'
+import {artistById} from '../../../queries/artist.queries'
+
 import artist from '../artist'
 import interstitial from '../../objects/page/components/primitives/interstitial'
 import gridModule, {
@@ -39,13 +44,34 @@ export default defineType({
       type: 'string',
       validation: (rule) => rule.required(),
     }),
-    defineField({
-      name: 'slug',
-      title: 'Slug',
-      group: 'content',
-      type: 'slugUrl',
-      validation: (rule) => rule.required(),
-    }),
+    defineField(
+      slugBuilder(
+        {
+          name: 'slug',
+          title: 'Slug',
+          options: {
+            source: async (object: any, context: any) => {
+              const artistRef = object?.artist?._ref
+              const defaultSlug = object?.title ?? ''
+
+              if (!defaultSlug && !artistRef)
+                throw new Error('Please add a title or an artist to create a unique slug.')
+
+              if (!artistRef) return defaultSlug
+
+              const {getClient} = context
+              const client = getClient({apiVersion})
+              const params = {artistId: artistRef}
+
+              const result = await client.fetch(artistById, params)
+              return result?.[0]?.fullName ?? defaultSlug
+            },
+          },
+          group: 'content',
+        },
+        {prefix: '/artists'}
+      )
+    ),
     defineField({
       name: 'artist',
       title: 'Artist',

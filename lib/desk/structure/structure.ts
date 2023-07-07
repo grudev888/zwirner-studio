@@ -26,6 +26,7 @@ import article from '../../../schemas/documents/article'
 import exhibitionPage from '../../../schemas/documents/pages/exhibitionPage'
 import fairPage from '../../../schemas/documents/pages/fairPage'
 import exhibition from '../../../schemas/documents/exhibition'
+import {getPreviewUrl} from './utils'
 
 export const generalStructure = (S: StructureBuilder) =>
   S.list()
@@ -86,6 +87,23 @@ export const generalStructure = (S: StructureBuilder) =>
                     ])
                 ),
               S.listItem()
+                .title('Artists')
+                .icon(BlockElementIcon)
+                .child(
+                  S.document()
+                    .schemaType('artistListing')
+                    .documentId('artistListing')
+                    .views([
+                      S.view.form(),
+                      S.view
+                        .component(PreviewIframe)
+                        .options({
+                          url: `${envHost}/api/sanity/preview?section=artists`,
+                        })
+                        .title('Preview'),
+                    ])
+                ),
+              S.listItem()
                 .title('Collect')
                 .icon(BlockElementIcon)
                 .child(
@@ -105,7 +123,20 @@ export const generalStructure = (S: StructureBuilder) =>
               S.listItem()
                 .title('Stories')
                 .icon(BlockElementIcon)
-                .child(S.document().schemaType('stories').documentId('stories')),
+                .child(
+                  S.document()
+                    .schemaType('stories')
+                    .documentId('stories')
+                    .views([
+                      S.view.form(),
+                      S.view
+                        .component(PreviewIframe)
+                        .options({
+                          url: `${envHost}/api/sanity/preview?section=stories`,
+                        })
+                        .title('Preview'),
+                    ])
+                ),
               S.listItem()
                 .title('Available Artworks')
                 .icon(ThLargeIcon)
@@ -179,11 +210,7 @@ export const generalStructure = (S: StructureBuilder) =>
                           S.view.form(),
                           S.view
                             .component(PreviewIframe)
-                            .options({
-                              url: (doc: any) => {
-                                return `${envHost}/api/sanity/preview?slug=${doc?.slug?.current}&section=artists`
-                              },
-                            })
+                            .options({url: getPreviewUrl})
                             .title('Preview'),
                           S.view.component(ReferenceByTab).title('References'),
                         ])
@@ -203,7 +230,11 @@ export const generalStructure = (S: StructureBuilder) =>
                 .title('Fair Pages')
                 .icon(DashboardIcon)
                 .child(() =>
-                  getSectionsByYear({S, document: fairPage, preview: {section: 'fairs'}})
+                  getSectionsByYear({
+                    S,
+                    document: fairPage,
+                    preview: {section: 'fairs'},
+                  })
                 ),
             ])
         ),
