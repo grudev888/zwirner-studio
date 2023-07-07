@@ -10,11 +10,11 @@ import carouselModule, {
   builder as carouselModuleBuilder,
 } from '../../objects/page/components/modules/carouselModule'
 import article from '../article'
-import book from '../book'
-import exhibition from '../exhibition'
+import book from '../book''
 import artwork from '../artwork'
 import media from '../../objects/utils/media'
 import fairPage from './fairPage'
+import exhibitionPage from './exhibitionPage'
 
 export default defineType({
   name: 'artistPage',
@@ -91,7 +91,7 @@ export default defineType({
           title: 'Latest Exhibitions',
           group: 'content',
         },
-        {reference: exhibition}
+        {reference: exhibitionPage}
       )
     ),
     defineField({
@@ -181,7 +181,7 @@ export default defineType({
           title: 'Guide',
           group: 'subpages',
         },
-        {reference: [exhibition, fairPage, article]}
+        {reference: [exhibitionPage, fairPage, article]}
       )
     ),
 
