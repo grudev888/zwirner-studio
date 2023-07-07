@@ -98,9 +98,9 @@ export const builder = (
       ...structure.options,
       slugify: async (input, _, context) => {
         const prefix =
-          typeof options?.prefix === 'function'
+          (typeof options?.prefix === 'function'
             ? await options.prefix(context.parent, getClientFromContext(context.getClient))
-            : options?.prefix
+            : options?.prefix) || ''
 
         const normalized = slugify(input).slice(0, SLUG_MAX_LENGTH)
         return `/${prefix}/${normalized}`.replace(/\/+/g, '/')
