@@ -1,6 +1,7 @@
 import {FieldDefinition, ObjectRule, defineField, defineType} from 'sanity'
 import {capitalize} from '../../../lib/util/strings'
 import {getPropFromPath} from '../../../lib/util/sanity'
+import {PresentationIcon} from '@sanity/icons'
 
 export enum MediaTypes {
   IMAGE = 'image',
@@ -27,6 +28,7 @@ export const builder = (
   type: 'object',
   preview: {select: {media: 'image', title: 'image.alt'}},
   options: {collapsible: false},
+  icon: PresentationIcon,
   fields: [
     defineField({
       name: 'type',

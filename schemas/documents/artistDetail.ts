@@ -1,4 +1,5 @@
 import {defineField, defineType} from 'sanity'
+import {UserIcon, DocumentsIcon} from '@sanity/icons'
 import artist from './artist'
 import interstitial from '../objects/page/components/primitives/interstitial'
 import gridModule, {
@@ -11,13 +12,16 @@ import carouselModule, {
 import article from './article'
 import book from './book'
 import exhibition from './exhibition'
+import artwork from './artwork'
+import media from '../objects/utils/media'
+import fairPage from './pages/fairPage'
 
 export default defineType({
   name: 'artistDetail',
   title: 'Artist Detail Page',
   groups: [
-    {name: 'content', title: 'Content', default: true},
-    {name: 'subpages', title: 'Sub-Pages'},
+    {name: 'content', title: 'Artist Page', icon: UserIcon, default: true},
+    {name: 'subpages', title: 'Sub-Pages', icon: DocumentsIcon},
   ],
   type: 'document',
   fields: [
@@ -54,6 +58,7 @@ export default defineType({
       title: 'Hero',
       group: 'content',
       type: splitModule.name,
+      hidden: (context) => context.parent.showHero !== true,
     }),
     defineField({
       name: 'survey',
@@ -74,18 +79,21 @@ export default defineType({
       type: gridModule.name,
     }),
     defineField({
-      type: interstitial.name,
+      name: 'availableWorksInterstitial',
       title: 'Available Works Interstitial',
       group: 'content',
-      name: 'availableWorksInterstitial',
-      description: 'Interstitial module',
+      type: interstitial.name,
     }),
-    defineField({
-      name: 'latestExhibitions',
-      title: 'Latest Exhibitions',
-      group: 'content',
-      type: gridModule.name,
-    }),
+    defineField(
+      gridModuleBuilder(
+        {
+          name: 'latestExhibitions',
+          title: 'Latest Exhibitions',
+          group: 'content',
+        },
+        {reference: exhibition}
+      )
+    ),
     defineField({
       name: 'exhibitionsInterstitial',
       title: 'Exhibitions Interstitial',
@@ -109,7 +117,7 @@ export default defineType({
       )
     ),
     defineField(
-      carouselModuleBuilder(
+      gridModuleBuilder(
         {
           name: 'selectedPress',
           title: 'Selected Press',
@@ -137,19 +145,27 @@ export default defineType({
 
     // Subpages
 
-    defineField({
-      name: 'surveySubpage',
-      title: 'Survey',
-      group: 'subpages',
-      type: gridModule.name,
-    }),
+    defineField(
+      gridModuleBuilder(
+        {
+          name: 'surveySubpage',
+          title: 'Survey',
+          group: 'subpages',
+        },
+        {reference: [artwork, media]}
+      )
+    ),
 
-    defineField({
-      name: 'availableWorksSubpage',
-      title: 'Available Works',
-      group: 'subpages',
-      type: gridModule.name,
-    }),
+    defineField(
+      gridModuleBuilder(
+        {
+          name: 'availableWorksSubpage',
+          title: 'Available Works',
+          group: 'subpages',
+        },
+        {reference: [artwork, media]}
+      )
+    ),
 
     defineField({
       name: 'exhibitionsInterstitialSubpage',
@@ -165,7 +181,7 @@ export default defineType({
           title: 'Guide',
           group: 'subpages',
         },
-        {reference: exhibition}
+        {reference: [exhibition, fairPage, article]}
       )
     ),
 
