@@ -16,9 +16,8 @@ the data from the `production`. There is the `Create feature-scoped dataset`
 workflow to do exactly that. The name of the created dataset corresponds to the 
 branch name it is launched from. Each time the workflow is launched it deletes 
 the existing dataset and creates a new one, so it can be launched an indefinite 
-number of times. After the PR is successfully merged or just closed, the dataset 
-is automatically deleted. Also, the dataset related to the branch can be deleted 
-manually by triggering the `Delete feature-scoped dataset` workflow.
+number of times. The dataset related to the branch can be deleted manually by 
+triggering the `Delete feature-scoped dataset` workflow.
 
 # Updating your the dev database with latest changes done in prod
 
