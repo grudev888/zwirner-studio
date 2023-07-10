@@ -1,6 +1,7 @@
 import {BlockElementIcon, SearchIcon, ComposeIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
-import { defineGridField } from '../common/fields'
+import {builder as gridBuilder} from '../objects/page/components/modules/gridModule'
+import artwork from '../documents/artwork'
 
 export default defineType({
   name: 'availableArtworks',
@@ -18,20 +19,16 @@ export default defineType({
       type: 'string',
       validation: (rule) => rule.required(),
     }),
-    defineField({
-      name: 'displayNumberOfResults',
-      type: 'boolean',
-      title: 'Display # of results',
-      initialValue: false,
-      group: 'content',
-    }),
-    defineGridField({
-      name: 'artworks',
-      title: 'Artworks Grid',
-      type: 'array',
-      of: [{type: 'reference', title: 'Artworks', name: 'artwork', to: {type: 'artwork'}}],
-      group: 'content',
-    }),
+    defineField(
+      gridBuilder(
+        {
+          name: 'artworksGrid',
+          title: 'Artworks Grid',
+          group: 'content',
+        },
+        {excludedFields: ['title'], reference: artwork}
+      )
+    ),
     defineField({
       name: 'seo',
       title: 'SEO',

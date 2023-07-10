@@ -8,7 +8,7 @@ import eventType from './event'
 
 export default defineType({
   name: 'exhibition',
-  title: 'Exhibitions and Fairs ',
+  title: 'Exhibitions and Fairs',
   icon: DashboardIcon,
   type: 'document',
   fields: [
