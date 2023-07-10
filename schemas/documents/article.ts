@@ -97,13 +97,38 @@ export default defineType({
           name: 'slug',
           title: 'Slug',
           group: 'content',
+          options: {
+            source: (object: any) => {
+              const defaultSlug = `${object?.title}` ?? ''
+              if (!defaultSlug) throw new Error('Please add a title to create a unique slug.')
+              return defaultSlug.slice(0, 95)
+            },
           validation: (rule: SlugRule) =>
             rule.custom((value, context) => {
               return (context.parent as any).type !== 'externalNews' && !value ? 'Required' : true
             }),
           hidden: (context: SlugSourceContext) => (context.parent as any).type === 'externalNews',
         },
-        {optional: true}
+      },
+        {
+          optional: true,
+          // if context.parent.type === 'internalNews' then prefix is /news/[year]/[slug]
+         
+          // if context.parent.type === 'externalNews' then return null
+
+           // if context.parent.type === 'pressRelease' then prefix is /artists/[artistPageSlug]/press/[slug]
+          
+          prefix: async (parent, client) => {
+            const year = new Date(parent.date).getFullYear()
+            const newsPrefix = `/news/${year}`
+            const pressId = parent.id
+            // look for artistPage slug with guide._ref || selectedPress._ref || guideSubpage._ref || pressSubpage._ref === parent.id 
+            const artistPageSlug = await client.fetch(`*[_type == "artistPage" && guideSubpage._ref == "${pressId}"][0].slug.current`)
+            const pressPrefix = `${artistPageSlug}/press`
+            const defaultPrefix = parent.type === 'internalNews' ? newsPrefix : pressPrefix
+            return defaultPrefix
+          },
+        },
       )
     ),
     defineField(
