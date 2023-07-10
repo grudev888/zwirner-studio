@@ -38,6 +38,12 @@ export default defineType({
       type: 'text',
     }),
     defineField({
+      name: 'cv',
+      title: 'CV',
+      type: 'file',
+      options: {accept: 'application/pdf'},
+    }),
+    defineField({
       name: 'picture',
       title: 'Profile picture',
       type: 'image',
