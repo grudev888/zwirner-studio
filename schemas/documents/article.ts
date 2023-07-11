@@ -58,8 +58,9 @@ export default defineType({
     }),
     defineField({
       type: 'date',
-      title: 'Date',
       name: 'date',
+      title: 'Date',
+      group: 'content',
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -112,21 +113,34 @@ export default defineType({
       },
         {
           optional: true,
-          // if context.parent.type === 'internalNews' then prefix is /news/[year]/[slug]
-         
-          // if context.parent.type === 'externalNews' then return null
-
-           // if context.parent.type === 'pressRelease' then prefix is /artists/[artistPageSlug]/press/[slug]
           
           prefix: async (parent, client) => {
-            const year = new Date(parent.date).getFullYear()
-            const newsPrefix = `/news/${year}`
-            const pressId = parent.id
-            // look for artistPage slug with guide._ref || selectedPress._ref || guideSubpage._ref || pressSubpage._ref === parent.id 
-            const artistPageSlug = await client.fetch(`*[_type == "artistPage" && guideSubpage._ref == "${pressId}"][0].slug.current`)
-            const pressPrefix = `${artistPageSlug}/press`
-            const defaultPrefix = parent.type === 'internalNews' ? newsPrefix : pressPrefix
-            return defaultPrefix
+
+            // if parent.type === 'pressRelease' then prefix is /artists/[artist]/press/[slug]
+            if (parent.type === 'pressRelease') {
+              const postId = parent._id.startsWith('drafts.') ? parent._id.split('.')[1] : parent._id;
+              const artistPageSlug = await client.fetch(`*[_type == "artistPage" && references("${postId}")]{"slug": slug.current}`)
+              if (artistPageSlug.length === 0) {
+                throw new Error(`No artistPage document references the post with ID: ${parent._id}`)
+              } else if (artistPageSlug.length > 1) {
+                throw new Error(`Multiple artistPage documents reference the post with ID: ${parent._id}`)
+              } else {
+                const pressPrefix = `${artistPageSlug[0].slug}/press`
+                return pressPrefix
+              }
+            }
+
+             // if context.parent.type === 'internalNews' then prefix is /news/[year]/[slug]
+            if (parent.type === 'internalNews') {
+              const year = new Date(parent?.date).getFullYear()
+              const newsPrefix = `/news/${year}`
+              return newsPrefix
+            } 
+
+            // if parent.type === 'externalNews' then return empty string
+            else {
+              return '/redirect'
+            }
           },
         },
       )
@@ -138,7 +152,7 @@ export default defineType({
           title: 'Header Image',
           group: 'content',
         },
-        {type: Media.MediaTypes.IMAGE, required: true}
+        {type: Media.MediaTypes.IMAGE}
       )
     ),
     defineField({
@@ -184,7 +198,6 @@ export default defineType({
                     type: 'string',
                     name: 'caption',
                     title: 'Caption',
-                    validation: (rule) => rule.required(),
                   }),
                 ],
               },
