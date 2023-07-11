@@ -16,6 +16,7 @@ import exhibitionPage from './pages/exhibitionPage'
 import {builder as slugBuilder} from '../objects/utils/slugUrl'
 import * as Media from '../objects/utils/media'
 import {GreyFootNote, GreyFootNoteDecorator} from '../../components/block/GreyFootnote'
+import dateSelection from '../objects/utils/dateSelection'
 
 export interface ArticleSchema {
   title?: string
@@ -57,11 +58,16 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      type: 'date',
-      name: 'date',
-      title: 'Date',
+      type: 'text',
+      name: 'displayDate',
+      title: 'Display Date',
       group: 'content',
-      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      title: 'Date',
+      name: 'dateSelection',
+      group: 'content',
+      type: dateSelection.name,
     }),
     defineField({
       type: 'string',
@@ -132,7 +138,7 @@ export default defineType({
 
              // if context.parent.type === 'internalNews' then prefix is /news/[year]/[slug]
             if (parent.type === 'internalNews') {
-              const year = new Date(parent?.date).getFullYear()
+              const year = parent?.dateSelection.year
               const newsPrefix = `/news/${year}`
               return newsPrefix
             } 
