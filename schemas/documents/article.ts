@@ -145,7 +145,7 @@ export default defineType({
 
             // if parent.type === 'externalNews' then return empty string
             else {
-              return '/redirect'
+              return ''
             }
           },
         },
