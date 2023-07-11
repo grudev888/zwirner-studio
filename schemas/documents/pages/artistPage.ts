@@ -218,6 +218,13 @@ export default defineType({
       )
     ),
 
+    defineField({
+      name: 'guideInterstitialSubpage',
+      title: 'Guide Interstitial',
+      group: 'subpages',
+      type: interstitial.name,
+    }),
+
     defineField(
       gridModuleBuilder(
         {
