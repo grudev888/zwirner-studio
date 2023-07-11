@@ -178,13 +178,6 @@ export default defineType({
 
     // Subpages
 
-    defineField({
-      name: 'artistSubpageInterstitial',
-      title: 'Artist Subpage Interstitial',
-      group: 'subpages',
-      type: interstitial.name,
-    }),
-
     defineField(
       gridModuleBuilder(
         {
@@ -207,6 +200,13 @@ export default defineType({
       )
     ),
 
+    defineField({
+      name: 'exhibitionsInterstitialSubpage',
+      title: 'Exhibitions Interstitial',
+      group: 'subpages',
+      type: interstitial.name,
+    }),
+
     defineField(
       gridModuleBuilder(
         {
@@ -217,6 +217,13 @@ export default defineType({
         {reference: [exhibitionPage, fairPage, article]}
       )
     ),
+
+    defineField({
+      name: 'guideInterstitialSubpage',
+      title: 'Guide Interstitial',
+      group: 'subpages',
+      type: interstitial.name,
+    }),
 
     defineField(
       gridModuleBuilder(
@@ -229,5 +236,11 @@ export default defineType({
       )
     ),
 
+    defineField({
+      name: 'pressInterstitialSubpage',
+      title: 'Press Interstitial',
+      group: 'subpages',
+      type: interstitial.name,
+    }),
   ],
 })
