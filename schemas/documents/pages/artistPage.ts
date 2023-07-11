@@ -242,5 +242,65 @@ export default defineType({
       group: 'subpages',
       type: interstitial.name,
     }),
+
+    // Subpages
+
+    defineField(
+      gridModuleBuilder(
+        {
+          name: 'surveySubpage',
+          title: 'Survey',
+          group: 'subpages',
+        },
+        {reference: [artwork, media]}
+      )
+    ),
+
+    defineField(
+      gridModuleBuilder(
+        {
+          name: 'availableWorksSubpage',
+          title: 'Available Works',
+          group: 'subpages',
+        },
+        {reference: [artwork, media]}
+      )
+    ),
+
+    defineField({
+      name: 'exhibitionsInterstitialSubpage',
+      title: 'Exhibitions Interstitial',
+      group: 'subpages',
+      type: interstitial.name,
+    }),
+
+    defineField(
+      gridModuleBuilder(
+        {
+          name: 'guideSubpage',
+          title: 'Guide',
+          group: 'subpages',
+        },
+        {reference: [exhibitionPage, fairPage, article]}
+      )
+    ),
+
+    defineField(
+      gridModuleBuilder(
+        {
+          name: 'pressSubpage',
+          title: 'Press',
+          group: 'subpages',
+        },
+        {reference: article}
+      )
+    ),
+
+    defineField({
+      name: 'pressInterstitialSubpage',
+      title: 'Press Interstitial',
+      group: 'subpages',
+      type: interstitial.name,
+    }),
   ],
 })
