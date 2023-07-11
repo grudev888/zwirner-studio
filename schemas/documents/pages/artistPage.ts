@@ -242,5 +242,6 @@ export default defineType({
       group: 'subpages',
       type: interstitial.name,
     }),
+
   ],
 })
