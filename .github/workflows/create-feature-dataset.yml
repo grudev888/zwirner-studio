@@ -11,6 +11,7 @@ jobs:
   create-dataset:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - name: Delete `${{ github.ref_name }}`
         uses: sanity-io/github-action-sanity@v0.2-alpha
         continue-on-error: true
