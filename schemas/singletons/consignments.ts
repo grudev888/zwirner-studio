@@ -4,6 +4,7 @@ import dzConsignment from '../objects/page/components/molecules/dzConsignment'
 import media from '../objects/utils/media'
 import artist from '../documents/artist'
 import * as Interstitial from '../objects/page/components/primitives/interstitial'
+import {builder as carouselBuilder} from '../objects/page/components/modules/carouselModule'
 
 export default defineType({
   name: 'consignments',
@@ -115,21 +116,17 @@ export default defineType({
         }),
       ],
     }),
-    defineField({
-      name: 'bodyCarousel',
-      title: 'Body Carousel',
-      description: 'Carousel module',
-      type: 'array',
-      group: 'content',
-      validation: (rule) => rule.required().min(1),
-      of: [
-        defineArrayMember({
-          type: 'reference',
-          to: [{type: artist.name}],
-          title: 'Artist',
-        }),
-      ],
-    }),
+    defineField(
+      carouselBuilder(
+        {
+          name: 'bodyCarousel',
+          title: 'Body Carousel',
+          description: 'Carousel module',
+          group: 'content',
+        },
+        {reference: artist, excludedFields: ['title']}
+      )
+    ),
     defineField(
       Interstitial.builder(
         {

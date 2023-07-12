@@ -5,6 +5,7 @@ import dzConsignment from '../objects/page/components/molecules/dzConsignment'
 import exhibition from '../documents/exhibition'
 import artwork from '../documents/artwork'
 import interstitial from '../objects/page/components/primitives/interstitial'
+import {builder as carouselBuilder} from '../objects/page/components/modules/carouselModule'
 
 export default defineType({
   name: 'collect',
@@ -45,36 +46,29 @@ export default defineType({
       ],
       validation: (rule: ArrayRule<any>) => rule.required().length(1),
     }),
-    defineField({
-      name: 'exhibitions',
-      group: 'content',
-      type: 'array',
-      title: 'Exhibitions',
-      description: 'Carousel module',
-      of: [
-        defineArrayMember({
-          type: 'reference',
-          title: 'Exhibitions and Fairs',
-          to: {type: exhibition.name},
-        }),
-      ],
-      validation: (rule: ArrayRule<any>) => rule.required(),
-    }),
-    defineField({
-      name: 'fairs',
-      type: 'array',
-      group: 'content',
-      title: 'Fairs',
-      description: 'Carousel module',
-      validation: (rule) => rule.required(),
-      of: [
-        defineArrayMember({
-          type: 'reference',
-          title: 'Exhibitions and Fairs',
-          to: {type: exhibition.name},
-        }),
-      ],
-    }),
+    defineField(
+      carouselBuilder(
+        {
+          name: 'exhibitions',
+          group: 'content',
+          title: 'Exhibitions',
+          description: 'Carousel module',
+          validation: (rule: ArrayRule<any>) => rule.required(),
+        },
+        {reference: exhibition, excludedFields: ['title']}
+      )
+    ),
+    defineField(
+      carouselBuilder(
+        {
+          name: 'fairs',
+          group: 'content',
+          title: 'Fairs',
+          description: 'Carousel module',
+        },
+        {reference: exhibition, excludedFields: ['title']}
+      )
+    ),
     defineField({
       name: 'featuredArtworks',
       type: 'array',

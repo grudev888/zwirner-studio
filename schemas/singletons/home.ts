@@ -8,6 +8,7 @@ import fairPage from '../documents/pages/fairPage'
 import article from '../documents/article'
 import location from '../documents/location'
 import dzInterstitial from '../objects/page/components/molecules/dzInterstitial'
+import {builder as carouselBuilder} from '../objects/page/components/modules/carouselModule'
 import artwork from '../documents/artwork'
 
 const allowedDocs = [page, exhibitionPage, fairPage, artistPage, article, artwork]
@@ -49,25 +50,26 @@ export default defineType({
       to: allowedDocs.map(({name}) => ({type: name as string})),
       group: 'content',
     }),
-    defineField({
-      name: 'firstCarousel',
-      title: 'Body Carousel 1',
-      type: 'array',
-      of: allowedDocs.map(({name, title}) => ({
-        type: 'reference',
-        name,
-        title,
-        to: {type: name},
-      })),
-      group: 'content',
-    }),
-    defineField({
-      name: 'secondCarousel',
-      title: 'Body Carousel 2',
-      type: 'array',
-      of: allowedDocs.map(({name, title}) => ({type: 'reference', name, title, to: {type: name}})),
-      group: 'content',
-    }),
+    defineField(
+      carouselBuilder(
+        {
+          name: 'firstCarousel',
+          title: 'Body Carousel 1',
+          group: 'content',
+        },
+        {reference: exhibitionPage, excludedFields: ['title']}
+      )
+    ),
+    defineField(
+      carouselBuilder(
+        {
+          name: 'secondCarousel',
+          title: 'Body Carousel 2',
+          group: 'content',
+        },
+        {reference: exhibitionPage, excludedFields: ['title']}
+      )
+    ),
     defineField({
       name: 'articles',
       title: 'Article Grid',
@@ -76,10 +78,10 @@ export default defineType({
       group: 'content',
     }),
     defineField({
-      name: 'interstitial', 
-      title: 'Interstitial', 
+      name: 'interstitial',
+      title: 'Interstitial',
       group: 'content',
-      type: dzInterstitial.name
+      type: dzInterstitial.name,
     }),
     defineField({
       name: 'locations',
