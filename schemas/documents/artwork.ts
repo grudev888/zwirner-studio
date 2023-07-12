@@ -31,23 +31,40 @@ export default defineType({
       title: 'Title',
       group: 'content',
       type: 'string',
+      description: 'The title of the artwork. This will be used as the meta title of the page and for generatig the URL.',
       validation: Rule => [
         Rule.required(),
         Rule.max(300).warning('The title is longer than our standard character count, an ellipsis will appear on tile view.')
       ]
     }),
     defineField({
+      name: 'displayCustomTitle',
+      title: 'Custom Title Display',
+      description: 'Enable custom display of the artwork title. Leave off to display title in default italicized format.',
+      type: 'boolean',
+      group: 'content',
+    }),
+    defineField({
       name: 'displayTitle',
-      title: 'Title Display Options',
+      title: 'Optional Title Display',
+      description: 'For use only in cases where the artist requests custom display decoration for the artwork title, mixing plain, italics, and bold text in the title.',
       group: 'content',
       type: 'array',
-      of: [{type: 'string', }],
-      options: {
-        list: [
-          {title: 'Bold', value: 'strong'},
-          {title: 'No Emphasis', value: 'noEmphasis'},
-        ]
-      }
+      of: [
+        {
+          type: 'block',
+          styles: [],
+          lists: [],
+            marks: {
+              decorators: [
+                  {title: 'Emphasis', value: 'em'},
+                  {title: 'Strong', value: 'strong'},
+                ],
+              annotations: [],
+            },
+          }
+      ],
+      hidden: ({parent}) => !parent?.displayCustomTitle,
     }),
     // should be in format of /artist/[artist-slug]/[artwork-slug]
     // artwork-slug should be title + year + random 5 digit number
@@ -57,6 +74,7 @@ export default defineType({
           name: 'slug',
           title: 'Slug',
           group: 'content',
+          description: 'Should be in format of /artist/[artist-slug]/[artwork-slug], artwork-slug should be title + year + random 5 digit number. If no artist or year is specified, the slug will be generated from the title and a random 5 digit number.',
           options: {
             source: (object: any) => {
               const defaultSlug = `${object?.title}-${object.dateSelection.year}-${randomIntString(5)}` ?? ''
@@ -158,19 +176,6 @@ export default defineType({
       ],
     }),
     defineField({
-      name: 'artworksEdition',
-      title: 'Artworks Edition',
-      group: 'content',
-      type: 'array',
-      of: [
-        defineArrayMember({
-          type: 'reference',
-          title: 'Artwork',
-          to: [{type: 'artwork'}],
-        }),
-      ],
-    }),
-    defineField({
       title: 'Artworks Type',
       name: 'artworkType',
       group: 'content',
@@ -207,7 +212,13 @@ export default defineType({
       name: 'framed',
       title: 'Framed',
       group: 'content',
-      type: 'boolean',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Framed', value: 'Framed'},
+          {title: 'Unframed', value: 'Unframed'},
+        ],
+      },
       hidden: ({parent}) => parent?.artworkType === 'sculpture',
     }),
     defineField({
@@ -215,7 +226,7 @@ export default defineType({
       title: 'Framed Dimensions',
       group: 'content',
       type: 'string',
-      hidden: ({parent}) => !parent?.framed || parent?.artworkType === 'sculpture',
+      hidden: ({parent}) => parent?.framed === undefined || parent?.framed === 'Unframed' || parent?.artworkType === 'sculpture',
     }),
     defineField({
       name: 'availability',
