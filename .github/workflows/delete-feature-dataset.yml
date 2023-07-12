@@ -23,6 +23,14 @@ jobs:
             sanity.cli.ts
             sanity.config.ts
 
+      - name: Cache Sanity installation
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.yarn/bin
+            ${{ github.workspace }}
+          key: ${{ runner.os }}-${{ hashFiles('**/sanity.**') }}
+
       - name: Install Sanity
         run: |
           yarn global add @sanity/cli
