@@ -82,6 +82,12 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      type: 'text',
+      name: 'displayDate',
+      title: 'Display Date',
+      group: 'content',
+    }),
+    defineField({
       name: 'components',
       title: 'Components',
       type: 'pageBuilderComponents',

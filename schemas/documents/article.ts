@@ -16,6 +16,7 @@ import exhibitionPage from './pages/exhibitionPage'
 import {builder as slugBuilder} from '../objects/utils/slugUrl'
 import * as Media from '../objects/utils/media'
 import {GreyFootNote, GreyFootNoteDecorator} from '../../components/block/GreyFootnote'
+import dateSelection from '../objects/utils/dateSelection'
 
 export interface ArticleSchema {
   title?: string
@@ -57,10 +58,16 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      type: 'date',
+      type: 'text',
+      name: 'displayDate',
+      title: 'Display Date',
+      group: 'content',
+    }),
+    defineField({
       title: 'Date',
-      name: 'date',
-      validation: (rule) => rule.required(),
+      name: 'dateSelection',
+      group: 'content',
+      type: dateSelection.name,
     }),
     defineField({
       type: 'string',
@@ -97,13 +104,51 @@ export default defineType({
           name: 'slug',
           title: 'Slug',
           group: 'content',
+          options: {
+            source: (object: any) => {
+              const defaultSlug = `${object?.title}` ?? ''
+              if (!defaultSlug) throw new Error('Please add a title to create a unique slug.')
+              return defaultSlug.slice(0, 95)
+            },
           validation: (rule: SlugRule) =>
             rule.custom((value, context) => {
               return (context.parent as any).type !== 'externalNews' && !value ? 'Required' : true
             }),
           hidden: (context: SlugSourceContext) => (context.parent as any).type === 'externalNews',
         },
-        {optional: true}
+      },
+        {
+          optional: true,
+          
+          prefix: async (parent, client) => {
+
+            // if parent.type === 'pressRelease' then prefix is /artists/[artist]/press/[slug]
+            if (parent.type === 'pressRelease') {
+              const postId = parent._id.startsWith('drafts.') ? parent._id.split('.')[1] : parent._id;
+              const artistPageSlug = await client.fetch(`*[_type == "artistPage" && references("${postId}")]{"slug": slug.current}`)
+              if (artistPageSlug.length === 0) {
+                throw new Error(`No artistPage document references the post with ID: ${parent._id}`)
+              } else if (artistPageSlug.length > 1) {
+                throw new Error(`Multiple artistPage documents reference the post with ID: ${parent._id}`)
+              } else {
+                const pressPrefix = `${artistPageSlug[0].slug}/press`
+                return pressPrefix
+              }
+            }
+
+             // if context.parent.type === 'internalNews' then prefix is /news/[year]/[slug]
+            if (parent.type === 'internalNews') {
+              const year = parent?.dateSelection.year
+              const newsPrefix = `/news/${year}`
+              return newsPrefix
+            } 
+
+            // if parent.type === 'externalNews' then return empty string
+            else {
+              return ''
+            }
+          },
+        },
       )
     ),
     defineField(
@@ -113,7 +158,7 @@ export default defineType({
           title: 'Header Image',
           group: 'content',
         },
-        {type: Media.MediaTypes.IMAGE, required: true}
+        {type: Media.MediaTypes.IMAGE}
       )
     ),
     defineField({
@@ -159,7 +204,6 @@ export default defineType({
                     type: 'string',
                     name: 'caption',
                     title: 'Caption',
-                    validation: (rule) => rule.required(),
                   }),
                 ],
               },
