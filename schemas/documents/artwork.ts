@@ -324,7 +324,12 @@ export default defineType({
       group: 'content',
       type: 'string',
       options: {
-        list: ['USD', 'EUR', 'GBP', 'HKD']
+        list: [
+          {title: 'USD', value: "USD"},
+          {title: 'EUR', value: "EUR" },
+          {title: 'GBP', value: "GBP"},
+          {title: 'HKD', value: "HKD"},
+        ]
       }
     }),
     defineField({
