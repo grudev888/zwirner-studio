@@ -7,14 +7,35 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  SANITY_AUTH_TOKEN: ${{ secrets.FEATURE_DATASET_MANAGER }}
+  SANITY_STUDIO_PROJECT_ID: juzvn5an
+  SANITY_STUDIO_TEST_DATABASE: test
+
 jobs:
   delete-dataset:
     runs-on: ubuntu-latest
     steps:
-      - name: Delete `${{ github.ref_name }}`
-        uses: sanity-io/github-action-sanity@v0.2-alpha
-        continue-on-error: true
-        env:
-          SANITY_AUTH_TOKEN: ${{ secrets.FEATURE_DATASET_MANAGER }}
+      - uses: actions/checkout@v3
         with:
-          args: dataset delete ${{ github.ref_name }} --force
+          fetch-depth: 0
+          sparse-checkout: |
+            sanity.cli.ts
+            sanity.config.ts
+
+      - name: Cache Sanity installation
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.yarn/bin
+            ${{ github.workspace }}
+          key: ${{ runner.os }}-${{ hashFiles('**/sanity.**') }}
+
+      - name: Install Sanity
+        run: |
+          yarn global add @sanity/cli
+          sanity install
+
+      - name: Delete `${{ github.ref_name }}`
+        continue-on-error: true
+        run: sanity dataset delete ${{ github.ref_name }} --force
