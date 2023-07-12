@@ -31,7 +31,7 @@ export default defineType({
       title: 'Title',
       group: 'content',
       type: 'string',
-      description: 'The title of the artwork. This will be used as the meta title of the page and for generatig the URL.',
+      description: 'The title of the artwork. This will present the standard italicized artwork title and for generating the URL.',
       validation: Rule => [
         Rule.required(),
         Rule.max(300).warning('The title is longer than our standard character count, an ellipsis will appear on tile view.')
