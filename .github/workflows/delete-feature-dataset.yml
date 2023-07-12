@@ -23,10 +23,11 @@ jobs:
             sanity.cli.ts
             sanity.config.ts
 
+      - name: Install Sanity
+        run: |
+          yarn global add @sanity/cli
+          sanity install
+
       - name: Delete `${{ github.ref_name }}`
-        uses: sanity-io/github-action-sanity@v0.2-alpha
         continue-on-error: true
-        env:
-          SANITY_AUTH_TOKEN: ${{ secrets.FEATURE_DATASET_MANAGER }}
-        with:
-          args: dataset delete ${{ github.ref_name }} --force
+        run: sanity dataset delete ${{ github.ref_name }} --force
