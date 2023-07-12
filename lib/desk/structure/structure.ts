@@ -294,7 +294,17 @@ export const generalStructure = (S: StructureBuilder) =>
             .child(
               S.document()
                 .schemaType('artwork')
-                .views([S.view.form(), S.view.component(ReferenceByTab).title('References')])
+                .views([
+                  S.view.form(), 
+                  S.view
+                    .component(PreviewIframe)
+                    .options({
+                      url: (doc: any) => {
+                        return `${envHost}/api/sanity/preview?slug=${doc?.slug?.current}`
+                      },
+                    })
+                    .title('Preview'),
+                  S.view.component(ReferenceByTab).title('References')])
             )
         ),
       S.listItem()
@@ -303,7 +313,8 @@ export const generalStructure = (S: StructureBuilder) =>
         .child(
           S.documentTypeList('artist')
             .title('Artworks by Artist')
-            .child((artistId) =>
+            .defaultOrdering([{field: 'lastName', direction: 'asc'}])
+            .child(artistId =>
               S.documentList()
                 .title('Artworks')
                 .filter('_type == "artwork" && $artistId in artists[]._ref')

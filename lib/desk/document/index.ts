@@ -8,12 +8,14 @@ const schemaTypeToSection = (type: string) => ({
   artistPage: 'artists',
   exhibitionPage: 'exhibitions',
   fairPage: 'fairs',
+  artwork: 'artworks',
 })
 
 export const defaultDocumentNode: DefaultDocumentNodeResolver = (S, {schemaType}) => {
   switch (schemaType) {
     case 'article':
     case 'artistPage':
+    case 'artwork':
     case 'exhibitionPage':
     case 'fairPage':
       return S.document().views([

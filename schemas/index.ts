@@ -30,10 +30,6 @@ import utopiaEditions from './singletons/utopiaEditions'
 import consignments from './singletons/consignments'
 import artworkListing from './singletons/artistListing'
 
-import drawingType from './objects/artTypes/drawing'
-import paintingType from './objects/artTypes/painting'
-import photographType from './objects/artTypes/photography'
-import sculptureType from './objects/artTypes/sculpture'
 import social from './objects/data/social'
 import dzCard from './objects/page/components/molecules/dzCard'
 import dzCarousel from './objects/page/components/molecules/dzCarousel'
@@ -102,10 +98,6 @@ export const pageComponents: ObjectDefinition[] = [
 export const pageModules: ObjectDefinition[] = [splitModule, carouselModule, gridModule]
 
 export const objects: ObjectDefinition[] = [
-  drawingType,
-  paintingType,
-  photographType,
-  sculptureType,
   social,
   addressType,
   dateSelection,
