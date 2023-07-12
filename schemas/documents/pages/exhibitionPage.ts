@@ -1,8 +1,8 @@
 import {BlockElementIcon, ComposeIcon, SearchIcon} from '@sanity/icons'
 import {defineArrayMember,defineField, defineType} from 'sanity'
 
-import {apiVersion} from '../../../env'
-import {exhibitionById} from '../../../queries/exhibition.queries'
+// import {apiVersion} from '../../../env'
+// import {exhibitionById} from '../../../queries/exhibition.queries'
 import exhibition from '../../../schemas/documents/exhibition'
 import {builder as slugURLBuilder} from '../../objects/utils/slugUrl'
 import artistType from '../artist'
@@ -43,35 +43,36 @@ export default defineType({
           name: 'slug',
           title: 'Slug',
           options: {
-            source: (object: any, context: any) => {
-              const exhibitionRef = object?.exhibition?._ref
+            source: (object: any) => {
+              // const exhibitionRef = object?.exhibition?._ref
               const defaultSlug = object?.title ?? ''
 
-              if (!exhibitionRef && !defaultSlug)
-                throw new Error('Please add a title or an exhibition to create a unique slug.')
+              if (!defaultSlug)
+                throw new Error('Please add a title to create a unique slug.')
+                return defaultSlug.slice(0, 95)
 
-              if (!exhibitionRef) return defaultSlug
+              // if (!exhibitionRef) return defaultSlug
 
-              const {getClient} = context
-              const client = getClient({apiVersion})
-              const params = {exhibitionId: exhibitionRef}
-              return client.fetch(exhibitionById, params).then((result: any) => {
-                const [exhibition] = result ?? []
-                return exhibition?.title ?? defaultSlug
-              })
+              // const {getClient} = context
+              // const client = getClient({apiVersion})
+              // // const params = {exhibitionId: exhibitionRef}
+              // return client.fetch(exhibitionById, params).then((result: any) => {
+              //   const [exhibition] = result ?? []
+              //   return exhibition?.title ?? defaultSlug
+              // })
             },
           },
           group: 'content',
         },
         {
-          prefix: async (parent, client) => {
-            const exhibitionId = parent.exhibition?._ref
-            const exhibition = await client.fetch(`*[_id == $exhibitionId][0]`, {exhibitionId})
+          prefix: async (parent) => {
+            // const exhibitionId = parent.exhibition?._ref
+            // const exhibition = await client.fetch(`*[_id == $exhibitionId][0]`, {exhibitionId})
             const dateFormatter = new Intl.DateTimeFormat('en-US', {
               timeZone: 'UTC',
               year: 'numeric',
             })
-            const year = dateFormatter.format(new Date(exhibition.endDate))
+            const year = dateFormatter.format(new Date(parent.endDate))
             return `/exhibitions/${year}`
           },
         }
