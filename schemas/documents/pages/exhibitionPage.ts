@@ -1,10 +1,14 @@
 import {BlockElementIcon, ComposeIcon, SearchIcon} from '@sanity/icons'
-import {defineField, defineType} from 'sanity'
+import {defineArrayMember,defineField, defineType} from 'sanity'
 
 import {apiVersion} from '../../../env'
 import {exhibitionById} from '../../../queries/exhibition.queries'
 import exhibition from '../../../schemas/documents/exhibition'
 import {builder as slugURLBuilder} from '../../objects/utils/slugUrl'
+import artistType from '../artist'
+import artworkType from '../artwork'
+import collectionType from '../collection'
+import eventType from '../event'
 
 export default defineType({
   name: 'exhibitionPage',
@@ -20,6 +24,12 @@ export default defineType({
     {name: 'seo', title: 'SEO', icon: SearchIcon},
   ],
   fields: [
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      group: 'seo',
+    }),
     defineField({
       name: 'title',
       title: 'Title',
@@ -68,24 +78,127 @@ export default defineType({
       )
     ),
     defineField({
-      name: 'seo',
-      title: 'SEO',
-      type: 'seo',
-      group: 'seo',
+      name: 'artists',
+      title: 'Artists',
+      type: 'array',
+      group: 'content',
+      of: [
+        defineArrayMember({
+          type: 'reference',
+          to: [{type: artistType.name}],
+        }),
+      ],
+    }),
+    
+    defineField({
+      name: 'subtitle',
+      title: 'Subtitle',
+      group: 'content',
+      type: 'string',
+    }),
+    defineField({
+      name: 'summary',
+      title: 'Summary',
+      group: 'content',
+      type: 'string',
+    }),
+    defineField({
+      name: 'description',
+      title: 'Description',
+      group: 'content',
+      type: 'text',
+    }),
+    defineField({
+      type: 'string',
+      name: 'displayDate',
+      title: 'Display Date',
+      group: 'content',
+    }),
+    defineField({
+      name: 'startDate',
+      title: 'Start Date',
+      group: 'content',
+      type: 'date',
+    }),
+    defineField({
+      name: 'endDate',
+      title: 'End Date',
+      group: 'content',
+      type: 'date',
+      validation: (Rule) =>
+        Rule.required()
+          .min(Rule.valueOfField('startDate'))
+          .error('The end date should be greater than the start date'),
+    }),
+    defineField({
+      name: 'photos',
+      title: 'Exhibition photos',
+      group: 'content',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'image',
+          options: {
+            hotspot: true,
+          },
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alternative text',
+            },
+            {
+              name: 'url',
+              type: 'string',
+              title: 'Url redirect',
+            },
+          ],
+        }),
+      ],
+    }),
+    defineField({
+      name: 'events',
+      title: 'Events',
+      group: 'content',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'reference',
+          to: [{type: eventType.name}],
+        }),
+      ],
+    }),
+    defineField({
+      name: 'artworks',
+      title: 'Artworks',
+      group: 'content',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'reference',
+          to: [{type: artworkType.name}],
+        }),
+      ],
+    }),
+    defineField({
+      name: 'collections',
+      title: 'Collections',
+      group: 'content',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'reference',
+          to: [{type: collectionType.name}],
+        }),
+      ],
     }),
     defineField({
       name: 'exhibition',
       title: 'Exhibition',
       type: 'reference',
       group: 'content',
+      description: 'THIS IS DEPRECATED. DO NOT POPULATE',
       to: [{type: exhibition.name}],
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      type: 'text',
-      name: 'displayDate',
-      title: 'Display Date',
-      group: 'content',
     }),
     defineField({
       name: 'components',
