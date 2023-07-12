@@ -7,6 +7,11 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  SANITY_AUTH_TOKEN: ${{ secrets.FEATURE_DATASET_MANAGER }}
+  SANITY_STUDIO_PROJECT_ID: juzvn5an
+  SANITY_STUDIO_TEST_DATABASE: test
+
 jobs:
   delete-dataset:
     runs-on: ubuntu-latest
