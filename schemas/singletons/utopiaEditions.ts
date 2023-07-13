@@ -28,6 +28,7 @@ export default defineType({
     defineField({
       name: 'title',
       title: 'Title',
+      group: 'content',
       type: 'string',
       validation: (rule) => rule.required(),
     }),
@@ -36,6 +37,7 @@ export default defineType({
         {
           name: 'media',
           title: 'Header Media',
+          group: 'content',
           description: 'Media module',
           validation: (rule: ObjectRule) => rule.required(),
         },
@@ -47,6 +49,7 @@ export default defineType({
         {
           name: 'newReleasesInterstitial',
           title: 'Introduction',
+          group: 'content',
           description: 'Custom Interstitial module',
           validation: (rule: ObjectRule) => rule.required(),
         },
@@ -57,6 +60,7 @@ export default defineType({
       name: 'nowAvailable',
       type: 'object',
       title: 'Now Available',
+      group: 'content',
       description: 'Carousel module',
       validation: (rule: ObjectRule) => rule.required(),
       fields: [
@@ -80,6 +84,7 @@ export default defineType({
       name: 'comingSoon',
       type: 'object',
       title: 'Coming Soon',
+      group: 'content',
       description: 'Carousel module',
       validation: (rule: ObjectRule) => rule.required(),
       fields: [
@@ -103,6 +108,7 @@ export default defineType({
       name: 'artworksGrid',
       type: 'object',
       title: 'Grid',
+      group: 'content',
       description: 'Grid module',
       validation: (rule: ObjectRule) => rule.required(),
       fields: [
@@ -137,6 +143,7 @@ export default defineType({
     defineField({
       name: 'mediaCarousel',
       title: 'Media',
+      group: 'content',
       description: 'Carousel module',
       type: 'array',
       of: [
