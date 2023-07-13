@@ -110,10 +110,11 @@ export default defineType({
       type: 'text',
     }),
     defineField({
-      type: 'string',
       name: 'displayDate',
       title: 'Display Date',
+      description: 'This field will override the default display dates used by start and end dates below.',
       group: 'content',
+      type: 'string',
     }),
     defineField({
       name: 'startDate',
@@ -158,14 +159,14 @@ export default defineType({
       ],
     }),
     defineField({
-      name: 'locations',
-      title: 'Locations',
+      name: 'events',
+      title: 'Events',
       group: 'content',
       type: 'array',
       of: [
         defineArrayMember({
           type: 'reference',
-          to: [{type: 'location'}],
+          to: [{type: eventType.name}],
         }),
       ],
     }),
@@ -200,19 +201,6 @@ export default defineType({
       group: 'content',
       description: 'THIS IS DEPRECATED. DO NOT POPULATE',
       to: [{type: exhibition.name}],
-    }),
-    defineField({
-      name: 'events',
-      title: 'Events',
-      description: 'THIS IS DEPRECATED. DO NOT POPULATE',
-      group: 'content',
-      type: 'array',
-      of: [
-        defineArrayMember({
-          type: 'reference',
-          to: [{type: eventType.name}],
-        }),
-      ],
     }),
     defineField({
       name: 'components',
