@@ -33,17 +33,18 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-        title: 'Books URL',
-        name: 'booksUrl',
-        type: 'url',
-        validation: (rule) => rule.required(),
-        description: 'The URL to the book on www.davidzwirnerbooks.com',
+      title: 'Books URL',
+      name: 'booksUrl',
+      type: 'url',
+      validation: (rule) => rule.required(),
+      description: 'The URL to the book on www.davidzwirnerbooks.com',
     }),
     defineField({
       title: 'Images',
       name: 'photos',
       type: 'array',
-      description: 'The images that will appear on the book page. The first image will be used on cards.',
+      description:
+        'The images that will appear on the book page. The first image will be used on cards.',
       validation: (rule) => rule.required(),
       of: [
         {
@@ -77,36 +78,36 @@ export default defineType({
       title: 'Publish Date',
       name: 'dateSelection',
       type: 'date',
-      description: 'Future use: The date the book was published. If the publish date is only a year, select any date in that year. If the book is not yet published, please select the date it will be published.',
+      description:
+        'Future use: The date the book was published. If the publish date is only a year, select any date in that year. If the book is not yet published, please select the date it will be published.',
     }),
     defineField({
       name: 'description',
       title: 'Description',
       type: 'array',
-      description: 'Future use: This is the description that will appear on the book page. It is not currently being used.',
+      description:
+        'Future use: This is the description that will appear on the book page. It is not currently being used.',
       of: [
         {
-            type: 'block',
-            styles: [
-              {title: 'Normal', value: 'normal'},
+          type: 'block',
+          styles: [{title: 'Normal', value: 'normal'}],
+          marks: {
+            decorators: [
+              {title: 'Strong', value: 'strong'},
+              {title: 'Emphasis', value: 'em'},
+              {title: 'Underline', value: 'underline'},
             ],
-            marks: {
-              decorators: [
-                {title: 'Strong', value: 'strong'},
-                {title: 'Emphasis', value: 'em'},
-                {title: 'Underline', value: 'underline'},
-              ],
-            },
-
           },
-          {type: 'image'},
+        },
+        {type: 'image'},
       ],
     }),
     defineField({
       name: 'artists',
       title: 'Artists',
       type: 'array',
-      description: 'Future use: This is the list of artists that will appear on the book page. It is not currently being used.',
+      description:
+        'Future use: This is the list of artists that will appear on the book page. It is not currently being used.',
       of: [
         {
           type: 'reference',
@@ -119,7 +120,8 @@ export default defineType({
       name: 'authors',
       title: 'Authors',
       type: 'array',
-      description: 'Future use: This is the list of authors that will appear on the book page. It is not currently being used.',
+      description:
+        'Future use: This is the list of authors that will appear on the book page. It is not currently being used.',
       of: [
         {
           type: 'reference',
@@ -127,7 +129,16 @@ export default defineType({
           to: [{type: author.name}],
         },
       ],
-    })
+    }),
+    defineField({
+      name: 'price',
+      title: 'Price',
+      type: 'number',
+      validation: (rule) => rule.positive().greaterThan(0),
+      readOnly: ({currentUser}) => {
+        return !currentUser?.roles.find(({name}) => name !== 'administrator')
+      },
+    }),
   ],
   preview: {
     select: {
