@@ -81,6 +81,13 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'artistIntro',
+      title: 'Artist Intro',
+      group: 'content',
+      type: 'text',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: 'showHero',
       title: 'Show Hero',
       group: 'content',
@@ -242,6 +249,5 @@ export default defineType({
       group: 'subpages',
       type: interstitial.name,
     }),
-
   ],
 })

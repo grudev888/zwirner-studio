@@ -30,6 +30,7 @@ export default defineType({
       name: 'summary',
       title: 'Summary',
       type: 'string',
+      validation: (Rule) => Rule.max(120).error(`A summary shouldn't be more than 120 characters.`),
     }),
     defineField({
       name: 'description',
