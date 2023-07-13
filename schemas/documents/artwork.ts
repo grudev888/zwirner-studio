@@ -207,10 +207,18 @@ export default defineType({
       title: 'Dimensions',
       group: 'content',
       type: 'string',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'framedDimensions',
+      title: 'Framed Dimensions',
+      group: 'content',
+      type: 'string',
+      hidden: ({parent}) => parent?.artworkType === 'sculpture',
     }),
     defineField({
       name: 'framed',
-      title: 'Framed',
+      title: 'Framing',
       group: 'content',
       type: 'string',
       options: {
@@ -221,13 +229,7 @@ export default defineType({
       },
       hidden: ({parent}) => parent?.artworkType === 'sculpture',
     }),
-    defineField({
-      name: 'framedDimensions',
-      title: 'Framed Dimensions',
-      group: 'content',
-      type: 'string',
-      hidden: ({parent}) => parent?.framed === undefined || parent?.framed === 'Unframed' || parent?.artworkType === 'sculpture',
-    }),
+    
     defineField({
       name: 'availability',
       title: 'Availability',
