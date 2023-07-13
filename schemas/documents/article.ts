@@ -58,10 +58,11 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      type: 'text',
       name: 'displayDate',
       title: 'Display Date',
+      description: 'This field will override the default display dates used by the dates below.',
       group: 'content',
+      type: 'string',
     }),
     defineField({
       title: 'Date',
