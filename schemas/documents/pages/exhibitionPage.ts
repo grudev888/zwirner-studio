@@ -157,19 +157,6 @@ export default defineType({
         }),
       ],
     }),
-    // removed to deprecate events
-    // defineField({
-    //   name: 'events',
-    //   title: 'Events',
-    //   group: 'content',
-    //   type: 'array',
-    //   of: [
-    //     defineArrayMember({
-    //       type: 'reference',
-    //       to: [{type: eventType.name}],
-    //     }),
-    //   ],
-    // }),
     defineField({
       name: 'locations',
       title: 'Locations',
@@ -213,6 +200,19 @@ export default defineType({
       group: 'content',
       description: 'THIS IS DEPRECATED. DO NOT POPULATE',
       to: [{type: exhibition.name}],
+    }),
+    defineField({
+      name: 'events',
+      title: 'Events',
+      description: 'THIS IS DEPRECATED. DO NOT POPULATE',
+      group: 'content',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'reference',
+          to: [{type: eventType.name}],
+        }),
+      ],
     }),
     defineField({
       name: 'components',
