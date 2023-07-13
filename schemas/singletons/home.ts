@@ -57,7 +57,7 @@ export default defineType({
           title: 'Body Carousel 1',
           group: 'content',
         },
-        {reference: exhibitionPage, excludedFields: ['title']}
+        {reference: [exhibitionPage, article], excludedFields: ['title']}
       )
     ),
     defineField(
@@ -67,7 +67,7 @@ export default defineType({
           title: 'Body Carousel 2',
           group: 'content',
         },
-        {reference: exhibitionPage, excludedFields: ['title']}
+        {reference: [exhibitionPage, article], excludedFields: ['title']}
       )
     ),
     defineField({
