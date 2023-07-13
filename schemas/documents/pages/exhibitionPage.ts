@@ -157,15 +157,28 @@ export default defineType({
         }),
       ],
     }),
+    // removed to deprecate events
+    // defineField({
+    //   name: 'events',
+    //   title: 'Events',
+    //   group: 'content',
+    //   type: 'array',
+    //   of: [
+    //     defineArrayMember({
+    //       type: 'reference',
+    //       to: [{type: eventType.name}],
+    //     }),
+    //   ],
+    // }),
     defineField({
-      name: 'events',
-      title: 'Events',
+      name: 'locations',
+      title: 'Locations',
       group: 'content',
       type: 'array',
       of: [
         defineArrayMember({
           type: 'reference',
-          to: [{type: eventType.name}],
+          to: [{type: 'location'}],
         }),
       ],
     }),
