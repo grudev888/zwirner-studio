@@ -69,7 +69,7 @@ export default defineType({
             // const exhibitionId = parent.exhibition?._ref
             // const exhibition = await client.fetch(`*[_id == $exhibitionId][0]`, {exhibitionId})
             const dateFormatter = new Intl.DateTimeFormat('en-US', {
-              timeZone: 'UTC',
+              timeZone: 'America/New_York',
               year: 'numeric',
             })
             const year = dateFormatter.format(new Date(parent.endDate))

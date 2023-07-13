@@ -13,6 +13,7 @@ const fields = [
     options: {hotspot: true},
     fields: [{name: 'alt', type: 'string', title: 'Alternative text'}],
   }),
+  defineField({name: 'mode', type: 'string', options: {list: ['Light', 'Dark']}, title: 'Mode'}),
 ]
 
 export const builder = (

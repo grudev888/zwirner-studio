@@ -26,7 +26,7 @@ const fields = (reference: SchemaTypeDefinition | SchemaTypeDefinition[]) => {
                 to: [{type: ref.name}],
               })
             ),
-            validation: (rule) => rule.required().max(12),
+            validation: (rule) => rule.max(12),
           }),
         ]
       : []),

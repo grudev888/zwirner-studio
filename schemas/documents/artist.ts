@@ -104,6 +104,22 @@ export default defineType({
       ],
     }),
     defineField({
+      name: 'biographyPicture',
+      title: 'Biography Picture',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        {
+          name: 'alt',
+          type: 'string',
+          title: 'Alternative text',
+        },
+      ],
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       title: 'Social media',
       name: 'social',
       type: 'social',
