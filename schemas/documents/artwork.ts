@@ -4,10 +4,9 @@ import * as Media from '../objects/utils/media'
 import {builder as slugBuilder} from '../objects/utils/slugUrl'
 import dateSelection from '../objects/utils/dateSelection'
 import {randomIntString} from '../../lib/util/strings'
-import {ThLargeIcon,ComposeIcon,SearchIcon,ImageIcon,DocumentVideoIcon} from '@sanity/icons'
+import {ThLargeIcon, ComposeIcon, SearchIcon, ImageIcon, DocumentVideoIcon} from '@sanity/icons'
 import artist from './artist'
 import blockContentSimple from '../../schemas/objects/utils/blockContentSimple'
-
 
 // Check If we will need prefilled fields
 export default defineType({
@@ -31,23 +30,28 @@ export default defineType({
       title: 'Title',
       group: 'content',
       type: 'string',
-      description: 'The title of the artwork. This will present the standard italicized artwork title and for generating the URL.',
-      validation: Rule => [
+      description:
+        'The title of the artwork. This will present the standard italicized artwork title and for generating the URL.',
+      validation: (Rule) => [
         Rule.required(),
-        Rule.max(300).warning('The title is longer than our standard character count, an ellipsis will appear on tile view.')
-      ]
+        Rule.max(300).warning(
+          'The title is longer than our standard character count, an ellipsis will appear on tile view.'
+        ),
+      ],
     }),
     defineField({
       name: 'displayCustomTitle',
       title: 'Custom Title Display',
-      description: 'Enable custom display of the artwork title. Leave off to display title in default italicized format.',
+      description:
+        'Enable custom display of the artwork title. Leave off to display title in default italicized format.',
       type: 'boolean',
       group: 'content',
     }),
     defineField({
       name: 'displayTitle',
       title: 'Optional Title Display',
-      description: 'For use only in cases where the artist requests custom display decoration for the artwork title, mixing plain, italics, and bold text in the title.',
+      description:
+        'For use only in cases where the artist requests custom display decoration for the artwork title, mixing plain, italics, and bold text in the title.',
       group: 'content',
       type: 'array',
       of: [
@@ -55,14 +59,14 @@ export default defineType({
           type: 'block',
           styles: [],
           lists: [],
-            marks: {
-              decorators: [
-                  {title: 'Emphasis', value: 'em'},
-                  {title: 'Strong', value: 'strong'},
-                ],
-              annotations: [],
-            },
-          }
+          marks: {
+            decorators: [
+              {title: 'Emphasis', value: 'em'},
+              {title: 'Strong', value: 'strong'},
+            ],
+            annotations: [],
+          },
+        },
       ],
       hidden: ({parent}) => !parent?.displayCustomTitle,
     }),
@@ -74,23 +78,27 @@ export default defineType({
           name: 'slug',
           title: 'Slug',
           group: 'content',
-          description: 'Should be in format of /artist/[artist-slug]/[artwork-slug], artwork-slug should be title + year + random 5 digit number. If no artist or year is specified, the slug will be generated from the title and a random 5 digit number.',
+          description:
+            'Should be in format of /artist/[artist-slug]/[artwork-slug], artwork-slug should be title + year + random 5 digit number. If no artist or year is specified, the slug will be generated from the title and a random 5 digit number.',
           options: {
             source: (object: any) => {
-              const defaultSlug = `${object?.title}-${object.dateSelection.year}-${randomIntString(5)}` ?? ''
+              const defaultSlug =
+                `${object?.title}-${object.dateSelection.year}-${randomIntString(5)}` ?? ''
               if (!defaultSlug) throw new Error('Please add a title to create a unique slug.')
               return defaultSlug.slice(0, 95)
             },
-          }
+          },
         },
         {
           optional: true,
           prefix: async (parent, client) => {
             const artistId = parent.artists[0]?._ref
-            const artistPageSlug = await client.fetch(`*[_type == "artistPage" && artist._ref == "${artistId}"].slug.current`)
+            const artistPageSlug = await client.fetch(
+              `*[_type == "artistPage" && artist._ref == "${artistId}"].slug.current`
+            )
             return artistPageSlug
           },
-        },
+        }
       )
     ),
     defineField({
@@ -145,7 +153,15 @@ export default defineType({
               name: 'artImage',
               icon: ImageIcon,
               title: 'Image',
-              preview: {select: {media: 'image'}},
+              preview: {
+                select: {
+                  image: 'image',
+                },
+                prepare({image}: any) {
+                  const {alt, caption} = image
+                  return {title: alt ?? caption, media: image}
+                },
+              },
             },
             {
               type: Media.MediaTypes.IMAGE,
@@ -229,7 +245,7 @@ export default defineType({
       },
       hidden: ({parent}) => parent?.artworkType === 'sculpture',
     }),
-    
+
     defineField({
       name: 'availability',
       title: 'Availability',
@@ -254,7 +270,7 @@ export default defineType({
           type: 'string',
           initialValue: 'none',
           options: {
-            list:  [
+            list: [
               {title: 'None', value: 'none'},
               {title: 'Inquire', value: 'inquire'},
               {title: 'E-Comm', value: 'ecomm'},
@@ -266,17 +282,18 @@ export default defineType({
           name: 'CTAText',
           title: 'CTA Text',
           type: 'string',
-          validation: Rule => Rule.max(20),
-          hidden: ({ parent }) => parent?.CTA === 'none' || parent?.CTA === undefined
+          validation: (Rule) => Rule.max(20),
+          hidden: ({parent}) => parent?.CTA === 'none' || parent?.CTA === undefined,
         }),
         defineField({
           name: 'CTALink',
           title: 'CTA Link',
           type: 'url',
-          hidden: ({ parent }) => parent?.CTA !== 'custom',
-          validation: Rule => Rule.uri({
-            allowRelative: true,
-          }),
+          hidden: ({parent}) => parent?.CTA !== 'custom',
+          validation: (Rule) =>
+            Rule.uri({
+              allowRelative: true,
+            }),
         }),
         defineField({
           name: 'secondaryCTA',
@@ -284,29 +301,31 @@ export default defineType({
           type: 'string',
           initialValue: 'none',
           options: {
-            list:  [
+            list: [
               {title: 'None', value: 'none'},
               {title: 'Inquire', value: 'inquire'},
               {title: 'Custom', value: 'custom'},
             ],
           },
-          hidden: ({ parent }) => parent?.CTA === 'none' || parent?.CTA === undefined
+          hidden: ({parent}) => parent?.CTA === 'none' || parent?.CTA === undefined,
         }),
         defineField({
           name: 'SecondaryCTAText',
           title: 'Secondary CTA Text',
           type: 'string',
-          validation: Rule => Rule.max(20),
-          hidden: ({ parent }) => parent?.secondaryCTA === 'none' || parent?.secondaryCTA === undefined
+          validation: (Rule) => Rule.max(20),
+          hidden: ({parent}) =>
+            parent?.secondaryCTA === 'none' || parent?.secondaryCTA === undefined,
         }),
         defineField({
           name: 'SecondaryCTALink',
           title: 'Secondary CTA Link',
           type: 'url',
-          hidden: ({ parent }) => parent?.secondaryCTA !== 'custom',
-          validation: Rule => Rule.uri({
-            allowRelative: true,
-          }),
+          hidden: ({parent}) => parent?.secondaryCTA !== 'custom',
+          validation: (Rule) =>
+            Rule.uri({
+              allowRelative: true,
+            }),
         }),
       ],
     }),
@@ -327,12 +346,12 @@ export default defineType({
       type: 'string',
       options: {
         list: [
-          {title: 'USD', value: "USD"},
-          {title: 'EUR', value: "EUR" },
-          {title: 'GBP', value: "GBP"},
-          {title: 'HKD', value: "HKD"},
-        ]
-      }
+          {title: 'USD', value: 'USD'},
+          {title: 'EUR', value: 'EUR'},
+          {title: 'GBP', value: 'GBP'},
+          {title: 'HKD', value: 'HKD'},
+        ],
+      },
     }),
     defineField({
       name: 'additionalCaption',
