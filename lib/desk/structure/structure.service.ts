@@ -1,6 +1,6 @@
 import {type DocumentListBuilder, type ListBuilder, StructureBuilder} from 'sanity/desk'
 
-import {apiVersion, envHost} from '../../../env'
+import {apiVersion} from '../../../env'
 import {ReferenceByTab} from '../../overrides/overrides'
 import {PreviewIframe} from '../../preview/customIframe/previewIframe'
 import {getExhibitionByDate} from '../../../queries/exhibition.queries'
