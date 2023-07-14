@@ -1,5 +1,6 @@
 import {UserIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
+import blockContentSimple from '../objects/utils/blockContentSimple'
 
 export default defineType({
   name: 'artist',
@@ -35,7 +36,8 @@ export default defineType({
     defineField({
       name: 'description',
       title: 'Description, bio',
-      type: 'text',
+      type: 'array',
+      of: blockContentSimple,
     }),
     defineField({
       name: 'cv',
