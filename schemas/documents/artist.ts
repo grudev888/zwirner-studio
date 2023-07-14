@@ -65,7 +65,6 @@ export default defineType({
       name: 'birthdate',
       type: 'date',
       title: 'Birthdate',
-      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'deathDate',
