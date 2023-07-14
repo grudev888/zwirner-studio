@@ -250,4 +250,13 @@ export default defineType({
       type: interstitial.name,
     }),
   ],
+  preview: {
+    select: {
+      title: 'title',
+      images: 'artist.biographyPicture',
+    },
+    prepare({title, images}) {
+      return {title, media: images ?? UserIcon}
+    },
+  },
 })

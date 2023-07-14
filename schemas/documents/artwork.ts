@@ -383,7 +383,7 @@ export default defineType({
       images: 'photos',
     },
     prepare({title, images}) {
-      return {title, media: images?.[0] ?? ThLargeIcon}
+      return {title, media: images?.[0] ?? ImageIcon}
     },
   },
 })

@@ -201,7 +201,7 @@ export const generalStructure = (S: StructureBuilder) =>
                   S.documentList()
                     .title('Artist Pages')
                     .filter('_type == "artistPage"')
-                    .defaultOrdering([{field: 'title', direction: 'asc'}])
+                    .defaultOrdering([{field: 'artist->lastName', direction: 'asc'}])
                     .child((childId) =>
                       S.document()
                         .id(childId)
