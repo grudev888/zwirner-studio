@@ -17,6 +17,7 @@ import {DocumentDefinition} from 'sanity'
 import article from '../../../schemas/documents/article'
 import {getArticleByDate} from '../../../queries/article.queries'
 import artistPage from '../../../schemas/documents/pages/artistPage'
+import {getPreviewUrl} from './utils'
 
 interface StructureBuilderProps {
   S: StructureBuilder
@@ -78,15 +79,7 @@ export async function getSectionsByYear({
     ? [
         S.view
           .component(PreviewIframe)
-          .options({
-            url: (doc: any) => {
-              const currentSlug = doc?.slug?.current
-              const slugToUse = currentSlug?.startsWith('/')
-                ? currentSlug.substring(1)
-                : currentSlug
-              return `${envHost}/api/sanity/preview?slug=${slugToUse}&section=${preview.section}`
-            },
-          })
+          .options({url: getPreviewUrl})
           .title('Preview'),
       ]
     : []
