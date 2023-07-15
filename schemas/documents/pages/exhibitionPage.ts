@@ -1,5 +1,5 @@
 import {BlockElementIcon, ComposeIcon, SearchIcon} from '@sanity/icons'
-import {defineArrayMember,defineField, defineType} from 'sanity'
+import {defineArrayMember, defineField, defineType} from 'sanity'
 
 // import {apiVersion} from '../../../env'
 // import {exhibitionById} from '../../../queries/exhibition.queries'
@@ -9,6 +9,7 @@ import artistType from '../artist'
 import artworkType from '../artwork'
 import collectionType from '../collection'
 import eventType from '../event'
+import location from '../location'
 
 export default defineType({
   name: 'exhibitionPage',
@@ -47,9 +48,8 @@ export default defineType({
               // const exhibitionRef = object?.exhibition?._ref
               const defaultSlug = object?.title ?? ''
 
-              if (!defaultSlug)
-                throw new Error('Please add a title to create a unique slug.')
-                return defaultSlug.slice(0, 95)
+              if (!defaultSlug) throw new Error('Please add a title to create a unique slug.')
+              return defaultSlug.slice(0, 95)
 
               // if (!exhibitionRef) return defaultSlug
 
@@ -90,7 +90,6 @@ export default defineType({
         }),
       ],
     }),
-    
     defineField({
       name: 'subtitle',
       title: 'Subtitle',
@@ -112,7 +111,8 @@ export default defineType({
     defineField({
       name: 'displayDate',
       title: 'Display Date',
-      description: 'This field will override the default display dates used by start and end dates below.',
+      description:
+        'This field will override the default display dates used by start and end dates below.',
       group: 'content',
       type: 'string',
     }),
@@ -207,6 +207,13 @@ export default defineType({
       title: 'Components',
       type: 'pageBuilderComponents',
       group: 'content',
+    }),
+    defineField({
+      name: 'location',
+      title: 'Location',
+      type: 'reference',
+      group: 'content',
+      to: [{type: location.name}],
     }),
   ],
 })

@@ -55,7 +55,6 @@ export default defineType({
       name: 'description',
       title: 'Description',
       group: 'content',
-      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'displayDate',
@@ -111,45 +110,50 @@ export default defineType({
               if (!defaultSlug) throw new Error('Please add a title to create a unique slug.')
               return defaultSlug.slice(0, 95)
             },
-          validation: (rule: SlugRule) =>
-            rule.custom((value, context) => {
-              return (context.parent as any).type !== 'externalNews' && !value ? 'Required' : true
-            }),
-          hidden: (context: SlugSourceContext) => (context.parent as any).type === 'externalNews',
+            validation: (rule: SlugRule) =>
+              rule.custom((value, context) => {
+                return (context.parent as any).type !== 'externalNews' && !value ? 'Required' : true
+              }),
+            hidden: (context: SlugSourceContext) => (context.parent as any).type === 'externalNews',
+          },
         },
-      },
         {
           optional: true,
-          
-          prefix: async (parent, client) => {
 
+          prefix: async (parent, client) => {
             // if parent.type === 'pressRelease' then prefix is /artists/[artist]/press/[slug]
             if (parent.type === 'pressRelease') {
-              const postId = parent._id.startsWith('drafts.') ? parent._id.split('.')[1] : parent._id;
-              const artistPageSlug = await client.fetch(`*[_type == "artistPage" && references("${postId}")]{"slug": slug.current}`)
+              const postId = parent._id.startsWith('drafts.')
+                ? parent._id.split('.')[1]
+                : parent._id
+              const artistPageSlug = await client.fetch(
+                `*[_type == "artistPage" && references("${postId}")]{"slug": slug.current}`
+              )
               if (artistPageSlug.length === 0) {
                 throw new Error(`No artistPage document references the post with ID: ${parent._id}`)
               } else if (artistPageSlug.length > 1) {
-                throw new Error(`Multiple artistPage documents reference the post with ID: ${parent._id}`)
+                throw new Error(
+                  `Multiple artistPage documents reference the post with ID: ${parent._id}`
+                )
               } else {
                 const pressPrefix = `${artistPageSlug[0].slug}/press`
                 return pressPrefix
               }
             }
 
-             // if context.parent.type === 'internalNews' then prefix is /news/[year]/[slug]
+            // if context.parent.type === 'internalNews' then prefix is /news/[year]/[slug]
             if (parent.type === 'internalNews') {
               const year = parent?.dateSelection.year
               const newsPrefix = `/news/${year}`
               return newsPrefix
-            } 
+            }
 
             // if parent.type === 'externalNews' then return empty string
             else {
               return ''
             }
           },
-        },
+        }
       )
     ),
     defineField(
