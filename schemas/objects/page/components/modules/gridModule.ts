@@ -58,6 +58,7 @@ export const builder = (
 
 export default defineType({
   name: 'gridModule',
+  title: 'Grid Module',
   type: 'object',
   fields: fields(artwork),
 })

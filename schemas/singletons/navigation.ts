@@ -12,6 +12,7 @@ export default defineType({
   fields: [
     defineField({
       name: 'Menu',
+      title: 'Menu',
       type: menu.name,
     }),
   ],

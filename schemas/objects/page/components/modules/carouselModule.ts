@@ -48,6 +48,7 @@ export const builder = (
 
 export default defineType({
   name: 'carouselModule',
+  title: 'Carousel Module',
   type: 'object',
   fields: [...fields(artwork)],
 })

@@ -4,6 +4,7 @@ import {menuCommonFields} from '../utils/menu'
 
 export default defineType({
   name: 'menu',
+  title: 'Menu',
   type: 'object',
   fields: [
     defineField({
