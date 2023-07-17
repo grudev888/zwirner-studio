@@ -18,6 +18,7 @@ import * as Media from '../objects/utils/media'
 import {GreyFootNote, GreyFootNoteDecorator} from '../../components/block/GreyFootnote'
 import dateSelection from '../objects/utils/dateSelection'
 
+
 export interface ArticleSchema {
   title?: string
   images?: any
@@ -145,9 +146,25 @@ export default defineType({
 
             // if context.parent.type === 'internalNews' then prefix is /news/[year]/[slug]
             if (parent.type === 'internalNews') {
-              const year = parent?.dateSelection.year
-              const newsPrefix = `/news/${year}`
-              return newsPrefix
+              if (!parent?.dateSelection) {
+                throw new Error('Please add a date to create a unique slug.')
+              }
+              let thisDate = new Date()
+              if (parent?.dateSelection?.year) {
+                thisDate = new Date(parent?.dateSelection?.year, 1)
+              } else if (parent?.dateSelection?.dateRange?.from || parent?.dateSelection?.dateRange?.to) {
+                thisDate = new Date(parent?.dateSelection?.dateRange.from || parent?.dateSelection?.dateRange.from)
+              } else if (parent?.dateSelection?.approximate) {
+                thisDate = new Date(parent?.dateSelection?.approximate)
+              }
+
+              if (isNaN(thisDate.getTime())) {
+                throw new Error('Please add a valid date to create a unique slug.')
+              } else {
+                const year = thisDate.getFullYear()
+                const newsPrefix = `/news/${year}`
+                return newsPrefix
+              }              
             }
 
             // if parent.type === 'externalNews' then return empty string
