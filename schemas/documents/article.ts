@@ -127,16 +127,18 @@ export default defineType({
                 ? parent._id.split('.')[1]
                 : parent._id
               const artistPageSlug = await client.fetch(
-                `*[_type == "artistPage" && references("${postId}")]{"slug": slug.current}`
+                `coalesce(*[_type == "artistPage" && references("${postId}")]{"slug": slug.current})[0]`
               )
-              if (artistPageSlug.length === 0) {
+              if (!artistPageSlug) {
                 throw new Error(`No artistPage document references the post with ID: ${parent._id}`)
-              } else if (artistPageSlug.length > 1) {
-                throw new Error(
-                  `Multiple artistPage documents reference the post with ID: ${parent._id}`
-                )
-              } else {
-                const pressPrefix = `${artistPageSlug[0].slug}/press`
+              } 
+              // else if (artistPageSlug.length > 1) {
+              //   throw new Error(
+              //     `Multiple artistPage documents reference the post with ID: ${parent._id}`
+              //   )
+              // } 
+              else {
+                const pressPrefix = `${artistPageSlug.slug}/press`
                 return pressPrefix
               }
             }
