@@ -1,7 +1,6 @@
 import {DefaultDocumentNodeResolver} from 'sanity/desk'
 import {PreviewIframe} from '../../preview/customIframe/previewIframe'
-import {SanityDocument} from 'sanity'
-import {envHost} from '../../../env'
+import {getPreviewUrl} from '../structure/utils'
 
 const schemaTypeToSection = (type: string) => ({
   article: 'news',
@@ -22,13 +21,7 @@ export const defaultDocumentNode: DefaultDocumentNodeResolver = (S, {schemaType}
         S.view.form(),
         S.view
           .component(PreviewIframe)
-          .options({
-            url: (doc: SanityDocument) =>
-              `${envHost}/api/sanity/preview?slug=${(doc?.slug as any)?.current?.replace(
-                /^\//i,
-                ''
-              )}&section=${schemaTypeToSection(schemaType)}`,
-          })
+          .options({url: getPreviewUrl})
           .title('Preview'),
       ])
     default:
