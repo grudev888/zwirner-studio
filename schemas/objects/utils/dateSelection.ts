@@ -6,11 +6,13 @@ export default defineType({
   name: 'dateSelection',
   type: 'object',
   title: 'Date Selection',
+  description: 'Select a year, approximate date, or a date range',
   fields: [
     defineField({
       name: 'year',
       type: 'string',
       title: 'Year',
+      description: 'Single year. Format: YYYY',
       hidden: ({parent, value}) => {
         return !!(!value && (parent?.dateRange?.from || parent?.approximate))
       },
@@ -19,6 +21,7 @@ export default defineType({
       name: 'approximate',
       type: 'string',
       title: 'Approximate date',
+      description: 'Single date. Accepts formats like "Month YYYY" or "YYYY-MM-DD". Not for any date ranges ',
       hidden: ({parent, value}) => {
         return !!(!value && (parent?.dateRange?.from || parent?.year))
       },
@@ -26,6 +29,8 @@ export default defineType({
     defineField({
       name: 'dateRange',
       type: dateRange.name,
+      title: 'Date Range',
+      description: 'Date range. Format: YYYY-MM-DD',
       hidden: ({parent, value}) => {
         return !!(!value?.from && (parent?.year || parent?.approximate))
       },
