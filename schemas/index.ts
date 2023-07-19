@@ -7,8 +7,6 @@ import authorType from './documents/author'
 import bookType from './documents/book'
 import podcast from './documents/podcast'
 import collection from './documents/collection'
-import event from './documents/event'
-import exhibition from './documents/exhibition'
 import globalSEO from './documents/globalSEO'
 import locationType from './documents/location'
 import pageType from './documents/page'
@@ -121,11 +119,9 @@ export const schema: {types: SchemaTypeDefinition[] } = {
     bookType,
     podcast,
     locationType,
-    event,
     artwork,
     collection,
     strings,
-    exhibition,
     artist,
     authorType,
     dateRange,

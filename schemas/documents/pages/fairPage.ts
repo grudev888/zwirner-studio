@@ -3,7 +3,7 @@ import {defineField, defineType} from 'sanity'
 
 import {apiVersion} from '../../../env'
 import {exhibitionById} from '../../../queries/exhibition.queries'
-import exhibition from '../exhibition'
+import exhibitionPage from '../pages/exhibitionPage'
 import slugUrl from '../../objects/utils/slugUrl'
 
 export default defineType({
@@ -30,7 +30,7 @@ export default defineType({
       options: {
         ...slugUrl.options,
         source: (object: any, context) => {
-          const exhibitionRef = object?.exhibition?._ref
+          const exhibitionRef = object?.exhibitionPage?._ref
           const defaultSlug = object?.title ?? ''
           if (!defaultSlug && !exhibitionRef)
             throw new Error('Please add a title or an exhibition to create a unique slug.')
@@ -59,7 +59,7 @@ export default defineType({
       title: 'Exhibition',
       type: 'reference',
       group: 'content',
-      to: [{type: exhibition.name}],
+      to: [{type: exhibitionPage.name}],
       validation: (rule) => rule.required(),
     }),
     defineField({

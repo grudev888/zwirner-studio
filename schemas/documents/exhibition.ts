@@ -4,7 +4,6 @@ import {defineArrayMember, defineField, defineType} from 'sanity'
 import artistType from './artist'
 import artworkType from './artwork'
 import collectionType from './collection'
-import eventType from './event'
 
 export default defineType({
   name: 'exhibition',
@@ -16,6 +15,7 @@ export default defineType({
       name: 'title',
       title: 'Title',
       type: 'string',
+      description: 'THIS IS A DEPRECATED CONTENT TYPE. DO NOT USE.'
     }),
     defineField({
       name: 'subtitle',
@@ -68,17 +68,6 @@ export default defineType({
               title: 'Url redirect',
             },
           ],
-        }),
-      ],
-    }),
-    defineField({
-      name: 'events',
-      title: 'Events',
-      type: 'array',
-      of: [
-        defineArrayMember({
-          type: 'reference',
-          to: [{type: eventType.name}],
         }),
       ],
     }),

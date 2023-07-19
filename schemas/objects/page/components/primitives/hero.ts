@@ -2,7 +2,7 @@ import {MasterDetailIcon} from '@sanity/icons'
 import {ArrayOfType, ObjectDefinition, defineArrayMember, defineField, defineType} from 'sanity'
 import artist from '../../../../documents/artist'
 import artwork from '../../../../documents/artwork'
-import exhibition from '../../../../documents/exhibition'
+import exhibitionPage from '../../../../documents/pages/exhibitionPage'
 import cta from '../../../utils/cta'
 
 export type Reference = ArrayOfType & {name: string}
@@ -42,7 +42,7 @@ export const builder = (
   params: {name: string; title: string; [key: string]: any},
   options?: {references?: Reference[]; excludeFields?: string[]}
 ) => {
-  const references = options?.references || ([artist, artwork, exhibition] as Reference[])
+  const references = options?.references || ([artist, artwork, exhibitionPage] as Reference[])
   const excludeFields = options?.excludeFields || []
 
   return {
