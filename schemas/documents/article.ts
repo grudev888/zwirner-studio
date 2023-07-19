@@ -51,13 +51,13 @@ export default defineType({
       group: 'content',
       validation: (rule) => rule.required(),
     }),
-    defineField({
-      type: 'string',
-      name: 'summary',
-      title: 'Summary',
-      description: 'Displays a summary as subtitle text on cards and in search results.',
-      group: 'content',
-    }),
+    // defineField({
+    //   type: 'string',
+    //   name: 'summary',
+    //   title: 'Summary',
+    //   description: 'Displays a summary as subtitle text on cards and in search results.',
+    //   group: 'content',
+    // }),
     defineField({
       type: 'text',
       name: 'description',
