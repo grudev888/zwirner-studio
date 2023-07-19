@@ -12,7 +12,7 @@ export default defineType({
       name: 'year',
       type: 'string',
       title: 'Year',
-      description: 'Single year. Format: YYYY',
+      description: 'Add a single year in the format: YYYY.',
       hidden: ({parent, value}) => {
         return !!(!value && (parent?.dateRange?.from || parent?.approximate))
       },
@@ -21,7 +21,7 @@ export default defineType({
       name: 'approximate',
       type: 'string',
       title: 'Approximate date',
-      description: 'Single date. Accepts formats like "Month YYYY" or "YYYY-MM-DD". Not for any date ranges',
+      description: 'Single date. Accepts formats like "Month YYYY" or "YYYY-MM-DD". Not for any date ranges.',
       hidden: ({parent, value}) => {
         return !!(!value && (parent?.dateRange?.from || parent?.year))
       },
