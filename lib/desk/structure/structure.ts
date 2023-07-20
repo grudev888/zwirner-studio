@@ -216,7 +216,7 @@ export const generalStructure = (S: StructureBuilder) =>
                     )
                 ),
               S.listItem()
-                .title('Exhibition Pages')
+                .title('Exhibitions')
                 .icon(DashboardIcon)
                 .child(() => {
                   return getSectionsByYear({
@@ -226,7 +226,7 @@ export const generalStructure = (S: StructureBuilder) =>
                   })
                 }),
               S.listItem()
-                .title('Fair Pages')
+                .title('Fairs')
                 .icon(DashboardIcon)
                 .child(() =>
                   getSectionsByYear({
