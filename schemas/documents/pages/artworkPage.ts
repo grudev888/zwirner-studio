@@ -16,7 +16,7 @@ const CTAOptionsList = [
 
 export default defineType({
   name: 'artworkPage',
-  title: 'Artwork Page',
+  title: 'Artwork',
   type: 'document',
   groups: [
     {name: 'content', title: 'Content', icon: ComposeIcon, default: true},

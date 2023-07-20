@@ -31,8 +31,6 @@ interface PreviewProps {
 const queryByType: any = {
   [exhibitionPage.name]: getEndDateExhibitionsDate,
   [fairPage.name]: getEndDateFairPagesDate,
-  [press.name]: getPressByDate,
-  [exhibition.name]: getExhibitionByDate,
   [article.name]: getArticleByDate,
   [artistPage.name]: getArtistByName,
 }

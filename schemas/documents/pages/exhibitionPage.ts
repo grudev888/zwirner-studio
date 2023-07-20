@@ -11,7 +11,7 @@ import location from '../location'
 
 export default defineType({
   name: 'exhibitionPage',
-  title: 'Exhibition Page',
+  title: 'Exhibition',
   type: 'document',
   icon: BlockElementIcon,
   preview: {

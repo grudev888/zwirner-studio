@@ -8,7 +8,7 @@ import slugUrl from '../../objects/utils/slugUrl'
 
 export default defineType({
   name: 'fairPage',
-  title: 'Fair Page',
+  title: 'Fair',
   type: 'document',
   icon: BlockElementIcon,
   groups: [
