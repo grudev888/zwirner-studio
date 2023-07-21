@@ -18,10 +18,6 @@ import {getPreviewUrl} from './utils'
 interface StructureBuilderProps {
   S: StructureBuilder
   document: DocumentDefinition
-  preview?: PreviewProps
-}
-interface PreviewProps {
-  section: 'exhibitions' | 'fairs' | 'artists' | 'news' | 'artworks'
 }
 
 const queryByType: any = {
@@ -34,7 +30,6 @@ const queryByType: any = {
 export async function getSectionsByYear({
   S,
   document,
-  preview,
 }: StructureBuilderProps): Promise<ListBuilder | DocumentListBuilder> {
   const name = document.name
   const title = document.title || capitalize(name)
@@ -69,14 +64,9 @@ export async function getSectionsByYear({
     years[year].push(_id)
   })
 
-  const includePreview = preview
-    ? [
-        S.view
-          .component(PreviewIframe)
-          .options({url: getPreviewUrl})
-          .title('Preview'),
-      ]
-    : []
+  const includePreview = [
+    S.view.component(PreviewIframe).options({url: getPreviewUrl}).title('Preview'),
+  ]
 
   return S.list()
     .title(`${title}s by Year`)

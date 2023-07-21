@@ -50,13 +50,13 @@ export default defineType({
       group: 'content',
       validation: (rule) => rule.required(),
     }),
-    // defineField({
-    //   type: 'string',
-    //   name: 'summary',
-    //   title: 'Summary',
-    //   description: 'Displays a summary as subtitle text on cards and in search results.',
-    //   group: 'content',
-    // }),
+    defineField({
+      type: 'string',
+      name: 'subtitle',
+      title: 'Subtitle/Summary',
+      description: 'Displays subtitle/summary text on cards and in search results.',
+      group: 'content',
+    }),
     defineField({
       type: 'text',
       name: 'description',
@@ -72,10 +72,10 @@ export default defineType({
       type: 'string',
     }),
     defineField({
-      title: 'Date',
+      title: 'Date Selection',
       name: 'dateSelection',
       group: 'content',
-      description: 'Sets the year associated with the slug of an article and displays dates associated with the article.',
+      description: 'Enter a date associated with the article. The article slug will be generated from the year, date range (from or to), or its approximate date.',
       type: dateSelection.name,
     }),
     defineField({
@@ -162,7 +162,7 @@ export default defineType({
               if (parent?.dateSelection?.year) {
                 thisDate = new Date(parent?.dateSelection?.year, 1)
               } else if (parent?.dateSelection?.dateRange?.from || parent?.dateSelection?.dateRange?.to) {
-                thisDate = new Date(parent?.dateSelection?.dateRange.from || parent?.dateSelection?.dateRange.from)
+                thisDate = new Date(parent?.dateSelection?.dateRange.from || parent?.dateSelection?.dateRange.to)
               } else if (parent?.dateSelection?.approximate) {
                 thisDate = new Date(parent?.dateSelection?.approximate)
               }
