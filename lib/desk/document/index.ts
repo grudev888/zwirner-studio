@@ -3,13 +3,13 @@ import {PreviewIframe} from '../../preview/customIframe/previewIframe'
 import {getPreviewUrl} from '../structure/utils'
 
 // REMOVED BY RYAN FOR LINTING ERROR
-// const schemaTypeToSection = (type: string) => ({
-//   article: 'news',
-//   artistPage: 'artists',
-//   exhibitionPage: 'exhibitions',
-//   fairPage: 'fairs',
-//   artwork: 'artworks',
-// })
+const schemaTypeToSection = (type: string) => ({
+  article: 'news',
+  artistPage: 'artists',
+  exhibitionPage: 'exhibitions',
+  fairPage: 'fairs',
+  artwork: 'artworks',
+})
 
 export const defaultDocumentNode: DefaultDocumentNodeResolver = (S, {schemaType}) => {
   switch (schemaType) {
