@@ -26,7 +26,7 @@ import article from '../../../schemas/documents/article'
 import exhibitionPage from '../../../schemas/documents/pages/exhibitionPage'
 import fairPage from '../../../schemas/documents/pages/fairPage'
 import exhibition from '../../../schemas/documents/exhibition'
-import {getPreviewUrl} from './utils'
+import {getPreviewUrl, getSingletonPreviewUrl} from './utils'
 
 export const generalStructure = (S: StructureBuilder) =>
   S.list()
@@ -81,7 +81,7 @@ export const generalStructure = (S: StructureBuilder) =>
                       S.view
                         .component(PreviewIframe)
                         .options({
-                          url: `${envHost}/api/sanity/preview`,
+                          url: getSingletonPreviewUrl('/'),
                         })
                         .title('Preview'),
                     ])
@@ -98,7 +98,7 @@ export const generalStructure = (S: StructureBuilder) =>
                       S.view
                         .component(PreviewIframe)
                         .options({
-                          url: `${envHost}/api/sanity/preview?section=artists`,
+                          url: getSingletonPreviewUrl('/artists'),
                         })
                         .title('Preview'),
                     ])
@@ -115,7 +115,7 @@ export const generalStructure = (S: StructureBuilder) =>
                       S.view
                         .component(PreviewIframe)
                         .options({
-                          url: `${envHost}/api/sanity/preview?section=collect`,
+                          url: getSingletonPreviewUrl('/collect'),
                         })
                         .title('Preview'),
                     ])
@@ -132,7 +132,7 @@ export const generalStructure = (S: StructureBuilder) =>
                       S.view
                         .component(PreviewIframe)
                         .options({
-                          url: `${envHost}/api/sanity/preview?section=stories`,
+                          url: getSingletonPreviewUrl('/stories'),
                         })
                         .title('Preview'),
                     ])
@@ -149,7 +149,7 @@ export const generalStructure = (S: StructureBuilder) =>
                       S.view
                         .component(PreviewIframe)
                         .options({
-                          url: `${envHost}/api/sanity/preview?section=available-artworks`,
+                          url: getSingletonPreviewUrl('/available-artworks'),
                         })
                         .title('Preview'),
                     ])
@@ -166,7 +166,7 @@ export const generalStructure = (S: StructureBuilder) =>
                       S.view
                         .component(PreviewIframe)
                         .options({
-                          url: `${envHost}/api/sanity/preview?section=utopia-editions`,
+                          url: getSingletonPreviewUrl('/utopia-editions'),
                         })
                         .title('Preview'),
                     ])
@@ -183,7 +183,7 @@ export const generalStructure = (S: StructureBuilder) =>
                       S.view
                         .component(PreviewIframe)
                         .options({
-                          url: `${envHost}/api/sanity/preview?section=consignments`,
+                          url: getSingletonPreviewUrl('/consignments'),
                         })
                         .title('Preview'),
                     ])
@@ -192,7 +192,7 @@ export const generalStructure = (S: StructureBuilder) =>
               S.listItem()
                 .title('Articles')
                 .icon(ComposeIcon)
-                .child(() => getSectionsByYear({S, document: article, preview: {section: 'news'}})),
+                .child(() => getSectionsByYear({S, document: article})),
 
               S.listItem()
                 .title('Artist Pages')
@@ -219,23 +219,11 @@ export const generalStructure = (S: StructureBuilder) =>
               S.listItem()
                 .title('Exhibition Pages')
                 .icon(DashboardIcon)
-                .child(() => {
-                  return getSectionsByYear({
-                    S,
-                    document: exhibitionPage,
-                    preview: {section: 'exhibitions'},
-                  })
-                }),
+                .child(() => getSectionsByYear({S, document: exhibitionPage})),
               S.listItem()
                 .title('Fair Pages')
                 .icon(DashboardIcon)
-                .child(() =>
-                  getSectionsByYear({
-                    S,
-                    document: fairPage,
-                    preview: {section: 'fairs'},
-                  })
-                ),
+                .child(() => getSectionsByYear({S, document: fairPage})),
             ])
         ),
       S.divider(),
@@ -295,7 +283,7 @@ export const generalStructure = (S: StructureBuilder) =>
               S.document()
                 .schemaType('artwork')
                 .views([
-                  S.view.form(), 
+                  S.view.form(),
                   S.view
                     .component(PreviewIframe)
                     .options({
@@ -304,7 +292,8 @@ export const generalStructure = (S: StructureBuilder) =>
                       },
                     })
                     .title('Preview'),
-                  S.view.component(ReferenceByTab).title('References')])
+                  S.view.component(ReferenceByTab).title('References'),
+                ])
             )
         ),
       S.listItem()
@@ -314,7 +303,7 @@ export const generalStructure = (S: StructureBuilder) =>
           S.documentTypeList('artist')
             .title('Artworks by Artist')
             .defaultOrdering([{field: 'lastName', direction: 'asc'}])
-            .child(artistId =>
+            .child((artistId) =>
               S.documentList()
                 .title('Artworks')
                 .filter('_type == "artwork" && $artistId in artists[]._ref')
