@@ -15,7 +15,7 @@ export default defineType({
   type: 'document',
   icon: BlockElementIcon,
   preview: {
-    select: {title: 'title', photos: 'exhibition.photos'},
+    select: {title: 'title', photos: 'photos'},
     prepare: ({title, photos}) => ({title, media: photos?.[0]}),
   },
   groups: [
