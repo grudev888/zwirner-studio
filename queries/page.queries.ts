@@ -11,7 +11,7 @@ import {
   dzTitleProps,
   gridMoleculeProps,
 } from './components.queries'
-import {exhibitionComplexFields, exhibitionSimpleFields} from './exhibition.queries'
+// import {exhibitionSimpleFields, exhibitionComplexFields} from './exhibitionPage.queries'
 import {pageSEOFields} from './seo.queries'
 
 const pageSimpleFields = groq`
@@ -21,18 +21,46 @@ const pageSimpleFields = groq`
   title,
 `
 
+// const pageComplexFields = groq`
+//    {
+//      ${exhibitionSimpleFields}
+//      ${exhibitionComplexFields}
+//    },
+// `
 const pageComplexFields = groq`
-   exhibition-> {
-     ${exhibitionSimpleFields}
-     ${exhibitionComplexFields}
+   {
    },
 `
+
+// const componentTypesData = groq`
+//   content[]-> {
+//     _type,
+//     _type =='exhibitionPage' => {
+//       ${exhibitionSimpleFields}
+//       ${exhibitionComplexFields}
+//     },
+//     _type =='artist' => {
+//       ...
+//     },
+//     _type =='artwork' => {
+//       ...,
+//       "artists": artists[]->
+//     },
+//     _type == 'book' => {
+//       "authors": authors[]->,
+//       "artists": artists[]->,
+//     },
+//     _type == 'press' => {
+//       ...,
+//       "authors": authors[]->
+//     }
+//   }
+// `
+
 const componentTypesData = groq`
   content[]-> {
     _type,
-    _type =='exhibition' => {
-      ${exhibitionSimpleFields}
-      ${exhibitionComplexFields}
+    _type =='exhibitionPage' => {
     },
     _type =='artist' => {
       ...
