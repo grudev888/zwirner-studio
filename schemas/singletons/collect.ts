@@ -6,6 +6,7 @@ import exhibitionPage from '../documents/pages/exhibitionPage'
 import artwork from '../documents/artwork'
 import interstitial from '../objects/page/components/primitives/interstitial'
 import {builder as carouselBuilder} from '../objects/page/components/modules/carouselModule'
+import exhibitionPage from '../documents/pages/exhibitionPage'
 
 export default defineType({
   name: 'collect',
@@ -55,7 +56,7 @@ export default defineType({
           description: 'Carousel module',
           validation: (rule: ArrayRule<any>) => rule.required(),
         },
-        {reference: exhibitionPage, excludedFields: ['title']}
+        {reference: [exhibition, exhibitionPage], excludedFields: ['title']}
       )
     ),
     defineField(
@@ -66,7 +67,7 @@ export default defineType({
           title: 'Fairs',
           description: 'Carousel module',
         },
-        {reference: exhibitionPage, excludedFields: ['title']}
+        {reference: [exhibition, exhibitionPage], excludedFields: ['title']}
       )
     ),
     defineField({
