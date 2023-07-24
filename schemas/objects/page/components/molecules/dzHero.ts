@@ -2,7 +2,7 @@ import {ComposeIcon, EditIcon, MasterDetailIcon} from '@sanity/icons'
 import {ObjectDefinition, defineArrayMember, defineField, defineType} from 'sanity'
 import artist from '../../../../documents/artist'
 import artwork from '../../../../documents/artwork'
-import exhibition from '../../../../documents/exhibition'
+import exhibitionPage from '../../../../documents/pages/exhibitionPage'
 
 export interface DzHeroSchemaProps {
   title: string
@@ -14,7 +14,7 @@ export interface DzHeroSchemaProps {
   enableOverrides: boolean
 }
 
-export const builder = (references = [artist, artwork, exhibition]) => ({
+export const builder = (references = [artist, artwork, exhibitionPage]) => ({
   name: 'dzHero',
   title: 'Hero',
   type: 'object',

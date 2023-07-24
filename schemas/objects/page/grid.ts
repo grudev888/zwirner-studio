@@ -117,7 +117,7 @@ export default defineType({
           name: 'exhibition',
           title: 'Exhibition',
           type: 'reference',
-          to: [{type: 'exhibition'}],
+          to: [{type: 'exhibitionPage'}],
         }),
       ],
     }),

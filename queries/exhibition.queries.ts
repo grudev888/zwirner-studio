@@ -1,6 +1,6 @@
 import groq from 'groq'
 
-import exhibitionType from '../schemas/documents/exhibition'
+import exhibitionPage from '../schemas/documents/pages/exhibitionPage'
 
 export const exhibitionSimpleFields = groq`
   _id,
@@ -21,21 +21,20 @@ export const exhibitionComplexFields = groq`
   "artists": artists[]->,
   "artworks": artworks[]->,
   "collections": collections[]->,
-  "events": events[]->,
 `
 
 export const allExhibitions = groq`
-*[_type == "${exhibitionType.name}"] | order(date desc, _updatedAt desc) {
+*[_type == "${exhibitionPage.name}"] | order(date desc, _updatedAt desc) {
   ${exhibitionSimpleFields}
   ${exhibitionComplexFields}
 }`
 
 export const getExhibitionByDate = groq`
-*[_type == "${exhibitionType.name}"] {
+*[_type == "${exhibitionPage.name}"] {
   ${exhibitionDateFields}
 }`
 
 export const exhibitionById = groq`
-*[_type == "${exhibitionType.name}" && _id == $exhibitionId ] {
+*[_type == "${exhibitionPage.name}" && _id == $exhibitionId ] {
   ...
 }`
