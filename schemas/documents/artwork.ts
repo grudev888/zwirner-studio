@@ -94,8 +94,8 @@ export default defineType({
           prefix: async (parent, client) => {
             const artistId = parent.artists[0]?._ref
             const artistPageSlug = await client.fetch(
-              `*[_type == "artistPage" && artist._ref == "${artistId}"].slug.current`
-            )
+              `*[_type == "artist" && defined(artistPage) && _id == "${artistId}"][0].artistPage->slug.current`
+              )
             return artistPageSlug
           },
         }
