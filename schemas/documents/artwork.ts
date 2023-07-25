@@ -96,7 +96,8 @@ export default defineType({
             const artistPageSlug = await client.fetch(
               `*[_type == "artist" && defined(artistPage) && _id == "${artistId}"][0].artistPage->slug.current`
               )
-            return artistPageSlug
+            const noArtistPrefix = `/artwork/`
+            return artistPageSlug || noArtistPrefix
           },
         }
       )
