@@ -94,9 +94,10 @@ export default defineType({
           prefix: async (parent, client) => {
             const artistId = parent.artists[0]?._ref
             const artistPageSlug = await client.fetch(
-              `*[_type == "artistPage" && artist._ref == "${artistId}"].slug.current`
-            )
-            return artistPageSlug
+              `*[_type == "artist" && defined(artistPage) && _id == "${artistId}"][0].artistPage->slug.current`
+              )
+            const noArtistPrefix = `/artwork/`
+            return artistPageSlug || noArtistPrefix
           },
         }
       )
@@ -114,6 +115,13 @@ export default defineType({
         }),
       ],
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'displayDate',
+      title: 'Display Date',
+      description: 'This field will override the default display dates used by the date selector below.',
+      group: 'content',
+      type: 'string',
     }),
     defineField({
       title: 'Date',
@@ -199,8 +207,10 @@ export default defineType({
       options: {
         list: [
           {title: 'Drawing', value: 'drawing'},
+          {title: 'Mixed Media', value: 'mixedMedia'},
           {title: 'Painting', value: 'painting'},
           {title: 'Photography', value: 'photography'},
+          {title: 'Print', value: 'print'},
           {title: 'Sculpture', value: 'sculpture'},
         ],
       },
@@ -222,14 +232,16 @@ export default defineType({
       name: 'dimensions',
       title: 'Dimensions',
       group: 'content',
-      type: 'string',
+      type: 'array',
+      of: blockContentSimple,
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'framedDimensions',
       title: 'Framed Dimensions',
       group: 'content',
-      type: 'string',
+      type: 'array',
+      of: blockContentSimple,
       hidden: ({parent}) => parent?.artworkType === 'sculpture',
     }),
     defineField({
