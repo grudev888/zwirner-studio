@@ -79,11 +79,11 @@ export default defineType({
           title: 'Slug',
           group: 'content',
           description:
-            'Should be in format of /artist/[artist-slug]/[artwork-slug], artwork-slug should be title + year + random 5 digit number. If no artist or year is specified, the slug will be generated from the title and a random 5 digit number.',
+            'Should be in format of /artist/[artist-slug]/[artwork-slug], artwork-slug should be title + year + a 5 digit semi-random hash generated from the artwork UID. If the artist is not a client, will default to /artwork/[artwork-slug].',
           options: {
             source: (object: any) => {
               const defaultSlug =
-                `${object?.title}-${object.dateSelection.year}-${randomIntString(5)}` ?? ''
+                `${object?.title}-${object.dateSelection.year}-${object._id.slice(-5)}` ?? ''
               if (!defaultSlug) throw new Error('Please add a title to create a unique slug.')
               return defaultSlug.slice(0, 95)
             },
