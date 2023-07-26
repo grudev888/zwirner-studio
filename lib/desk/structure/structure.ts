@@ -24,8 +24,6 @@ import {getSectionsByYear} from './structure.service'
 
 import article from '../../../schemas/documents/article'
 import exhibitionPage from '../../../schemas/documents/pages/exhibitionPage'
-import fairPage from '../../../schemas/documents/pages/fairPage'
-import exhibition from '../../../schemas/documents/exhibition'
 import {getPreviewUrl, getSingletonPreviewUrl} from './utils'
 
 export const generalStructure = (S: StructureBuilder) =>
@@ -217,13 +215,9 @@ export const generalStructure = (S: StructureBuilder) =>
                     )
                 ),
               S.listItem()
-                .title('Exhibition Pages')
+                .title('Exhibitions')
                 .icon(DashboardIcon)
                 .child(() => getSectionsByYear({S, document: exhibitionPage})),
-              S.listItem()
-                .title('Fair Pages')
-                .icon(DashboardIcon)
-                .child(() => getSectionsByYear({S, document: fairPage})),
             ])
         ),
       S.divider(),
@@ -352,10 +346,6 @@ export const generalStructure = (S: StructureBuilder) =>
                 .views([S.view.form(), S.view.component(ReferenceByTab).title('References')])
             )
         ),
-      S.listItem()
-        .title('Exhibitions and Fairs')
-        .icon(DashboardIcon)
-        .child(() => getSectionsByYear({S, document: exhibition})),
       S.listItem()
         .title('Locations')
         .icon(PinIcon)

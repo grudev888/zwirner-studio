@@ -3,21 +3,19 @@ import {defineArrayMember, defineField, defineType} from 'sanity'
 
 // import {apiVersion} from '../../../env'
 // import {exhibitionById} from '../../../queries/exhibition.queries'
-import exhibition from '../../../schemas/documents/exhibition'
 import {builder as slugURLBuilder} from '../../objects/utils/slugUrl'
 import artistType from '../artist'
 import artworkType from '../artwork'
 import collectionType from '../collection'
-import eventType from '../event'
 import location from '../location'
 
 export default defineType({
   name: 'exhibitionPage',
-  title: 'Exhibition Page',
+  title: 'Exhibition',
   type: 'document',
   icon: BlockElementIcon,
   preview: {
-    select: {title: 'title', photos: 'exhibition.photos'},
+    select: {title: 'title', photos: 'photos'},
     prepare: ({title, photos}) => ({title, media: photos?.[0]}),
   },
   groups: [
@@ -159,18 +157,6 @@ export default defineType({
       ],
     }),
     defineField({
-      name: 'events',
-      title: 'Events',
-      group: 'content',
-      type: 'array',
-      of: [
-        defineArrayMember({
-          type: 'reference',
-          to: [{type: eventType.name}],
-        }),
-      ],
-    }),
-    defineField({
       name: 'artworks',
       title: 'Artworks',
       group: 'content',
@@ -193,14 +179,6 @@ export default defineType({
           to: [{type: collectionType.name}],
         }),
       ],
-    }),
-    defineField({
-      name: 'exhibition',
-      title: 'Exhibition',
-      type: 'reference',
-      group: 'content',
-      description: 'THIS IS DEPRECATED. DO NOT POPULATE',
-      to: [{type: exhibition.name}],
     }),
     defineField({
       name: 'components',

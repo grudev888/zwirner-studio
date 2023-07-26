@@ -9,7 +9,6 @@ import {
 import {DocumentTextIcon, ComposeIcon, SearchIcon, ImageIcon} from '@sanity/icons'
 
 import location from './location'
-import event from './event'
 import * as Interstitial from '../objects/page/components/primitives/interstitial'
 import fairPage from './pages/fairPage'
 import exhibitionPage from './pages/exhibitionPage'
@@ -253,14 +252,6 @@ export default defineType({
       type: 'reference',
       to: [{type: location.name, title: 'Location'}],
       hidden: (context) => context.parent.type === 'externalNews',
-    }),
-    defineField({
-      type: 'reference',
-      group: 'content',
-      name: 'event',
-      title: 'Event',
-      hidden: (context) => context.parent.type === 'externalNews',
-      to: [{type: event.name, title: 'Event'}],
     }),
     defineField({
       name: 'pressReleasePDF',

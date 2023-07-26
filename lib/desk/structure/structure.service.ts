@@ -3,15 +3,11 @@ import {type DocumentListBuilder, type ListBuilder, StructureBuilder} from 'sani
 import {apiVersion} from '../../../env'
 import {ReferenceByTab} from '../../overrides/overrides'
 import {PreviewIframe} from '../../preview/customIframe/previewIframe'
-import {getExhibitionByDate} from '../../../queries/exhibition.queries'
 import {getEndDateExhibitionsDate} from '../../../queries/exhibitionPage.queries'
 import {getEndDateFairPagesDate} from '../../../queries/fairPage.queries'
-import {getPressByDate} from '../../../queries/press.queries'
 import {getArtistByName} from '../../../queries/artist.queries'
-import exhibition from '../../../schemas/documents/exhibition'
 import exhibitionPage from '../../../schemas/documents/pages/exhibitionPage'
 import fairPage from '../../../schemas/documents/pages/fairPage'
-import press from '../../../schemas/documents/press'
 import {capitalize} from '../../util/strings'
 import {DocumentDefinition} from 'sanity'
 import article from '../../../schemas/documents/article'
@@ -27,8 +23,6 @@ interface StructureBuilderProps {
 const queryByType: any = {
   [exhibitionPage.name]: getEndDateExhibitionsDate,
   [fairPage.name]: getEndDateFairPagesDate,
-  [press.name]: getPressByDate,
-  [exhibition.name]: getExhibitionByDate,
   [article.name]: getArticleByDate,
   [artistPage.name]: getArtistByName,
 }
