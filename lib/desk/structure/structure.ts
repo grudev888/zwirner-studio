@@ -266,12 +266,11 @@ export const generalStructure = (S: StructureBuilder) =>
             ])
         ),
       S.listItem()
-        .title('All Artworks')
+        .title('Artworks')
         .icon(ImagesIcon)
         .child(
           S.documentTypeList('artwork')
             .title('Artworks')
-            .filter('_type == "artwork"')
             .defaultOrdering([{field: 'title', direction: 'asc'}])
             .child(
               S.document()
@@ -280,30 +279,26 @@ export const generalStructure = (S: StructureBuilder) =>
                   S.view.form(),
                   S.view
                     .component(PreviewIframe)
-                    .options({
-                      url: (doc: any) => {
-                        return `${envHost}/api/sanity/preview?slug=${doc?.slug?.current}`
-                      },
-                    })
+                    .options({url: getPreviewUrl})
                     .title('Preview'),
                   S.view.component(ReferenceByTab).title('References'),
                 ])
             )
         ),
-      S.listItem()
-        .title('Artworks by Artist')
-        .icon(ImagesIcon)
-        .child(
-          S.documentTypeList('artist')
-            .title('Artworks by Artist')
-            .defaultOrdering([{field: 'lastName', direction: 'asc'}])
-            .child((artistId) =>
-              S.documentList()
-                .title('Artworks')
-                .filter('_type == "artwork" && $artistId in artists[]._ref')
-                .params({artistId})
-            )
-        ),
+      // S.listItem()
+      //   .title('Artworks by Artist')
+      //   .icon(ImagesIcon)
+      //   .child(
+      //     S.documentTypeList('artist')
+      //       .title('Artworks by Artist')
+      //       .defaultOrdering([{field: 'lastName', direction: 'asc'}])
+      //       .child((artistId) =>
+      //         S.documentList()
+      //           .title('Artworks')
+      //           .filter('_type == "artwork" && $artistId in artists[]._ref')
+      //           .params({artistId})
+      //       )
+      //   ),
       S.listItem()
         .title('Authors')
         .icon(UsersIcon)
