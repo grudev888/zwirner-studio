@@ -272,8 +272,9 @@ export const generalStructure = (S: StructureBuilder) =>
           S.documentTypeList('artwork')
             .title('Artworks')
             .defaultOrdering([{field: 'title', direction: 'asc'}])
-            .child(
+            .child((childId) =>
               S.document()
+                .id(childId)
                 .schemaType('artwork')
                 .views([
                   S.view.form(),
