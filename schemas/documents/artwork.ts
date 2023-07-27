@@ -79,11 +79,11 @@ export default defineType({
           title: 'Slug',
           group: 'content',
           description:
-            'Should be in format of /artist/[artist-slug]/[artwork-slug], artwork-slug should be title + year + random 5 digit number. If no artist or year is specified, the slug will be generated from the title and a random 5 digit number.',
+            'Should be in format of /artworks/[artwork-slug], and artwork-slug should be title + year + a 5 digit semi-random hash generated from the artwork UID.',
           options: {
             source: (object: any) => {
               const defaultSlug =
-                `${object?.title}-${object.dateSelection.year}-${randomIntString(5)}` ?? ''
+                `${object?.title}-${object.dateSelection.year}-${object._id.slice(-5)}` ?? ''
               if (!defaultSlug) throw new Error('Please add a title to create a unique slug.')
               return defaultSlug.slice(0, 95)
             },
@@ -91,13 +91,15 @@ export default defineType({
         },
         {
           optional: true,
-          prefix: async (parent, client) => {
-            const artistId = parent.artists[0]?._ref
-            const artistPageSlug = await client.fetch(
-              `*[_type == "artistPage" && artist._ref == "${artistId}"].slug.current`
-            )
-            return artistPageSlug
-          },
+          prefix: `/artworks/`
+          // prefix: async (parent, client) => {
+          //   const artistId = parent.artists[0]?._ref
+          //   const artistPageSlug = await client.fetch(
+          //     `*[_type == "artist" && defined(artistPage) && _id == "${artistId}"][0].artistPage->slug.current`
+          //     )
+          //   const noArtistPrefix = `/artwork/`
+          //   return artistPageSlug || noArtistPrefix
+          // },
         }
       )
     ),
@@ -114,6 +116,13 @@ export default defineType({
         }),
       ],
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'displayDate',
+      title: 'Display Date',
+      description: 'This field will override the default display dates used by the date selector below.',
+      group: 'content',
+      type: 'string',
     }),
     defineField({
       title: 'Date',
@@ -199,8 +208,10 @@ export default defineType({
       options: {
         list: [
           {title: 'Drawing', value: 'drawing'},
+          {title: 'Mixed Media', value: 'mixedMedia'},
           {title: 'Painting', value: 'painting'},
           {title: 'Photography', value: 'photography'},
+          {title: 'Print', value: 'print'},
           {title: 'Sculpture', value: 'sculpture'},
         ],
       },
@@ -222,14 +233,16 @@ export default defineType({
       name: 'dimensions',
       title: 'Dimensions',
       group: 'content',
-      type: 'string',
+      type: 'array',
+      of: blockContentSimple,
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'framedDimensions',
       title: 'Framed Dimensions',
       group: 'content',
-      type: 'string',
+      type: 'array',
+      of: blockContentSimple,
       hidden: ({parent}) => parent?.artworkType === 'sculpture',
     }),
     defineField({

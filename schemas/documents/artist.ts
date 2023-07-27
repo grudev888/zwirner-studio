@@ -134,5 +134,11 @@ export default defineType({
       title: 'Affiliated to DZ',
       initialValue: false,
     }),
+    defineField({
+      name: 'artistPage',
+      title: 'Artist Page',
+      type: 'reference',
+      to: [{type: 'artistPage'}],
+    }),
   ],
 })
