@@ -88,17 +88,13 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'showHero',
-      title: 'Show Hero',
+      name: 'featured',
+      title: 'Featured Item',
+      type: 'reference',
+      to: [exhibitionPage, fairPage, article, artwork].map(({name}) => ({
+        type: name as string,
+      })),
       group: 'content',
-      type: 'boolean',
-    }),
-    defineField({
-      name: 'hero',
-      title: 'Hero',
-      group: 'content',
-      type: splitModule.name,
-      hidden: (context) => context.parent.showHero !== true,
     }),
     defineField({
       name: 'survey',

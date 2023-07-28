@@ -1,8 +1,6 @@
 import {BlockElementIcon, ComposeIcon, SearchIcon} from '@sanity/icons'
 import {defineArrayMember, defineField, defineType} from 'sanity'
 
-// import {apiVersion} from '../../../env'
-// import {exhibitionById} from '../../../queries/exhibition.queries'
 import {builder as slugURLBuilder} from '../../objects/utils/slugUrl'
 import artistType from '../artist'
 import artworkType from '../artwork'
