@@ -91,7 +91,7 @@ export default defineType({
         },
         {
           optional: true,
-          prefix: `/artworks/`
+          prefix: `/artworks/`,
           // prefix: async (parent, client) => {
           //   const artistId = parent.artists[0]?._ref
           //   const artistPageSlug = await client.fetch(
@@ -120,7 +120,8 @@ export default defineType({
     defineField({
       name: 'displayDate',
       title: 'Display Date',
-      description: 'This field will override the default display dates used by the date selector below.',
+      description:
+        'This field will override the default display dates used by the date selector below.',
       group: 'content',
       type: 'string',
     }),
@@ -415,7 +416,8 @@ export default defineType({
       images: 'photos',
     },
     prepare({title, images}) {
-      return {title, media: images?.[0] ?? ImageIcon}
+      const newImage = images?.[0]?.image
+      return {title, media: newImage ?? images?.[0] ?? ImageIcon}
     },
   },
 })
