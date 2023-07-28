@@ -1,4 +1,4 @@
-import {defineField, defineType} from 'sanity'
+import {ReferenceRule, StringRule, defineField, defineType} from 'sanity'
 import {UserIcon, DocumentsIcon, SearchIcon} from '@sanity/icons'
 
 import {builder as slugBuilder} from '../../objects/utils/slugUrl'
@@ -42,7 +42,7 @@ export default defineType({
       title: 'Title',
       group: 'content',
       type: 'string',
-      validation: (rule) => rule.required(),
+      validation: (rule: StringRule) => rule.required(),
     }),
     defineField(
       slugBuilder(
@@ -78,7 +78,7 @@ export default defineType({
       group: 'content',
       type: 'reference',
       to: [{type: artist.name, title: 'Artist'}],
-      validation: (rule) => rule.required(),
+      validation: (rule: ReferenceRule) => rule.required(),
     }),
     defineField({
       name: 'artistIntro',
