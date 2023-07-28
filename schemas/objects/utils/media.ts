@@ -81,7 +81,7 @@ export const builder = (
       name: 'video',
       title: 'Video',
       type: 'file',
-      options: {accept: 'video/mp4,video/x-m4v,video/*'},
+      options: {accept: 'video/mp4,video/x-m4v,video/*', sources: [mediaAssetSource]},
       hidden: ({parent}) =>
         parent?.type === MediaTypes.IMAGE || !parent?.type || parent?.provider !== 'custom',
     }),

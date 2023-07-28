@@ -22,13 +22,16 @@ export default defineConfig({
   form: {
     // Don't use this plugin when selecting files only (but allow all other enabled asset sources)
     file: {
-      assetSources: previousAssetSources => {
-        return previousAssetSources.filter(assetSource => assetSource !== mediaAssetSource)
-      }
-    },
+      assetSources: () => [mediaAssetSource],
+      directUploads: true,
+      },
     image: {
       assetSources: () => [mediaAssetSource],
-      directUploads: false,
+      directUploads: true,
     },
+    video: {
+      assetSources: () => [mediaAssetSource],
+      directUploads: true,
+      }
   }
 })
