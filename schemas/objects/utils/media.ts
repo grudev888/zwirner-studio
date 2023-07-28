@@ -1,6 +1,7 @@
 import {FieldDefinition, ObjectRule, SchemaTypeDefinition, defineField, defineType} from 'sanity'
 import {capitalize} from '../../../lib/util/strings'
 import {getPropFromPath} from '../../../lib/util/sanity'
+import {mediaAssetSource} from 'sanity-plugin-media'
 import {PresentationIcon} from '@sanity/icons'
 
 export enum MediaTypes {
@@ -46,7 +47,7 @@ export const builder = (
       name: 'image',
       title: 'Image',
       type: 'image',
-      options: {hotspot: true, collapsible: false},
+      options: {hotspot: true, collapsible: false, sources: [mediaAssetSource]},
       fields: [
         defineField({
           name: 'alt',
@@ -80,7 +81,7 @@ export const builder = (
       name: 'video',
       title: 'Video',
       type: 'file',
-      options: {accept: 'video/mp4,video/x-m4v,video/*'},
+      options: {accept: 'video/mp4,video/x-m4v,video/*', sources: [mediaAssetSource]},
       hidden: ({parent}) =>
         parent?.type === MediaTypes.IMAGE || !parent?.type || parent?.provider !== 'custom',
     }),
