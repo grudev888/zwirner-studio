@@ -2,15 +2,6 @@ import {DefaultDocumentNodeResolver} from 'sanity/desk'
 import {PreviewIframe} from '../../preview/customIframe/previewIframe'
 import {getPreviewUrl} from '../structure/utils'
 
-
-const schemaTypeToSection = (type: string) => ({
-  article: 'news',
-  artistPage: 'artists',
-  exhibitionPage: 'exhibitions',
-  fairPage: 'fairs',
-  artwork: 'artworks',
-})
-
 export const defaultDocumentNode: DefaultDocumentNodeResolver = (S, {schemaType}) => {
   switch (schemaType) {
     case 'article':

@@ -93,12 +93,6 @@ export const builder = (
         !parent?.type ||
         !['vimeo', 'youtube'].includes(parent?.provider),
     }),
-    defineField({
-      name: 'podcastLink',
-      title: 'Podcast Iframe URL',
-      type: 'url',
-      hidden: ({parent}) => parent?.type === MediaTypes.IMAGE || parent?.type === MediaTypes.VIDEO,
-    }),
   ],
   ...params,
   validation: (rule: ObjectRule) => [

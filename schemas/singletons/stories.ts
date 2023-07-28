@@ -1,4 +1,4 @@
-import {PresentationIcon, ComposeIcon, SearchIcon} from '@sanity/icons'
+import {PresentationIcon, ComposeIcon, SearchIcon, InlineIcon} from '@sanity/icons'
 import {defineField, defineArrayMember, defineType, StringRule, ArrayRule} from 'sanity'
 import articleType from '../documents/article'
 import bookType from '../documents/book'
@@ -7,6 +7,8 @@ import fairPage from '../documents/pages/fairPage'
 import podcast from '../documents/podcast'
 import interstitial from '../objects/page/components/primitives/interstitial'
 import * as Media from '../objects/utils/media'
+import {builder as carouselModuleBuilder} from '../objects/page/components/modules/carouselModule'
+import blockContentSimple from '../../schemas/objects/utils/blockContentSimple'
 
 export default defineType({
   name: 'stories',
@@ -70,13 +72,10 @@ export default defineType({
       validation: (rule) => rule.required(),
       fields: [
         defineField(
-          Media.builder(
-            {
-              name: 'video',
-              title: 'Featured video',
-            },
-            {type: Media.MediaTypes.VIDEO, required: true}
-          )
+          Media.builder({
+            name: 'featuredMedia',
+            title: 'Featured Media',
+          })
         ),
         defineField({
           type: 'string',
@@ -91,10 +90,11 @@ export default defineType({
           validation: (rule) => rule.required(),
         }),
         defineField({
-          type: 'text',
           name: 'text',
           title: 'Text',
+          type: 'array',
           validation: (rule) => rule.required(),
+          of: blockContentSimple,
         }),
         defineField({
           name: 'primaryCTA',
@@ -112,17 +112,28 @@ export default defineType({
       to: [{type: podcast.name}],
     }),
     defineField({
-      name: 'books',
+      name: 'featuredBooks',
       title: 'Featured New Books',
-      description: '2-Up feature books module',
+      description: 'Carousel or Split module',
       group: 'content',
-      validation: (rule) => rule.max(2),
+      validation: (rule) => rule.max(1).error('Add up to one molecule, Split or Carousel'),
       type: 'array',
       of: [
+        defineArrayMember(
+          carouselModuleBuilder(
+            {
+              name: 'carouselBooks',
+              icon: InlineIcon,
+              title: 'Carousel Module',
+              description: 'Featured Books | Carousel',
+            },
+            {reference: bookType}
+          )
+        ),
         defineArrayMember({
-          name: 'linkedBooks',
-          title: 'Linked Books',
-          description: 'Featured new books',
+          name: 'splitBook',
+          title: 'Split module',
+          description: 'Featured Book | Split',
           type: 'reference',
           to: [{type: bookType.name}],
         }),
@@ -133,7 +144,7 @@ export default defineType({
       title: 'News and Press Highlights',
       description: '3-Up News and Press module',
       group: 'content',
-      validation: (rule) => rule.max(3),
+      validation: (rule) => rule.max(6),
       type: 'array',
       of: [
         defineArrayMember({
