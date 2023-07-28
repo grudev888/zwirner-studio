@@ -14,9 +14,9 @@ export default defineConfig({
   dataset,
   plugins: [
     deskTool({structure: generalStructure, defaultDocumentNode}),
+    media(),
     visionTool(),
-    availability(),
-    media()
+    availability()
   ],
   schema,
   form: {
