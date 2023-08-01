@@ -79,7 +79,7 @@ export default defineType({
           title: 'Slug',
           group: 'content',
           description:
-            'Should be in format of /artworks/[artwork-slug], and artwork-slug should be title + year + a 5 digit semi-random hash generated from the artwork UID.',
+            'Should be in format of /artists/[artist-slug]/[artwork-slug], and artwork-slug should be title + year + a 5 digit semi-random hash generated from the artwork UID.',
           options: {
             source: (object: any) => {
               const defaultSlug =
@@ -94,9 +94,9 @@ export default defineType({
           prefix: async (parent, client) => {
             const artistId = parent.artists[0]?._ref
             const artistPageSlug = await client.fetch(
-              `*[_type == "artist" && defined(artistPage) && _id == "${artistId}"][0].artistPage->slug.current`
+              `*[_type == "artist" && defined(artistPage) && _id == $artistId][0].artistPage->slug.current`,
+              {artistId}
             )
-            console.log("artistId: ", artistId, " artistPageSlug: ", artistPageSlug)
             const noArtistPrefix = `/artwork/`
             return artistPageSlug || noArtistPrefix
           },
