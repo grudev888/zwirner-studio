@@ -17,7 +17,6 @@ import {
 } from '@sanity/icons'
 import {StructureBuilder} from 'sanity/desk'
 
-import {envHost} from './../../../env'
 import {ReferenceByTab} from './../../overrides/overrides'
 import {PreviewIframe} from './../../preview/customIframe/previewIframe'
 import {getSectionsByYear} from './structure.service'

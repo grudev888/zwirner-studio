@@ -62,7 +62,7 @@ const structure: SlugDefinition = {
   name: 'slugUrl',
   title: 'Slug',
   description:
-    'Unique slug based on the article name. It will represent the page URL and the canonical URL for SEO purposes.',
+    'Unique slug that will represent the page URL and the canonical URL for SEO purposes.',
   type: 'slug',
   options: {
     source: (object: any, b: any) => {
