@@ -1,5 +1,11 @@
 import {ComposeIcon, EditIcon, MasterDetailIcon} from '@sanity/icons'
-import {ObjectDefinition, defineArrayMember, defineField, defineType} from 'sanity'
+import {
+  ObjectDefinition,
+  defineArrayMember,
+  defineField,
+  defineType,
+  SchemaTypeDefinition,
+} from 'sanity'
 import artist from '../../../../documents/artist'
 import artwork from '../../../../documents/artwork'
 import exhibitionPage from '../../../../documents/pages/exhibitionPage'
@@ -14,9 +20,10 @@ export interface DzHeroSchemaProps {
   enableOverrides: boolean
 }
 
-export const builder = (references = [artist, artwork, exhibitionPage]) => ({
-  name: 'dzHero',
-  title: 'Hero',
+export const builder = (
+  params: {name: string; title: string; [key: string]: any} = {name: 'dzHero', title: 'Hero'},
+  options: {references: SchemaTypeDefinition[]}
+) => ({
   type: 'object',
   icon: MasterDetailIcon,
   groups: [
@@ -31,13 +38,13 @@ export const builder = (references = [artist, artwork, exhibitionPage]) => ({
       group: 'content',
     }),
     defineField({
-      name: 'pageContent',
+      name: 'content',
       title: 'Content',
       group: 'content',
       type: 'array',
       icon: MasterDetailIcon,
       validation: (rule) => rule.max(1),
-      of: references.map((reference) =>
+      of: options.references.map((reference) =>
         defineArrayMember({
           name: reference.name,
           title: reference.title,
@@ -113,6 +120,9 @@ export const builder = (references = [artist, artwork, exhibitionPage]) => ({
       validation: (rule) => rule.uri({allowRelative: true}),
     }),
   ],
+  ...params,
 })
 
-export default defineType(builder()) as ObjectDefinition
+export default defineType(
+  builder({name: 'dzHero', title: 'Hero'}, {references: [artist, artwork, exhibitionPage]})
+) as ObjectDefinition

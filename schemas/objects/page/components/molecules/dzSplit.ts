@@ -1,13 +1,22 @@
 import {ComposeIcon, EditIcon, MasterDetailIcon} from '@sanity/icons'
 //Todo import form the design system import {SplitTypes} from '@zwirner/design-system'
-import {defineField, defineType} from 'sanity'
+import {
+  defineField,
+  defineArrayMember,
+  defineType,
+  ObjectDefinition,
+  SchemaTypeDefinition,
+} from 'sanity'
+import artist from '../../../../documents/artist'
+import artwork from '../../../../documents/artwork'
+import exhibitionPage from '../../../../documents/pages/exhibitionPage'
 
 export const SPLIT_TYPES = {
   TALL: 'tall',
   SHORT: 'short',
-};
-export const SPLIT_TYPES_NAMES = [SPLIT_TYPES.TALL, SPLIT_TYPES.SHORT] as const;
-export type SplitTypes = typeof SPLIT_TYPES_NAMES[number];
+}
+export const SPLIT_TYPES_NAMES = [SPLIT_TYPES.TALL, SPLIT_TYPES.SHORT] as const
+export type SplitTypes = (typeof SPLIT_TYPES_NAMES)[number]
 export interface DzSplitTypeProps {
   title: string
   splitType: SplitTypes
@@ -17,9 +26,13 @@ export interface DzSplitTypeProps {
   enableOverrides: boolean
 }
 
-export default defineType({
-  name: 'dzSplit',
-  title: 'Split',
+export const builder = (
+  params: {name: string; title: string; [key: string]: any} = {
+    name: 'dzSplit',
+    title: 'Split',
+  },
+  options: {references: SchemaTypeDefinition[]}
+) => ({
   type: 'object',
   icon: MasterDetailIcon,
   groups: [
@@ -32,6 +45,22 @@ export default defineType({
       type: 'string',
       title: 'Component title',
       group: 'content',
+    }),
+    defineField({
+      name: 'content',
+      title: 'Content',
+      group: 'content',
+      type: 'array',
+      icon: MasterDetailIcon,
+      validation: (rule) => rule.max(1),
+      of: options.references.map((reference) =>
+        defineArrayMember({
+          name: reference.name,
+          title: reference.title,
+          type: 'reference',
+          to: [{type: reference.name}],
+        })
+      ),
     }),
     defineField({
       title: 'Type',
@@ -64,17 +93,11 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'content',
-      title: 'Content',
-      type: 'pageContent',
-      group: 'content',
-    }),
-    defineField({
       name: 'enableOverrides',
       type: 'boolean',
       title: 'Enable Overrides',
       group: 'overrides',
-      initialValue: false
+      initialValue: false,
     }),
     defineField({
       name: 'titleOverride',
@@ -116,4 +139,9 @@ export default defineType({
       ],
     }),
   ],
+  ...params,
 })
+
+export default defineType(
+  builder({name: 'dzSplit', title: 'Split'}, {references: [artist, artwork, exhibitionPage]})
+) as ObjectDefinition

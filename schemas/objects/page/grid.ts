@@ -1,6 +1,14 @@
 import {MasterDetailIcon} from '@sanity/icons'
-import {defineArrayMember,defineField, defineType} from 'sanity'
-
+import {
+  defineArrayMember,
+  defineField,
+  defineType,
+  ObjectDefinition,
+  SchemaTypeDefinition,
+} from 'sanity'
+import artist from '../../documents/artist'
+import artwork from '../../documents/artwork'
+import exhibitionPage from '../../documents/pages/exhibitionPage'
 
 export interface GridMoleculeTypeProps {
   title: string
@@ -11,9 +19,13 @@ export interface GridMoleculeTypeProps {
   sortOrder: 'asc' | 'desc'
 }
 
-export default defineType({
-  name: 'grid',
-  title: 'Grid',
+export const builder = (
+  params: {name: string; title: string; [key: string]: any} = {
+    name: 'grid',
+    title: 'Grid',
+  },
+  options: {references: SchemaTypeDefinition[]}
+) => ({
   type: 'object',
   icon: MasterDetailIcon,
   options: {
@@ -100,26 +112,19 @@ export default defineType({
       title: 'Content',
       type: 'array',
       icon: MasterDetailIcon,
-      of: [
+      of: options.references.map((reference) =>
         defineArrayMember({
-          name: 'artist',
-          title: 'Artist',
+          name: reference.name,
+          title: reference.title,
           type: 'reference',
-          to: [{type: 'artist'}],
-        }),
-        defineArrayMember({
-          name: 'artwork',
-          title: 'Artwork',
-          type: 'reference',
-          to: [{type: 'artwork'}],
-        }),
-        defineArrayMember({
-          name: 'exhibition',
-          title: 'Exhibition',
-          type: 'reference',
-          to: [{type: 'exhibitionPage'}],
-        }),
-      ],
+          to: [{type: reference.name}],
+        })
+      ),
     }),
   ],
+  ...params,
 })
+
+export default defineType(
+  builder({name: 'grid', title: 'Grid'}, {references: [artist, artwork, exhibitionPage]})
+) as ObjectDefinition

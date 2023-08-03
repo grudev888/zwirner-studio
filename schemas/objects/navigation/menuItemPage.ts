@@ -4,6 +4,8 @@ import SelectPageAnchor from '../../../components/SelectPageAnchor'
 
 import page from '../../documents/page'
 import artistPage from '../../documents/pages/artistPage'
+import exhibitionLanding from '../../singletons/exhibitionsLanding'
+import artistListing from '../../singletons/artistListing'
 import exhibitionPage from '../../documents/pages/exhibitionPage'
 import fairPage from '../../documents/pages/fairPage'
 import availableArtworks from '../../singletons/availableArtworks'
@@ -34,6 +36,8 @@ export default defineType({
         {type: consignments.name},
         {type: stories.name},
         {type: utopiaEditions.name},
+        {type: exhibitionLanding.name},
+        {type: artistListing.name},
       ],
     }),
     defineField({

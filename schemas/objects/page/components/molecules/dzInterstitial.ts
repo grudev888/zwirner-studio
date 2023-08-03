@@ -1,5 +1,14 @@
-import {ComposeIcon, EditIcon,MasterDetailIcon} from '@sanity/icons'
-import {defineField, defineType} from 'sanity'
+import {ComposeIcon, EditIcon, MasterDetailIcon} from '@sanity/icons'
+import {
+  defineField,
+  defineType,
+  ObjectDefinition,
+  defineArrayMember,
+  SchemaTypeDefinition,
+} from 'sanity'
+import artist from '../../../../documents/artist'
+import artwork from '../../../../documents/artwork'
+import exhibitionPage from '../../../../documents/pages/exhibitionPage'
 
 export interface DzInterstitialTypeProps {
   title: string
@@ -8,9 +17,13 @@ export interface DzInterstitialTypeProps {
   enableOverrides: boolean
 }
 
-export default defineType({
-  name: 'dzInterstitial',
-  title: 'Interstitial',
+export const builder = (
+  params: {name: string; title: string; [key: string]: any} = {
+    name: 'dzInterstitial',
+    title: 'Interstitial',
+  },
+  options: {references: SchemaTypeDefinition[]}
+) => ({
   type: 'object',
   icon: MasterDetailIcon,
   groups: [
@@ -34,16 +47,26 @@ export default defineType({
     }),
     defineField({
       name: 'content',
-      title: 'Content',
-      type: 'pageContent',
+      title: 'Editorial Content',
       group: 'content',
+      type: 'array',
+      icon: MasterDetailIcon,
+      validation: (rule) => rule.max(1),
+      of: options.references.map((reference) =>
+        defineArrayMember({
+          name: reference.name,
+          title: reference.title,
+          type: 'reference',
+          to: [{type: reference.name}],
+        })
+      ),
     }),
     defineField({
       name: 'enableOverrides',
       type: 'boolean',
       title: 'Enable Overrides',
       group: 'overrides',
-      initialValue: false
+      initialValue: false,
     }),
     defineField({
       name: 'titleOverride',
@@ -85,4 +108,12 @@ export default defineType({
       ],
     }),
   ],
+  ...params,
 })
+
+export default defineType(
+  builder(
+    {name: 'dzInterstitial', title: 'Interstitial'},
+    {references: [artist, artwork, exhibitionPage]}
+  )
+) as ObjectDefinition

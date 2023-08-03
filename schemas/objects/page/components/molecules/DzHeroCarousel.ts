@@ -1,5 +1,14 @@
 import {ComposeIcon, EditIcon, MasterDetailIcon} from '@sanity/icons'
-import {defineArrayMember, defineField, defineType} from 'sanity'
+import {
+  defineArrayMember,
+  defineField,
+  defineType,
+  ObjectDefinition,
+  SchemaTypeDefinition,
+} from 'sanity'
+import artist from '../../../../documents/artist'
+import artwork from '../../../../documents/artwork'
+import exhibitionPage from '../../../../documents/pages/exhibitionPage'
 
 export interface DzHeroCarouselSchemaProps {
   title: string
@@ -8,9 +17,13 @@ export interface DzHeroCarouselSchemaProps {
   enableOverrides: boolean
 }
 
-export default defineType({
-  name: 'dzHeroCarousel',
-  title: 'Hero Carousel',
+export const builder = (
+  params: {name: string; title: string; [key: string]: any} = {
+    name: 'dzHeroCarousel',
+    title: 'Hero Carousel',
+  },
+  options: {references: SchemaTypeDefinition[]}
+) => ({
   type: 'object',
   icon: MasterDetailIcon,
   groups: [
@@ -21,13 +34,23 @@ export default defineType({
     defineField({
       name: 'title',
       type: 'string',
+      group: 'content',
       title: 'Component title',
     }),
     defineField({
       name: 'content',
       title: 'Content',
-      type: 'pageContentList',
       group: 'content',
+      type: 'array',
+      icon: MasterDetailIcon,
+      of: options.references.map((reference) =>
+        defineArrayMember({
+          name: reference.name,
+          title: reference.title,
+          type: 'reference',
+          to: [{type: reference.name}],
+        })
+      ),
     }),
     defineField({
       name: 'enableOverrides',
@@ -66,4 +89,12 @@ export default defineType({
       },
     }),
   ],
+  ...params,
 })
+
+export default defineType(
+  builder(
+    {name: 'dzHeroCarousel', title: 'Hero Carousel'},
+    {references: [artist, artwork, exhibitionPage]}
+  )
+) as ObjectDefinition

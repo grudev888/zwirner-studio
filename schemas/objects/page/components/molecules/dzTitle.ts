@@ -1,14 +1,27 @@
-import {ComposeIcon, EditIcon,MasterDetailIcon} from '@sanity/icons'
-import {defineField, defineType} from 'sanity'
+import {ComposeIcon, EditIcon, MasterDetailIcon} from '@sanity/icons'
+import {
+  defineField,
+  defineType,
+  defineArrayMember,
+  ObjectDefinition,
+  SchemaTypeDefinition,
+} from 'sanity'
+import artist from '../../../../documents/artist'
+import artwork from '../../../../documents/artwork'
+import exhibitionPage from '../../../../documents/pages/exhibitionPage'
 
 export interface DzTitleTypeProps {
   title: string
   enableOverrides: boolean
 }
 
-export default defineType({
-  name: 'dzTitle',
-  title: 'Title',
+export const builder = (
+  params: {name: string; title: string; [key: string]: any} = {
+    name: 'dzTitle',
+    title: 'Title',
+  },
+  options: {references: SchemaTypeDefinition[]}
+) => ({
   type: 'object',
   icon: MasterDetailIcon,
   groups: [
@@ -25,15 +38,30 @@ export default defineType({
     defineField({
       name: 'content',
       title: 'Content',
-      type: 'pageContent',
       group: 'content',
+      type: 'array',
+      icon: MasterDetailIcon,
+      validation: (rule) => rule.max(1),
+      of: options.references.map((reference) =>
+        defineArrayMember({
+          name: reference.name,
+          title: reference.title,
+          type: 'reference',
+          to: [{type: reference.name}],
+        })
+      ),
     }),
-     defineField({
+    defineField({
       name: 'enableOverrides',
       type: 'boolean',
       title: 'Enable Overrides',
       group: 'overrides',
-      initialValue: false
+      initialValue: false,
     }),
   ],
+  ...params,
 })
+
+export default defineType(
+  builder({name: 'dzTitle', title: 'Title'}, {references: [artist, artwork, exhibitionPage]})
+) as ObjectDefinition

@@ -101,6 +101,23 @@ export const generalStructure = (S: StructureBuilder) =>
                     ])
                 ),
               S.listItem()
+                .title('Exhibitions Landing')
+                .icon(BlockElementIcon)
+                .child(
+                  S.document()
+                    .schemaType('exhibitionsLanding')
+                    .documentId('exhibitionsLanding')
+                    .views([
+                      S.view.form(),
+                      S.view
+                        .component(PreviewIframe)
+                        .options({
+                          url: getSingletonPreviewUrl('/exhibitions'),
+                        })
+                        .title('Preview'),
+                    ])
+                ),
+              S.listItem()
                 .title('Collect')
                 .icon(BlockElementIcon)
                 .child(
@@ -277,10 +294,7 @@ export const generalStructure = (S: StructureBuilder) =>
                 .schemaType('artwork')
                 .views([
                   S.view.form(),
-                  S.view
-                    .component(PreviewIframe)
-                    .options({url: getPreviewUrl})
-                    .title('Preview'),
+                  S.view.component(PreviewIframe).options({url: getPreviewUrl}).title('Preview'),
                   S.view.component(ReferenceByTab).title('References'),
                 ])
             )

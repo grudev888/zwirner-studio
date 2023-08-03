@@ -27,6 +27,7 @@ import stories from './singletons/stories'
 import utopiaEditions from './singletons/utopiaEditions'
 import consignments from './singletons/consignments'
 import artworkListing from './singletons/artistListing'
+import exhibitionsLanding from './singletons/exhibitionsLanding'
 
 import social from './objects/data/social'
 import dzCard from './objects/page/components/molecules/dzCard'
@@ -109,7 +110,7 @@ export const objects: ObjectDefinition[] = [
 
 export const pageDocuments: DocumentDefinition[] = [artistPage, exhibitionPage, fairPage]
 
-export const singletons: DocumentDefinition[] = [artworkListing, settings, stories, home, collect, utopiaEditions, globalSEO, availableArtworks, navigation, consignments, footer]
+export const singletons: DocumentDefinition[] = [exhibitionsLanding, artworkListing, settings, stories, home, collect, utopiaEditions, globalSEO, availableArtworks, navigation, consignments, footer]
 
 export const schema: {types: SchemaTypeDefinition[] } = {
   types: [

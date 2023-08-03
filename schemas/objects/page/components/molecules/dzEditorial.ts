@@ -1,6 +1,15 @@
 import {ComposeIcon, EditIcon, MasterDetailIcon} from '@sanity/icons'
 // Todo: import from the design system import {EditorialType} from '@zwirner/design-system'
-import {defineArrayMember, defineField, defineType} from 'sanity'
+import {
+  defineArrayMember,
+  defineField,
+  defineType,
+  ObjectDefinition,
+  SchemaTypeDefinition,
+} from 'sanity'
+import book from '../../../../documents/book'
+import press from '../../../../documents/press'
+
 export const EDITORIAL_TYPES = {
   SIMPLE: 'simple',
   COMPLEX: 'complex',
@@ -25,9 +34,13 @@ export interface DzEditorialSchemaProps {
   enableOverrides: boolean
 }
 
-export default defineType({
-  name: 'dzEditorial',
-  title: 'Editorial',
+export const builder = (
+  params: {name: string; title: string; [key: string]: any} = {
+    name: 'dzEditorial',
+    title: 'Editorial',
+  },
+  options: {references: SchemaTypeDefinition[]}
+) => ({
   type: 'object',
   icon: MasterDetailIcon,
   preview: {select: {title: 'title'}},
@@ -65,22 +78,15 @@ export default defineType({
       type: 'array',
       icon: MasterDetailIcon,
       validation: (rule) => rule.max(1),
-      of: [
+      of: options.references.map((reference) =>
         defineArrayMember({
-          name: 'book',
-          title: 'Book',
+          name: reference.name,
+          title: reference.title,
           type: 'reference',
-          to: [{type: 'book'}],
-        }),
-        defineArrayMember({
-          name: 'press',
-          title: 'Press',
-          type: 'reference',
-          to: [{type: 'press'}],
-        }),
-      ],
+          to: [{type: reference.name}],
+        })
+      ),
     }),
-
     defineField({
       name: 'enableOverrides',
       type: 'boolean',
@@ -117,4 +123,9 @@ export default defineType({
       ],
     }),
   ],
+  ...params,
 })
+
+export default defineType(
+  builder({name: 'dzEditorial', title: 'Editorial'}, {references: [book, press]})
+) as ObjectDefinition
