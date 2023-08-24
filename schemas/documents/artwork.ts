@@ -2,7 +2,6 @@ import {defineArrayMember, defineField, defineType} from 'sanity'
 
 import * as Media from '../objects/utils/media'
 import {builder as slugBuilder} from '../objects/utils/slugUrl'
-import dateSelection from '../objects/utils/dateSelection'
 import {ThLargeIcon, ComposeIcon, SearchIcon, ImageIcon, DocumentVideoIcon} from '@sanity/icons'
 import artist from './artist'
 import blockContentSimple from '../../schemas/objects/utils/blockContentSimple'
@@ -34,7 +33,7 @@ export default defineType({
       validation: (Rule) => [
         Rule.required(),
         Rule.max(300).warning(
-          'The title is longer than our standard character count, an ellipsis will appear on tile view.'
+          'The title is longer than our standard character count, an ellipsis will appear on tile view.',
         ),
       ],
     }),
@@ -82,25 +81,24 @@ export default defineType({
           options: {
             source: (object: any) => {
               const defaultSlug =
-                `${object?.title}-${object.dateSelection.year}-${object._id.slice(-5)}` ?? ''
+                `${object?.title}-${object.dateSelection.slice(0, 4)}-${object._id.slice(-5)}` ?? ''
               if (!defaultSlug) throw new Error('Please add a title to create a unique slug.')
               return defaultSlug.slice(0, 95)
             },
           },
         },
         {
-          optional: true,
           prefix: async (parent, client) => {
             const artistId = parent.artists[0]?._ref
             const artistPageSlug = await client.fetch(
               `*[_type == "artist" && defined(artistPage) && _id == $artistId][0].artistPage->slug.current`,
-              {artistId}
+              {artistId},
             )
             const noArtistPrefix = `/artwork/`
             return artistPageSlug || noArtistPrefix
           },
-        }
-      )
+        },
+      ),
     ),
     defineField({
       name: 'artists',
@@ -128,7 +126,7 @@ export default defineType({
       title: 'Date',
       name: 'dateSelection',
       group: 'content',
-      type: dateSelection.name,
+      type: 'date',
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -136,6 +134,7 @@ export default defineType({
       name: 'photos',
       group: 'content',
       type: 'array',
+      validation: (rule) => rule.required(),
       of: [
         {
           type: 'image',
@@ -183,8 +182,8 @@ export default defineType({
                   }),
                 ],
               },
-            }
-          )
+            },
+          ),
         ),
         defineArrayMember(
           Media.builder(
@@ -195,8 +194,8 @@ export default defineType({
             },
             {
               type: Media.MediaTypes.VIDEO,
-            }
-          )
+            },
+          ),
         ),
       ],
     }),
@@ -224,18 +223,11 @@ export default defineType({
       type: 'string',
     }),
     defineField({
-      name: 'edition',
-      title: 'Edition',
-      group: 'content',
-      type: 'string',
-    }),
-    defineField({
       name: 'dimensions',
       title: 'Dimensions',
       group: 'content',
       type: 'array',
       of: blockContentSimple,
-      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'framedDimensions',
@@ -256,6 +248,14 @@ export default defineType({
           {title: 'Unframed', value: 'Unframed'},
         ],
       },
+      validation: (rule) =>
+        rule.custom((value, context) => {
+          const parent = context.parent as {artworkType: string}
+          if (parent.artworkType !== 'sculpture' && !value) {
+            return 'Required'
+          }
+          return true
+        }),
       hidden: ({parent}) => parent?.artworkType === 'sculpture',
     }),
 
