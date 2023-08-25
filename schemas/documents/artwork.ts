@@ -82,7 +82,7 @@ export default defineType({
           options: {
             source: (object: any) => {
               const defaultSlug =
-                `${object?.title}-${object.dateSelection.slice(0, 4)}-${object._id.slice(-5)}` ?? ''
+                `${object?.title}-${object.dateSelection.year}-${object._id.slice(-5)}` ?? ''
               if (!defaultSlug) throw new Error('Please add a title to create a unique slug.')
               return defaultSlug.slice(0, 95)
             },
