@@ -5,6 +5,7 @@ import {builder as slugBuilder} from '../objects/utils/slugUrl'
 import {ThLargeIcon, ComposeIcon, SearchIcon, ImageIcon, DocumentVideoIcon} from '@sanity/icons'
 import artist from './artist'
 import blockContentSimple from '../../schemas/objects/utils/blockContentSimple'
+import dateSelectionYear from '../objects/utils/dateSelectionYear'
 
 // Check If we will need prefilled fields
 export default defineType({
@@ -126,7 +127,7 @@ export default defineType({
       title: 'Date',
       name: 'dateSelection',
       group: 'content',
-      type: 'date',
+      type: dateSelectionYear.name,
       validation: (rule) => rule.required(),
     }),
     defineField({
