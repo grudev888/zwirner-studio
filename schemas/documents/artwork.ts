@@ -128,7 +128,14 @@ export default defineType({
       name: 'dateSelection',
       group: 'content',
       type: dateSelectionYear.name,
-      validation: (rule) => rule.required(),
+      validation: (rule) =>
+        rule.custom((value) => {
+          const {year} = value as {year: string}
+          if (!year) {
+            return 'Required'
+          }
+          return true
+        }),
     }),
     defineField({
       title: 'Artwork Media',
@@ -213,6 +220,7 @@ export default defineType({
           {title: 'Photography', value: 'photography'},
           {title: 'Print', value: 'print'},
           {title: 'Sculpture', value: 'sculpture'},
+          {title: 'Other', value: 'other'},
         ],
       },
       validation: (rule) => rule.required(),
@@ -220,6 +228,12 @@ export default defineType({
     defineField({
       name: 'medium',
       title: 'Medium',
+      group: 'content',
+      type: 'string',
+    }),
+    defineField({
+      name: 'inventoryId',
+      title: 'Inventory ID',
       group: 'content',
       type: 'string',
     }),
@@ -245,6 +259,7 @@ export default defineType({
       type: 'string',
       options: {
         list: [
+          {title: 'Not Applicable', value: 'NotApplicable'},
           {title: 'Framed', value: 'Framed'},
           {title: 'Unframed', value: 'Unframed'},
         ],
@@ -252,12 +267,13 @@ export default defineType({
       validation: (rule) =>
         rule.custom((value, context) => {
           const parent = context.parent as {artworkType: string}
-          if (parent.artworkType !== 'sculpture' && !value) {
+          if (parent.artworkType !== 'sculpture' && parent.artworkType !== 'mixedMedia' && !value) {
             return 'Required'
           }
           return true
         }),
-      hidden: ({parent}) => parent?.artworkType === 'sculpture',
+      hidden: ({parent}) =>
+        parent?.artworkType === 'sculpture' || parent?.artworkType === 'mixedMedia',
     }),
 
     defineField({
@@ -375,11 +391,10 @@ export default defineType({
       of: blockContentSimple,
     }),
     defineField({
-      name: 'editionInformation',
-      title: 'Edition Information',
+      name: 'edition',
+      title: 'Edition',
       group: 'content',
-      type: 'array',
-      of: blockContentSimple,
+      type: 'string',
     }),
     defineField({
       name: 'copyrightInformation',

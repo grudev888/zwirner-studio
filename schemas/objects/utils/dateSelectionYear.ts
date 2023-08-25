@@ -10,7 +10,7 @@ export default defineType({
       name: 'year',
       type: 'string',
       title: 'Year',
-      description: 'Add a single year in the format: YYYY.',
+      description: 'Add a year or year range: YYYY, YYYY–YYYY, c. YYYY, YYYY/YYYY',
       hidden: ({parent, value}) => {
         return !!(!value && (parent?.dateRange?.from || parent?.approximate))
       },
