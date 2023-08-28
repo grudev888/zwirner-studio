@@ -267,13 +267,13 @@ export default defineType({
       validation: (rule) =>
         rule.custom((value, context) => {
           const parent = context.parent as {artworkType: string}
-          if (parent.artworkType !== 'sculpture' && parent.artworkType !== 'mixedMedia' && !value) {
-            return 'Required'
+          if (!value) return 'Required'
+
+          if (parent.artworkType === 'sculpture' && value !== 'NotApplicable') {
+            return "Sculpture must be marked as 'Not Applicable.'"
           }
           return true
         }),
-      hidden: ({parent}) =>
-        parent?.artworkType === 'sculpture' || parent?.artworkType === 'mixedMedia',
     }),
 
     defineField({
@@ -391,10 +391,11 @@ export default defineType({
       of: blockContentSimple,
     }),
     defineField({
-      name: 'edition',
-      title: 'Edition',
+      name: 'editionInformation',
+      title: 'Edition Information',
       group: 'content',
-      type: 'string',
+      type: 'array',
+      of: blockContentSimple,
     }),
     defineField({
       name: 'copyrightInformation',
