@@ -50,6 +50,7 @@ import brickAndMortar from './objects/utils/brickAndMortar'
 import cta from './objects/utils/cta'
 import dateRange from './objects/utils/dateRange'
 import dateSelection from './objects/utils/dateSelection'
+import dateSelectionYear from './objects/utils/dateSelectionYear'
 import jsonLD from './objects/utils/jsonLdSchema'
 import link from './objects/utils/link'
 import media from './objects/utils/media'
@@ -100,6 +101,7 @@ export const objects: ObjectDefinition[] = [
   social,
   addressType,
   dateSelection,
+  dateSelectionYear,
   seo,
   row,
   grid,
@@ -110,9 +112,22 @@ export const objects: ObjectDefinition[] = [
 
 export const pageDocuments: DocumentDefinition[] = [artistPage, exhibitionPage, fairPage]
 
-export const singletons: DocumentDefinition[] = [exhibitionsLanding, artworkListing, settings, stories, home, collect, utopiaEditions, globalSEO, availableArtworks, navigation, consignments, footer]
+export const singletons: DocumentDefinition[] = [
+  exhibitionsLanding,
+  artworkListing,
+  settings,
+  stories,
+  home,
+  collect,
+  utopiaEditions,
+  globalSEO,
+  availableArtworks,
+  navigation,
+  consignments,
+  footer,
+]
 
-export const schema: {types: SchemaTypeDefinition[] } = {
+export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
     article,
     press,

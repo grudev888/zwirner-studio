@@ -2,10 +2,10 @@ import {defineArrayMember, defineField, defineType} from 'sanity'
 
 import * as Media from '../objects/utils/media'
 import {builder as slugBuilder} from '../objects/utils/slugUrl'
-import dateSelection from '../objects/utils/dateSelection'
 import {ThLargeIcon, ComposeIcon, SearchIcon, ImageIcon, DocumentVideoIcon} from '@sanity/icons'
 import artist from './artist'
 import blockContentSimple from '../../schemas/objects/utils/blockContentSimple'
+import dateSelectionYear from '../objects/utils/dateSelectionYear'
 
 // Check If we will need prefilled fields
 export default defineType({
@@ -34,7 +34,7 @@ export default defineType({
       validation: (Rule) => [
         Rule.required(),
         Rule.max(300).warning(
-          'The title is longer than our standard character count, an ellipsis will appear on tile view.'
+          'The title is longer than our standard character count, an ellipsis will appear on tile view.',
         ),
       ],
     }),
@@ -89,18 +89,17 @@ export default defineType({
           },
         },
         {
-          optional: true,
           prefix: async (parent, client) => {
             const artistId = parent.artists[0]?._ref
             const artistPageSlug = await client.fetch(
               `*[_type == "artist" && defined(artistPage) && _id == $artistId][0].artistPage->slug.current`,
-              {artistId}
+              {artistId},
             )
             const noArtistPrefix = `/artwork/`
             return artistPageSlug || noArtistPrefix
           },
-        }
-      )
+        },
+      ),
     ),
     defineField({
       name: 'artists',
@@ -128,14 +127,22 @@ export default defineType({
       title: 'Date',
       name: 'dateSelection',
       group: 'content',
-      type: dateSelection.name,
-      validation: (rule) => rule.required(),
+      type: dateSelectionYear.name,
+      validation: (rule) =>
+        rule.custom((value) => {
+          const {year} = value as {year: string}
+          if (!year) {
+            return 'Required'
+          }
+          return true
+        }),
     }),
     defineField({
       title: 'Artwork Media',
       name: 'photos',
       group: 'content',
       type: 'array',
+      validation: (rule) => rule.required(),
       of: [
         {
           type: 'image',
@@ -183,8 +190,8 @@ export default defineType({
                   }),
                 ],
               },
-            }
-          )
+            },
+          ),
         ),
         defineArrayMember(
           Media.builder(
@@ -195,8 +202,8 @@ export default defineType({
             },
             {
               type: Media.MediaTypes.VIDEO,
-            }
-          )
+            },
+          ),
         ),
       ],
     }),
@@ -213,6 +220,7 @@ export default defineType({
           {title: 'Photography', value: 'photography'},
           {title: 'Print', value: 'print'},
           {title: 'Sculpture', value: 'sculpture'},
+          {title: 'Other', value: 'other'},
         ],
       },
       validation: (rule) => rule.required(),
@@ -224,8 +232,8 @@ export default defineType({
       type: 'string',
     }),
     defineField({
-      name: 'edition',
-      title: 'Edition',
+      name: 'inventoryId',
+      title: 'Inventory ID',
       group: 'content',
       type: 'string',
     }),
@@ -235,7 +243,6 @@ export default defineType({
       group: 'content',
       type: 'array',
       of: blockContentSimple,
-      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'framedDimensions',
@@ -252,11 +259,21 @@ export default defineType({
       type: 'string',
       options: {
         list: [
+          {title: 'Not Applicable', value: 'NotApplicable'},
           {title: 'Framed', value: 'Framed'},
           {title: 'Unframed', value: 'Unframed'},
         ],
       },
-      hidden: ({parent}) => parent?.artworkType === 'sculpture',
+      validation: (rule) =>
+        rule.custom((value, context) => {
+          const parent = context.parent as {artworkType: string}
+          if (!value) return 'Required'
+
+          if (parent.artworkType === 'sculpture' && value !== 'NotApplicable') {
+            return "Sculpture must be marked as 'Not Applicable.'"
+          }
+          return true
+        }),
     }),
 
     defineField({
