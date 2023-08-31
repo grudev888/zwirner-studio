@@ -7,13 +7,7 @@ import artist from './artist'
 import blockContentSimple from '../../schemas/objects/utils/blockContentSimple'
 import dateSelectionYear from '../objects/utils/dateSelectionYear'
 import {apiVersion} from '../../env'
-
-const sanitizeSlugInputValues = (value: string) => {
-  return value
-    .toLowerCase()
-    .replace(/[^a-zA-Z0-9\s]/g, '')
-    .replace(/\s+/g, '-')
-}
+import {slugify} from '../../lib/util/strings'
 
 // Check If we will need prefilled fields
 export default defineType({
@@ -91,17 +85,14 @@ export default defineType({
             'Should be in format of /artworks/[artist-slug]-[artwork-slug]-[hash]. artist-slug is the full artist name, artwork-slug is the title of the artwork, and hash is a 5 digit semi-random hash generated from the artwork UID.',
           options: {
             source: async (object: any, context: any) => {
-              const artistId = object.artists[0]?._ref
+              const artistId = object.artists?.[0]?._ref
               const client = context.getClient({apiVersion})
+              if (!artistId) throw new Error('Link an artist to generate a slug')
               const artistFullName = await client.fetch(
                 `*[_type == "artist" && _id == $artistId][0].fullName`,
                 {artistId},
               )
-              const normalizedArtistFullName = sanitizeSlugInputValues(artistFullName)
-              const normalizedArtworkTitle = sanitizeSlugInputValues(object.title)
-              const defaultSlug = `${normalizedArtistFullName}-${normalizedArtworkTitle}-${object._id.slice(
-                -5,
-              )}`
+              const defaultSlug = `${artistFullName}-${object.title}-${object._id.slice(-5)}`
               if (!defaultSlug) throw new Error('Please add a title to create a unique slug.')
               return defaultSlug.slice(0, 95)
             },
@@ -115,8 +106,8 @@ export default defineType({
                 `*[_type == "artist" && _id == $artistId][0].fullName`,
                 {artistId},
               )
-              const normalizedArtworkTitle = sanitizeSlugInputValues(context.parent.title)
-              const normalizedArtistFullName = sanitizeSlugInputValues(artistFullName)
+              const normalizedArtworkTitle = slugify(context.parent.title)
+              const normalizedArtistFullName = slugify(artistFullName)
               const isSlugValid =
                 slug.includes(normalizedArtistFullName) && slug.includes(normalizedArtworkTitle)
 
