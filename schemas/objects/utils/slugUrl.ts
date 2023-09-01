@@ -13,14 +13,14 @@ import {getClientFromContext} from '../../../lib/util/sanity'
 // URLs recommended length is 120 chars.
 export const SLUG_MAX_LENGTH = 120 - 'http://davidzwirner.com/'.length
 
-type UrlExtencion =
+type UrlExtension =
   | ((parent: Record<string, any>, client: SanityClient) => Promise<string>)
   | string
 
 interface ValidateOptions {
   optional?: boolean
-  prefix?: UrlExtencion
-  suffix?: UrlExtencion
+  prefix?: UrlExtension
+  suffix?: UrlExtension
 }
 
 export const validateSlugFormat = async (
