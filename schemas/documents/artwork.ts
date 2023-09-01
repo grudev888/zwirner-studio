@@ -1,13 +1,17 @@
 import {SlugRule, defineArrayMember, defineField, defineType} from 'sanity'
 
 import * as Media from '../objects/utils/media'
-import {builder as slugBuilder} from '../objects/utils/slugUrl'
+import {SLUG_MAX_LENGTH, builder as slugBuilder} from '../objects/utils/slugUrl'
 import {ThLargeIcon, ComposeIcon, SearchIcon, ImageIcon, DocumentVideoIcon} from '@sanity/icons'
 import artist from './artist'
 import blockContentSimple from '../../schemas/objects/utils/blockContentSimple'
 import dateSelectionYear from '../objects/utils/dateSelectionYear'
 import {apiVersion} from '../../env'
 import {slugify} from '../../lib/util/strings'
+
+const ARTWORKS_PREFIX = '/artworks/'
+const ARTWORK_SUFFIX_LENGTH = 6
+const SLUG_BODY_LENGTH = SLUG_MAX_LENGTH - ARTWORKS_PREFIX.length - ARTWORK_SUFFIX_LENGTH
 
 // Check If we will need prefilled fields
 export default defineType({
@@ -92,7 +96,7 @@ export default defineType({
                 `*[_type == "artist" && _id == $artistId][0].fullName`,
                 {artistId},
               )
-              const defaultSlug = `${artistFullName}-${object.title}-${object._id.slice(-5)}`
+              const defaultSlug = `${artistFullName}-${object.title}`
               if (!defaultSlug) throw new Error('Please add a title to create a unique slug.')
               return defaultSlug.slice(0, 95)
             },
@@ -100,21 +104,31 @@ export default defineType({
           validation: (rule: SlugRule) =>
             rule.custom(async (value, context: any) => {
               const slug = value?.current || ''
+              if (slug.length > SLUG_MAX_LENGTH) return 'Slug is too long'
               const artistId = context.parent.artists[0]?._ref
               const client = context.getClient({apiVersion})
               const artistFullName = await client.fetch(
                 `*[_type == "artist" && _id == $artistId][0].fullName`,
                 {artistId},
               )
-              const normalizedArtworkTitle = slugify(context.parent.title)
-              const normalizedArtistFullName = slugify(artistFullName)
-              const isSlugValid =
-                slug.includes(normalizedArtistFullName) && slug.includes(normalizedArtworkTitle)
-
+              const normalizedTitle = slugify(context.parent.title)
+              const normalizedFullName = slugify(artistFullName)
+              const expectedSlugBody = `${normalizedFullName}-${normalizedTitle}`.slice(
+                0,
+                SLUG_BODY_LENGTH,
+              )
+              const isSlugValid = slug.includes(expectedSlugBody)
               return isSlugValid || 'Should be required format'
             }),
         },
-        {prefix: '/artworks/'},
+        {
+          prefix: '/artworks/',
+          suffix: async (parent) => {
+            const hash = parent._id?.slice(-5)
+            if (!hash) throw new Error('Artwork ID is missing or invalid')
+            return `-${hash}`
+          },
+        },
       ),
     ),
     defineField({
