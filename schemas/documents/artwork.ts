@@ -10,7 +10,8 @@ import {apiVersion} from '../../env'
 import {slugify} from '../../lib/util/strings'
 
 const ARTWORKS_PREFIX = '/artworks/'
-const ARTWORK_SUFFIX_LENGTH = 6
+const HASH_LENGTH = 5
+const ARTWORK_SUFFIX_LENGTH = HASH_LENGTH + 1 // 1 for the dash
 const SLUG_BODY_LENGTH = SLUG_MAX_LENGTH - ARTWORKS_PREFIX.length - ARTWORK_SUFFIX_LENGTH
 
 // Check If we will need prefilled fields
@@ -92,6 +93,7 @@ export default defineType({
               const artistId = object.artists?.[0]?._ref
               const client = context.getClient({apiVersion})
               if (!artistId) throw new Error('Link an artist to generate a slug')
+              if (!object.title) throw new Error('Please add a title to create a unique slug.')
               const artistFullName = await client.fetch(
                 `*[_type == "artist" && _id == $artistId][0].fullName`,
                 {artistId},
@@ -124,7 +126,7 @@ export default defineType({
         {
           prefix: ARTWORKS_PREFIX,
           suffix: async (parent) => {
-            const hash = parent._id?.slice(-5)
+            const hash = parent._id?.slice(-HASH_LENGTH)
             if (!hash) throw new Error('Artwork ID is missing or invalid')
             return `-${hash}`
           },
