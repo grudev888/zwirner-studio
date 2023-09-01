@@ -98,7 +98,7 @@ export default defineType({
               )
               const defaultSlug = `${artistFullName}-${object.title}`
               if (!defaultSlug) throw new Error('Please add a title to create a unique slug.')
-              return defaultSlug.slice(0, 95)
+              return defaultSlug
             },
           },
           validation: (rule: SlugRule) =>
@@ -122,7 +122,7 @@ export default defineType({
             }),
         },
         {
-          prefix: '/artworks/',
+          prefix: ARTWORKS_PREFIX,
           suffix: async (parent) => {
             const hash = parent._id?.slice(-5)
             if (!hash) throw new Error('Artwork ID is missing or invalid')
