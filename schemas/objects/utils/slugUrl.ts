@@ -10,20 +10,23 @@ import {
 import {slugify} from '../../../lib/util/strings'
 import {getClientFromContext} from '../../../lib/util/sanity'
 
-// URLs recommended length is 75 chars.
-const SLUG_MAX_LENGTH = 75 - 'http://davidzwirner.com/'.length
+// URLs recommended length is 120 chars.
+export const SLUG_MAX_LENGTH = 120 - 'https://www.davidzwirner.com'.length
 
-type UrlPrefix = ((parent: Record<string, any>, client: SanityClient) => Promise<string>) | string
+type UrlExtension =
+  | ((parent: Record<string, any>, client: SanityClient) => Promise<string>)
+  | string
 
 interface ValidateOptions {
   optional?: boolean
-  prefix?: UrlPrefix
+  prefix?: UrlExtension
+  suffix?: UrlExtension
 }
 
 export const validateSlugFormat = async (
   slug: SlugValue | undefined,
   context: ValidationContext,
-  options?: ValidateOptions
+  options?: ValidateOptions,
 ) => {
   const {optional, prefix} = options ?? {}
 
@@ -55,7 +58,7 @@ export const validateSlugFormat = async (
 
 export const validateSlugFormatRule = (rule: SlugRule, options?: ValidateOptions) =>
   rule.custom((value: SlugValue | undefined, context) =>
-    validateSlugFormat(value, context, options)
+    validateSlugFormat(value, context, options),
   )
 
 const structure: SlugDefinition = {
@@ -83,7 +86,7 @@ const structure: SlugDefinition = {
 
 export const builder = (
   params: {name?: string; title: string; [key: string]: any},
-  options?: ValidateOptions
+  options?: ValidateOptions,
 ): SlugDefinition => {
   if (params.options?.slugify) throw new Error('Overwrite the slugify method is forbidden')
 
@@ -102,9 +105,14 @@ export const builder = (
           (typeof options?.prefix === 'function'
             ? await options.prefix(context.parent, getClientFromContext(context.getClient))
             : options?.prefix) || ''
+        const suffix =
+          (typeof options?.suffix === 'function'
+            ? await options.suffix(context.parent, getClientFromContext(context.getClient))
+            : options?.suffix) || ''
+        const SLUG_BODY_LENGTH = SLUG_MAX_LENGTH - suffix.length - prefix.length
 
-        const normalized = slugify(input).slice(0, SLUG_MAX_LENGTH)
-        return `/${prefix}/${normalized}`.replace(/\/+/g, '/')
+        const normalized = slugify(input).slice(0, SLUG_BODY_LENGTH)
+        return `/${prefix}/${normalized}${suffix}`.replace(/\/+/g, '/')
       },
     },
   }

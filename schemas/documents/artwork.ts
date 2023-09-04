@@ -1,11 +1,18 @@
-import {defineArrayMember, defineField, defineType} from 'sanity'
+import {SlugRule, defineArrayMember, defineField, defineType} from 'sanity'
 
 import * as Media from '../objects/utils/media'
-import {builder as slugBuilder} from '../objects/utils/slugUrl'
+import {SLUG_MAX_LENGTH, builder as slugBuilder} from '../objects/utils/slugUrl'
 import {ThLargeIcon, ComposeIcon, SearchIcon, ImageIcon, DocumentVideoIcon} from '@sanity/icons'
 import artist from './artist'
 import blockContentSimple from '../../schemas/objects/utils/blockContentSimple'
 import dateSelectionYear from '../objects/utils/dateSelectionYear'
+import {apiVersion} from '../../env'
+import {slugify} from '../../lib/util/strings'
+
+const ARTWORKS_PREFIX = '/artworks/'
+const HASH_LENGTH = 5
+const ARTWORK_SUFFIX_LENGTH = HASH_LENGTH + 1 // 1 for the dash
+const SLUG_BODY_LENGTH = SLUG_MAX_LENGTH - ARTWORKS_PREFIX.length - ARTWORK_SUFFIX_LENGTH
 
 // Check If we will need prefilled fields
 export default defineType({
@@ -69,8 +76,10 @@ export default defineType({
       ],
       hidden: ({parent}) => !parent?.displayCustomTitle,
     }),
-    // should be in format of /artist/[artist-slug]/[artwork-slug]
-    // artwork-slug should be title + year + random 5 digit number
+    // should be in format of /artworks/[artist-slug]-[artwork-slug]-[hash]
+    // artist-slug — artist's full name field, with replaced spaces and special characters with dashes, and converted to lowercase
+    // artwork-slug — artwork's title with replaced spaces and special characters with dashes, and converted to lowercase
+    // hash — last 5 chars of id (slice(-5))
     defineField(
       slugBuilder(
         {
@@ -78,25 +87,48 @@ export default defineType({
           title: 'Slug',
           group: 'content',
           description:
-            'Should be in format of /artists/[artist-slug]/[artwork-slug], and artwork-slug should be title + year + a 5 digit semi-random hash generated from the artwork UID.',
+            'Should be in format of /artworks/[artist-slug]-[artwork-slug]-[hash]. artist-slug is the full artist name, artwork-slug is the title of the artwork, and hash is a 5 digit semi-random hash generated from the artwork UID.',
           options: {
-            source: (object: any) => {
-              const defaultSlug =
-                `${object?.title}-${object.dateSelection.year}-${object._id.slice(-5)}` ?? ''
+            source: async (object: any, context: any) => {
+              const artistId = object.artists?.[0]?._ref
+              const client = context.getClient({apiVersion})
+              if (!artistId) throw new Error('Link an artist to generate a slug')
+              if (!object.title) throw new Error('Please add a title to create a unique slug.')
+              const artistFullName = await client.fetch(
+                `*[_type == "artist" && _id == $artistId][0].fullName`,
+                {artistId},
+              )
+              const defaultSlug = `${artistFullName}-${object.title}`
               if (!defaultSlug) throw new Error('Please add a title to create a unique slug.')
-              return defaultSlug.slice(0, 95)
+              return defaultSlug
             },
           },
+          validation: (rule: SlugRule) =>
+            rule.custom(async (value, context: any) => {
+              const slug = value?.current || ''
+              if (slug.length > SLUG_MAX_LENGTH) return 'Slug is too long'
+              const artistId = context.parent.artists[0]?._ref
+              const client = context.getClient({apiVersion})
+              const artistFullName = await client.fetch(
+                `*[_type == "artist" && _id == $artistId][0].fullName`,
+                {artistId},
+              )
+              const normalizedTitle = slugify(context.parent.title)
+              const normalizedFullName = slugify(artistFullName)
+              const expectedSlugBody = `${normalizedFullName}-${normalizedTitle}`.slice(
+                0,
+                SLUG_BODY_LENGTH,
+              )
+              const isSlugValid = slug.includes(expectedSlugBody)
+              return isSlugValid || 'Should be required format'
+            }),
         },
         {
-          prefix: async (parent, client) => {
-            const artistId = parent.artists[0]?._ref
-            const artistPageSlug = await client.fetch(
-              `*[_type == "artist" && defined(artistPage) && _id == $artistId][0].artistPage->slug.current`,
-              {artistId},
-            )
-            const noArtistPrefix = `/artwork/`
-            return artistPageSlug || noArtistPrefix
+          prefix: ARTWORKS_PREFIX,
+          suffix: async (parent) => {
+            const hash = parent._id?.slice(-HASH_LENGTH)
+            if (!hash) throw new Error('Artwork ID is missing or invalid')
+            return `-${hash}`
           },
         },
       ),

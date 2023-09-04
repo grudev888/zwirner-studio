@@ -17,7 +17,6 @@ import * as Media from '../objects/utils/media'
 import {GreyFootNote, GreyFootNoteDecorator} from '../../components/block/GreyFootnote'
 import dateSelection from '../objects/utils/dateSelection'
 
-
 export interface ArticleSchema {
   title?: string
   images?: any
@@ -67,7 +66,8 @@ export default defineType({
     defineField({
       name: 'displayDate',
       title: 'Display Date',
-      description: 'This field will override the default display dates used by the date selector below.',
+      description:
+        'This field will override the default display dates used by the date selector below.',
       group: 'content',
       type: 'string',
     }),
@@ -75,7 +75,8 @@ export default defineType({
       title: 'Date Selection',
       name: 'dateSelection',
       group: 'content',
-      description: 'Enter a date associated with the article. The article slug will be generated from the year, date range (from or to), or its approximate date.',
+      description:
+        'Enter a date associated with the article. The article slug will be generated from the year, date range (from or to), or its approximate date.',
       type: dateSelection.name,
     }),
     defineField({
@@ -121,12 +122,12 @@ export default defineType({
               if (!defaultSlug) throw new Error('Please add a title to create a unique slug.')
               return defaultSlug.slice(0, 95)
             },
-            validation: (rule: SlugRule) =>
-              rule.custom((value, context) => {
-                return (context.parent as any).type !== 'externalNews' && !value ? 'Required' : true
-              }),
             hidden: (context: SlugSourceContext) => (context.parent as any).type === 'externalNews',
           },
+          validation: (rule: SlugRule) =>
+            rule.custom((value, context) => {
+              return (context.parent as any).type !== 'externalNews' && !value ? 'Required' : true
+            }),
         },
         {
           optional: true,
@@ -138,16 +139,16 @@ export default defineType({
                 ? parent._id.split('.')[1]
                 : parent._id
               const artistPageSlug = await client.fetch(
-                `coalesce(*[_type == "artistPage" && references("${postId}")]{"slug": slug.current})[0]`
+                `coalesce(*[_type == "artistPage" && references("${postId}")]{"slug": slug.current})[0]`,
               )
               if (!artistPageSlug) {
                 throw new Error(`No artistPage document references the post with ID: ${parent._id}`)
-              } 
+              }
               // else if (artistPageSlug.length > 1) {
               //   throw new Error(
               //     `Multiple artistPage documents reference the post with ID: ${parent._id}`
               //   )
-              // } 
+              // }
               else {
                 const pressPrefix = `${artistPageSlug.slug}/press`
                 return pressPrefix
@@ -162,8 +163,13 @@ export default defineType({
               let thisDate = new Date()
               if (parent?.dateSelection?.year) {
                 thisDate = new Date(parent?.dateSelection?.year, 1)
-              } else if (parent?.dateSelection?.dateRange?.from || parent?.dateSelection?.dateRange?.to) {
-                thisDate = new Date(parent?.dateSelection?.dateRange.from || parent?.dateSelection?.dateRange.to)
+              } else if (
+                parent?.dateSelection?.dateRange?.from ||
+                parent?.dateSelection?.dateRange?.to
+              ) {
+                thisDate = new Date(
+                  parent?.dateSelection?.dateRange.from || parent?.dateSelection?.dateRange.to,
+                )
               } else if (parent?.dateSelection?.approximate) {
                 thisDate = new Date(parent?.dateSelection?.approximate)
               }
@@ -174,7 +180,7 @@ export default defineType({
                 const year = thisDate.getFullYear()
                 const newsPrefix = `/news/${year}`
                 return newsPrefix
-              }              
+              }
             }
 
             // if parent.type === 'externalNews' then return empty string
@@ -182,8 +188,8 @@ export default defineType({
               return ''
             }
           },
-        }
-      )
+        },
+      ),
     ),
     defineField(
       Media.builder(
@@ -192,8 +198,8 @@ export default defineType({
           title: 'Header Image',
           group: 'content',
         },
-        {type: Media.MediaTypes.IMAGE}
-      )
+        {type: Media.MediaTypes.IMAGE},
+      ),
     ),
     defineField({
       name: 'body',
@@ -202,7 +208,7 @@ export default defineType({
       type: 'array',
       validation: (rule) =>
         rule.custom((value, context) =>
-          (context.parent as any).type !== 'externalNews' && !value ? 'Required' : true
+          (context.parent as any).type !== 'externalNews' && !value ? 'Required' : true,
         ),
       hidden: (context) => context.parent.type === 'externalNews',
       of: [
@@ -241,8 +247,8 @@ export default defineType({
                   }),
                 ],
               },
-            }
-          )
+            },
+          ),
         ),
       ],
     }),
@@ -271,8 +277,8 @@ export default defineType({
           hidden: (context: ConditionalPropertyCallbackContext) =>
             context.parent.type === 'externalNews',
         },
-        {excludeFields: ['subtitle']}
-      )
+        {excludeFields: ['subtitle']},
+      ),
     ),
     defineField({
       name: 'articles',
