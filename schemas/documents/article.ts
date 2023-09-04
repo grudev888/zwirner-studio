@@ -1,10 +1,13 @@
 import {
-  ConditionalPropertyCallbackContext,
-  SlugRule,
   SlugSourceContext,
+  UrlRule,
   defineArrayMember,
   defineField,
   defineType,
+  ConditionalPropertyCallbackContext,
+  StringRule,
+  RuleDef,
+  ArrayRule,
 } from 'sanity'
 import {DocumentTextIcon, ComposeIcon, SearchIcon, ImageIcon} from '@sanity/icons'
 
@@ -15,7 +18,7 @@ import exhibitionPage from './pages/exhibitionPage'
 import {builder as slugBuilder} from '../objects/utils/slugUrl'
 import * as Media from '../objects/utils/media'
 import {GreyFootNote, GreyFootNoteDecorator} from '../../components/block/GreyFootnote'
-import dateSelection from '../objects/utils/dateSelection'
+import {ConditionalProperty} from 'sanity'
 
 export interface ArticleSchema {
   title?: string
@@ -25,6 +28,29 @@ export interface ArticleSchema {
   description?: string
   publisherLogo?: string
 }
+
+export enum ArticleTypes {
+  'Guide/Internal News' = 'internalNews',
+  'Selected Press' = 'pressRelease',
+  'External News' = 'externalNews',
+}
+
+const findKey = (value: ArticleTypes) =>
+  Object.keys(ArticleTypes)[Object.values(ArticleTypes).indexOf(value)]
+
+const requireForTypes =
+  <T extends RuleDef<T>>(types: ArticleTypes[], asas: string = '') =>
+  (rule: T) =>
+    rule.custom((value, context) =>
+      types.includes((context.parent as any).type) && !!value === false
+        ? `This field is required when Article Type is ${types.map(findKey).join(', ')}`
+        : true,
+    )
+
+const hideForTypes =
+  (types: ArticleTypes[]): ConditionalProperty =>
+  (context: SlugSourceContext | ConditionalPropertyCallbackContext) =>
+    types.includes(context.parent.type)
 
 export default defineType({
   type: 'document',
@@ -44,54 +70,12 @@ export default defineType({
     }),
     defineField({
       type: 'string',
-      name: 'title',
-      title: 'Title',
-      group: 'content',
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      type: 'string',
-      name: 'subtitle',
-      title: 'Subtitle/Summary',
-      description: 'Displays subtitle/summary text on cards and in search results.',
-      group: 'content',
-    }),
-    defineField({
-      type: 'text',
-      name: 'description',
-      title: 'Description',
-      description: 'Displays text between title and body.',
-      group: 'content',
-    }),
-    defineField({
-      name: 'displayDate',
-      title: 'Display Date',
-      description:
-        'This field will override the default display dates used by the date selector below.',
-      group: 'content',
-      type: 'string',
-    }),
-    defineField({
-      title: 'Date Selection',
-      name: 'dateSelection',
-      group: 'content',
-      description:
-        'Enter a date associated with the article. The article slug will be generated from the year, date range (from or to), or its approximate date.',
-      type: dateSelection.name,
-    }),
-    defineField({
-      type: 'string',
       name: 'type',
       group: 'content',
       title: 'Article Type',
       validation: (rule) => rule.required(),
       options: {
-        list: [
-          {title: 'Internal News', value: 'internalNews'},
-          {title: 'Press Release', value: 'pressRelease'},
-          {title: 'External News', value: 'externalNews'},
-          // {title: 'Artist Press', value: 'artistPress'},
-        ],
+        list: Object.entries(ArticleTypes).map(([title, value]) => ({title, value})),
       },
     }),
     defineField({
@@ -110,107 +94,116 @@ export default defineType({
       },
       initialValue: 'News',
     }),
-    defineField(
-      slugBuilder(
-        {
-          name: 'slug',
-          title: 'Slug',
-          group: 'content',
-          options: {
-            source: (object: any) => {
-              const defaultSlug = `${object?.title}` ?? ''
-              if (!defaultSlug) throw new Error('Please add a title to create a unique slug.')
-              return defaultSlug.slice(0, 95)
-            },
-            hidden: (context: SlugSourceContext) => (context.parent as any).type === 'externalNews',
-          },
-          validation: (rule: SlugRule) =>
-            rule.custom((value, context) => {
-              return (context.parent as any).type !== 'externalNews' && !value ? 'Required' : true
-            }),
-        },
-        {
-          optional: true,
-
-          prefix: async (parent, client) => {
-            // if parent.type === 'pressRelease' then prefix is /artists/[artist]/press/[slug]
-            if (parent.type === 'pressRelease') {
-              const postId = parent._id.startsWith('drafts.')
-                ? parent._id.split('.')[1]
-                : parent._id
-              const artistPageSlug = await client.fetch(
-                `coalesce(*[_type == "artistPage" && references("${postId}")]{"slug": slug.current})[0]`,
-              )
-              if (!artistPageSlug) {
-                throw new Error(`No artistPage document references the post with ID: ${parent._id}`)
-              }
-              // else if (artistPageSlug.length > 1) {
-              //   throw new Error(
-              //     `Multiple artistPage documents reference the post with ID: ${parent._id}`
-              //   )
-              // }
-              else {
-                const pressPrefix = `${artistPageSlug.slug}/press`
-                return pressPrefix
-              }
-            }
-
-            // if context.parent.type === 'internalNews' then prefix is /news/[year]/[slug]
-            if (parent.type === 'internalNews') {
-              if (!parent?.dateSelection) {
-                throw new Error('Please add a date to create a unique slug.')
-              }
-              let thisDate = new Date()
-              if (parent?.dateSelection?.year) {
-                thisDate = new Date(parent?.dateSelection?.year, 1)
-              } else if (
-                parent?.dateSelection?.dateRange?.from ||
-                parent?.dateSelection?.dateRange?.to
-              ) {
-                thisDate = new Date(
-                  parent?.dateSelection?.dateRange.from || parent?.dateSelection?.dateRange.to,
-                )
-              } else if (parent?.dateSelection?.approximate) {
-                thisDate = new Date(parent?.dateSelection?.approximate)
-              }
-
-              if (isNaN(thisDate.getTime())) {
-                throw new Error('Please add a valid date to create a unique slug.')
-              } else {
-                const year = thisDate.getFullYear()
-                const newsPrefix = `/news/${year}`
-                return newsPrefix
-              }
-            }
-
-            // if parent.type === 'externalNews' then return empty string
-            else {
-              return ''
-            }
-          },
-        },
-      ),
-    ),
+    defineField({
+      type: 'string',
+      name: 'title',
+      title: 'Primary Title',
+      group: 'content',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'externalURL',
+      title: 'Override URL',
+      group: 'content',
+      validation: (rule) => [
+        requireForTypes<UrlRule>([ArticleTypes['External News']])(rule),
+        rule.custom((value) => {
+          if (value && !value.startsWith('https://') && !value.startsWith('http://'))
+            return {message: 'URL protocol missing (http:// or https://)'}
+          return true
+        }),
+      ],
+      type: 'url',
+    }),
+    defineField({
+      type: 'string',
+      name: 'primarySubtitle',
+      title: 'Primary Subtitle',
+      group: 'content',
+    }),
+    defineField({
+      type: 'string',
+      name: 'subtitle',
+      title: 'Secondary Title',
+      description: 'Displays subtitle/summary text on cards and in search results.',
+      validation: requireForTypes<StringRule>([ArticleTypes['Selected Press']]),
+      group: 'content',
+    }),
+    defineField({
+      type: 'text',
+      name: 'description',
+      title: 'Description',
+      description: 'Displays text between title and body.',
+      group: 'content',
+      hidden: hideForTypes([ArticleTypes['Selected Press']]),
+    }),
     defineField(
       Media.builder(
         {
           name: 'image',
           title: 'Header Image',
           group: 'content',
+          hidden: hideForTypes([ArticleTypes['External News'], ArticleTypes['Selected Press']]),
         },
         {type: Media.MediaTypes.IMAGE},
       ),
     ),
     defineField({
+      name: 'header',
+      title: 'Header Image',
+      type: 'array',
+      hidden: hideForTypes([ArticleTypes['Guide/Internal News']]),
+      of: [
+        defineArrayMember(
+          Media.builder(
+            {name: 'headerImage', title: 'Image', group: 'content'},
+            {type: Media.MediaTypes.IMAGE},
+          ),
+        ),
+        defineArrayMember(
+          Media.builder(
+            {name: 'headerVideo', title: 'Video', group: 'content'},
+            {type: Media.MediaTypes.VIDEO},
+          ),
+        ),
+      ],
+      group: 'content',
+    }),
+    defineField({
+      name: 'publishDate',
+      title: 'Publish Date',
+      group: 'content',
+      description:
+        'Enter a date associated with the article. The article slug will be generated from this date.',
+      type: 'date',
+    }),
+    defineField({
+      name: 'displayDate',
+      title: 'Display Date',
+      description:
+        'This field will override the default display dates used by the date selector below.',
+      group: 'content',
+      type: 'string',
+      hidden: hideForTypes([ArticleTypes['External News']]),
+    }),
+    defineField({
+      name: 'location',
+      title: 'Location',
+      group: 'content',
+      type: 'reference',
+      to: [{type: location.name, title: 'Location'}],
+      hidden: hideForTypes([ArticleTypes['External News']]),
+    }),
+    defineField({
       name: 'body',
       title: 'Article Body',
       group: 'content',
       type: 'array',
-      validation: (rule) =>
-        rule.custom((value, context) =>
-          (context.parent as any).type !== 'externalNews' && !value ? 'Required' : true,
-        ),
-      hidden: (context) => context.parent.type === 'externalNews',
+      validation: requireForTypes<ArrayRule<unknown>>(
+        [ArticleTypes['Guide/Internal News'], ArticleTypes['Selected Press']],
+        'artiblecobdy',
+      ),
+      hidden: hideForTypes([ArticleTypes['External News']]),
       of: [
         defineArrayMember({
           type: 'block',
@@ -253,38 +246,10 @@ export default defineType({
       ],
     }),
     defineField({
-      name: 'location',
-      title: 'Location',
-      group: 'content',
-      type: 'reference',
-      to: [{type: location.name, title: 'Location'}],
-      hidden: (context) => context.parent.type === 'externalNews',
-    }),
-    defineField({
-      name: 'pressReleasePDF',
-      title: 'Press Release PDF',
-      group: 'content',
-      type: 'file',
-      hidden: (context) => context.parent.type === 'externalNews',
-      options: {accept: 'application/pdf'},
-    }),
-    defineField(
-      Interstitial.builder(
-        {
-          name: 'interstitial',
-          group: 'content',
-          title: 'Interstitial',
-          hidden: (context: ConditionalPropertyCallbackContext) =>
-            context.parent.type === 'externalNews',
-        },
-        {excludeFields: ['subtitle']},
-      ),
-    ),
-    defineField({
       name: 'articles',
-      title: 'Linked Articles',
+      title: 'Related Articles',
       group: 'content',
-      hidden: (context) => context.parent.type === 'externalNews',
+      hidden: hideForTypes([ArticleTypes['External News']]),
       type: 'array',
       of: [
         defineArrayMember({
@@ -296,23 +261,83 @@ export default defineType({
         }),
       ],
     }),
+    defineField(
+      slugBuilder(
+        {
+          name: 'slug',
+          title: 'Slug',
+          group: 'content',
+          options: {
+            source: (object: any) => {
+              const defaultSlug = object?.title
+              if (!defaultSlug) throw new Error('Please add a title to create a unique slug.')
+              return defaultSlug.slice(0, 95)
+            },
+          },
+          validation: requireForTypes([
+            ArticleTypes['Guide/Internal News'],
+            ArticleTypes['Selected Press'],
+          ]),
+          hidden: hideForTypes([ArticleTypes['External News']]),
+        },
+        {
+          optional: true,
+          prefix: async (parent, client) => {
+            // if parent.type === 'pressRelease' then prefix is /artists/[artist]/press/[slug]
+            if (parent.type === ArticleTypes['Selected Press']) {
+              const postId = parent._id.startsWith('drafts.')
+                ? parent._id.split('.')[1]
+                : parent._id
+              const artistPageSlug = await client.fetch(
+                `coalesce(*[_type == "artistPage" && references("${postId}")]{"slug": slug.current})[0]`,
+              )
+              if (!artistPageSlug) {
+                throw new Error(`No artistPage document references the post with ID: ${parent._id}`)
+              } else {
+                const pressPrefix = `${artistPageSlug.slug}/press`
+                return pressPrefix
+              }
+            }
+
+            // if context.parent.type === 'internalNews' then prefix is /news/[year]/[slug]
+            if (parent.type === ArticleTypes['Guide/Internal News']) {
+              if (!parent?.publishDate) {
+                throw new Error('Please add a date to create a unique slug.')
+              }
+
+              const publishDate = new Date(parent.publishDate)
+              if (isNaN(publishDate.getTime())) {
+                throw new Error('Please add a valid date to create a unique slug.')
+              }
+
+              const year = publishDate.getFullYear()
+              const newsPrefix = `/news/${year}`
+              return newsPrefix
+            }
+
+            return '/'
+          },
+        },
+      ),
+    ),
+    defineField(
+      Interstitial.builder(
+        {
+          name: 'interstitial',
+          group: 'content',
+          title: 'Interstitial',
+          hidden: hideForTypes([ArticleTypes['External News']]),
+        },
+        {excludeFields: ['subtitle']},
+      ),
+    ),
     defineField({
-      name: 'externalURL',
-      title: 'External URL',
+      name: 'pdf',
+      title: 'PDF',
       group: 'content',
-      hidden: (context) => context.parent.type !== 'externalNews',
-      validation: (rule) =>
-        rule.custom((value, context) => {
-          if ((context.parent as any).type === 'externalNews') {
-            if (!value) return {message: 'Required'}
-
-            if (!value.startsWith('https://') && !value.startsWith('http://'))
-              return {message: 'URL protocol missing (http:// or https://)'}
-          }
-
-          return true
-        }),
-      type: 'url',
+      type: 'file',
+      hidden: hideForTypes([ArticleTypes['External News']]),
+      options: {accept: 'application/pdf'},
     }),
   ],
   preview: {
