@@ -247,7 +247,7 @@ export default defineType({
     ),
 
     defineField({
-      name: 'guideInterstitial',
+      name: 'guideInterstitialSubpage',
       title: 'Guide Interstitial',
       group: 'guide',
       type: interstitial.name,
@@ -272,7 +272,7 @@ export default defineType({
     ),
 
     defineField({
-      name: 'pressInterstitial',
+      name: 'pressInterstitialSubpage',
       title: 'Press Interstitial',
       group: 'press',
       type: interstitial.name,
