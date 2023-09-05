@@ -30,9 +30,7 @@ export default defineType({
     {name: 'available_works', title: 'Available Works', icon: DocumentsIcon},
     {name: 'exhibitions_interstitial', title: 'Exhibitions Interstitial', icon: DocumentsIcon},
     {name: 'guide', title: 'Guide', icon: DocumentsIcon},
-    {name: 'guide_interstitial', title: 'Guide Interstitial', icon: DocumentsIcon},
     {name: 'press', title: 'Press', icon: DocumentsIcon},
-    {name: 'press_interstitial', title: 'Press Interstitial', icon: DocumentsIcon},
     {name: 'seo', title: 'SEO', icon: SearchIcon},
   ],
   type: 'document',
@@ -249,26 +247,19 @@ export default defineType({
     ),
 
     defineField({
+      name: 'guideInterstitial',
+      title: 'Guide Interstitial',
+      group: 'guide',
+      type: interstitial.name,
+    }),
+    
+    defineField({
       name: 'guide_seo',
       title: 'Guide Seo',
       group: 'guide',
       type: 'seo',
     }),
-
-    defineField({
-      name: 'guideInterstitialSubpage',
-      title: 'Guide Interstitial',
-      group: 'guide_interstitial',
-      type: interstitial.name,
-    }),
-
-    defineField({
-      name: 'guide_interstitial_seo',
-      title: 'Guide Interstitial Subpage Seo',
-      group: 'guide_interstitial',
-      type: 'seo',
-    }),
-
+    
     defineField(
       gridModuleBuilder(
         {
@@ -281,23 +272,16 @@ export default defineType({
     ),
 
     defineField({
-      name: 'press_seo',
-      title: 'Press Subpage Seo',
-      group: 'press',
-      type: 'seo',
-    }),
-
-    defineField({
-      name: 'pressInterstitialSubpage',
+      name: 'pressInterstitial',
       title: 'Press Interstitial',
-      group: 'press_interstitial',
+      group: 'press',
       type: interstitial.name,
     }),
 
     defineField({
-      name: 'press_interstitial_seo',
-      title: 'Press Interstitial Subpage Seo',
-      group: 'press_interstitial',
+      name: 'press_seo',
+      title: 'Press Subpage Seo',
+      group: 'press',
       type: 'seo',
     }),
   ],
