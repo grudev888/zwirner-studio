@@ -103,7 +103,7 @@ export default defineType({
               return defaultSlug
             },
           },
-          validation: (rule: SlugRule) =>
+          validation: (rule: SlugRule) => [
             rule.custom(async (value, context: any) => {
               const slug = value?.current || ''
               if (slug.length > SLUG_MAX_LENGTH) return 'Slug is too long'
@@ -113,15 +113,29 @@ export default defineType({
                 `*[_type == "artist" && _id == $artistId][0].fullName`,
                 {artistId},
               )
-              const normalizedTitle = slugify(context.parent.title)
               const normalizedFullName = slugify(artistFullName)
-              const expectedSlugBody = `${normalizedFullName}-${normalizedTitle}`.slice(
-                0,
-                SLUG_BODY_LENGTH,
-              )
-              const isSlugValid = slug.includes(expectedSlugBody)
-              return isSlugValid || 'Should be required format'
+              const isSlugValid = slug.includes(normalizedFullName)
+              return isSlugValid || 'Author name should be displayed correctly'
             }),
+            rule
+              .custom(async (value, context: any) => {
+                const slug = value?.current || ''
+                if (slug.length > SLUG_MAX_LENGTH) return 'Slug is too long'
+                const artistId = context.parent.artists[0]?._ref
+                const client = context.getClient({apiVersion})
+                const artistFullName = await client.fetch(
+                  `*[_type == "artist" && _id == $artistId][0].fullName`,
+                  {artistId},
+                )
+                const normalizedTitle = slugify(context.parent.title)
+                const normalizedFullName = slugify(artistFullName)
+                const MAX_TITLE_LENGTH = SLUG_BODY_LENGTH - normalizedFullName.length - 1 // 1 for the dash
+                const expectedTitle = normalizedTitle.slice(0, MAX_TITLE_LENGTH)
+                const isSlugValid = slug.includes(expectedTitle)
+                return isSlugValid || 'It is recommended to display the title of the artwork.'
+              })
+              .warning(),
+          ],
         },
         {
           prefix: ARTWORKS_PREFIX,

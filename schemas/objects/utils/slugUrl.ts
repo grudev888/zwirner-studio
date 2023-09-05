@@ -112,7 +112,7 @@ export const builder = (
         const SLUG_BODY_LENGTH = SLUG_MAX_LENGTH - suffix.length - prefix.length
 
         const normalized = slugify(input).slice(0, SLUG_BODY_LENGTH)
-        return `/${prefix}/${normalized}${suffix}`.replace(/\/+/g, '/')
+        return `/${prefix}/${normalized}${suffix}`.replace(/\/+/g, '/').toLowerCase()
       },
     },
   }
