@@ -115,7 +115,7 @@ export default defineType({
               )
               const normalizedFullName = slugify(artistFullName)
               const isSlugValid = slug.includes(normalizedFullName)
-              return isSlugValid || 'Should be required format'
+              return isSlugValid || 'Author name should be displayed correctly'
             }),
             rule
               .custom(async (value, context: any) => {
@@ -129,12 +129,10 @@ export default defineType({
                 )
                 const normalizedTitle = slugify(context.parent.title)
                 const normalizedFullName = slugify(artistFullName)
-                const expectedSlugBody = `${normalizedFullName}-${normalizedTitle}`.slice(
-                  0,
-                  SLUG_BODY_LENGTH,
-                )
-                const isSlugValid = slug.includes(expectedSlugBody)
-                return isSlugValid || 'Should display the artist name and artwork title'
+                const MAX_TITLE_LENGTH = SLUG_BODY_LENGTH - normalizedFullName.length - 1 // 1 for the dash
+                const expectedTitle = normalizedTitle.slice(0, MAX_TITLE_LENGTH)
+                const isSlugValid = slug.includes(expectedTitle)
+                return isSlugValid || 'It is recommended to display the title of the artwork.'
               })
               .warning(),
           ],
