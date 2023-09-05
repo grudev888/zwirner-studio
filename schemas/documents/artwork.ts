@@ -103,7 +103,7 @@ export default defineType({
               return defaultSlug
             },
           },
-          validation: (rule: SlugRule) =>
+          validation: (rule: SlugRule) => [
             rule.custom(async (value, context: any) => {
               const slug = value?.current || ''
               if (slug.length > SLUG_MAX_LENGTH) return 'Slug is too long'
@@ -113,15 +113,31 @@ export default defineType({
                 `*[_type == "artist" && _id == $artistId][0].fullName`,
                 {artistId},
               )
-              const normalizedTitle = slugify(context.parent.title)
               const normalizedFullName = slugify(artistFullName)
-              const expectedSlugBody = `${normalizedFullName}-${normalizedTitle}`.slice(
-                0,
-                SLUG_BODY_LENGTH,
-              )
-              const isSlugValid = slug.includes(expectedSlugBody)
+              const isSlugValid = slug.includes(normalizedFullName)
               return isSlugValid || 'Should be required format'
             }),
+            rule
+              .custom(async (value, context: any) => {
+                const slug = value?.current || ''
+                if (slug.length > SLUG_MAX_LENGTH) return 'Slug is too long'
+                const artistId = context.parent.artists[0]?._ref
+                const client = context.getClient({apiVersion})
+                const artistFullName = await client.fetch(
+                  `*[_type == "artist" && _id == $artistId][0].fullName`,
+                  {artistId},
+                )
+                const normalizedTitle = slugify(context.parent.title)
+                const normalizedFullName = slugify(artistFullName)
+                const expectedSlugBody = `${normalizedFullName}-${normalizedTitle}`.slice(
+                  0,
+                  SLUG_BODY_LENGTH,
+                )
+                const isSlugValid = slug.includes(expectedSlugBody)
+                return isSlugValid || 'Should display the artist name and artwork title'
+              })
+              .warning(),
+          ],
         },
         {
           prefix: ARTWORKS_PREFIX,
