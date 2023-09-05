@@ -28,7 +28,7 @@ export default defineType({
     {name: 'content', title: 'Artist Page', icon: UserIcon, default: true},
     {name: 'survey', title: 'Survey', icon: DocumentsIcon},
     {name: 'available_works', title: 'Available Works', icon: DocumentsIcon},
-    {name: 'exhibitions_interstitial', title: 'Exhibitions Interstitial', icon: DocumentsIcon},
+    {name: 'exhibitions_interstitial', title: 'Exhibitions', icon: DocumentsIcon},
     {name: 'guide', title: 'Guide', icon: DocumentsIcon},
     {name: 'press', title: 'Press', icon: DocumentsIcon},
     {name: 'seo', title: 'SEO', icon: SearchIcon},
@@ -230,7 +230,7 @@ export default defineType({
 
     defineField({
       name: 'exhibitions_interstitial_seo',
-      title: 'Exhibitions Interstitial Subpage Seo',
+      title: 'Exhibitions Subpage Seo',
       group: 'exhibitions_interstitial',
       type: 'seo',
     }),
