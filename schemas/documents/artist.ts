@@ -13,7 +13,6 @@ export default defineType({
       name: 'firstName',
       title: 'First Name',
       type: 'string',
-      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'lastName',
@@ -59,7 +58,6 @@ export default defineType({
           title: 'Alternative text',
         },
       ],
-      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'birthdate',
@@ -76,7 +74,7 @@ export default defineType({
       type: 'url',
       title: 'Artist url',
       validation: (Rule) =>
-        Rule.required().uri({
+        Rule.uri({
           allowRelative: true,
           relativeOnly: false,
           scheme: ['https', 'http', 'mailto'],
@@ -118,7 +116,6 @@ export default defineType({
           title: 'Alternative text',
         },
       ],
-      validation: (rule) => rule.required(),
     }),
     defineField({
       title: 'Social media',
