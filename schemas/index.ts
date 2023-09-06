@@ -6,7 +6,6 @@ import artwork from './documents/artwork'
 import authorType from './documents/author'
 import bookType from './documents/book'
 import podcast from './documents/podcast'
-import collection from './documents/collection'
 import globalSEO from './documents/globalSEO'
 import locationType from './documents/location'
 import pageType from './documents/page'
@@ -68,6 +67,26 @@ import splitModule from './objects/page/components/modules/splitModule'
 import carouselModule from './objects/page/components/modules/carouselModule'
 import gridModule from './objects/page/components/modules/gridModule'
 
+// Shopify documents and objects used to create the Shopify integration
+// document types
+import collection from './documents/collection'
+import product from './documents/product'
+import productVariant from './documents/productVariant'
+import proxyString from './objects/proxyString'
+// objects
+import accordion from './objects/accordion'
+import accordionGroup from './objects/accordionGroup'
+import callout from './objects/callout'
+import inventory from './objects/inventory'
+import option from './objects/option'
+import priceRange from './objects/priceRange'
+import shopifyCollection from './objects/shopifyCollection'
+import shopifyCollectionRule from './objects/shopifyCollectionRule'
+import shopifyProduct from './objects/shopifyProduct'
+import shopifyProductVariant from './objects/shopifyProductVariant'
+// block content
+import blockContent from './blocks/blockContent'
+
 export const utilsObjects: SchemaTypeDefinition[] = [
   textComplex,
   cta,
@@ -110,6 +129,10 @@ export const objects: ObjectDefinition[] = [
   menuItemPage,
 ]
 
+const shopifyDocuments: DocumentDefinition[] = [collection, product, productVariant]
+// Sanity bug: proxyString wants to have a fields property, but defineType of type string does not allow it.
+const shopifyObjects: ObjectDefinition[] = [accordion, accordionGroup, callout, inventory, option, priceRange, proxyString, shopifyCollection, shopifyCollectionRule, shopifyProduct, shopifyProductVariant]
+
 export const pageDocuments: DocumentDefinition[] = [artistPage, exhibitionPage, fairPage]
 
 export const singletons: DocumentDefinition[] = [
@@ -136,7 +159,6 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     podcast,
     locationType,
     artwork,
-    collection,
     strings,
     artist,
     authorType,
@@ -145,6 +167,7 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     pageContent,
     pageContentList,
     pageBuilderComponents,
+    blockContent,
     ...pageDocuments,
     ...objects,
     ...pageComponents,
@@ -152,5 +175,7 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     ...primitiveComponents,
     ...singletons,
     ...utilsObjects,
+    ...shopifyDocuments,
+    ...shopifyObjects,
   ],
 }

@@ -12,7 +12,7 @@ import {
   TrendUpwardIcon,
   UsersIcon,
   ImagesIcon,
-  StackCompactIcon,
+  InfoOutlineIcon,
   ActivityIcon,
 } from '@sanity/icons'
 import {StructureBuilder} from 'sanity/desk'
@@ -56,6 +56,38 @@ export const generalStructure = (S: StructureBuilder) =>
                 .title('Footer Links')
                 .icon(BlockElementIcon)
                 .child(S.document().schemaType('footer').documentId('footer')),
+              S.divider(),
+              S.listItem()
+                .title('Products')
+                .schemaType('product')
+                .child(
+                  S.documentTypeList('product').child((id) =>
+                    S.list()
+                      .title('Product')
+                      .items([
+                        // Details
+                        S.listItem()
+                          .title('Details')
+                          .icon(InfoOutlineIcon)
+                          .child(S.document().schemaType('product').documentId(id)),
+                        // Product variants
+                        S.listItem()
+                          .title('Variants')
+                          .schemaType('productVariant')
+                          .child(
+                            S.documentList()
+                              .title('Variants')
+                              .schemaType('productVariant')
+                              .filter(`_type == "productVariant" && store.productId == $productId`)
+                              .params({
+                                productId: Number(id.replace('shopifyProduct-', '')),
+                              })
+                          ),
+                      ])
+                  )
+                ),
+              S.listItem().title('Collections').schemaType('collection').child(S.documentTypeList('collection')),
+                
             ])
         ),
       S.divider(),
@@ -338,20 +370,6 @@ export const generalStructure = (S: StructureBuilder) =>
             .child(
               S.document()
                 .schemaType('book')
-                .views([S.view.form(), S.view.component(ReferenceByTab).title('References')])
-            )
-        ),
-      S.listItem()
-        .title('Collections')
-        .icon(StackCompactIcon)
-        .child(
-          S.documentList()
-            .title('Collections')
-            .filter('_type == "collection"')
-            .defaultOrdering([{field: 'title', direction: 'asc'}])
-            .child(
-              S.document()
-                .schemaType('collection')
                 .views([S.view.form(), S.view.component(ReferenceByTab).title('References')])
             )
         ),

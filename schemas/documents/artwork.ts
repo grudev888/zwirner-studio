@@ -6,6 +6,9 @@ import {ThLargeIcon, ComposeIcon, SearchIcon, ImageIcon, DocumentVideoIcon} from
 import artist from './artist'
 import blockContentSimple from '../../schemas/objects/utils/blockContentSimple'
 import dateSelectionYear from '../objects/utils/dateSelectionYear'
+
+import ShopifyIcon from '../../components/icons/Shopify'
+
 import {apiVersion} from '../../env'
 import {slugify} from '../../lib/util/strings'
 
@@ -13,6 +16,7 @@ const ARTWORKS_PREFIX = '/artworks/'
 const HASH_LENGTH = 5
 const ARTWORK_SUFFIX_LENGTH = HASH_LENGTH + 1 // 1 for the dash
 const SLUG_BODY_LENGTH = SLUG_MAX_LENGTH - ARTWORKS_PREFIX.length - ARTWORK_SUFFIX_LENGTH
+
 
 // Check If we will need prefilled fields
 export default defineType({
@@ -22,6 +26,7 @@ export default defineType({
   groups: [
     {name: 'content', title: 'Content', icon: ComposeIcon, default: true},
     {name: 'seo', title: 'SEO', icon: SearchIcon},
+    {name: 'shopify', title: 'Shopify', icon: ShopifyIcon},
   ],
   icon: ThLargeIcon,
   fields: [
@@ -30,6 +35,17 @@ export default defineType({
       title: 'SEO',
       type: 'seo',
       group: 'seo',
+    }),
+    defineField({
+      name: 'shopify',
+      title: 'Shopify',
+      type: 'reference',
+      to: [{type: 'product'}],
+      options: {
+        disableNew: true,
+        filter: '', // need to filter out any products that have count(*[references(^._id)]) > 0
+      },
+      group: 'shopify',
     }),
     defineField({
       name: 'title',

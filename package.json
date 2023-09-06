@@ -19,9 +19,12 @@
   ],
   "dependencies": {
     "@headlessui/react": "^1.7.14",
+    "@portabletext/toolkit": "^2.0.4",
     "@sanity/demo": "^1.0.2",
     "@sanity/vision": "^3.14.3",
     "groq": "^3.14.3",
+    "lodash": "^4.17.21",
+    "lodash.get": "^4.4.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-is": "^18.2.0",
@@ -33,6 +36,8 @@
   "devDependencies": {
     "@rollup/plugin-alias": "^5.0.0",
     "@sanity/eslint-config-studio": "^2.0.1",
+    "@types/lodash": "^4.14.198",
+    "@types/lodash.get": "^4.4.7",
     "autoprefixer": "^10.4.14",
     "eslint": "^8.45.0",
     "postcss": "^8.4.23",
