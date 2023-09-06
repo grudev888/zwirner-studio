@@ -197,7 +197,7 @@ export default defineType({
     ),
 
     defineField({
-      name: 'survey_seo',
+      name: 'surveySeo',
       title: 'Survey Subpage Seo',
       group: 'survey',
       type: 'seo',
@@ -215,7 +215,7 @@ export default defineType({
     ),
 
     defineField({
-      name: 'available_works_seo',
+      name: 'availableWorksSeo',
       title: 'Available Works Subpage Seo',
       group: 'available_works',
       type: 'seo',
@@ -229,7 +229,7 @@ export default defineType({
     }),
 
     defineField({
-      name: 'exhibitions_interstitial_seo',
+      name: 'exhibitionsInterstitialSeo',
       title: 'Exhibitions Subpage Seo',
       group: 'exhibitions_interstitial',
       type: 'seo',
@@ -254,7 +254,7 @@ export default defineType({
     }),
     
     defineField({
-      name: 'guide_seo',
+      name: 'guideSeo',
       title: 'Guide Seo',
       group: 'guide',
       type: 'seo',
@@ -279,7 +279,7 @@ export default defineType({
     }),
 
     defineField({
-      name: 'press_seo',
+      name: 'pressSeo',
       title: 'Press Subpage Seo',
       group: 'press',
       type: 'seo',
