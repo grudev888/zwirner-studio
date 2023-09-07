@@ -6,6 +6,7 @@ import artwork from './documents/artwork'
 import authorType from './documents/author'
 import bookType from './documents/book'
 import podcast from './documents/podcast'
+import video from './documents/video'
 import globalSEO from './documents/globalSEO'
 import locationType from './documents/location'
 import pageType from './documents/page'
@@ -157,6 +158,7 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     pageType,
     bookType,
     podcast,
+    video,
     locationType,
     artwork,
     strings,

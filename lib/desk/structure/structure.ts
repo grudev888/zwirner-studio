@@ -14,6 +14,7 @@ import {
   ImagesIcon,
   InfoOutlineIcon,
   ActivityIcon,
+  PlayIcon,
 } from '@sanity/icons'
 import {StructureBuilder} from 'sanity/desk'
 
@@ -394,6 +395,14 @@ export const generalStructure = (S: StructureBuilder) =>
         .child(
           S.documentTypeList('podcast')
             .title('Podcasts')
+            .defaultOrdering([{field: 'dateSelection', direction: 'asc'}])
+        ),
+        S.listItem()
+        .title('Videos')
+        .icon(PlayIcon)
+        .child(
+          S.documentTypeList('video')
+            .title('Videos')
             .defaultOrdering([{field: 'dateSelection', direction: 'asc'}])
         ),
     ])
