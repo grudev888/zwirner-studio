@@ -26,7 +26,11 @@ export default defineType({
   title: 'Artist Page',
   groups: [
     {name: 'content', title: 'Artist Page', icon: UserIcon, default: true},
-    {name: 'subpages', title: 'Sub-Pages', icon: DocumentsIcon},
+    {name: 'survey', title: 'Survey', icon: DocumentsIcon},
+    {name: 'availableWorks', title: 'Available Works', icon: DocumentsIcon},
+    {name: 'exhibitions', title: 'Exhibitions', icon: DocumentsIcon},
+    {name: 'guide', title: 'Guide', icon: DocumentsIcon},
+    {name: 'press', title: 'Press', icon: DocumentsIcon},
     {name: 'seo', title: 'SEO', icon: SearchIcon},
   ],
   type: 'document',
@@ -186,28 +190,49 @@ export default defineType({
         {
           name: 'surveySubpage',
           title: 'Survey',
-          group: 'subpages',
-        },
-        {reference: [artwork, media]}
-      )
-    ),
-
-    defineField(
-      gridModuleBuilder(
-        {
-          name: 'availableWorksSubpage',
-          title: 'Available Works',
-          group: 'subpages',
+          group: 'survey',
         },
         {reference: [artwork, media]}
       )
     ),
 
     defineField({
+      name: 'surveySeo',
+      title: 'Survey Subpage Seo',
+      group: 'survey',
+      type: 'seo',
+    }),
+
+    defineField(
+      gridModuleBuilder(
+        {
+          name: 'availableWorksSubpage',
+          title: 'Available Works',
+          group: 'availableWorks',
+        },
+        {reference: [artwork, media]}
+      )
+    ),
+
+    defineField({
+      name: 'availableWorksSeo',
+      title: 'Available Works Subpage Seo',
+      group: 'availableWorks',
+      type: 'seo',
+    }),
+
+    defineField({
       name: 'exhibitionsInterstitialSubpage',
-      title: 'Exhibitions Interstitial',
-      group: 'subpages',
+      title: 'Exhibitions',
+      group: 'exhibitions',
       type: interstitial.name,
+    }),
+
+    defineField({
+      name: 'exhibitionsInterstitialSeo',
+      title: 'Exhibitions Subpage Seo',
+      group: 'exhibitions',
+      type: 'seo',
     }),
 
     defineField(
@@ -215,7 +240,7 @@ export default defineType({
         {
           name: 'guideSubpage',
           title: 'Guide',
-          group: 'subpages',
+          group: 'guide',
         },
         {reference: [exhibitionPage, fairPage, article]}
       )
@@ -224,16 +249,23 @@ export default defineType({
     defineField({
       name: 'guideInterstitialSubpage',
       title: 'Guide Interstitial',
-      group: 'subpages',
+      group: 'guide',
       type: interstitial.name,
     }),
-
+    
+    defineField({
+      name: 'guideSeo',
+      title: 'Guide Seo',
+      group: 'guide',
+      type: 'seo',
+    }),
+    
     defineField(
       gridModuleBuilder(
         {
           name: 'pressSubpage',
           title: 'Press',
-          group: 'subpages',
+          group: 'press',
         },
         {reference: article}
       )
@@ -242,8 +274,15 @@ export default defineType({
     defineField({
       name: 'pressInterstitialSubpage',
       title: 'Press Interstitial',
-      group: 'subpages',
+      group: 'press',
       type: interstitial.name,
+    }),
+
+    defineField({
+      name: 'pressSeo',
+      title: 'Press Subpage Seo',
+      group: 'press',
+      type: 'seo',
     }),
   ],
   preview: {
