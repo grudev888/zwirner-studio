@@ -28,7 +28,7 @@ export default defineType({
     {name: 'content', title: 'Artist Page', icon: UserIcon, default: true},
     {name: 'survey', title: 'Survey', icon: DocumentsIcon},
     {name: 'available_works', title: 'Available Works', icon: DocumentsIcon},
-    {name: 'exhibitions_interstitial', title: 'Exhibitions', icon: DocumentsIcon},
+    {name: 'exhibitions', title: 'Exhibitions', icon: DocumentsIcon},
     {name: 'guide', title: 'Guide', icon: DocumentsIcon},
     {name: 'press', title: 'Press', icon: DocumentsIcon},
     {name: 'seo', title: 'SEO', icon: SearchIcon},
@@ -223,15 +223,15 @@ export default defineType({
 
     defineField({
       name: 'exhibitionsInterstitialSubpage',
-      title: 'Exhibitions Interstitial',
-      group: 'exhibitions_interstitial',
+      title: 'Exhibitions',
+      group: 'exhibitions',
       type: interstitial.name,
     }),
 
     defineField({
       name: 'exhibitionsInterstitialSeo',
       title: 'Exhibitions Subpage Seo',
-      group: 'exhibitions_interstitial',
+      group: 'exhibitions',
       type: 'seo',
     }),
 
