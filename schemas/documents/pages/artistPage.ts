@@ -27,7 +27,7 @@ export default defineType({
   groups: [
     {name: 'content', title: 'Artist Page', icon: UserIcon, default: true},
     {name: 'survey', title: 'Survey', icon: DocumentsIcon},
-    {name: 'available_works', title: 'Available Works', icon: DocumentsIcon},
+    {name: 'availableWorks', title: 'Available Works', icon: DocumentsIcon},
     {name: 'exhibitions', title: 'Exhibitions', icon: DocumentsIcon},
     {name: 'guide', title: 'Guide', icon: DocumentsIcon},
     {name: 'press', title: 'Press', icon: DocumentsIcon},
@@ -208,7 +208,7 @@ export default defineType({
         {
           name: 'availableWorksSubpage',
           title: 'Available Works',
-          group: 'available_works',
+          group: 'availableWorks',
         },
         {reference: [artwork, media]}
       )
@@ -217,7 +217,7 @@ export default defineType({
     defineField({
       name: 'availableWorksSeo',
       title: 'Available Works Subpage Seo',
-      group: 'available_works',
+      group: 'availableWorks',
       type: 'seo',
     }),
 
