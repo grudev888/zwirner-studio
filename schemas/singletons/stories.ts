@@ -8,7 +8,7 @@ import podcast from '../documents/podcast'
 import interstitial from '../objects/page/components/primitives/interstitial'
 import * as Media from '../objects/utils/media'
 import {builder as carouselModuleBuilder} from '../objects/page/components/modules/carouselModule'
-import blockContentSimple from '../../schemas/objects/utils/blockContentSimple'
+import blockContentSimpleWithLinks from '../objects/utils/blockContentSimpleWithLinks'
 
 export default defineType({
   name: 'stories',
@@ -75,7 +75,7 @@ export default defineType({
           Media.builder({
             name: 'featuredMedia',
             title: 'Featured Media',
-          })
+          }),
         ),
         defineField({
           type: 'string',
@@ -94,7 +94,7 @@ export default defineType({
           title: 'Text',
           type: 'array',
           validation: (rule) => rule.required(),
-          of: blockContentSimple,
+          of: blockContentSimpleWithLinks,
         }),
         defineField({
           name: 'primaryCTA',
@@ -127,8 +127,8 @@ export default defineType({
               title: 'Carousel Module',
               description: 'Featured Books | Carousel',
             },
-            {reference: bookType}
-          )
+            {reference: bookType},
+          ),
         ),
         defineArrayMember({
           name: 'splitBook',

@@ -1,10 +1,11 @@
-import {SlugRule, defineArrayMember, defineField, defineType} from 'sanity'
+import {NumberRule, SlugRule, defineArrayMember, defineField, defineType} from 'sanity'
 
 import * as Media from '../objects/utils/media'
 import {SLUG_MAX_LENGTH, builder as slugBuilder} from '../objects/utils/slugUrl'
 import {ThLargeIcon, ComposeIcon, SearchIcon, ImageIcon, DocumentVideoIcon} from '@sanity/icons'
 import artist from './artist'
 import blockContentSimple from '../../schemas/objects/utils/blockContentSimple'
+import blockContentSimpleWithLinks from '../objects/utils/blockContentSimpleWithLinks'
 import dateSelectionYear from '../objects/utils/dateSelectionYear'
 
 import ShopifyIcon from '../../components/icons/Shopify'
@@ -426,7 +427,7 @@ export default defineType({
       title: 'Price',
       group: 'content',
       type: 'number',
-      validation: (rule) => rule.positive().greaterThan(0),
+      validation: (rule: NumberRule) => rule.positive().greaterThan(0),
       readOnly: ({currentUser}) => {
         return !currentUser?.roles.find(({name}) => name !== 'administrator')
       },
@@ -471,14 +472,14 @@ export default defineType({
       title: 'Sales Information',
       group: 'content',
       type: 'array',
-      of: blockContentSimple,
+      of: blockContentSimpleWithLinks,
     }),
     defineField({
       name: 'productInformation',
       title: 'Product Information',
       group: 'content',
       type: 'array',
-      of: blockContentSimple,
+      of: blockContentSimpleWithLinks,
     }),
     defineField({
       name: 'description',

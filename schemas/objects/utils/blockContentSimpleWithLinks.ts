@@ -1,3 +1,6 @@
+import externalLink from './linkExternal'
+import internalLink from './linkInternal'
+
 export default [
   {
     type: 'block',
@@ -9,7 +12,7 @@ export default [
         {title: 'Emphasis', value: 'em'},
         {title: 'Underline', value: 'underline'},
       ],
-      annotations: [],
+      annotations: [externalLink, internalLink],
     },
   },
 ]

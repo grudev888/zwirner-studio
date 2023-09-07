@@ -19,6 +19,7 @@ import {builder as slugBuilder} from '../objects/utils/slugUrl'
 import * as Media from '../objects/utils/media'
 import {GreyFootNote, GreyFootNoteDecorator} from '../../components/block/GreyFootnote'
 import {ConditionalProperty} from 'sanity'
+import blockContentSimple from '../objects/utils/blockContentSimple'
 
 export interface ArticleSchema {
   title?: string
@@ -73,7 +74,7 @@ export default defineType({
       name: 'type',
       group: 'content',
       title: 'Article Type',
-      validation: (rule) => rule.required(),
+      validation: (rule: StringRule) => rule.required(),
       options: {
         list: Object.entries(ArticleTypes).map(([title, value]) => ({title, value})),
       },
@@ -130,12 +131,13 @@ export default defineType({
       group: 'content',
     }),
     defineField({
-      type: 'text',
+      type: 'array',
       name: 'description',
       title: 'Description',
       description: 'Displays text between title and body.',
       group: 'content',
       hidden: hideForTypes([ArticleTypes['Selected Press']]),
+      of: blockContentSimple,
     }),
     defineField(
       Media.builder(
