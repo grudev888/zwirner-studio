@@ -38,7 +38,7 @@ export default defineField({
       name: 'action',
       type: 'string',
       title: 'CTA Type',
-      options: {list: ['Newsletter', 'Link', 'Download PDF', 'Link Content']},
+      options: {list: ['Inquire', 'Newsletter', 'Link', 'Download PDF', 'Link Content']},
     }),
     defineField({
       name: 'file',
