@@ -12,6 +12,7 @@ import {builder as carouselBuilder} from '../objects/page/components/modules/car
 import artwork from '../documents/artwork'
 
 const allowedDocs = [page, exhibitionPage, fairPage, artistPage, article, artwork]
+const allowedFeaturedItems = [exhibitionPage, article]
 
 export default defineType({
   name: 'home',
@@ -47,7 +48,7 @@ export default defineType({
       name: 'featured',
       title: 'Featured Item',
       type: 'reference',
-      to: allowedDocs.map(({name}) => ({type: name as string})),
+      to: allowedFeaturedItems.map(({name}) => ({type: name as string})),
       group: 'content',
     }),
     defineField(
@@ -57,8 +58,8 @@ export default defineType({
           title: 'Body Carousel 1',
           group: 'content',
         },
-        {reference: [exhibitionPage, article], excludedFields: ['title']}
-      )
+        {reference: [exhibitionPage, article], excludedFields: ['title']},
+      ),
     ),
     defineField(
       carouselBuilder(
@@ -67,8 +68,8 @@ export default defineType({
           title: 'Body Carousel 2',
           group: 'content',
         },
-        {reference: [exhibitionPage, article], excludedFields: ['title']}
-      )
+        {reference: [exhibitionPage, article], excludedFields: ['title']},
+      ),
     ),
     defineField({
       name: 'articles',
