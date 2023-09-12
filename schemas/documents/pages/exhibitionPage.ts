@@ -41,19 +41,19 @@ export default defineType({
     }),
     defineField({
       name: 'title',
-      title: 'Exhibition Title',
+      title: 'Primary Title',
       type: 'string',
       description:
-        'This is the title of the exhibition. It will be combined with the subtitle to display the entire title: [Artist Title] : [Exhibition Title]. On cards, it is displayed second in the title.',
+        'It will be combined with Primary Subtitle to display the full title: [Primary Title]: [Primary Subtitle]. If no subtitle is added then only Primary Title should be displayed. On cards, it is displayed as Primary Title.',
       group: 'content',
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'subtitle',
-      title: 'Subtitle',
+      title: 'Primary Subtitle',
       type: 'string',
       description:
-        'This is typically the artists in the exhibition. It will be combined with the title to display the entire title: [Artist Title] : [Exhibition Title]. On cards, it is displayed first in the title.',
+        'It will be combined with Primary Title to display the full title: [Primary Title]: [Primary Subtitle]. On cards, it is displayed as Primary Subtitle.',
       group: 'content',
     }),
     defineField(
@@ -79,8 +79,8 @@ export default defineType({
             const year = dateFormatter.format(new Date(parent.startDate))
             return `/exhibitions/${year}`
           },
-        }
-      )
+        },
+      ),
     ),
     defineField({
       name: 'summary',
@@ -182,8 +182,8 @@ export default defineType({
           description: 'Media module',
           validation: (rule: ObjectRule) => rule.required(),
         },
-        {video: {providers: [Media.VideoProviders.custom]}}
-      )
+        {video: {providers: [Media.VideoProviders.custom]}},
+      ),
     ),
     defineField(
       Interstitial.builder({
@@ -191,7 +191,7 @@ export default defineType({
         group: 'content',
         title: 'Interstitial',
         options: {collapsible: true, collapsed: true},
-      })
+      }),
     ),
 
     // EXPLORE CONTENT
@@ -229,8 +229,8 @@ export default defineType({
             },
             {
               type: Media.MediaTypes.IMAGE,
-            }
-          )
+            },
+          ),
         ),
         defineArrayMember(
           Media.builder(
@@ -241,8 +241,8 @@ export default defineType({
             },
             {
               type: Media.MediaTypes.VIDEO,
-            }
-          )
+            },
+          ),
         ),
       ],
     }),
@@ -252,7 +252,7 @@ export default defineType({
         group: 'installationViews',
         title: 'Installation Views Interstitial',
         options: {collapsible: true, collapsed: true},
-      })
+      }),
     ),
     defineField({
       name: 'installationViewsSeo',
@@ -290,7 +290,7 @@ export default defineType({
         group: 'checklist',
         title: 'Checklist Interstitial',
         options: {collapsible: true, collapsed: true},
-      })
+      }),
     ),
     defineField({
       name: 'checklistSeo',
@@ -341,8 +341,8 @@ export default defineType({
             },
             {
               type: Media.MediaTypes.IMAGE,
-            }
-          )
+            },
+          ),
         ),
       ],
     }),
@@ -352,7 +352,7 @@ export default defineType({
         group: 'pressRelease',
         title: 'Press Release Interstitial',
         options: {collapsible: true, collapsed: true},
-      })
+      }),
     ),
     defineField({
       name: 'pressReleaseSEO',
