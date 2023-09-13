@@ -13,7 +13,6 @@ import {DocumentTextIcon, ComposeIcon, SearchIcon, ImageIcon} from '@sanity/icon
 
 import location from './location'
 import * as Interstitial from '../objects/page/components/primitives/interstitial'
-import fairPage from './pages/fairPage'
 import exhibitionPage from './pages/exhibitionPage'
 import {builder as slugBuilder} from '../objects/utils/slugUrl'
 import * as Media from '../objects/utils/media'
@@ -259,7 +258,7 @@ export default defineType({
           title: 'Linked Articles',
           description: 'Articles, exhibitions, fairs',
           type: 'reference',
-          to: [{type: 'article'}, {type: exhibitionPage.name}, {type: fairPage.name}],
+          to: [{type: 'article'}, {type: exhibitionPage.name}],
         }),
       ],
     }),

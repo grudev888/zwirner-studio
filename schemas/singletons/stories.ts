@@ -3,7 +3,6 @@ import {defineField, defineArrayMember, defineType, StringRule, ArrayRule} from 
 import articleType from '../documents/article'
 import bookType from '../documents/book'
 import exhibitionPage from '../documents/pages/exhibitionPage'
-import fairPage from '../documents/pages/fairPage'
 import podcast from '../documents/podcast'
 import interstitial from '../objects/page/components/primitives/interstitial'
 import * as Media from '../objects/utils/media'
@@ -51,7 +50,7 @@ export default defineType({
             defineArrayMember({
               type: 'reference',
               title: 'Exhibitions',
-              to: [{type: exhibitionPage.name}, {type: fairPage.name}],
+              to: [{type: exhibitionPage.name}],
             }),
           ],
           validation: (rule: ArrayRule<any>) => rule.required().length(1),
@@ -152,7 +151,7 @@ export default defineType({
           title: 'Linked Articles',
           description: 'Articles, exhibitions, fairs',
           type: 'reference',
-          to: [{type: articleType.name}, {type: exhibitionPage.name}, {type: fairPage.name}],
+          to: [{type: articleType.name}, {type: exhibitionPage.name}],
         }),
       ],
     }),

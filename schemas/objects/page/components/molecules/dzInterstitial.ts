@@ -6,9 +6,6 @@ import {
   defineArrayMember,
   SchemaTypeDefinition,
 } from 'sanity'
-import artist from '../../../../documents/artist'
-import artwork from '../../../../documents/artwork'
-import exhibitionPage from '../../../../documents/pages/exhibitionPage'
 
 export interface DzInterstitialTypeProps {
   title: string
@@ -22,7 +19,7 @@ export const builder = (
     name: 'dzInterstitial',
     title: 'Interstitial',
   },
-  options: {references: SchemaTypeDefinition[]}
+  options: {references: SchemaTypeDefinition[]},
 ) => ({
   type: 'object',
   icon: MasterDetailIcon,
@@ -35,6 +32,12 @@ export const builder = (
       name: 'title',
       type: 'string',
       title: 'Component title',
+      group: 'content',
+    }),
+    defineField({
+      name: 'eyebrow',
+      type: 'string',
+      title: 'Eyebrow',
       group: 'content',
     }),
     defineField({
@@ -58,7 +61,7 @@ export const builder = (
           title: reference.title,
           type: 'reference',
           to: [{type: reference.name}],
-        })
+        }),
       ),
     }),
     defineField({
@@ -112,8 +115,5 @@ export const builder = (
 })
 
 export default defineType(
-  builder(
-    {name: 'dzInterstitial', title: 'Interstitial'},
-    {references: [artist, artwork, exhibitionPage]}
-  )
+  builder({name: 'dzInterstitial', title: 'Interstitial'}, {references: []}),
 ) as ObjectDefinition

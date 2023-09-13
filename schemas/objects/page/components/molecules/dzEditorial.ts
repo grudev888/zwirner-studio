@@ -1,4 +1,4 @@
-import {ComposeIcon, EditIcon, MasterDetailIcon} from '@sanity/icons'
+import {MasterDetailIcon} from '@sanity/icons'
 // Todo: import from the design system import {EditorialType} from '@zwirner/design-system'
 import {
   defineArrayMember,
@@ -7,8 +7,6 @@ import {
   ObjectDefinition,
   SchemaTypeDefinition,
 } from 'sanity'
-import book from '../../../../documents/book'
-import press from '../../../../documents/press'
 
 export const EDITORIAL_TYPES = {
   SIMPLE: 'simple',
@@ -24,14 +22,25 @@ export const EDITORIAL_TYPES_NAMES = [
 
 export type EditorialType = (typeof EDITORIAL_TYPES_NAMES)[number]
 
-import {TextComplexSchemaType} from '../../../../../schemas/objects/utils/textComplex'
-
-export interface DzEditorialSchemaProps {
-  title: string
-  editorialType: EditorialType
-  editorialTextOverrides?: TextComplexSchemaType[]
-  imageOverride?: any
-  enableOverrides: boolean
+const getContentForMolecule = (options: {references: SchemaTypeDefinition[]}) => {
+  if (!options.references.length) return []
+  return [
+    {
+      name: 'content',
+      title: 'Editorial Content',
+      type: 'array',
+      icon: MasterDetailIcon,
+      validation: (rule: any) => rule.max(1),
+      of: options.references.map((reference) =>
+        defineArrayMember({
+          name: reference.name,
+          title: reference.title,
+          type: 'reference',
+          to: [{type: reference.name}],
+        }),
+      ),
+    },
+  ]
 }
 
 export const builder = (
@@ -39,28 +48,22 @@ export const builder = (
     name: 'dzEditorial',
     title: 'Editorial',
   },
-  options: {references: SchemaTypeDefinition[]}
+  options: {references: SchemaTypeDefinition[]},
 ) => ({
   type: 'object',
   icon: MasterDetailIcon,
   preview: {select: {title: 'title'}},
-  groups: [
-    {name: 'content', title: 'Content', icon: ComposeIcon, default: true},
-    {name: 'overrides', title: 'Overrides', icon: EditIcon},
-  ],
   fields: [
     defineField({
       name: 'title',
       type: 'string',
       title: 'Component title',
-      group: 'content',
       validation: (rule) => rule.required(),
     }),
     defineField({
       title: 'Type',
       name: 'editorialType',
       type: 'string',
-      group: 'content',
       options: {
         list: [
           {title: 'Simple', value: 'simple'},
@@ -71,41 +74,38 @@ export const builder = (
       initialValue: 'simple',
       validation: (rule) => rule.required(),
     }),
+    ...getContentForMolecule(options),
     defineField({
-      name: 'content',
-      title: 'Editorial Content',
-      group: 'content',
-      type: 'array',
-      icon: MasterDetailIcon,
-      validation: (rule) => rule.max(1),
-      of: options.references.map((reference) =>
-        defineArrayMember({
-          name: reference.name,
-          title: reference.title,
-          type: 'reference',
-          to: [{type: reference.name}],
-        })
-      ),
+      name: 'quoteTitle',
+      type: 'string',
+      title: 'Quote Title',
+      hidden: ({parent}) => parent?.editorialType !== 'quote',
     }),
     defineField({
-      name: 'enableOverrides',
-      type: 'boolean',
-      title: 'Enable Overrides',
-      group: 'overrides',
-      initialValue: false,
+      name: 'quoteFootNote',
+      type: 'string',
+      title: 'Quote Footnote',
+      hidden: ({parent}) => parent?.editorialType !== 'quote',
     }),
     defineField({
       name: 'editorialTextOverrides',
       title: 'Text Content',
       type: 'array',
-      group: 'overrides',
       of: [{type: 'textComplex'}],
+      hidden: ({parent}) => parent?.editorialType === 'quote',
+    }),
+    defineField({
+      name: 'reverse',
+      title: 'Reverse',
+      type: 'boolean',
+      initialValue: false,
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'imageOverride',
       type: 'image',
       title: 'Image',
-      group: 'overrides',
+      hidden: ({parent}) => parent?.editorialType !== 'complex',
       options: {
         hotspot: true,
       },
@@ -127,5 +127,5 @@ export const builder = (
 })
 
 export default defineType(
-  builder({name: 'dzEditorial', title: 'Editorial'}, {references: [book, press]})
+  builder({name: 'dzEditorial', title: 'Editorial'}, {references: []}),
 ) as ObjectDefinition

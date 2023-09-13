@@ -5,13 +5,13 @@ const fields = (reference: SchemaTypeDefinition | SchemaTypeDefinition[]) => {
   const references = isArray(reference) ? reference : [reference]
 
   return [
-    defineField({name: 'title', type: 'string', title: 'Title'}),
     defineField({
       name: 'size',
       type: 'string',
       title: 'Size',
       options: {list: [{value: 'XL', title: 'XL'}, 'L', 'M', 'S']},
     }),
+    defineField({name: 'title', type: 'string', title: 'Title'}),
     ...(references
       ? [
           defineField({
@@ -24,7 +24,7 @@ const fields = (reference: SchemaTypeDefinition | SchemaTypeDefinition[]) => {
                 title: ref.title,
                 name: ref.name,
                 to: [{type: ref.name}],
-              })
+              }),
             ),
             validation: (rule) => rule.max(12),
           }),
@@ -35,12 +35,12 @@ const fields = (reference: SchemaTypeDefinition | SchemaTypeDefinition[]) => {
 
 export const builder = (
   params: {name: string; title: string; [key: string]: any},
-  options: {reference: SchemaTypeDefinition | SchemaTypeDefinition[]; excludedFields?: string[]}
+  options: {reference: SchemaTypeDefinition | SchemaTypeDefinition[]; excludedFields?: string[]},
 ) => {
   return {
     type: 'object',
     fields: fields(options.reference).filter(
-      (field) => !options?.excludedFields?.includes?.(field.name)
+      (field) => !options?.excludedFields?.includes?.(field.name),
     ),
     ...params,
   }

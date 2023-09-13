@@ -6,9 +6,6 @@ import {
   ObjectDefinition,
   SchemaTypeDefinition,
 } from 'sanity'
-import artist from '../../../../documents/artist'
-import artwork from '../../../../documents/artwork'
-import exhibitionPage from '../../../../documents/pages/exhibitionPage'
 
 export interface DzHeroCarouselSchemaProps {
   title: string
@@ -93,8 +90,5 @@ export const builder = (
 })
 
 export default defineType(
-  builder(
-    {name: 'dzHeroCarousel', title: 'Hero Carousel'},
-    {references: [artist, artwork, exhibitionPage]}
-  )
+  builder({name: 'dzHeroCarousel', title: 'Hero Carousel'}, {references: []})
 ) as ObjectDefinition

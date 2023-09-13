@@ -10,20 +10,20 @@ export default defineType({
   fields: [
     defineField({
       name: 'title',
-      title: 'Title',
+      title: 'Primary Title',
       type: 'string',
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'subtitle',
-      title: 'Subtitle',
+      title: 'Primary Subtitle',
       type: 'string',
     }),
     defineField({
-        title: 'Published Date',
-        name: 'dateSelection',
-        type: 'date',
-      }),
+      title: 'Published Date',
+      name: 'dateSelection',
+      type: 'date',
+    }),
     defineField({
       name: 'comingSoonSwitch',
       title: 'Coming Soon',
@@ -49,7 +49,7 @@ export default defineType({
       name: 'spotifyUrl',
       title: 'Spotify URL',
       type: 'url',
-      }),
+    }),
     defineField({
       name: 'googlePlayUrl',
       title: 'Google Play URL',
@@ -76,5 +76,5 @@ export default defineType({
       type: 'file',
       options: {accept: 'text/plain, application/msword, application/pdf'},
     }),
-  ]
+  ],
 })

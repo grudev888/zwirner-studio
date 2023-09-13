@@ -10,11 +10,7 @@ export default {
       name: 'reference',
       type: 'reference',
       title: 'Reference',
-      to: [
-        {type: 'article'}, 
-        {type: 'exhibitionPage'}, 
-        {type: 'fairPage'}
-    ],
+      to: [{type: 'article'}, {type: 'exhibitionPage'}],
     },
   ],
 }

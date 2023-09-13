@@ -6,9 +6,6 @@ import {
   ObjectDefinition,
   SchemaTypeDefinition,
 } from 'sanity'
-import artist from '../../../../documents/artist'
-import artwork from '../../../../documents/artwork'
-import exhibitionPage from '../../../../documents/pages/exhibitionPage'
 
 export interface DzTitleTypeProps {
   title: string
@@ -63,5 +60,5 @@ export const builder = (
 })
 
 export default defineType(
-  builder({name: 'dzTitle', title: 'Title'}, {references: [artist, artwork, exhibitionPage]})
+  builder({name: 'dzTitle', title: 'Title'}, {references: []})
 ) as ObjectDefinition

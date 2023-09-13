@@ -8,12 +8,26 @@ import {
 } from '@sanity/icons'
 import * as Interstitial from '../../objects/page/components/primitives/interstitial'
 import {GreyFootNote, GreyFootNoteDecorator} from '../../../components/block/GreyFootnote'
-import {ObjectRule, defineArrayMember, defineField, defineType} from 'sanity'
+import {
+  ObjectRule,
+  defineArrayMember,
+  defineField,
+  defineType,
+  SchemaTypeDefinition,
+  StringRule,
+} from 'sanity'
 import * as Media from '../../objects/utils/media'
 import {builder as slugURLBuilder} from '../../objects/utils/slugUrl'
+import {builder as PageBuilder, PageBuilderComponents} from '../../objects/utils/pageBuilder'
+import {GridComponents} from '../../objects/page/grid'
+import blockContentSimple from '../../objects/utils/blockContentSimple'
+
 import artistType from '../artist'
 import artwork from '../artwork'
 import location from '../location'
+import book from '../book'
+import artist from '../artist'
+import podcast from '../podcast'
 
 export default defineType({
   name: 'exhibitionPage',
@@ -46,7 +60,7 @@ export default defineType({
       description:
         'It will be combined with Primary Subtitle to display the full title: [Primary Title]: [Primary Subtitle]. If no subtitle is added then only Primary Title should be displayed. On cards, it is displayed as Primary Title.',
       group: 'content',
-      validation: (rule) => rule.required(),
+      validation: (rule: StringRule) => rule.required(),
     }),
     defineField({
       name: 'subtitle',
@@ -84,18 +98,19 @@ export default defineType({
     ),
     defineField({
       name: 'summary',
-      title: 'Summary',
+      title: 'Description',
       group: 'content',
       description:
         'This is used to describe the exhibition and appears as the text in exhibition cards.',
-      type: 'string',
+      type: 'array',
+      of: blockContentSimple,
     }),
     defineField({
-      name: 'tagline',
-      title: 'Tagline',
+      name: 'eyebrow',
+      title: 'Eyebrow',
       group: 'content',
       description:
-        'This should be a very short phrase that describes the exhibition. It will appear as small text on cards above the title. Max 100 characters.',
+        'It will appear as small text on cards above the title. Max 100 characters. When the field is left blank, the page type will be displayed.',
       type: 'string',
       validation: (rule) => rule.max(100),
     }),
@@ -135,7 +150,7 @@ export default defineType({
       title: 'End Date',
       group: 'content',
       type: 'date',
-      validation: (rule) =>
+      validation: (rule: any) =>
         rule
           .required()
           .min(rule.valueOfField('startDate'))
@@ -196,12 +211,72 @@ export default defineType({
 
     // EXPLORE CONTENT
 
-    defineField({
-      name: 'exploreContent',
-      title: 'Explore',
-      type: 'pageBuilderComponents',
-      group: 'explore',
-    }),
+    defineField(
+      PageBuilder(
+        {
+          name: 'exploreContent',
+          title: 'Explore',
+          group: 'explore',
+        },
+        {
+          components: [
+            PageBuilderComponents.dzInterstitial,
+            PageBuilderComponents.dzSplit,
+            PageBuilderComponents.dzCard,
+            PageBuilderComponents.dzMedia,
+            PageBuilderComponents.dzEditorial,
+            PageBuilderComponents.dzGrid,
+            PageBuilderComponents.dzCarousel,
+          ],
+          references: {
+            dzCard: [
+              artwork,
+              book,
+              location,
+              artist,
+              podcast,
+              {name: 'article', title: 'Article'} as SchemaTypeDefinition,
+              {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
+            ],
+            dzInterstitial: [
+              artwork,
+              book,
+              artist,
+              {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
+            ],
+            dzSplit: [{name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition],
+            grid: {
+              references: {
+                dzCard: [
+                  artwork,
+                  book,
+                  location,
+                  artist,
+                  podcast,
+                  {name: 'article', title: 'Article'} as SchemaTypeDefinition,
+                  {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
+                ],
+              },
+              components: [GridComponents.dzCard, GridComponents.dzMedia],
+            },
+            dzCarousel: {
+              references: {
+                dzCard: [
+                  artwork,
+                  book,
+                  location,
+                  artist,
+                  podcast,
+                  {name: 'article', title: 'Article'} as SchemaTypeDefinition,
+                  {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
+                ],
+              },
+              components: [GridComponents.dzCard, GridComponents.dzMedia],
+            },
+          },
+        },
+      ),
+    ),
 
     // INSTALLATION VIEWS CONTENT
 

@@ -7,7 +7,6 @@ export const defaultDocumentNode: DefaultDocumentNodeResolver = (S, {schemaType}
     case 'article':
     case 'artistPage':
     case 'exhibitionPage':
-    case 'fairPage':
       return S.document().views([
         S.view.form(),
         S.view.component(PreviewIframe).options({url: getPreviewUrl}).title('Preview'),

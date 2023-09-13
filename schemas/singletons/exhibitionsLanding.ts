@@ -1,10 +1,15 @@
 import {ComposeIcon, SearchIcon, DocumentIcon} from '@sanity/icons'
 import {BlockElementIcon} from '@sanity/icons'
-import {StringRule, defineArrayMember, defineField, defineType} from 'sanity'
-import exhibitionPage from '../documents/pages/exhibitionPage'
+import {StringRule, defineArrayMember, defineField, defineType, SchemaTypeDefinition} from 'sanity'
 import article from '../documents/article'
 import interstitial from '../objects/page/components/primitives/interstitial'
 import {builder as PageBuilder, PageBuilderComponents} from '../objects/utils/pageBuilder'
+import {GridComponents} from '../objects/page/grid'
+import artwork from '../documents/artwork'
+import location from '../documents/location'
+import book from '../documents/book'
+import artist from '../documents/artist'
+import podcast from '../documents/podcast'
 
 export default defineType({
   name: 'exhibitionsLanding',
@@ -16,6 +21,24 @@ export default defineType({
     {name: 'exhibitions', title: 'Exhibitions', icon: ComposeIcon, default: true},
     {name: 'seo', title: 'SEO', icon: SearchIcon},
     {name: 'pastExhibitions', title: 'Past Exhibitions', icon: DocumentIcon},
+  ],
+  fieldsets: [
+    {
+      name: 'featuredExhibitions',
+      title: 'Featured Exhibitions',
+      options: {
+        collapsible: true,
+        collapsed: false,
+      },
+    },
+    {
+      name: 'museumHighlights',
+      title: 'Museum Highlights',
+      options: {
+        collapsible: true,
+        collapsed: false,
+      },
+    },
   ],
   fields: [
     defineField({
@@ -31,27 +54,44 @@ export default defineType({
       group: 'exhibitions',
       validation: (rule: StringRule) => rule.required(),
     }),
-    // For Page builder the builder accepts: options, components and reference types
+
+    // FEATURED EXHIBITIONS, PAGE BUILDER SECTION
     defineField(
       PageBuilder(
         {
-          name: 'heroComponents',
-          title: 'Featured Exhibitions',
+          name: 'introContent',
+          title: ' ',
           group: 'exhibitions',
+          fieldset: 'featuredExhibitions',
         },
         {
           components: [
             PageBuilderComponents.dzHero,
-            PageBuilderComponents.dzHeroCarousel,
-            PageBuilderComponents.dzGrid,
             PageBuilderComponents.dzSplit,
+            PageBuilderComponents.dzGrid,
           ],
           references: {
-            all: [exhibitionPage],
+            dzHero: [{name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition],
+            dzSplit: [{name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition],
+            grid: {
+              references: {
+                dzCard: [
+                  artwork,
+                  book,
+                  location,
+                  artist,
+                  podcast,
+                  {name: 'article', title: 'Article'} as SchemaTypeDefinition,
+                  {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
+                ],
+              },
+              components: [GridComponents.dzCard, GridComponents.dzMedia],
+            },
           },
-        }
-      )
+        },
+      ),
     ),
+
     defineField({
       type: interstitial.name,
       title: 'Subscribe Interstitial',
@@ -62,9 +102,10 @@ export default defineType({
     }),
     defineField({
       name: 'museumHighlights',
-      title: 'Museum Highlights',
+      title: ' ',
       type: 'array',
       group: 'exhibitions',
+      fieldset: 'museumHighlights',
       of: [
         defineArrayMember({
           type: 'reference',

@@ -3,24 +3,24 @@ import {SchemaTypeDefinition, defineType} from 'sanity'
 import {builder as dzHeroBuilder} from '../page/components/molecules/dzHero'
 import {builder as dzHeroCarouselBuilder} from '../page/components/molecules/DzHeroCarousel'
 import {builder as dzEditorialBuilder} from '../page/components/molecules/dzEditorial'
-import {builder as dzInterstitialBuilder} from '../page/components/molecules/dzInterstitial'
 import {builder as dzCarouselBuilder} from '../page/components/molecules/dzCarousel'
+import {builder as dzCardBuilder} from '../page/components/molecules/dzCard'
 import {builder as dzSplitBuilder} from '../page/components/molecules/dzSplit'
 import {builder as dzTitleBuilder} from '../page/components/molecules/dzTitle'
-import {builder as dzGridBuilder} from '../page/grid'
-import artist from '../../documents/artist'
-import artwork from '../../documents/artwork'
-import exhibitionPage from '../../documents/pages/exhibitionPage'
+import {builder as dzInterstitialBuilder} from '../page/components/primitives/interstitial'
+import {builder as dzMediaBuilder} from '../page/components/molecules/dzMedia'
 
-const LIST_OF_REFERENCES = [artist, artwork, exhibitionPage]
+import {builder as dzGridBuilder} from '../page/grid'
 
 export enum PageBuilderComponents {
+  dzCard = 'dzCard',
+  dzCarousel = 'dzCarousel',
+  dzEditorial = 'dzEditorial',
+  dzGrid = 'grid',
   dzHero = 'dzHero',
   dzHeroCarousel = 'dzHeroCarousel',
-  dzCarousel = 'dzCarousel',
-  dzGrid = 'grid',
-  dzEditorial = 'dzEditorial',
   dzInterstitial = 'dzInterstitial',
+  dzMedia = 'dzMedia',
   dzSplit = 'dzSplit',
   dzTitle = 'dzTitle',
 }
@@ -38,39 +38,49 @@ const componentBuilder = {
   [PageBuilderComponents.dzSplit]: dzSplitBuilder,
   [PageBuilderComponents.dzTitle]: dzTitleBuilder,
   [PageBuilderComponents.dzCarousel]: dzCarouselBuilder,
+  [PageBuilderComponents.dzCard]: dzCardBuilder,
+  [PageBuilderComponents.dzMedia]: dzMediaBuilder,
 }
 
 export type ReferencePerType = {
-  [key in PageBuilderComponents]?: SchemaTypeDefinition[]
+  [key in PageBuilderComponents]?: any
 }
 export type FullReferencePerType = ReferencePerType & {all?: SchemaTypeDefinition[]}
 export type PageBuilderOptions = {
   components: PageBuilderComponents[]
-  references?: FullReferencePerType
+  references: FullReferencePerType
 }
 
-const DEFAULT_REFERENCES: ReferencePerType = Object.values(PageBuilderComponents).reduce(
-  (p: any, k) => ({...p, [k]: LIST_OF_REFERENCES}),
-  {}
-)
-
 const getComponents = (list: PageBuilderComponents[], references: FullReferencePerType) => {
-  return list.map((component: PageBuilderComponents) =>
-    componentBuilder[component](undefined, {
-      references: references[component] ?? references.all ?? LIST_OF_REFERENCES,
+  return list.map((component: PageBuilderComponents) => {
+    if (
+      component === PageBuilderComponents.dzGrid ||
+      component === PageBuilderComponents.dzCarousel
+    ) {
+      return componentBuilder[component](undefined, {
+        references: references[component]?.references ?? references?.all ?? [],
+        components: references[component]?.components,
+      })
+    }
+    return componentBuilder[component](undefined, {
+      references: references[component] ?? references.all ?? [],
     })
-  )
+  })
 }
 
 export const builder = (
   params: {name: string; title: string; [key: string]: any},
-  options: PageBuilderOptions
-) => ({
+  options: PageBuilderOptions,
+): any => ({
   type: 'array',
   icon: MasterDetailIcon,
   of: getComponents(
-    options?.components ?? Object.values(PageBuilderComponents),
-    options?.references ?? DEFAULT_REFERENCES
+    options?.components?.sort((first, second) => {
+      const normalizedFirst = first?.toLowerCase()?.replace(/dz/g, '')
+      const normalizedSecond = second?.toLowerCase()?.replace(/dz/g, '')
+      return normalizedFirst > normalizedSecond ? 1 : -1
+    }) ?? Object.values(PageBuilderComponents),
+    options.references,
   ),
   ...params,
 })
@@ -80,6 +90,7 @@ export default defineType(
     {name: 'pageBuilderComponents', title: 'Components'},
     {
       components: Object.values(PageBuilderComponents),
-    }
-  )
+      references: {all: [{name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition]},
+    },
+  ),
 ) as SchemaTypeDefinition

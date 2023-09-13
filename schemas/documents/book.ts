@@ -18,6 +18,12 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'subtitle',
+      title: 'Primary Subtitle',
+      type: 'string',
+      description: 'Future Use: Optional subtitle for the book.',
+    }),
+    defineField({
       name: 'tagline',
       title: 'Tagline',
       description: 'The tagline that will appear on the book page. Will display in books cards',
@@ -61,12 +67,6 @@ export default defineType({
           ],
         },
       ],
-    }),
-    defineField({
-      name: 'subtitle',
-      title: 'Subtitle',
-      type: 'string',
-      description: 'Future Use: Optional subtitle for the book.',
     }),
     defineField({
       name: 'isbn',

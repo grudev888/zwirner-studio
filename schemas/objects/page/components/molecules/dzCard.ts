@@ -1,19 +1,20 @@
 import {ComposeIcon, EditIcon, MasterDetailIcon} from '@sanity/icons'
-import {defineField, defineType} from 'sanity'
+import {
+  defineField,
+  defineType,
+  SchemaTypeDefinition,
+  defineArrayMember,
+  ObjectDefinition,
+} from 'sanity'
+import blockContentSimple from '../../../../../schemas/objects/utils/blockContentSimple'
 
-import {CTASchemaType} from '../../../../../schemas/objects/utils/cta'
-export interface DzCardSchemaProps {
-  title: string
-  image?: any
-  primaryCTA?: CTASchemaType
-  secondaryCTA?: CTASchemaType
-  enableOverrides: boolean
-  imageOverride?: any
-}
-
-export default defineType({
-  name: 'dzCard',
-  title: 'Card',
+export const builder = (
+  params: {name: string; title: string; [key: string]: any} = {
+    name: 'dzCard',
+    title: 'Card',
+  },
+  options: {references: SchemaTypeDefinition[]},
+) => ({
   type: 'object',
   icon: MasterDetailIcon,
   groups: [
@@ -22,6 +23,22 @@ export default defineType({
   ],
   fields: [
     defineField({
+      type: 'string',
+      name: 'bookVariation',
+      group: 'content',
+      title: 'Book Card type',
+      options: {
+        list: [
+          {title: 'Product card Book', value: 'productCard'},
+          {title: 'Content card Book', value: 'contentCard'},
+        ],
+      },
+      // On book types attached, select Book Card type
+      hidden: ({parent}) => {
+        return parent?.content?.[0]?._type !== 'book'
+      },
+    }),
+    defineField({
       name: 'title',
       type: 'string',
       title: 'Component title',
@@ -29,30 +46,87 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      type: 'string',
+      name: 'pressVariation',
+      group: 'content',
+      title: 'Press Variation',
+      options: {
+        list: [
+          {title: 'Selected Press', value: 'selectedPress'},
+          {title: 'Press Article', value: 'pressArticle'},
+        ],
+      },
+      // On article types attached, select Press Variation
+      hidden: ({parent}) => {
+        return parent?.content?.[0]?._type !== 'article'
+      },
+    }),
+    defineField({
+      name: 'secondaryTitle',
+      title: 'Secondary Title',
+      description:
+        'This will override the secondary title for selected press variation on press articles.',
+      type: 'string',
+      group: 'overrides',
+      // Secondary Title (for selected press variation)
+      hidden: ({parent}) => {
+        return parent?.content?.[0]?._type !== 'article'
+      },
+    }),
+    defineField({
+      name: 'primarySubtitle',
+      title: 'Primary Subtitle',
+      type: 'string',
+      group: 'overrides',
+    }),
+    defineField({
+      name: 'secondarySubtitle',
+      title: 'Secondary Subtitle',
+      description: 'This will override the secondary subtitle for news articles only.',
+      type: 'string',
+      group: 'overrides',
+    }),
+    defineField({
+      name: 'additionalInformation',
+      title: 'Additional Information',
+      group: 'overrides',
+      type: 'array',
+      of: blockContentSimple,
+    }),
+    defineField({
       name: 'primaryCTA',
       title: 'Primary CTA',
       type: 'cta',
-      group: 'content',
+      group: 'overrides',
     }),
     defineField({
       name: 'secondaryCTA',
       title: 'Secondary CTA',
       type: 'cta',
-      group: 'content',
+      group: 'overrides',
     }),
-    // Content is not part of the props
     defineField({
       name: 'content',
       title: 'Content',
-      type: 'pageContent',
+      type: 'array',
       group: 'content',
+      icon: MasterDetailIcon,
+      validation: (rule) => rule.max(1),
+      of: options.references.map((reference) =>
+        defineArrayMember({
+          name: reference.name,
+          title: reference.title,
+          type: 'reference',
+          to: [{type: reference.name}],
+        }),
+      ),
     }),
     defineField({
       name: 'enableOverrides',
       type: 'boolean',
       title: 'Enable Overrides',
       group: 'overrides',
-      initialValue: false
+      initialValue: false,
     }),
     defineField({
       name: 'imageOverride',
@@ -76,4 +150,9 @@ export default defineType({
       ],
     }),
   ],
+  ...params,
 })
+
+export default defineType(
+  builder({name: 'dzCard', title: 'Card'}, {references: []}),
+) as ObjectDefinition

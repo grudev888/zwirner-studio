@@ -6,9 +6,6 @@ import {
   defineType,
   SchemaTypeDefinition,
 } from 'sanity'
-import artist from '../../../../documents/artist'
-import artwork from '../../../../documents/artwork'
-import exhibitionPage from '../../../../documents/pages/exhibitionPage'
 
 export interface DzHeroSchemaProps {
   title: string
@@ -43,7 +40,6 @@ export const builder = (
       group: 'content',
       type: 'array',
       icon: MasterDetailIcon,
-      validation: (rule) => rule.max(1),
       of: options.references.map((reference) =>
         defineArrayMember({
           name: reference.name,
@@ -124,5 +120,5 @@ export const builder = (
 })
 
 export default defineType(
-  builder({name: 'dzHero', title: 'Hero'}, {references: [artist, artwork, exhibitionPage]})
+  builder({name: 'dzHero', title: 'Hero'}, {references: []})
 ) as ObjectDefinition

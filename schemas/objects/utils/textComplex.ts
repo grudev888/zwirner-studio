@@ -1,6 +1,7 @@
 // Todo with the design system version update
 // import {EditorialTextType} from '@zwirner/design-system'
 import {defineField, defineType} from 'sanity'
+import blockContentSimple from './blockContentSimple'
 
 export interface TextComplexSchemaType {
   text: string
@@ -28,8 +29,8 @@ export default defineType({
     }),
     defineField({
       name: 'text',
-      type: 'text',
-      title: 'Text',
+      type: 'array',
+      of: blockContentSimple,
       validation: (rule) => rule.required(),
     }),
   ],

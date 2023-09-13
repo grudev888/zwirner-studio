@@ -1,18 +1,38 @@
-import {
-  defineField,
-  defineType,
-  ObjectDefinition,
-  defineArrayMember,
-  SchemaTypeDefinition,
-} from 'sanity'
+import {defineField, defineType, ObjectDefinition, SchemaTypeDefinition} from 'sanity'
 import {MasterDetailIcon} from '@sanity/icons'
-import artist from '../../../../documents/artist'
-import artwork from '../../../../documents/artwork'
-import exhibitionPage from '../../../../documents/pages/exhibitionPage'
+import {builder as dzCardBuilder} from './dzCard'
+import {builder as dzMediaBuilder} from './dzMedia'
 
 export interface DzCarouselSchemaProps {
   title: string
   enableOverrides: boolean
+}
+
+export enum CarouselComponents {
+  dzCard = 'dzCard',
+  dzMedia = 'dzMedia',
+}
+
+const componentBuilder = {
+  [CarouselComponents.dzCard]: dzCardBuilder,
+  [CarouselComponents.dzMedia]: dzMediaBuilder,
+}
+
+export type ReferencePerType = {
+  [key in CarouselComponents]?: SchemaTypeDefinition[]
+}
+export type FullGridReferencePerType = ReferencePerType & {all?: SchemaTypeDefinition[]}
+export type CarouselOptions = {
+  components: CarouselComponents[]
+  references: FullGridReferencePerType
+}
+
+const getComponents = (list: CarouselComponents[], references: FullGridReferencePerType) => {
+  return list.map((component: CarouselComponents) =>
+    componentBuilder[component](undefined, {
+      references: references[component] ?? references.all ?? [],
+    })
+  )
 }
 
 export const builder = (
@@ -20,7 +40,7 @@ export const builder = (
     name: 'dzCarousel',
     title: 'Carousel',
   },
-  options: {references: SchemaTypeDefinition[]}
+  options: CarouselOptions
 ) => ({
   type: 'object',
   icon: MasterDetailIcon,
@@ -32,23 +52,30 @@ export const builder = (
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'content',
-      title: 'Content',
+      name: 'size',
+      type: 'string',
+      title: 'Size',
+      options: {list: [{value: 'XL', title: 'XL'}, 'L', 'M', 'S']},
+    }),
+    {
       type: 'array',
       icon: MasterDetailIcon,
-      of: options.references.map((reference) =>
-        defineArrayMember({
-          name: reference.name,
-          title: reference.title,
-          type: 'reference',
-          to: [{type: reference.name}],
-        })
+      of: getComponents(
+        options?.components ?? Object.values(CarouselComponents),
+        options.references
       ),
-    }),
+      ...params,
+    },
   ],
   ...params,
 })
 
 export default defineType(
-  builder({name: 'dzCarousel', title: 'Carousel'}, {references: [artist, artwork, exhibitionPage]})
+  builder(
+    {name: 'dzCarousel', title: 'Carousel'},
+    {
+      components: Object.values(CarouselComponents),
+      references: {all: [{name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition]},
+    }
+  )
 ) as ObjectDefinition

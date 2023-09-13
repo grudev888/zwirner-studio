@@ -17,8 +17,20 @@ export const BUTTON_VARIANT_NAMES = [
 
 export type ButtonVariant = (typeof BUTTON_VARIANT_NAMES)[number]
 
+export enum CtaActions {
+  INQUIRE = 'inquire',
+  ECOMM = 'ecomm',
+  CUSTOM = 'custom',
+  NONE = 'none',
+  NEWSLETTER = 'Newsletter',
+  LINK = 'Link',
+  DOWNLOAD_PDF = 'Download PDF',
+  LINK_CONTENT = 'Link Content',
+}
+
 export interface CTASchemaType {
   type: 'button' | 'link'
+  action: CtaActions
   text: string
   link?: linkSchemaType
   variant?: ButtonVariant
@@ -38,7 +50,17 @@ export default defineField({
       name: 'action',
       type: 'string',
       title: 'CTA Type',
-      options: {list: ['Inquire', 'Newsletter', 'Link', 'Download PDF', 'Link Content']},
+      options: {
+        list: [
+          CtaActions.NEWSLETTER,
+          CtaActions.LINK,
+          CtaActions.DOWNLOAD_PDF,
+          CtaActions.LINK_CONTENT,
+          CtaActions.INQUIRE,
+          CtaActions.ECOMM,
+          CtaActions.CUSTOM,
+        ],
+      },
     }),
     defineField({
       name: 'file',

@@ -7,7 +7,6 @@ import artistPage from '../../documents/pages/artistPage'
 import exhibitionLanding from '../../singletons/exhibitionsLanding'
 import artistListing from '../../singletons/artistListing'
 import exhibitionPage from '../../documents/pages/exhibitionPage'
-import fairPage from '../../documents/pages/fairPage'
 import availableArtworks from '../../singletons/availableArtworks'
 import collect from '../../singletons/collect'
 import consignments from '../../singletons/consignments'
@@ -30,7 +29,6 @@ export default defineType({
         {type: page.name},
         {type: artistPage.name},
         {type: exhibitionPage.name},
-        {type: fairPage.name},
         {type: availableArtworks.name},
         {type: collect.name},
         {type: consignments.name},

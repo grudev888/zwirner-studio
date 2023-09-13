@@ -18,7 +18,6 @@ import article from '../article'
 import book from '../book'
 import artwork from '../artwork'
 import media from '../../objects/utils/media'
-import fairPage from './fairPage'
 import exhibitionPage from './exhibitionPage'
 
 export default defineType({
@@ -95,7 +94,7 @@ export default defineType({
       name: 'featured',
       title: 'Featured Item',
       type: 'reference',
-      to: [exhibitionPage, fairPage, article, artwork].map(({name}) => ({
+      to: [exhibitionPage, article, artwork].map(({name}) => ({
         type: name as string,
       })),
       group: 'content',
@@ -242,7 +241,7 @@ export default defineType({
           title: 'Guide',
           group: 'guide',
         },
-        {reference: [exhibitionPage, fairPage, article]}
+        {reference: [exhibitionPage, article]}
       )
     ),
 

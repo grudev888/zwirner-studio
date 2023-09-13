@@ -1,22 +1,33 @@
 import {MasterDetailIcon} from '@sanity/icons'
-import {
-  defineArrayMember,
-  defineField,
-  defineType,
-  ObjectDefinition,
-  SchemaTypeDefinition,
-} from 'sanity'
-import artist from '../../documents/artist'
-import artwork from '../../documents/artwork'
-import exhibitionPage from '../../documents/pages/exhibitionPage'
+import {defineField, defineType, ObjectDefinition, SchemaTypeDefinition} from 'sanity'
+import {builder as dzCardBuilder} from '../page/components/molecules/dzCard'
+import {builder as dzMediaBuilder} from '../page/components/molecules/dzMedia'
 
-export interface GridMoleculeTypeProps {
-  title: string
-  masonryGrid: boolean
-  wrap: boolean
-  itemsPerRow: number
-  sortField: 'date' | 'lastName' | 'title'
-  sortOrder: 'asc' | 'desc'
+export enum GridComponents {
+  dzCard = 'dzCard',
+  dzMedia = 'dzMedia',
+}
+
+const componentBuilder = {
+  [GridComponents.dzCard]: dzCardBuilder,
+  [GridComponents.dzMedia]: dzMediaBuilder,
+}
+
+export type ReferencePerType = {
+  [key in GridComponents]?: SchemaTypeDefinition[]
+}
+export type FullGridReferencePerType = ReferencePerType & {all?: SchemaTypeDefinition[]}
+export type GridOptions = {
+  components: GridComponents[]
+  references: FullGridReferencePerType
+}
+
+const getComponents = (list: GridComponents[], references: FullGridReferencePerType) => {
+  return list.map((component: GridComponents) =>
+    componentBuilder[component](undefined, {
+      references: references[component] ?? references.all ?? [],
+    })
+  )
 }
 
 export const builder = (
@@ -24,7 +35,7 @@ export const builder = (
     name: 'grid',
     title: 'Grid',
   },
-  options: {references: SchemaTypeDefinition[]}
+  options: GridOptions
 ) => ({
   type: 'object',
   icon: MasterDetailIcon,
@@ -32,17 +43,6 @@ export const builder = (
     collapsible: true,
     collapsed: false,
   },
-  fieldsets: [
-    {
-      name: 'sortingFilters',
-      title: 'Sorting',
-      options: {
-        collapsible: true,
-        collapsed: true,
-        columns: 2,
-      },
-    },
-  ],
   fields: [
     defineField({
       name: 'title',
@@ -50,14 +50,6 @@ export const builder = (
       type: 'string',
       description: 'Section name',
       validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: 'masonryGrid',
-      type: 'boolean',
-      title: 'Masonry grid',
-      description: 'Enable masonry grid layout',
-      validation: (rule) => rule.required(),
-      initialValue: false,
     }),
     defineField({
       name: 'wrap',
@@ -78,53 +70,22 @@ export const builder = (
       },
       initialValue: 1,
     }),
-    defineField({
-      name: 'sortField',
-      title: 'Sort Field',
-      description: 'Sorting field',
-      type: 'string',
-      fieldset: 'sortingFilters',
-      options: {
-        list: [
-          {title: 'Date', value: 'date'},
-          {title: 'Last Name', value: 'lastName'},
-          {title: 'Title', value: 'title'},
-        ],
-      },
-      initialValue: 'date',
-    }),
-    defineField({
-      name: 'sortOrder',
-      title: 'Sort Order',
-      description: 'Ascending or descending order',
-      type: 'string',
-      options: {
-        list: [
-          {title: 'Ascending', value: 'asc'},
-          {title: 'Descending', value: 'desc'},
-        ],
-      },
-      fieldset: 'sortingFilters',
-      initialValue: 'asc',
-    }),
-    defineField({
-      name: 'content',
-      title: 'Content',
+    {
       type: 'array',
       icon: MasterDetailIcon,
-      of: options.references.map((reference) =>
-        defineArrayMember({
-          name: reference.name,
-          title: reference.title,
-          type: 'reference',
-          to: [{type: reference.name}],
-        })
-      ),
-    }),
+      of: getComponents(options?.components ?? Object.values(GridComponents), options.references),
+      ...params,
+    },
   ],
   ...params,
 })
 
 export default defineType(
-  builder({name: 'grid', title: 'Grid'}, {references: [artist, artwork, exhibitionPage]})
+  builder(
+    {name: 'grid', title: 'Grid'},
+    {
+      components: Object.values(GridComponents),
+      references: {all: [{name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition]},
+    }
+  )
 ) as ObjectDefinition

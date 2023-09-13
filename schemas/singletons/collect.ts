@@ -41,7 +41,7 @@ export default defineType({
         defineArrayMember({
           type: 'reference',
           title: 'Exhibitions',
-          to: [{type: 'exhibitionPage'}, {type: 'fairPage'}],
+          to: [{type: 'exhibitionPage'}],
         }),
       ],
       validation: (rule: ArrayRule<any>) => rule.required().length(1),

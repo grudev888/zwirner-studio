@@ -4,14 +4,13 @@ import {defineField, defineType} from 'sanity'
 import page from '../documents/page'
 import artistPage from '../documents/pages/artistPage'
 import exhibitionPage from '../documents/pages/exhibitionPage'
-import fairPage from '../documents/pages/fairPage'
 import article from '../documents/article'
 import location from '../documents/location'
 import dzInterstitial from '../objects/page/components/molecules/dzInterstitial'
 import {builder as carouselBuilder} from '../objects/page/components/modules/carouselModule'
 import artwork from '../documents/artwork'
 
-const allowedDocs = [page, exhibitionPage, fairPage, artistPage, article, artwork]
+const allowedDocs = [page, exhibitionPage, artistPage, article, artwork]
 const allowedFeaturedItems = [exhibitionPage, article]
 
 export default defineType({

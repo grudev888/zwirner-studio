@@ -7,9 +7,6 @@ import {
   ObjectDefinition,
   SchemaTypeDefinition,
 } from 'sanity'
-import artist from '../../../../documents/artist'
-import artwork from '../../../../documents/artwork'
-import exhibitionPage from '../../../../documents/pages/exhibitionPage'
 
 export const SPLIT_TYPES = {
   TALL: 'tall',
@@ -31,7 +28,7 @@ export const builder = (
     name: 'dzSplit',
     title: 'Split',
   },
-  options: {references: SchemaTypeDefinition[]}
+  options: {references: SchemaTypeDefinition[]},
 ) => ({
   type: 'object',
   icon: MasterDetailIcon,
@@ -59,7 +56,7 @@ export const builder = (
           title: reference.title,
           type: 'reference',
           to: [{type: reference.name}],
-        })
+        }),
       ),
     }),
     defineField({
@@ -106,9 +103,9 @@ export const builder = (
       group: 'overrides',
     }),
     defineField({
-      name: 'ctaOverride',
-      type: 'string',
-      title: 'CTA title',
+      name: 'primaryCTA',
+      title: 'Primary CTA',
+      type: 'cta',
       group: 'overrides',
     }),
     defineField({
@@ -143,5 +140,5 @@ export const builder = (
 })
 
 export default defineType(
-  builder({name: 'dzSplit', title: 'Split'}, {references: [artist, artwork, exhibitionPage]})
+  builder({name: 'dzSplit', title: 'Split'}, {references: []}),
 ) as ObjectDefinition
