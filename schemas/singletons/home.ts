@@ -9,6 +9,7 @@ import location from '../documents/location'
 import dzInterstitial from '../objects/page/components/molecules/dzInterstitial'
 import {builder as carouselBuilder} from '../objects/page/components/modules/carouselModule'
 import artwork from '../documents/artwork'
+import { hiddenSlug } from '../objects/data/hiddenSlug'
 
 const allowedDocs = [page, exhibitionPage, artistPage, article, artwork]
 const allowedFeaturedItems = [exhibitionPage, article]
@@ -23,6 +24,7 @@ export default defineType({
     {name: 'seo', title: 'SEO', icon: SearchIcon},
   ],
   fields: [
+    hiddenSlug,
     defineField({
       name: 'seo',
       title: 'SEO',

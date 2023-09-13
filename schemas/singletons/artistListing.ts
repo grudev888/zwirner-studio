@@ -2,6 +2,7 @@ import {ComposeIcon, SearchIcon} from '@sanity/icons'
 import {BlockElementIcon} from '@sanity/icons'
 import {StringRule, defineField, defineType} from 'sanity'
 import interstitial from '../objects/page/components/primitives/interstitial'
+import { hiddenSlug } from '../objects/data/hiddenSlug'
 
 export default defineType({
   name: 'artistListing',
@@ -14,6 +15,7 @@ export default defineType({
     {name: 'seo', title: 'SEO', icon: SearchIcon},
   ],
   fields: [
+    hiddenSlug,
     defineField({
       name: 'seo',
       title: 'SEO',

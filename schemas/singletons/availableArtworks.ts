@@ -2,6 +2,7 @@ import {BlockElementIcon, SearchIcon, ComposeIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
 import {builder as gridBuilder} from '../objects/page/components/modules/gridModule'
 import artwork from '../documents/artwork'
+import { hiddenSlug } from '../objects/data/hiddenSlug'
 
 export default defineType({
   name: 'availableArtworks',
@@ -13,6 +14,7 @@ export default defineType({
     {name: 'seo', title: 'SEO', icon: SearchIcon},
   ],
   fields: [
+    hiddenSlug,
     defineField({
       name: 'title',
       title: 'Title',

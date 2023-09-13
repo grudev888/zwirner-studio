@@ -4,6 +4,7 @@ import {StringRule, defineArrayMember, defineField, defineType, SchemaTypeDefini
 import article from '../documents/article'
 import interstitial from '../objects/page/components/primitives/interstitial'
 import {builder as PageBuilder, PageBuilderComponents} from '../objects/utils/pageBuilder'
+import { hiddenSlug } from '../objects/data/hiddenSlug'
 import {GridComponents} from '../objects/page/grid'
 import artwork from '../documents/artwork'
 import location from '../documents/location'
@@ -41,6 +42,7 @@ export default defineType({
     },
   ],
   fields: [
+    hiddenSlug,
     defineField({
       name: 'seo',
       title: 'SEO',

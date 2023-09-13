@@ -8,6 +8,7 @@ import interstitial from '../objects/page/components/primitives/interstitial'
 import * as Media from '../objects/utils/media'
 import {builder as carouselModuleBuilder} from '../objects/page/components/modules/carouselModule'
 import blockContentSimpleWithLinks from '../objects/utils/blockContentSimpleWithLinks'
+import { hiddenSlug } from '../objects/data/hiddenSlug'
 
 export default defineType({
   name: 'stories',
@@ -20,6 +21,7 @@ export default defineType({
     {name: 'seo', title: 'SEO', icon: SearchIcon},
   ],
   fields: [
+    hiddenSlug,
     defineField({
       name: 'seo',
       title: 'SEO',

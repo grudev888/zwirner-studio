@@ -5,6 +5,7 @@ import media from '../objects/utils/media'
 import artist from '../documents/artist'
 import * as Interstitial from '../objects/page/components/primitives/interstitial'
 import {builder as carouselBuilder} from '../objects/page/components/modules/carouselModule'
+import { hiddenSlug } from '../objects/data/hiddenSlug'
 
 export default defineType({
   name: 'consignments',
@@ -16,6 +17,7 @@ export default defineType({
     {name: 'seo', title: 'SEO', icon: SearchIcon},
   ],
   fields: [
+    hiddenSlug,
     defineField({
       name: 'seo',
       title: 'SEO',

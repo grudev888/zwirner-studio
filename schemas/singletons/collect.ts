@@ -6,6 +6,7 @@ import exhibitionPage from '../documents/pages/exhibitionPage'
 import artwork from '../documents/artwork'
 import interstitial from '../objects/page/components/primitives/interstitial'
 import {builder as carouselBuilder} from '../objects/page/components/modules/carouselModule'
+import { hiddenSlug } from '../objects/data/hiddenSlug'
 
 export default defineType({
   name: 'collect',
@@ -18,6 +19,7 @@ export default defineType({
     {name: 'seo', title: 'SEO', icon: SearchIcon},
   ],
   fields: [
+    hiddenSlug,
     defineField({
       name: 'seo',
       title: 'SEO',
