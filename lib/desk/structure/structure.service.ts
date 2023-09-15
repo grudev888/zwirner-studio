@@ -16,6 +16,7 @@ import {getPreviewUrl} from './utils'
 interface StructureBuilderProps {
   S: StructureBuilder
   document: DocumentDefinition
+  field?: string
 }
 
 const queryByType: any = {
@@ -27,6 +28,7 @@ const queryByType: any = {
 export async function getSectionsByYear({
   S,
   document,
+  field = '_createdAt',
 }: StructureBuilderProps): Promise<ListBuilder | DocumentListBuilder> {
   const name = document.name
   const title = document.title || capitalize(name)
@@ -34,23 +36,18 @@ export async function getSectionsByYear({
   const defaultView = S.documentList()
     .title(`${title} Pages`)
     .filter(`_type == "${name}"`)
-    .defaultOrdering([{field: 'publishedAt', direction: 'asc'}])
+    .defaultOrdering([{field, direction: 'asc'}])
 
   const client = S.context.getClient({apiVersion})
-
-  if (!client) {
-    return S.documentList()
-      .title(`${title} Pages`)
-      .filter(`_type == "${name}"`)
-      .defaultOrdering([{field: 'publishedAt', direction: 'asc'}])
-  }
+  if (!client) return defaultView
 
   const docs = (await client.fetch(queryByType[name])) || []
-  if (!docs.length) return defaultView
+  if (!docs?.length) return defaultView
 
   const years: Record<string, Array<string>> = {}
 
-  docs.forEach(({date, _id}: any) => {
+  docs.forEach(({_id, ...doc}: any) => {
+    const date = doc[field]
     const dateFormatted = date ? new Date(date) : new Date()
     const year = dateFormatted.getFullYear().toString()
 
@@ -90,9 +87,9 @@ export async function getSectionsByYear({
                       S.view.form(),
                       ...includePreview,
                       S.view.component(ReferenceByTab).title('References'),
-                    ])
-                )
-            )
-        )
+                    ]),
+                ),
+            ),
+        ),
     )
 }

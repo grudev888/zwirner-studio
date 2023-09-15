@@ -82,14 +82,16 @@ export const generalStructure = (S: StructureBuilder) =>
                               .filter(`_type == "productVariant" && store.productId == $productId`)
                               .params({
                                 productId: Number(id.replace('shopifyProduct-', '')),
-                              })
+                              }),
                           ),
-                      ])
-                  )
+                      ]),
+                  ),
                 ),
-              S.listItem().title('Collections').schemaType('collection').child(S.documentTypeList('collection')),
-                
-            ])
+              S.listItem()
+                .title('Collections')
+                .schemaType('collection')
+                .child(S.documentTypeList('collection')),
+            ]),
         ),
       S.divider(),
       S.listItem()
@@ -114,7 +116,7 @@ export const generalStructure = (S: StructureBuilder) =>
                           url: getSingletonPreviewUrl('/'),
                         })
                         .title('Preview'),
-                    ])
+                    ]),
                 ),
               S.listItem()
                 .title('Artists')
@@ -131,7 +133,7 @@ export const generalStructure = (S: StructureBuilder) =>
                           url: getSingletonPreviewUrl('/artists'),
                         })
                         .title('Preview'),
-                    ])
+                    ]),
                 ),
               S.listItem()
                 .title('Exhibitions Landing')
@@ -148,7 +150,7 @@ export const generalStructure = (S: StructureBuilder) =>
                           url: getSingletonPreviewUrl('/exhibitions'),
                         })
                         .title('Preview'),
-                    ])
+                    ]),
                 ),
               S.listItem()
                 .title('Collect')
@@ -165,7 +167,7 @@ export const generalStructure = (S: StructureBuilder) =>
                           url: getSingletonPreviewUrl('/collect'),
                         })
                         .title('Preview'),
-                    ])
+                    ]),
                 ),
               S.listItem()
                 .title('Stories')
@@ -182,7 +184,7 @@ export const generalStructure = (S: StructureBuilder) =>
                           url: getSingletonPreviewUrl('/stories'),
                         })
                         .title('Preview'),
-                    ])
+                    ]),
                 ),
               S.listItem()
                 .title('Available Artworks')
@@ -199,7 +201,7 @@ export const generalStructure = (S: StructureBuilder) =>
                           url: getSingletonPreviewUrl('/available-artworks'),
                         })
                         .title('Preview'),
-                    ])
+                    ]),
                 ),
               S.listItem()
                 .title('Utopia Editions')
@@ -216,7 +218,7 @@ export const generalStructure = (S: StructureBuilder) =>
                           url: getSingletonPreviewUrl('/utopia-editions'),
                         })
                         .title('Preview'),
-                    ])
+                    ]),
                 ),
               S.listItem()
                 .title('Consignments')
@@ -233,13 +235,13 @@ export const generalStructure = (S: StructureBuilder) =>
                           url: getSingletonPreviewUrl('/consignments'),
                         })
                         .title('Preview'),
-                    ])
+                    ]),
                 ),
               S.divider(),
               S.listItem()
                 .title('Articles')
                 .icon(ComposeIcon)
-                .child(() => getSectionsByYear({S, document: article})),
+                .child(() => getSectionsByYear({S, document: article, field: 'publishDate'})),
 
               S.listItem()
                 .title('Artist Pages')
@@ -260,14 +262,14 @@ export const generalStructure = (S: StructureBuilder) =>
                             .options({url: getPreviewUrl})
                             .title('Preview'),
                           S.view.component(ReferenceByTab).title('References'),
-                        ])
-                    )
+                        ]),
+                    ),
                 ),
               S.listItem()
                 .title('Exhibitions')
                 .icon(DashboardIcon)
-                .child(() => getSectionsByYear({S, document: exhibitionPage})),
-            ])
+                .child(() => getSectionsByYear({S, document: exhibitionPage, field: 'startDate'})),
+            ]),
         ),
       S.divider(),
       S.listItem()
@@ -291,8 +293,8 @@ export const generalStructure = (S: StructureBuilder) =>
                         .views([
                           S.view.form(),
                           S.view.component(ReferenceByTab).title('References'),
-                        ])
-                    )
+                        ]),
+                    ),
                 ),
               S.listItem()
                 .title('Non Dz Gallery Artists')
@@ -309,10 +311,10 @@ export const generalStructure = (S: StructureBuilder) =>
                         .views([
                           S.view.form(),
                           S.view.component(ReferenceByTab).title('References'),
-                        ])
-                    )
+                        ]),
+                    ),
                 ),
-            ])
+            ]),
         ),
       S.listItem()
         .title('Artworks')
@@ -329,8 +331,8 @@ export const generalStructure = (S: StructureBuilder) =>
                   S.view.form(),
                   S.view.component(PreviewIframe).options({url: getPreviewUrl}).title('Preview'),
                   S.view.component(ReferenceByTab).title('References'),
-                ])
-            )
+                ]),
+            ),
         ),
       // S.listItem()
       //   .title('Artworks by Artist')
@@ -357,8 +359,8 @@ export const generalStructure = (S: StructureBuilder) =>
             .child(
               S.document()
                 .schemaType('author')
-                .views([S.view.form(), S.view.component(ReferenceByTab).title('References')])
-            )
+                .views([S.view.form(), S.view.component(ReferenceByTab).title('References')]),
+            ),
         ),
       S.listItem()
         .title('Books')
@@ -371,8 +373,8 @@ export const generalStructure = (S: StructureBuilder) =>
             .child(
               S.document()
                 .schemaType('book')
-                .views([S.view.form(), S.view.component(ReferenceByTab).title('References')])
-            )
+                .views([S.view.form(), S.view.component(ReferenceByTab).title('References')]),
+            ),
         ),
       S.listItem()
         .title('Locations')
@@ -386,8 +388,8 @@ export const generalStructure = (S: StructureBuilder) =>
             .child(
               S.document()
                 .schemaType('location')
-                .views([S.view.form(), S.view.component(ReferenceByTab).title('References')])
-            )
+                .views([S.view.form(), S.view.component(ReferenceByTab).title('References')]),
+            ),
         ),
       S.listItem()
         .title('Podcasts')
@@ -395,14 +397,14 @@ export const generalStructure = (S: StructureBuilder) =>
         .child(
           S.documentTypeList('podcast')
             .title('Podcasts')
-            .defaultOrdering([{field: 'dateSelection', direction: 'asc'}])
+            .defaultOrdering([{field: 'dateSelection', direction: 'asc'}]),
         ),
-        S.listItem()
+      S.listItem()
         .title('Videos')
         .icon(PlayIcon)
         .child(
           S.documentTypeList('video')
             .title('Videos')
-            .defaultOrdering([{field: 'dateSelection', direction: 'asc'}])
+            .defaultOrdering([{field: 'dateSelection', direction: 'asc'}]),
         ),
     ])

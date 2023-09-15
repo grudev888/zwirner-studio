@@ -4,7 +4,8 @@ import article from '../schemas/documents/article'
 
 const articleDateFields = groq`
   _id,
-  date,
+  _createdAt,
+  publishDate,
 `
 
 export const getArticleByDate = groq`

@@ -2,7 +2,9 @@ import groq from 'groq'
 
 const exhibitionDateFields = groq`
   _id,
-  "date": endDate,
+  _createdAt,
+  startDate,
+  endDate,
 `
 
 export const getEndDateExhibitionsDate = groq`
