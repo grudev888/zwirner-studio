@@ -11,9 +11,10 @@ export default defineType({
       type: 'string',
       title: 'Year',
       description: 'Add a year or year range: YYYY, YYYY–YYYY, c. YYYY, YYYY/YYYY',
-      hidden: ({parent, value}) => {
-        return !!(!value && (parent?.dateRange?.from || parent?.approximate))
-      },
+      // removed because it's not working properly
+      // hidden: ({parent, value}) => {
+      //   return !!(!value && (parent?.dateRange?.from || parent?.approximate))
+      // },
     }),
   ],
 })
