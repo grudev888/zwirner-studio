@@ -258,6 +258,7 @@ export default defineType({
           title: 'Linked Articles',
           description: 'Articles, exhibitions, fairs',
           type: 'reference',
+          weak: true,
           to: [{type: 'article'}, {type: exhibitionPage.name}],
         }),
       ],
