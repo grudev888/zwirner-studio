@@ -2,6 +2,8 @@ import {MasterDetailIcon} from '@sanity/icons'
 import {defineField, defineType, ObjectDefinition, ObjectRule} from 'sanity'
 import * as Media from '../../../../objects/utils/media'
 
+import blockContentSimple from '../../../utils/blockContentSimple'
+
 export interface DzInterstitialTypeProps {
   title: string
   split: boolean
@@ -13,7 +15,7 @@ export const builder = (
   params: {name: string; title: string; [key: string]: any} = {
     name: 'dzMedia',
     title: 'Media',
-  }
+  },
 ) => ({
   type: 'object',
   icon: MasterDetailIcon,
@@ -29,12 +31,13 @@ export const builder = (
         title: 'Media',
         description: 'Media module',
         validation: (rule: ObjectRule) => rule.required(),
-      })
+      }),
     ),
     defineField({
-      type: 'string',
       name: 'caption',
+      type: 'array',
       title: 'Caption',
+      of: blockContentSimple,
     }),
   ],
   preview: {

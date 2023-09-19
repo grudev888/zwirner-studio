@@ -13,6 +13,8 @@ export const EDITORIAL_TYPES = {
   COMPLEX: 'complex',
   QUOTE: 'quote',
 }
+import * as TextComplex from '../../../utils/textComplex'
+import blockContentSimple from '../../../utils/blockContentSimple'
 
 export const EDITORIAL_TYPES_NAMES = [
   EDITORIAL_TYPES.SIMPLE,
@@ -66,9 +68,9 @@ export const builder = (
       type: 'string',
       options: {
         list: [
-          {title: 'Simple', value: 'simple'},
-          {title: 'Complex', value: 'complex'},
-          {title: 'Quote', value: 'quote'},
+          {title: 'Simple', value: EDITORIAL_TYPES.SIMPLE},
+          {title: 'Complex', value: EDITORIAL_TYPES.COMPLEX},
+          {title: 'Quote', value: EDITORIAL_TYPES.QUOTE},
         ],
       },
       initialValue: 'simple',
@@ -77,35 +79,55 @@ export const builder = (
     ...getContentForMolecule(options),
     defineField({
       name: 'quoteTitle',
-      type: 'string',
+      type: 'array',
       title: 'Quote Title',
-      hidden: ({parent}) => parent?.editorialType !== 'quote',
+      of: blockContentSimple,
+      hidden: ({parent}) => parent?.editorialType !== EDITORIAL_TYPES.QUOTE,
     }),
     defineField({
       name: 'quoteFootNote',
-      type: 'string',
+      type: 'array',
       title: 'Quote Footnote',
-      hidden: ({parent}) => parent?.editorialType !== 'quote',
+      of: blockContentSimple,
+      hidden: ({parent}) => parent?.editorialType !== EDITORIAL_TYPES.QUOTE,
     }),
+    defineField(
+      TextComplex.builder(
+        {
+          name: 'editorialTextOverridesSimple',
+          title: 'Text Content',
+          hidden: ({parent}: any) => parent?.editorialType !== EDITORIAL_TYPES.SIMPLE,
+        },
+        {type: TextComplex.ComplexTextTypes.SINGLE},
+      ),
+    ),
     defineField({
       name: 'editorialTextOverrides',
       title: 'Text Content',
       type: 'array',
-      of: [{type: 'textComplex'}],
-      hidden: ({parent}) => parent?.editorialType === 'quote',
+      of: [
+        TextComplex.builder(
+          {
+            name: 'editorialTextOverridesComplex',
+            title: 'Text Content',
+          },
+          {type: TextComplex.ComplexTextTypes.FULL},
+        ),
+      ],
+      hidden: ({parent}) => parent?.editorialType !== EDITORIAL_TYPES.COMPLEX,
     }),
     defineField({
       name: 'reverse',
       title: 'Reverse',
       type: 'boolean',
       initialValue: false,
-      validation: (rule) => rule.required(),
+      hidden: ({parent}) => parent?.editorialType !== EDITORIAL_TYPES.COMPLEX,
     }),
     defineField({
       name: 'imageOverride',
       type: 'image',
       title: 'Image',
-      hidden: ({parent}) => parent?.editorialType !== 'complex',
+      hidden: ({parent}) => parent?.editorialType !== EDITORIAL_TYPES.COMPLEX,
       options: {
         hotspot: true,
       },

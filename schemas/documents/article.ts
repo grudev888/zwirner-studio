@@ -90,6 +90,8 @@ export default defineType({
           {title: 'Event', value: 'Event'},
           {title: 'Exhibition', value: 'Exhibition'},
           {title: 'Museum Highlights', value: 'Museum Highlights'},
+          {title: 'Museum Exhibition Press', value: 'Museum Exhibition Press'},
+          {title: 'Museum Exhibition Record', value: 'Museum Exhibition Record'},
         ],
       },
       initialValue: 'News',
