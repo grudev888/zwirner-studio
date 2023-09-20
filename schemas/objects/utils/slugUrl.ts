@@ -105,10 +105,12 @@ export const builder = (
           (typeof options?.prefix === 'function'
             ? await options.prefix(context.parent, getClientFromContext(context.getClient))
             : options?.prefix) || ''
+
         const suffix =
           (typeof options?.suffix === 'function'
             ? await options.suffix(context.parent, getClientFromContext(context.getClient))
             : options?.suffix) || ''
+
         const SLUG_BODY_LENGTH = SLUG_MAX_LENGTH - suffix.length - prefix.length
 
         const normalized = slugify(input).slice(0, SLUG_BODY_LENGTH)

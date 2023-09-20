@@ -286,25 +286,9 @@ export default defineType({
         },
         {
           optional: true,
-          prefix: async (parent, client) => {
-            // if parent.type === 'pressRelease' then prefix is /artists/[artist]/press/[slug]
-            if (parent.type === ArticleTypes['Selected Press']) {
-              const postId = parent._id.startsWith('drafts.')
-                ? parent._id.split('.')[1]
-                : parent._id
-              const artistPageSlug = await client.fetch(
-                `coalesce(*[_type == "artistPage" && references("${postId}")]{"slug": slug.current})[0]`,
-              )
-              if (!artistPageSlug) {
-                throw new Error(`No artistPage document references the post with ID: ${parent._id}`)
-              } else {
-                const pressPrefix = `${artistPageSlug.slug}/press`
-                return pressPrefix
-              }
-            }
-
-            // if context.parent.type === 'internalNews' then prefix is /news/[year]/[slug]
-            if (parent.type === ArticleTypes['Guide/Internal News']) {
+          prefix: async (parent) => {
+            // if context.parent.type === 'internalNews' or parent.type === 'pressRelease' (Selected Press) then prefix is /news/[year]/[slug]
+            if (parent.type === ArticleTypes['Guide/Internal News'] || parent.type === ArticleTypes['Selected Press']) {
               if (!parent?.publishDate) {
                 throw new Error('Please add a date to create a unique slug.')
               }
