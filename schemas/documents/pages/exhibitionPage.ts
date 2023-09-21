@@ -20,7 +20,7 @@ import book from '../book'
 import artist from '../artist'
 import podcast from '../podcast'
 
-import * as DzMedia from '../../objects/page/components/molecules/dzMedia'
+import * as Media from '../../objects/utils/media'
 import * as DzEditorial from '../../objects/page/components/molecules/dzEditorial'
 import * as DzGrid from '../../objects/page/grid'
 
@@ -184,16 +184,13 @@ export default defineType({
       ],
     }),
     defineField(
-      DzMedia.builder(
-        {
-          name: 'heroMedia',
-          title: 'Hero Media',
-          group: 'content',
-          description: 'Media module',
-          validation: (rule: ObjectRule) => rule.required(),
-        },
-        {hideComponentTitle: true},
-      ),
+      Media.builder({
+        name: 'heroMedia',
+        title: 'Hero Media',
+        group: 'content',
+        description: 'Media module',
+        validation: (rule: ObjectRule) => rule.required(),
+      }),
     ),
     defineField(
       Interstitial.builder({
