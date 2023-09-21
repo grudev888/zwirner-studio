@@ -18,7 +18,6 @@ const HASH_LENGTH = 5
 const ARTWORK_SUFFIX_LENGTH = HASH_LENGTH + 1 // 1 for the dash
 const SLUG_BODY_LENGTH = SLUG_MAX_LENGTH - ARTWORKS_PREFIX.length - ARTWORK_SUFFIX_LENGTH
 
-
 // Check If we will need prefilled fields
 export default defineType({
   name: 'artwork',
@@ -207,25 +206,6 @@ export default defineType({
       type: 'array',
       validation: (rule) => rule.required(),
       of: [
-        {
-          type: 'image',
-          title: 'Legacy Image',
-          options: {
-            hotspot: true,
-          },
-          fields: [
-            {
-              name: 'alt',
-              type: 'string',
-              title: 'Alternative text',
-            },
-            {
-              name: 'url',
-              type: 'string',
-              title: 'Url redirect',
-            },
-          ],
-        },
         defineArrayMember(
           Media.builder(
             {
@@ -265,6 +245,18 @@ export default defineType({
             },
             {
               type: Media.MediaTypes.VIDEO,
+            },
+          ),
+        ),
+        defineArrayMember(
+          Media.builder(
+            {
+              name: 'artVideoRecord',
+              icon: DocumentVideoIcon,
+              title: 'Video Record',
+            },
+            {
+              type: Media.MediaTypes.VIDEO_RECORD,
             },
           ),
         ),

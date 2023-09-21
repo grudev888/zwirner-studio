@@ -140,38 +140,28 @@ export default defineType({
       hidden: hideForTypes([ArticleTypes['Selected Press']]),
       of: blockContentSimple,
     }),
+    defineField({
+      name: 'header',
+      title: 'Header Image',
+      type: 'array',
+      hidden: hideForTypes([ArticleTypes['External News'], ArticleTypes['Selected Press']]),
+      of: [
+        defineArrayMember(Media.builder({name: 'headerImage', title: 'Image', group: 'content'})),
+      ],
+      group: 'content',
+    }),
     defineField(
       Media.builder(
         {
           name: 'image',
           title: 'Header Image',
           group: 'content',
-          hidden: hideForTypes([ArticleTypes['External News'], ArticleTypes['Selected Press']]),
+          hidden: hideForTypes([ArticleTypes['Guide/Internal News']]),
         },
         {type: Media.MediaTypes.IMAGE},
       ),
     ),
-    defineField({
-      name: 'header',
-      title: 'Header Image',
-      type: 'array',
-      hidden: hideForTypes([ArticleTypes['Guide/Internal News']]),
-      of: [
-        defineArrayMember(
-          Media.builder(
-            {name: 'headerImage', title: 'Image', group: 'content'},
-            {type: Media.MediaTypes.IMAGE},
-          ),
-        ),
-        defineArrayMember(
-          Media.builder(
-            {name: 'headerVideo', title: 'Video', group: 'content'},
-            {type: Media.MediaTypes.VIDEO},
-          ),
-        ),
-      ],
-      group: 'content',
-    }),
+
     defineField({
       name: 'publishDate',
       title: 'Publish Date',

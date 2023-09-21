@@ -6,6 +6,8 @@ import {
   defineType,
   SchemaTypeDefinition,
 } from 'sanity'
+import {MediaTypes} from '../../../utils/video'
+import * as Content from '../../../utils/contentWrapper'
 
 export interface DzHeroSchemaProps {
   title: string
@@ -19,7 +21,7 @@ export interface DzHeroSchemaProps {
 
 export const builder = (
   params: {name: string; title: string; [key: string]: any} = {name: 'dzHero', title: 'Hero'},
-  options: {references: SchemaTypeDefinition[]}
+  options: {references: SchemaTypeDefinition[]},
 ) => ({
   type: 'object',
   icon: MasterDetailIcon,
@@ -34,21 +36,35 @@ export const builder = (
       title: 'Component title',
       group: 'content',
     }),
+
+    // (Hero) Supported Modules for “Moving Images” ONLY
+    // All card sizes (XL/L/M/S) will support “Moving Images”
     defineField({
       name: 'content',
       title: 'Content',
       group: 'content',
       type: 'array',
       icon: MasterDetailIcon,
-      of: options.references.map((reference) =>
-        defineArrayMember({
-          name: reference.name,
-          title: reference.title,
-          type: 'reference',
-          to: [{type: reference.name}],
-        })
-      ),
+      of: [
+        defineArrayMember(
+          Content.builder(
+            {
+              name: 'linkedContent',
+              title: 'Linked Content',
+              group: 'content',
+            },
+            {
+              references: options.references,
+              validation: (rule: any) => rule.max(1),
+              video: {
+                type: MediaTypes.MOVING_IMAGE,
+              },
+            },
+          ),
+        ),
+      ],
     }),
+
     defineField({
       name: 'enableOverrides',
       type: 'boolean',
@@ -120,5 +136,5 @@ export const builder = (
 })
 
 export default defineType(
-  builder({name: 'dzHero', title: 'Hero'}, {references: []})
+  builder({name: 'dzHero', title: 'Hero'}, {references: []}),
 ) as ObjectDefinition

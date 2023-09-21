@@ -1,6 +1,7 @@
 import {MasterDetailIcon} from '@sanity/icons'
 import {ObjectDefinition, defineField, defineType} from 'sanity'
 import cta from '../../../utils/cta'
+import * as Media from '../../../utils/media'
 
 const fields = [
   defineField({name: 'title', type: 'string', title: 'Primary Title'}),
@@ -10,14 +11,15 @@ const fields = [
     title: 'Eyebrow',
   }),
   defineField({name: 'subtitle', type: 'string', title: 'Description'}),
+  // (Interstitial) Supported Modules for “Moving Images” ONLY
+  defineField(
+    Media.builder({
+      name: 'image',
+      title: 'Interstitial Media',
+    }),
+  ),
   defineField({name: 'cta', type: cta.name, title: 'CTA'}),
-  defineField({
-    name: 'image',
-    type: 'image',
-    title: 'Background Image',
-    options: {hotspot: true},
-    fields: [{name: 'alt', type: 'string', title: 'Alternative text'}],
-  }),
+
   defineField({name: 'mode', type: 'string', options: {list: ['Light', 'Dark']}, title: 'Mode'}),
 ]
 

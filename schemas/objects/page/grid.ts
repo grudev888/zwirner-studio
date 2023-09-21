@@ -26,7 +26,8 @@ const getComponents = (list: GridComponents[], references: FullGridReferencePerT
   return list.map((component: GridComponents) =>
     componentBuilder[component](undefined, {
       references: references[component] ?? references.all ?? [],
-    })
+      video: {},
+    }),
   )
 }
 
@@ -35,7 +36,7 @@ export const builder = (
     name: 'grid',
     title: 'Grid',
   },
-  options: GridOptions
+  options: GridOptions,
 ) => ({
   type: 'object',
   icon: MasterDetailIcon,
@@ -86,6 +87,6 @@ export default defineType(
     {
       components: Object.values(GridComponents),
       references: {all: [{name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition]},
-    }
-  )
+    },
+  ),
 ) as ObjectDefinition

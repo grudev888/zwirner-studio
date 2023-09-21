@@ -189,16 +189,13 @@ export default defineType({
       ],
     }),
     defineField(
-      Media.builder(
-        {
-          name: 'heroMedia',
-          title: 'Hero Media',
-          group: 'content',
-          description: 'Media module',
-          validation: (rule: ObjectRule) => rule.required(),
-        },
-        {video: {providers: [Media.VideoProviders.custom]}},
-      ),
+      Media.builder({
+        name: 'heroMedia',
+        title: 'Hero Media',
+        group: 'content',
+        description: 'Media module',
+        validation: (rule: ObjectRule) => rule.required(),
+      }),
     ),
     defineField(
       Interstitial.builder({
@@ -316,6 +313,18 @@ export default defineType({
             },
             {
               type: Media.MediaTypes.VIDEO,
+            },
+          ),
+        ),
+        defineArrayMember(
+          Media.builder(
+            {
+              name: 'artVideoRecord',
+              icon: DocumentVideoIcon,
+              title: 'Video Record',
+            },
+            {
+              type: Media.MediaTypes.VIDEO_RECORD,
             },
           ),
         ),

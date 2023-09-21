@@ -35,16 +35,13 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField(
-      Media.builder(
-        {
-          name: 'media',
-          title: 'Header Media',
-          group: 'content',
-          description: 'Media module',
-          validation: (rule: ObjectRule) => rule.required(),
-        },
-        {video: {providers: [Media.VideoProviders.custom]}}
-      )
+      Media.builder({
+        name: 'media',
+        title: 'Header Media',
+        group: 'content',
+        description: 'Media module',
+        validation: (rule: ObjectRule) => rule.required(),
+      }),
     ),
     defineField(
       Interstitial.builder(
@@ -55,8 +52,8 @@ export default defineType({
           description: 'Custom Interstitial module',
           validation: (rule: ObjectRule) => rule.required(),
         },
-        {excludeFields: ['subtitle']}
-      )
+        {excludeFields: ['subtitle']},
+      ),
     ),
     defineField({
       name: 'nowAvailable',
@@ -139,8 +136,8 @@ export default defineType({
           group: 'content',
           validation: (rule: ObjectRule) => rule.required(),
         },
-        {excludeFields: ['subtitle']}
-      )
+        {excludeFields: ['subtitle']},
+      ),
     ),
     defineField({
       name: 'mediaCarousel',

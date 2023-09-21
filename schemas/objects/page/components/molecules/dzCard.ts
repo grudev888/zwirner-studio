@@ -6,14 +6,16 @@ import {
   defineArrayMember,
   ObjectDefinition,
 } from 'sanity'
-import blockContentSimple from '../../../../../schemas/objects/utils/blockContentSimple'
+import blockContentSimple from '../../../utils/blockContentSimple'
+import * as Video from '../../../utils/video'
+import * as Media from '../../../utils/media'
 
 export const builder = (
   params: {name: string; title: string; [key: string]: any} = {
     name: 'dzCard',
     title: 'Card',
   },
-  options: {references: SchemaTypeDefinition[]},
+  options: {references: SchemaTypeDefinition[]; video?: Video.MediaOptions},
 ) => ({
   type: 'object',
   icon: MasterDetailIcon,
@@ -61,6 +63,21 @@ export const builder = (
         return parent?.content?.[0]?._type !== 'article'
       },
     }),
+
+    // (Content card) Supported Modules for “Moving Images” ONLY
+    defineField(
+      Media.builder(
+        {
+          name: 'mediaOverride',
+          title: 'Card Media Override',
+          group: 'overrides',
+        },
+        {
+          video: {type: Video.MediaTypes.MOVING_IMAGE},
+        },
+      ),
+    ),
+
     defineField({
       name: 'secondaryTitle',
       title: 'Secondary Title',
@@ -128,31 +145,13 @@ export const builder = (
       group: 'overrides',
       initialValue: false,
     }),
-    defineField({
-      name: 'imageOverride',
-      type: 'image',
-      title: 'Image',
-      group: 'overrides',
-      options: {
-        hotspot: true,
-      },
-      fields: [
-        {
-          name: 'alt',
-          type: 'string',
-          title: 'Alternative text',
-        },
-        {
-          name: 'url',
-          type: 'string',
-          title: 'Url redirect',
-        },
-      ],
-    }),
   ],
   ...params,
 })
 
 export default defineType(
-  builder({name: 'dzCard', title: 'Card'}, {references: []}),
+  builder(
+    {name: 'dzCard', title: 'Card'},
+    {references: [], video: {type: Video.MediaTypes.MOVING_IMAGE}},
+  ),
 ) as ObjectDefinition

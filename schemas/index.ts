@@ -9,7 +9,6 @@ import podcast from './documents/podcast'
 import video from './documents/video'
 import globalSEO from './documents/globalSEO'
 import locationType from './documents/location'
-import pageType from './documents/page'
 import artistPage from './documents/pages/artistPage'
 import exhibitionPage from './documents/pages/exhibitionPage'
 import press from './documents/press'
@@ -39,14 +38,9 @@ import dzMedia from './objects/page/components/molecules/dzMedia'
 import dzSplit from './objects/page/components/molecules/dzSplit'
 import dzTitle from './objects/page/components/molecules/dzTitle'
 import grid from './objects/page/grid'
-import row from './objects/page/layout'
-import pageBuilderComponents from './objects/page/pageBuilderComponents'
-import pageContent from './objects/page/pageContent'
-import pageContentList from './objects/page/pageContentList'
 import seo from './objects/page/seo'
 import addressType from './objects/utils/address'
 import breadcrumbItem from './objects/utils/breadcrumbItem'
-import brickAndMortar from './objects/utils/brickAndMortar'
 import cta from './objects/utils/cta'
 import dateRange from './objects/utils/dateRange'
 import dateSelection from './objects/utils/dateSelection'
@@ -54,6 +48,8 @@ import dateSelectionYear from './objects/utils/dateSelectionYear'
 import jsonLD from './objects/utils/jsonLdSchema'
 import link from './objects/utils/link'
 import media from './objects/utils/media'
+import videoMedia from './objects/utils/video'
+import contentWrap from './objects/utils/contentWrapper'
 import textComplex from './objects/utils/textComplex'
 import menu from './objects/navigation/menu'
 import menuItemLink from './objects/navigation/menuItemLink'
@@ -61,7 +57,6 @@ import menuItemPage from './objects/navigation/menuItemPage'
 import slugUrl from './objects/utils/slugUrl'
 import dzConsignment from './objects/page/components/molecules/dzConsignment'
 import dzButton from './objects/page/components/atoms/dzButton'
-import dzCardMedia from './objects/page/components/molecules/dzCard/dzCardMedia'
 import interstitial from './objects/page/components/primitives/interstitial'
 import hero from './objects/page/components/primitives/hero'
 import splitModule from './objects/page/components/modules/splitModule'
@@ -93,7 +88,8 @@ export const utilsObjects: SchemaTypeDefinition[] = [
   cta,
   link,
   media,
-  brickAndMortar,
+  videoMedia,
+  contentWrap,
   jsonLD,
   breadcrumbItem,
   slugUrl,
@@ -111,7 +107,6 @@ export const pageComponents: ObjectDefinition[] = [
   dzHeroCarousel,
   dzCarousel,
   dzButton,
-  dzCardMedia,
   dzConsignment,
   dzMedia,
 ]
@@ -124,7 +119,6 @@ export const objects: ObjectDefinition[] = [
   dateSelection,
   dateSelectionYear,
   seo,
-  row,
   grid,
   menu,
   menuItemLink,
@@ -167,7 +161,6 @@ export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
     article,
     press,
-    pageType,
     bookType,
     podcast,
     video,
@@ -178,9 +171,6 @@ export const schema: {types: SchemaTypeDefinition[]} = {
     authorType,
     dateRange,
     redirects,
-    pageContent,
-    pageContentList,
-    pageBuilderComponents,
     blockContent,
     ...pageDocuments,
     ...objects,

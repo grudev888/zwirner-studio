@@ -2,7 +2,6 @@ import {defineField, defineType} from 'sanity'
 
 import SelectPageAnchor from '../../../components/SelectPageAnchor'
 
-import page from '../../documents/page'
 import artistPage from '../../documents/pages/artistPage'
 import exhibitionLanding from '../../singletons/exhibitionsLanding'
 import artistListing from '../../singletons/artistListing'
@@ -26,7 +25,6 @@ export default defineType({
       title: 'Page',
       type: 'reference',
       to: [
-        {type: page.name},
         {type: artistPage.name},
         {type: exhibitionPage.name},
         {type: availableArtworks.name},

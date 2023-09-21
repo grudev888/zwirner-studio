@@ -4,9 +4,11 @@ import {
   defineField,
   defineArrayMember,
   defineType,
+  ObjectRule,
   ObjectDefinition,
   SchemaTypeDefinition,
 } from 'sanity'
+import * as Media from '../../../../objects/utils/media'
 
 export const SPLIT_TYPES = {
   TALL: 'tall',
@@ -96,6 +98,22 @@ export const builder = (
       group: 'overrides',
       initialValue: false,
     }),
+    // (Split) Modules to support both “Moving Images” and “Interactive Video”
+    defineField(
+      Media.builder(
+        {
+          name: 'media',
+          title: 'Media',
+          description: 'Media module',
+          group: 'overrides',
+          validation: (rule: ObjectRule) => rule.required(),
+        },
+        {
+          // This enables video type selection
+          video: {enabledSelection: true},
+        },
+      ),
+    ),
     defineField({
       name: 'titleOverride',
       type: 'string',
@@ -113,27 +131,6 @@ export const builder = (
       type: 'string',
       title: 'Component subtitle',
       group: 'overrides',
-    }),
-    defineField({
-      name: 'imageOverride',
-      type: 'image',
-      title: 'Image',
-      group: 'overrides',
-      options: {
-        hotspot: true,
-      },
-      fields: [
-        {
-          name: 'alt',
-          type: 'string',
-          title: 'Alternative text',
-        },
-        {
-          name: 'url',
-          type: 'string',
-          title: 'Url redirect',
-        },
-      ],
     }),
   ],
   ...params,

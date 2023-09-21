@@ -23,6 +23,7 @@ import exhibitionPage from './exhibitionPage'
 export default defineType({
   name: 'artistPage',
   title: 'Artist Page',
+  icon: UserIcon,
   groups: [
     {name: 'content', title: 'Artist Page', icon: UserIcon, default: true},
     {name: 'survey', title: 'Survey', icon: DocumentsIcon},
@@ -72,8 +73,8 @@ export default defineType({
           },
           group: 'content',
         },
-        {prefix: '/artists'}
-      )
+        {prefix: '/artists'},
+      ),
     ),
     defineField({
       name: 'artist',
@@ -130,8 +131,8 @@ export default defineType({
           title: 'Latest Exhibitions',
           group: 'content',
         },
-        {reference: exhibitionPage}
-      )
+        {reference: exhibitionPage},
+      ),
     ),
     defineField({
       name: 'exhibitionsInterstitial',
@@ -152,8 +153,8 @@ export default defineType({
           title: 'Guide',
           group: 'content',
         },
-        {reference: article}
-      )
+        {reference: article},
+      ),
     ),
     defineField(
       gridModuleBuilder(
@@ -162,8 +163,8 @@ export default defineType({
           title: 'Selected Press',
           group: 'content',
         },
-        {reference: article}
-      )
+        {reference: article},
+      ),
     ),
     defineField(
       carouselModuleBuilder(
@@ -172,8 +173,8 @@ export default defineType({
           title: 'Books',
           group: 'content',
         },
-        {reference: book}
-      )
+        {reference: book},
+      ),
     ),
     defineField({
       name: 'interstitial',
@@ -191,8 +192,8 @@ export default defineType({
           title: 'Survey',
           group: 'survey',
         },
-        {reference: [artwork, media]}
-      )
+        {reference: [artwork, media]},
+      ),
     ),
 
     defineField({
@@ -209,8 +210,8 @@ export default defineType({
           title: 'Available Works',
           group: 'availableWorks',
         },
-        {reference: [artwork, media]}
-      )
+        {reference: [artwork, media]},
+      ),
     ),
 
     defineField({
@@ -241,8 +242,8 @@ export default defineType({
           title: 'Guide',
           group: 'guide',
         },
-        {reference: [exhibitionPage, article]}
-      )
+        {reference: [exhibitionPage, article]},
+      ),
     ),
 
     defineField({
@@ -251,14 +252,14 @@ export default defineType({
       group: 'guide',
       type: interstitial.name,
     }),
-    
+
     defineField({
       name: 'guideSeo',
       title: 'Guide Seo',
       group: 'guide',
       type: 'seo',
     }),
-    
+
     defineField(
       gridModuleBuilder(
         {
@@ -266,8 +267,8 @@ export default defineType({
           title: 'Press',
           group: 'press',
         },
-        {reference: article}
-      )
+        {reference: article},
+      ),
     ),
 
     defineField({

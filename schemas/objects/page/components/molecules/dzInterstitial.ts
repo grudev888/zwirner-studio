@@ -6,7 +6,7 @@ import {
   defineArrayMember,
   SchemaTypeDefinition,
 } from 'sanity'
-
+import * as Media from '../../../utils/media'
 export interface DzInterstitialTypeProps {
   title: string
   split: boolean
@@ -71,6 +71,14 @@ export const builder = (
       group: 'overrides',
       initialValue: false,
     }),
+    // (Interstitial) Supported Modules for “Moving Images” ONLY
+    defineField(
+      Media.builder({
+        name: 'image',
+        title: 'Interstitial Media',
+        group: 'overrides',
+      }),
+    ),
     defineField({
       name: 'titleOverride',
       type: 'string',
@@ -88,27 +96,6 @@ export const builder = (
       type: 'string',
       title: 'Component subtitle',
       group: 'overrides',
-    }),
-    defineField({
-      name: 'imageOverride',
-      type: 'image',
-      title: 'Image',
-      group: 'overrides',
-      options: {
-        hotspot: true,
-      },
-      fields: [
-        {
-          name: 'alt',
-          type: 'string',
-          title: 'Alternative text',
-        },
-        {
-          name: 'url',
-          type: 'string',
-          title: 'Url redirect',
-        },
-      ],
     }),
   ],
   ...params,

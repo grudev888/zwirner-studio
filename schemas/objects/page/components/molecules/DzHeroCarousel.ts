@@ -19,7 +19,7 @@ export const builder = (
     name: 'dzHeroCarousel',
     title: 'Hero Carousel',
   },
-  options: {references: SchemaTypeDefinition[]}
+  options: {references: SchemaTypeDefinition[]},
 ) => ({
   type: 'object',
   icon: MasterDetailIcon,
@@ -46,7 +46,7 @@ export const builder = (
           title: reference.title,
           type: 'reference',
           to: [{type: reference.name}],
-        })
+        }),
       ),
     }),
     defineField({
@@ -90,5 +90,5 @@ export const builder = (
 })
 
 export default defineType(
-  builder({name: 'dzHeroCarousel', title: 'Hero Carousel'}, {references: []})
+  builder({name: 'dzHeroCarousel', title: 'Hero Carousel'}, {references: []}),
 ) as ObjectDefinition

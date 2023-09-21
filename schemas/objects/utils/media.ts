@@ -3,21 +3,17 @@ import {capitalize} from '../../../lib/util/strings'
 import {getPropFromPath} from '../../../lib/util/sanity'
 import {mediaAssetSource} from 'sanity-plugin-media'
 import {PresentationIcon} from '@sanity/icons'
+import * as Video from './video'
 
 export enum MediaTypes {
-  IMAGE = 'image',
-  VIDEO = 'video',
-}
-
-export enum VideoProviders {
-  vimeo = 'vimeo',
-  youtube = 'youtube',
-  custom = 'custom',
+  IMAGE = 'Image',
+  VIDEO = 'Custom Video',
+  VIDEO_RECORD = 'Video Record',
 }
 
 export type MediaOptions = {
   type?: MediaTypes
-  video?: {providers?: VideoProviders[]}
+  video?: Video.MediaOptions
   image?: {additionalFields?: FieldDefinition[]}
   required?: boolean
 }
@@ -35,14 +31,29 @@ export const builder = (
       name: 'type',
       title: 'Media Type',
       type: 'string',
-      initialValue: options?.type,
       hidden: !!options?.type,
       options: {
         list: Object.values(MediaTypes)
           .filter((type) => (!!options?.type ? type === options?.type : true))
           .map((type) => ({title: capitalize(type), value: type})),
       },
+      initialValue: capitalize(options?.type ?? ''),
     }),
+    defineField(
+      Video.builder(
+        {
+          name: 'videoSelectorReference',
+          title: 'Video Reference',
+          hidden: ({parent}: any) =>
+            parent?.type === MediaTypes.IMAGE ||
+            parent?.type === MediaTypes.VIDEO ||
+            !parent?.type ||
+            options?.type === MediaTypes.VIDEO ||
+            options?.type === MediaTypes.IMAGE,
+        },
+        ...[options?.video],
+      ),
+    ),
     defineField({
       name: 'image',
       title: 'Image',
@@ -68,14 +79,12 @@ export const builder = (
         }),
         ...(options?.image?.additionalFields || []),
       ],
-      hidden: ({parent}) => parent?.type === MediaTypes.VIDEO || !parent?.type,
-    }),
-    defineField({
-      name: 'provider',
-      title: 'Provider',
-      type: 'string',
-      options: {list: options?.video?.providers || Object.values(VideoProviders)},
-      hidden: ({parent}) => parent?.type === MediaTypes.IMAGE || !parent?.type,
+      hidden: ({parent}) =>
+        parent?.type === MediaTypes.VIDEO ||
+        parent?.type === MediaTypes.VIDEO_RECORD ||
+        options?.type === MediaTypes.VIDEO ||
+        options?.type === MediaTypes.VIDEO_RECORD ||
+        !parent?.type,
     }),
     defineField({
       name: 'video',
@@ -83,16 +92,11 @@ export const builder = (
       type: 'file',
       options: {accept: 'video/mp4,video/x-m4v,video/*', sources: [mediaAssetSource]},
       hidden: ({parent}) =>
-        parent?.type === MediaTypes.IMAGE || !parent?.type || parent?.provider !== 'custom',
-    }),
-    defineField({
-      name: 'externalVideo',
-      title: 'Video URL',
-      type: 'url',
-      hidden: ({parent}) =>
         parent?.type === MediaTypes.IMAGE ||
-        !parent?.type ||
-        !['vimeo', 'youtube'].includes(parent?.provider),
+        parent?.type === MediaTypes.VIDEO_RECORD ||
+        options?.type === MediaTypes.IMAGE ||
+        options?.type === MediaTypes.VIDEO_RECORD ||
+        !parent?.type,
     }),
   ],
   ...params,

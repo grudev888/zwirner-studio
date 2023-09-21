@@ -25,13 +25,20 @@ export const builder = (
       type: 'string',
       title: 'Component title',
     }),
+    // (DzMedia) Modules to support both “Moving Images” and “Interactive Video”
     defineField(
-      Media.builder({
-        name: 'media',
-        title: 'Media',
-        description: 'Media module',
-        validation: (rule: ObjectRule) => rule.required(),
-      }),
+      Media.builder(
+        {
+          name: 'media',
+          title: 'Media',
+          description: 'Media module',
+          validation: (rule: ObjectRule) => rule.required(),
+        },
+        {
+          // This enables video type selection
+          video: {enabledSelection: true},
+        },
+      ),
     ),
     defineField({
       name: 'caption',
