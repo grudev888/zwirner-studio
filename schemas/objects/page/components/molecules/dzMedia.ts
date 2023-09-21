@@ -1,5 +1,5 @@
 import {MasterDetailIcon} from '@sanity/icons'
-import {defineField, defineType, ObjectDefinition, ObjectRule} from 'sanity'
+import {defineField, defineType, StringRule, ObjectDefinition, ObjectRule} from 'sanity'
 import * as Media from '../../../../objects/utils/media'
 
 import blockContentSimple from '../../../utils/blockContentSimple'
@@ -16,6 +16,9 @@ export const builder = (
     name: 'dzMedia',
     title: 'Media',
   },
+  options: {
+    hideComponentTitle?: boolean
+  } = {hideComponentTitle: false},
 ) => ({
   type: 'object',
   icon: MasterDetailIcon,
@@ -24,6 +27,8 @@ export const builder = (
       name: 'title',
       type: 'string',
       title: 'Component title',
+      ...(!options?.hideComponentTitle ? {validation: (rule: StringRule) => rule.required()} : {}),
+      hidden: options?.hideComponentTitle,
     }),
     // (DzMedia) Modules to support both “Moving Images” and “Interactive Video”
     defineField(

@@ -4,6 +4,7 @@ import {
   defineArrayMember,
   defineField,
   defineType,
+  StringRule,
   ObjectDefinition,
   SchemaTypeDefinition,
 } from 'sanity'
@@ -50,7 +51,10 @@ export const builder = (
     name: 'dzEditorial',
     title: 'Editorial',
   },
-  options: {references: SchemaTypeDefinition[]},
+  options: {references: SchemaTypeDefinition[]; hideComponentTitle?: boolean} = {
+    references: [],
+    hideComponentTitle: false,
+  },
 ) => ({
   type: 'object',
   icon: MasterDetailIcon,
@@ -60,7 +64,8 @@ export const builder = (
       name: 'title',
       type: 'string',
       title: 'Component title',
-      validation: (rule) => rule.required(),
+      ...(!options?.hideComponentTitle ? {validation: (rule: StringRule) => rule.required()} : {}),
+      hidden: options?.hideComponentTitle,
     }),
     defineField({
       title: 'Type',

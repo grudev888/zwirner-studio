@@ -1,13 +1,5 @@
-import {
-  BlockElementIcon,
-  ComposeIcon,
-  SearchIcon,
-  ImageIcon,
-  DocumentVideoIcon,
-  DocumentIcon,
-} from '@sanity/icons'
+import {BlockElementIcon, ComposeIcon, SearchIcon, DocumentIcon} from '@sanity/icons'
 import * as Interstitial from '../../objects/page/components/primitives/interstitial'
-import {GreyFootNote, GreyFootNoteDecorator} from '../../../components/block/GreyFootnote'
 import {
   ObjectRule,
   defineArrayMember,
@@ -16,7 +8,6 @@ import {
   SchemaTypeDefinition,
   StringRule,
 } from 'sanity'
-import * as Media from '../../objects/utils/media'
 import {builder as slugURLBuilder} from '../../objects/utils/slugUrl'
 import {builder as PageBuilder, PageBuilderComponents} from '../../objects/utils/pageBuilder'
 import {GridComponents} from '../../objects/page/grid'
@@ -28,6 +19,10 @@ import location from '../location'
 import book from '../book'
 import artist from '../artist'
 import podcast from '../podcast'
+
+import * as DzMedia from '../../objects/page/components/molecules/dzMedia'
+import * as DzEditorial from '../../objects/page/components/molecules/dzEditorial'
+import * as DzGrid from '../../objects/page/grid'
 
 export default defineType({
   name: 'exhibitionPage',
@@ -189,13 +184,16 @@ export default defineType({
       ],
     }),
     defineField(
-      Media.builder({
-        name: 'heroMedia',
-        title: 'Hero Media',
-        group: 'content',
-        description: 'Media module',
-        validation: (rule: ObjectRule) => rule.required(),
-      }),
+      DzMedia.builder(
+        {
+          name: 'heroMedia',
+          title: 'Hero Media',
+          group: 'content',
+          description: 'Media module',
+          validation: (rule: ObjectRule) => rule.required(),
+        },
+        {hideComponentTitle: true},
+      ),
     ),
     defineField(
       Interstitial.builder({
@@ -277,59 +275,21 @@ export default defineType({
 
     // INSTALLATION VIEWS CONTENT
 
-    defineField({
-      title: 'Installation Views',
-      name: 'installationViews',
-      group: 'installationViews',
-      type: 'array',
-      of: [
-        defineArrayMember(
-          Media.builder(
-            {
-              name: 'artImage',
-              icon: ImageIcon,
-              title: 'Image',
-              preview: {
-                select: {
-                  image: 'image',
-                },
-                prepare({image}: any) {
-                  const {altText, caption} = image
-                  return {title: altText ?? caption, media: image}
-                },
-              },
-            },
-            {
-              type: Media.MediaTypes.IMAGE,
-            },
-          ),
-        ),
-        defineArrayMember(
-          Media.builder(
-            {
-              name: 'artVideo',
-              icon: DocumentVideoIcon,
-              title: 'Video',
-            },
-            {
-              type: Media.MediaTypes.VIDEO,
-            },
-          ),
-        ),
-        defineArrayMember(
-          Media.builder(
-            {
-              name: 'artVideoRecord',
-              icon: DocumentVideoIcon,
-              title: 'Video Record',
-            },
-            {
-              type: Media.MediaTypes.VIDEO_RECORD,
-            },
-          ),
-        ),
-      ],
-    }),
+    defineField(
+      DzGrid.builder(
+        {
+          name: 'installationViews',
+          title: 'Installation Views',
+          group: 'installationViews',
+        },
+        {
+          hideComponentTitle: true,
+          references: {},
+          components: [GridComponents.dzMedia],
+        },
+      ),
+    ),
+
     defineField(
       Interstitial.builder({
         name: 'installationViewsInterstitial',
@@ -354,20 +314,23 @@ export default defineType({
       type: 'file',
       options: {accept: 'application/pdf'},
     }),
-    defineField({
-      name: 'checklist',
-      title: 'Artworks',
-      group: 'checklist',
-      type: 'array',
-      of: [
-        defineArrayMember({
-          name: 'checklistItem',
-          title: 'Checklist Item',
-          type: 'reference',
-          to: [{type: artwork.name}],
-        }),
-      ],
-    }),
+    defineField(
+      DzGrid.builder(
+        {
+          name: 'checklist',
+          title: 'Artworks',
+          group: 'checklist',
+        },
+        {
+          hideComponentTitle: true,
+          references: {
+            dzCard: [artwork],
+          },
+          components: [GridComponents.dzCard],
+        },
+      ),
+    ),
+
     defineField(
       Interstitial.builder({
         name: 'checklistInterstitial',
@@ -393,43 +356,17 @@ export default defineType({
       type: 'file',
       options: {accept: 'application/pdf'},
     }),
-    defineField({
-      name: 'pressRelease',
-      title: 'Press Release',
-      group: 'pressRelease',
-      type: 'array',
-      of: [
-        defineArrayMember({
-          type: 'block',
-          name: 'block',
-          marks: {
-            decorators: [
-              {title: 'Strong', value: 'strong'},
-              {title: 'Emphasis', value: 'em'},
-              {
-                title: 'Grey Note',
-                value: 'greyNote',
-                icon: GreyFootNote,
-                component: GreyFootNoteDecorator,
-              },
-            ],
-          },
-        }),
-        defineArrayMember(
-          Media.builder(
-            {
-              name: 'bodyImage',
-              icon: ImageIcon,
-              title: 'Image',
-              preview: {select: {media: 'image', title: 'image.caption'}},
-            },
-            {
-              type: Media.MediaTypes.IMAGE,
-            },
-          ),
-        ),
-      ],
-    }),
+    defineField(
+      DzEditorial.builder(
+        {
+          name: 'pressRelease',
+          title: 'Press Release',
+          group: 'pressRelease',
+          description: 'Editorial Module',
+        },
+        {references: [], hideComponentTitle: true},
+      ),
+    ),
     defineField(
       Interstitial.builder({
         name: 'pressReleaseInterstitial',

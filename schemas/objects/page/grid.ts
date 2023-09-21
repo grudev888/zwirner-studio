@@ -1,5 +1,5 @@
 import {MasterDetailIcon} from '@sanity/icons'
-import {defineField, defineType, ObjectDefinition, SchemaTypeDefinition} from 'sanity'
+import {defineField, defineType, StringRule, ObjectDefinition, SchemaTypeDefinition} from 'sanity'
 import {builder as dzCardBuilder} from '../page/components/molecules/dzCard'
 import {builder as dzMediaBuilder} from '../page/components/molecules/dzMedia'
 
@@ -20,6 +20,7 @@ export type FullGridReferencePerType = ReferencePerType & {all?: SchemaTypeDefin
 export type GridOptions = {
   components: GridComponents[]
   references: FullGridReferencePerType
+  hideComponentTitle?: boolean
 }
 
 const getComponents = (list: GridComponents[], references: FullGridReferencePerType) => {
@@ -50,7 +51,8 @@ export const builder = (
       title: 'Title',
       type: 'string',
       description: 'Section name',
-      validation: (Rule) => Rule.required(),
+      ...(!options?.hideComponentTitle ? {validation: (rule: StringRule) => rule.required()} : {}),
+      hidden: options?.hideComponentTitle,
     }),
     defineField({
       name: 'wrap',
@@ -75,7 +77,7 @@ export const builder = (
       type: 'array',
       icon: MasterDetailIcon,
       of: getComponents(options?.components ?? Object.values(GridComponents), options.references),
-      ...params,
+      name: 'grid',
     },
   ],
   ...params,
