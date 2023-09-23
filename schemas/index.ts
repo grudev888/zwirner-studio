@@ -10,6 +10,7 @@ import video from './documents/video'
 import globalSEO from './documents/globalSEO'
 import locationType from './documents/location'
 import artistPage from './documents/pages/artistPage'
+import exceptionalWork from './documents/exceptionalWork'
 import exhibitionPage from './documents/pages/exhibitionPage'
 import press from './documents/press'
 import redirects from './documents/redirects'
@@ -140,7 +141,7 @@ const shopifyObjects: ObjectDefinition[] = [
 ]
 const shopifyUtils: SchemaTypeDefinition[] = [proxyString]
 
-export const pageDocuments: DocumentDefinition[] = [artistPage, exhibitionPage]
+export const pageDocuments: DocumentDefinition[] = [artistPage, exhibitionPage, exceptionalWork]
 
 export const singletons: DocumentDefinition[] = [
   exhibitionsLanding,

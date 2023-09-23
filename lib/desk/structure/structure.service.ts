@@ -4,6 +4,7 @@ import {apiVersion} from '../../../env'
 import {ReferenceByTab} from '../../overrides/overrides'
 import {PreviewIframe} from '../../preview/customIframe/previewIframe'
 import {getEndDateExhibitionsDate} from '../../../queries/exhibitionPage.queries'
+import {getExceptionalWorkEndDate} from '../../../queries/exceptionalWork.queries'
 import {getArtistByName} from '../../../queries/artist.queries'
 import exhibitionPage from '../../../schemas/documents/pages/exhibitionPage'
 import {capitalize} from '../../util/strings'
@@ -11,6 +12,7 @@ import {DocumentDefinition} from 'sanity'
 import article from '../../../schemas/documents/article'
 import {getArticleByDate} from '../../../queries/article.queries'
 import artistPage from '../../../schemas/documents/pages/artistPage'
+import exceptionalWork from '../../../schemas/documents/exceptionalWork'
 import {getPreviewUrl} from './utils'
 
 interface StructureBuilderProps {
@@ -23,6 +25,7 @@ const queryByType: any = {
   [exhibitionPage.name]: getEndDateExhibitionsDate,
   [article.name]: getArticleByDate,
   [artistPage.name]: getArtistByName,
+  [exceptionalWork.name]: getExceptionalWorkEndDate,
 }
 
 export async function getSectionsByYear({

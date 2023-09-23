@@ -24,6 +24,7 @@ import {getSectionsByYear} from './structure.service'
 
 import article from '../../../schemas/documents/article'
 import exhibitionPage from '../../../schemas/documents/pages/exhibitionPage'
+import exceptionalWork from '../../../schemas/documents/exceptionalWork'
 import {getPreviewUrl, getSingletonPreviewUrl} from './utils'
 
 export const generalStructure = (S: StructureBuilder) =>
@@ -265,6 +266,10 @@ export const generalStructure = (S: StructureBuilder) =>
                         ]),
                     ),
                 ),
+              S.listItem()
+                .title('Exceptional Works')
+                .icon(DashboardIcon)
+                .child(() => getSectionsByYear({S, document: exceptionalWork, field: 'startDate'})),
               S.listItem()
                 .title('Exhibitions')
                 .icon(DashboardIcon)
