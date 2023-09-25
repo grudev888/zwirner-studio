@@ -26,7 +26,7 @@ export default defineField({
       title: 'Address 2',
       type: 'string',
       validation: (rule) => [
-        rule.min(5).error('An address of min. 5 characters is required'),
+        rule.min(1).error('An address of min. 1 character is required'),
         rule.max(50).warning('Please, double check the length of this address'),
       ],
     }),
@@ -52,6 +52,11 @@ export default defineField({
       title: 'Zip Code',
       type: 'string',
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'reverseZipAndCity',
+      title: 'Reverse Zip Code and City',
+      type: 'boolean'
     }),
     defineField({
       name: 'geoLocation',
