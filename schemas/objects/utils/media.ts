@@ -9,6 +9,7 @@ export enum MediaTypes {
   IMAGE = 'Image',
   VIDEO = 'Custom Video',
   VIDEO_RECORD = 'Video Record',
+  UNSET = 'Unset',
 }
 
 export type MediaOptions = {
@@ -37,7 +38,7 @@ export const builder = (
           .filter((type) => (!!options?.type ? type === options?.type : true))
           .map((type) => ({title: capitalize(type), value: type})),
       },
-      initialValue: capitalize(options?.type ?? ''),
+      initialValue: MediaTypes.UNSET,
     }),
     defineField(
       Video.builder(
@@ -48,6 +49,7 @@ export const builder = (
             parent?.type === MediaTypes.IMAGE ||
             parent?.type === MediaTypes.VIDEO ||
             !parent?.type ||
+            parent?.type === MediaTypes.UNSET ||
             options?.type === MediaTypes.VIDEO ||
             options?.type === MediaTypes.IMAGE,
         },
@@ -84,6 +86,7 @@ export const builder = (
         parent?.type === MediaTypes.VIDEO_RECORD ||
         options?.type === MediaTypes.VIDEO ||
         options?.type === MediaTypes.VIDEO_RECORD ||
+        parent?.type === MediaTypes.UNSET ||
         !parent?.type,
     }),
     defineField({
@@ -96,6 +99,7 @@ export const builder = (
         parent?.type === MediaTypes.VIDEO_RECORD ||
         options?.type === MediaTypes.IMAGE ||
         options?.type === MediaTypes.VIDEO_RECORD ||
+        parent?.type === MediaTypes.UNSET ||
         !parent?.type,
     }),
   ],
