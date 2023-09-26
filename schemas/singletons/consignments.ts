@@ -5,7 +5,7 @@ import media from '../objects/utils/media'
 import artist from '../documents/artist'
 import * as Interstitial from '../objects/page/components/primitives/interstitial'
 import {builder as carouselBuilder} from '../objects/page/components/modules/carouselModule'
-import { hiddenSlug } from '../objects/data/hiddenSlug'
+import {hiddenSlug} from '../objects/data/hiddenSlug'
 
 export default defineType({
   name: 'consignments',
@@ -75,8 +75,8 @@ export default defineType({
           group: 'content',
           validation: (rule: ObjectRule) => rule.required(),
         },
-        {excludeFields: ['subtitle']}
-      )
+        {excludeFields: ['subtitle']},
+      ),
     ),
     defineField({
       name: 'body',
@@ -100,7 +100,14 @@ export default defineType({
             defineField({
               type: 'image',
               name: 'image',
-              fields: [defineField({name: 'alt', title: 'Alternative text', type: 'string'})],
+              fields: [
+                defineField({
+                  name: 'alt', 
+                  title: 'Alternative text', 
+                  type: 'string',
+                  hidden: true,
+                })
+              ],
               options: {hotspot: true},
               validation: (rule) => rule.required(),
             }),
@@ -126,8 +133,8 @@ export default defineType({
           description: 'Carousel module',
           group: 'content',
         },
-        {reference: artist, excludedFields: ['title']}
-      )
+        {reference: artist, excludedFields: ['title']},
+      ),
     ),
     defineField(
       Interstitial.builder(
@@ -138,8 +145,8 @@ export default defineType({
           group: 'content',
           validation: (rule: ObjectRule) => rule.required(),
         },
-        {excludeFields: ['subtitle']}
-      )
+        {excludeFields: ['subtitle']},
+      ),
     ),
   ],
 })

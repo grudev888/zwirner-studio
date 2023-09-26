@@ -25,6 +25,7 @@ export default defineType({
           name: 'alt',
           type: 'string',
           title: 'Alternative text',
+          hidden: true,
         },
         {
           name: 'url',

@@ -141,6 +141,7 @@ export const builder = (
           name: 'alt',
           type: 'string',
           title: 'Alternative text',
+          hidden: true,
         },
         {
           name: 'url',

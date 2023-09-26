@@ -1,6 +1,5 @@
 import {FieldDefinition, ObjectRule, SchemaTypeDefinition, defineField, defineType} from 'sanity'
 import {capitalize} from '../../../lib/util/strings'
-import {getPropFromPath} from '../../../lib/util/sanity'
 import {mediaAssetSource} from 'sanity-plugin-media'
 import {PresentationIcon} from '@sanity/icons'
 import * as Video from './video'
@@ -66,13 +65,7 @@ export const builder = (
           name: 'alt',
           title: 'Alternative Text',
           type: 'string',
-          validation: (rule) => {
-            return rule.custom((value, context) => {
-              if (!context.document || !context.path) return true
-              const parent = getPropFromPath(context.document, context.path?.slice(0, -2))
-              return parent.type === MediaTypes.IMAGE && !value ? 'Required' : true
-            })
-          },
+          hidden: true,
         }),
         defineField({
           name: 'url',

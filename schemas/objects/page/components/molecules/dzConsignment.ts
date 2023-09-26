@@ -15,7 +15,7 @@ export default defineField({
           name: 'alt',
           type: 'string',
           title: 'Alternative text',
-          validation: (rules) => rules.required(),
+          hidden: true,
         }),
       ],
     }),
