@@ -1,5 +1,6 @@
 import {type DocumentDefinition, type ObjectDefinition, SchemaTypeDefinition} from 'sanity'
 
+import page from './documents/page'
 import article from './documents/article'
 import artist from './documents/artist'
 import artwork from './documents/artwork'
@@ -160,6 +161,7 @@ export const singletons: DocumentDefinition[] = [
 
 export const schema: {types: SchemaTypeDefinition[]} = {
   types: [
+    page,
     article,
     press,
     bookType,

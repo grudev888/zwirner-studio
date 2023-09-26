@@ -15,6 +15,7 @@ import {
   InfoOutlineIcon,
   ActivityIcon,
   PlayIcon,
+
 } from '@sanity/icons'
 import {StructureBuilder} from 'sanity/desk'
 
@@ -32,11 +33,11 @@ export const generalStructure = (S: StructureBuilder) =>
     .title('Content')
     .items([
       S.listItem()
-        .title('Web Settings')
+        .title('Settings')
         .icon(CogIcon)
         .child(
           S.list()
-            .title('Web Settings')
+            .title('Settings')
             .items([
               S.listItem()
                 .title('Global SEO')
@@ -96,11 +97,25 @@ export const generalStructure = (S: StructureBuilder) =>
         ),
       S.divider(),
       S.listItem()
-        .title('Web Pages')
+        .title('Pages')
+        .icon(DocumentsIcon)
+        .child(
+          S.documentList()
+            .title('Pages')
+            .filter('_type == "page"')
+            .defaultOrdering([{field: 'name', direction: 'asc'}])
+            .child(
+              S.document()
+                .schemaType('page')
+                .views([S.view.form(), S.view.component(ReferenceByTab).title('References')]),
+            ),
+        ),
+      S.listItem()
+        .title('Old Pages')
         .icon(DocumentsIcon)
         .child(
           S.list()
-            .title('Web Pages')
+            .title('Old Pages')
             .items([
               S.listItem()
                 .title('Home')
