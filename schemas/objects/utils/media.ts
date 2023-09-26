@@ -38,7 +38,7 @@ export const builder = (
           .filter((type) => (!!options?.type ? type === options?.type : true))
           .map((type) => ({title: capitalize(type), value: type})),
       },
-      initialValue: MediaTypes.UNSET,
+      initialValue: options?.type || MediaTypes.UNSET,
     }),
     defineField(
       Video.builder(
@@ -93,7 +93,8 @@ export const builder = (
       name: 'video',
       title: 'Video',
       type: 'file',
-      options: {accept: 'video/mp4,video/x-m4v,video/*', sources: [mediaAssetSource]},
+      // https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Containers
+      options: {accept: 'video/mp4, video/ogg, video/webm', sources: [mediaAssetSource]},
       hidden: ({parent}) =>
         parent?.type === MediaTypes.IMAGE ||
         parent?.type === MediaTypes.VIDEO_RECORD ||
