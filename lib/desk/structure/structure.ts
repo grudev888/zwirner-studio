@@ -101,11 +101,11 @@ export const generalStructure = (S: StructureBuilder) =>
         ),
       S.divider(),
       S.listItem()
-        .title('Pages')
+        .title('Special Pages')
         .icon(DocumentsIcon)
         .child(
           S.documentList()
-            .title('Pages')
+            .title('Special Pages')
             .filter('_type == "page"')
             .defaultOrdering([{field: 'name', direction: 'asc'}])
             .child(
@@ -115,7 +115,7 @@ export const generalStructure = (S: StructureBuilder) =>
             ),
         ),
       S.listItem()
-        .title('Old Pages')
+        .title('Web Pages')
         .icon(DocumentsIcon)
         .child(
           S.list()
