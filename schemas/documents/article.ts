@@ -19,6 +19,7 @@ import * as Media from '../objects/utils/media'
 import {GreyFootNote, GreyFootNoteDecorator} from '../../components/block/GreyFootnote'
 import {ConditionalProperty} from 'sanity'
 import blockContentSimple from '../objects/utils/blockContentSimple'
+import artwork from './artwork'
 
 export interface ArticleSchema {
   title?: string
@@ -147,6 +148,12 @@ export default defineType({
       hidden: hideForTypes([ArticleTypes['External News'], ArticleTypes['Selected Press']]),
       of: [
         defineArrayMember(Media.builder({name: 'headerImage', title: 'Image', group: 'content'})),
+        defineArrayMember({
+          name: 'artwork',
+          title: 'Artwork',
+          type: 'reference',
+          to: [{type: artwork.name}],
+        }),
       ],
       group: 'content',
     }),
@@ -278,7 +285,10 @@ export default defineType({
           optional: true,
           prefix: async (parent) => {
             // if context.parent.type === 'internalNews' or parent.type === 'pressRelease' (Selected Press) then prefix is /news/[year]/[slug]
-            if (parent.type === ArticleTypes['Guide/Internal News'] || parent.type === ArticleTypes['Selected Press']) {
+            if (
+              parent.type === ArticleTypes['Guide/Internal News'] ||
+              parent.type === ArticleTypes['Selected Press']
+            ) {
               if (!parent?.publishDate) {
                 throw new Error('Please add a date to create a unique slug.')
               }
