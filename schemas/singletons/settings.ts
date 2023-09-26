@@ -1,52 +1,26 @@
-import { CogIcon } from '@sanity/icons'
-import { defineArrayMember, defineField, defineType } from 'sanity'
+import {CogIcon} from '@sanity/icons'
+import {defineField, defineType, ObjectRule} from 'sanity'
+import * as Media from '../objects/utils/media'
 
 export default defineType({
   name: 'settings',
   title: 'Settings',
   type: 'document',
   icon: CogIcon,
-  preview: { select: { title: 'title', subtitle: 'description' } },
+  preview: {select: {title: 'title', subtitle: 'description'}},
   fields: [
-    defineField({
-      name: 'title',
-      description: 'This field is the title of DZ.',
-      title: 'Title',
-      type: 'string',
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'description',
-      description:
-        'Used both for the <meta> description tag for SEO.',
-      title: 'Descriprion',
-      type: 'array',
-      of: [
-        defineArrayMember({
-          type: 'block',
-          options: {},
-          styles: [],
-          lists: [],
-          marks: {
-            decorators: [],
-            annotations: [
-              defineField({
-                type: 'object',
-                name: 'link',
-                fields: [
-                  {
-                    type: 'string',
-                    name: 'href',
-                    title: 'URL',
-                    validation: (rule) => rule.required(),
-                  },
-                ],
-              }),
-            ],
+    defineField(
+      Media.builder(
+        {
+          name: 'newsletterImage',
+          title: 'Newsletter Image',
+          validation: (rule: ObjectRule) => rule.required(),
+          options: {
+            collapsible: true,
           },
-        }),
-      ],
-      validation: (rule) => rule.max(155).required(),
-    }),
+        },
+        {type: Media.MediaTypes.IMAGE},
+      ),
+    ),
   ],
 })

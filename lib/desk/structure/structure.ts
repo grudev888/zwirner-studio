@@ -40,6 +40,10 @@ export const generalStructure = (S: StructureBuilder) =>
             .title('Settings')
             .items([
               S.listItem()
+                .title('General Settings')
+                .icon(CogIcon)
+                .child(S.document().schemaType('settings').documentId('settings')),
+              S.listItem()
                 .title('Global SEO')
                 .icon(TrendUpwardIcon)
                 .child(S.document().schemaType('globalSEO').documentId('globalSEO')),
