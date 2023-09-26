@@ -10,12 +10,18 @@ import blockContentSimple from '../../../utils/blockContentSimple'
 import * as Video from '../../../utils/video'
 import * as Media from '../../../utils/media'
 
+type ReferenceOptions = {[key: string]: string}
+
 export const builder = (
   params: {name: string; title: string; [key: string]: any} = {
     name: 'dzCard',
     title: 'Card',
   },
-  options: {references: SchemaTypeDefinition[]; video?: Video.MediaOptions},
+  options: {
+    references: SchemaTypeDefinition[]
+    video?: Video.MediaOptions
+    referencesFilter?: ReferenceOptions
+  },
 ) => ({
   type: 'object',
   icon: MasterDetailIcon,
@@ -129,14 +135,17 @@ export const builder = (
       group: 'content',
       icon: MasterDetailIcon,
       validation: (rule) => rule.max(1),
-      of: options.references.map((reference) =>
-        defineArrayMember({
+      of: options.references.map((reference) => {
+        const filterForReference = options?.referencesFilter?.[reference.name]
+        const extraOptions = filterForReference ? {options: {filter: filterForReference}} : {}
+        return defineArrayMember({
           name: reference.name,
           title: reference.title,
           type: 'reference',
           to: [{type: reference.name}],
-        }),
-      ),
+          ...extraOptions,
+        })
+      }),
     }),
     defineField({
       name: 'enableOverrides',

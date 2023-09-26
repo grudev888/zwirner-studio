@@ -36,6 +36,16 @@ export enum ArticleTypes {
   'External News' = 'externalNews',
 }
 
+export enum ArticleCategory {
+  'Press' = 'Press',
+  'News' = 'News',
+  'Event' = 'Event',
+  'Exhibition' = 'Exhibition',
+  'Museum Highlights' = 'Museum Highlights',
+  'Museum Exhibition Press' = 'Museum Exhibition Press',
+  'Museum Exhibition Record' = 'Museum Exhibition Record',
+}
+
 const findKey = (value: ArticleTypes) =>
   Object.keys(ArticleTypes)[Object.values(ArticleTypes).indexOf(value)]
 
@@ -85,17 +95,9 @@ export default defineType({
       title: 'Category',
       group: 'content',
       options: {
-        list: [
-          {title: 'Press', value: 'Press'},
-          {title: 'News', value: 'News'},
-          {title: 'Event', value: 'Event'},
-          {title: 'Exhibition', value: 'Exhibition'},
-          {title: 'Museum Highlights', value: 'Museum Highlights'},
-          {title: 'Museum Exhibition Press', value: 'Museum Exhibition Press'},
-          {title: 'Museum Exhibition Record', value: 'Museum Exhibition Record'},
-        ],
+        list: Object.entries(ArticleCategory).map(([title, value]) => ({title, value})),
       },
-      initialValue: 'News',
+      initialValue: ArticleCategory.News,
     }),
     defineField({
       type: 'string',

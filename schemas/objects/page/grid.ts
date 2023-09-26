@@ -16,18 +16,29 @@ const componentBuilder = {
 export type ReferencePerType = {
   [key in GridComponents]?: SchemaTypeDefinition[]
 }
+
+export type ReferencesFilterOptions = {
+  [key in GridComponents]?: {[key: string]: string}
+}
+
 export type FullGridReferencePerType = ReferencePerType & {all?: SchemaTypeDefinition[]}
 export type GridOptions = {
   components: GridComponents[]
   references: FullGridReferencePerType
+  referencesFilter?: ReferencesFilterOptions
   hideComponentTitle?: boolean
 }
 
-const getComponents = (list: GridComponents[], references: FullGridReferencePerType) => {
+const getComponents = (
+  list: GridComponents[],
+  references: FullGridReferencePerType,
+  referencesFilter?: ReferencesFilterOptions,
+) => {
   return list.map((component: GridComponents) =>
     componentBuilder[component](undefined, {
       references: references[component] ?? references.all ?? [],
       video: {},
+      referencesFilter: referencesFilter?.[component] ?? {},
     }),
   )
 }
@@ -76,7 +87,11 @@ export const builder = (
     {
       type: 'array',
       icon: MasterDetailIcon,
-      of: getComponents(options?.components ?? Object.values(GridComponents), options.references),
+      of: getComponents(
+        options?.components ?? Object.values(GridComponents),
+        options.references,
+        options.referencesFilter,
+      ),
       name: 'grid',
     },
   ],

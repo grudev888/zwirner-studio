@@ -18,6 +18,10 @@ const componentBuilder = {
   [CarouselComponents.dzMedia]: dzMediaBuilder,
 }
 
+export type ReferencesFilterOptions = {
+  [key in CarouselComponents]?: {[key: string]: string}
+}
+
 export type ReferencePerType = {
   [key in CarouselComponents]?: SchemaTypeDefinition[]
 }
@@ -25,13 +29,19 @@ export type FullGridReferencePerType = ReferencePerType & {all?: SchemaTypeDefin
 export type CarouselOptions = {
   components: CarouselComponents[]
   references: FullGridReferencePerType
+  referencesFilter?: ReferencesFilterOptions
 }
 
-const getComponents = (list: CarouselComponents[], references: FullGridReferencePerType) => {
+const getComponents = (
+  list: CarouselComponents[],
+  references: FullGridReferencePerType,
+  referencesFilter?: ReferencesFilterOptions,
+) => {
   return list.map((component: CarouselComponents) =>
     componentBuilder[component](undefined, {
       references: references[component] ?? references.all ?? [],
-    })
+      referencesFilter: referencesFilter?.[component] ?? {},
+    }),
   )
 }
 
@@ -40,7 +50,7 @@ export const builder = (
     name: 'dzCarousel',
     title: 'Carousel',
   },
-  options: CarouselOptions
+  options: CarouselOptions,
 ) => ({
   type: 'object',
   icon: MasterDetailIcon,
@@ -62,7 +72,8 @@ export const builder = (
       icon: MasterDetailIcon,
       of: getComponents(
         options?.components ?? Object.values(CarouselComponents),
-        options.references
+        options.references,
+        options.referencesFilter,
       ),
       ...params,
     },
@@ -76,6 +87,6 @@ export default defineType(
     {
       components: Object.values(CarouselComponents),
       references: {all: [{name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition]},
-    }
-  )
+    },
+  ),
 ) as ObjectDefinition

@@ -1,16 +1,23 @@
 import {ComposeIcon, SearchIcon, DocumentIcon} from '@sanity/icons'
 import {BlockElementIcon} from '@sanity/icons'
-import {StringRule, defineArrayMember, defineField, defineType, SchemaTypeDefinition} from 'sanity'
-import article from '../documents/article'
-import interstitial from '../objects/page/components/primitives/interstitial'
+import {StringRule, defineField, defineType, SchemaTypeDefinition} from 'sanity'
+import {ArticleCategory} from '../documents/article'
+import * as Interstitial from '../objects/page/components/primitives/interstitial'
+import * as DzGrid from '../objects/page/grid'
 import {builder as PageBuilder, PageBuilderComponents} from '../objects/utils/pageBuilder'
-import { hiddenSlug } from '../objects/data/hiddenSlug'
+import {hiddenSlug} from '../objects/data/hiddenSlug'
 import {GridComponents} from '../objects/page/grid'
 import artwork from '../documents/artwork'
 import location from '../documents/location'
 import book from '../documents/book'
 import artist from '../documents/artist'
 import podcast from '../documents/podcast'
+
+export enum UpcomingMolecules {
+  'DZ Hero Carousel' = 'heroCarousel',
+  '2-Up Grid' = '2-up',
+  '3-Up Grid' = '3-up',
+}
 
 export default defineType({
   name: 'exhibitionsLanding',
@@ -95,45 +102,73 @@ export default defineType({
     ),
 
     defineField({
-      type: interstitial.name,
-      title: 'Subscribe Interstitial',
-      name: 'subscribeInterstitial',
-      description: 'Interstitial module',
+      type: 'string',
+      name: 'upcomingComponent',
+      title: 'Upcoming Component',
       group: 'exhibitions',
-      options: {collapsed: true},
+      options: {
+        list: Object.entries(UpcomingMolecules).map(([title, value]) => ({title, value})),
+      },
+      initialValue: UpcomingMolecules['DZ Hero Carousel'],
     }),
-    defineField({
-      name: 'museumHighlights',
-      title: ' ',
-      type: 'array',
-      group: 'exhibitions',
-      fieldset: 'museumHighlights',
-      of: [
-        defineArrayMember({
-          type: 'reference',
-          to: [{type: article.name}],
-          options: {
-            filter: '_type == "article" && category == "Museum Highlights"',
+
+    defineField(
+      Interstitial.builder({
+        title: 'Subscribe Interstitial',
+        name: 'subscribeInterstitial',
+        description: 'Interstitial module',
+        group: 'exhibitions',
+        options: {collapsed: true},
+      }),
+    ),
+
+    defineField(
+      DzGrid.builder(
+        {
+          name: 'museumHighlights',
+          title: ' ',
+          group: 'exhibitions',
+          fieldset: 'museumHighlights',
+        },
+        {
+          hideComponentTitle: true,
+          references: {
+            dzCard: [
+              {
+                name: 'article',
+                title: 'Article',
+              } as any,
+            ],
           },
-        }),
-      ],
-    }),
-    defineField({
-      type: interstitial.name,
-      title: 'Interstitial',
-      name: 'interstitial',
-      description: 'Interstitial module',
-      group: 'exhibitions',
-      options: {collapsed: true},
-    }),
-    defineField({
-      type: interstitial.name,
-      title: 'Past Exhibitions Interstitial',
-      name: 'pastExhibitionsInterstitial',
-      description: 'Interstitial module',
-      group: 'pastExhibitions',
-      options: {collapsed: true},
-    }),
+          referencesFilter: {
+            dzCard: {
+              article: `_type == "article" && category == "${ArticleCategory['Museum Highlights']}"`,
+            },
+          },
+          components: [GridComponents.dzCard],
+        },
+      ),
+    ),
+    defineField(
+      Interstitial.builder({
+        title: 'Interstitial',
+        name: 'interstitial',
+        description: 'Interstitial module',
+        group: 'exhibitions',
+        options: {collapsed: true},
+      }),
+    ),
+
+    defineField(
+      Interstitial.builder({
+        title: 'Past Exhibitions Interstitial',
+        name: 'pastExhibitionsInterstitial',
+        description: 'Interstitial module',
+        group: 'pastExhibitions',
+        options: {collapsed: true},
+      }),
+    ),
+
     defineField({
       name: 'pastExhibitionsSEO',
       title: 'Past Exhibitions SEO',
