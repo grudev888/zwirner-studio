@@ -172,6 +172,23 @@ export const generalStructure = (S: StructureBuilder) =>
                         .title('Preview'),
                     ]),
                 ),
+                S.listItem()
+                .title('Exhibitions Past')
+                .icon(BlockElementIcon)
+                .child(
+                  S.document()
+                    .schemaType('exhibitionsPast')
+                    .documentId('exhibitionsPast')
+                    .views([
+                      S.view.form(),
+                      S.view
+                        .component(PreviewIframe)
+                        .options({
+                          url: getSingletonPreviewUrl('/exhibitions'),
+                        })
+                        .title('Preview'),
+                    ]),
+                ),
               S.listItem()
                 .title('Collect')
                 .icon(BlockElementIcon)

@@ -1,5 +1,7 @@
 import {type DocumentDefinition, type ObjectDefinition, SchemaTypeDefinition} from 'sanity'
 
+
+// DOCUMENTS
 import page from './documents/page'
 import article from './documents/article'
 import artist from './documents/artist'
@@ -17,6 +19,7 @@ import press from './documents/press'
 import redirects from './documents/redirects'
 import strings from './documents/strings'
 
+// SINGLETONS
 import footer from './singletons/footer'
 import navigation from './singletons/navigation'
 import availableArtworks from './singletons/availableArtworks'
@@ -28,7 +31,9 @@ import utopiaEditions from './singletons/utopiaEditions'
 import consignments from './singletons/consignments'
 import artworkListing from './singletons/artistListing'
 import exhibitionsLanding from './singletons/exhibitionsLanding'
+import exhibitionPast from './singletons/exhibitionsPast'
 
+// OBJECTS
 import social from './objects/data/social'
 import dzCard from './objects/page/components/molecules/dzCard'
 import dzCarousel from './objects/page/components/molecules/dzCarousel'
@@ -146,6 +151,7 @@ export const pageDocuments: DocumentDefinition[] = [artistPage, exhibitionPage, 
 
 export const singletons: DocumentDefinition[] = [
   exhibitionsLanding,
+  exhibitionPast,
   artworkListing,
   settings,
   stories,
