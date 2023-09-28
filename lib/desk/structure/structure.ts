@@ -123,7 +123,7 @@ export const generalStructure = (S: StructureBuilder) =>
         .icon(DocumentsIcon)
         .child(
           S.list()
-            .title('Old Pages')
+            .title('Web Pages')
             .items([
               S.listItem()
                 .title('Home')
@@ -317,7 +317,6 @@ export const generalStructure = (S: StructureBuilder) =>
             ]),
         ),
       S.divider(),
-
       S.listItem()
         .title('Artists')
         .icon(UsersIcon)

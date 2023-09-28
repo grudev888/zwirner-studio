@@ -1,23 +1,25 @@
-import {ComposeIcon, MasterDetailIcon, SearchIcon} from '@sanity/icons'
-import {defineField, defineType} from 'sanity'
+import {ComposeIcon, SearchIcon, HomeIcon} from '@sanity/icons'
+import {
+  defineField,
+  defineType,
+  SchemaTypeDefinition,
+} from 'sanity'
 
-import artistPage from '../documents/pages/artistPage'
-import exhibitionPage from '../documents/pages/exhibitionPage'
-import article from '../documents/article'
-import location from '../documents/location'
-import {builder as carouselBuilder} from '../objects/page/components/modules/carouselModule'
-import artwork from '../documents/artwork'
+import {builder as PageBuilder, PageBuilderComponents} from '../objects/utils/pageBuilder'
+import {GridComponents} from '../objects/page/grid'
 import {hiddenSlug} from '../objects/data/hiddenSlug'
-import interstitial from '../objects/page/components/primitives/interstitial'
 
-const allowedDocs = [exhibitionPage, artistPage, article, artwork]
-const allowedFeaturedItems = [exhibitionPage, article]
+import artwork from '../documents/artwork'
+import location from '../documents/location'
+import book from '../documents/book'
+import artist from '../documents/artist'
+import podcast from '../documents/podcast'
 
 export default defineType({
   name: 'home',
-  title: 'Home',
+  title: 'Home Page',
   type: 'document',
-  icon: MasterDetailIcon,
+  icon: HomeIcon,
   groups: [
     {name: 'content', title: 'Content', icon: ComposeIcon, default: true},
     {name: 'seo', title: 'SEO', icon: SearchIcon},
@@ -25,73 +27,80 @@ export default defineType({
   fields: [
     hiddenSlug,
     defineField({
+      name: 'title',
+      title: 'Primary Title',
+      type: 'string',
+      description: 'Will not display on the page, but is used to describe it in the CMS',
+      group: 'content',
+      validation: (rule: StringRule) => rule.required(),
+    }),
+    defineField(
+      PageBuilder(
+        {
+          name: 'exceptionalWorkContent',
+          title: 'Content',
+          group: 'content',
+        },
+        {
+          components: [
+            PageBuilderComponents.dzHero,
+            PageBuilderComponents.dzInterstitial,
+            PageBuilderComponents.dzSplit,
+            PageBuilderComponents.dzGrid,
+            PageBuilderComponents.dzCarousel,
+          ],
+          references: {
+            dzHero: [
+              {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
+            ],
+            dzInterstitial: [
+              artwork,
+              book,
+              artist,
+              {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
+            ],
+            dzSplit: [
+              {name: 'article', title: 'Article'} as SchemaTypeDefinition,
+              {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition
+            ],
+            grid: {
+              references: {
+                dzCard: [
+                  book,
+                  {name: 'article', title: 'Article'} as SchemaTypeDefinition,
+                ],
+              },
+              components: [GridComponents.dzCard],
+            },
+            dzCarousel: {
+              references: {
+                dzCard: [
+                  book,
+                  podcast,
+                  {name: 'article', title: 'Article'} as SchemaTypeDefinition,
+                  {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
+                ],
+              },
+              components: [GridComponents.dzCard, GridComponents.dzMedia],
+            },
+          },
+        },
+      ),
+    ),
+    defineField({
+        name: 'locations',
+        title: 'Locations',
+        group: 'content',
+        type: 'array',
+        of: [
+          {type: 'reference', name: location.name, title: location.title, to: {type: location.name}},
+        ],
+      }),
+    defineField({
       name: 'seo',
       title: 'SEO',
       type: 'seo',
       group: 'seo',
-    }),
-    defineField({
-      name: 'title',
-      title: 'Title',
-      type: 'string',
-      group: 'content',
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'header',
-      title: 'Header Carousel',
-      type: 'array',
-      of: allowedDocs.map(({name, title}) => ({type: 'reference', name, title, to: {type: name}})),
-      group: 'content',
-    }),
-    defineField({
-      name: 'featured',
-      title: 'Featured Item',
-      type: 'reference',
-      to: allowedFeaturedItems.map(({name}) => ({type: name as string})),
-      group: 'content',
-    }),
-    defineField(
-      carouselBuilder(
-        {
-          name: 'firstCarousel',
-          title: 'Body Carousel 1',
-          group: 'content',
-        },
-        {reference: [exhibitionPage, article], excludedFields: ['title']},
-      ),
-    ),
-    defineField(
-      carouselBuilder(
-        {
-          name: 'secondCarousel',
-          title: 'Body Carousel 2',
-          group: 'content',
-        },
-        {reference: [exhibitionPage, article], excludedFields: ['title']},
-      ),
-    ),
-    defineField({
-      name: 'articles',
-      title: 'Article Grid',
-      type: 'array',
-      of: [{type: 'reference', name: article.name, title: article.title, to: {type: article.name}}],
-      group: 'content',
-    }),
-    defineField({
-      name: 'interstitial',
-      title: 'Interstitial',
-      group: 'content',
-      type: interstitial.name,
-    }),
-    defineField({
-      name: 'locations',
-      title: 'Locations',
-      group: 'content',
-      type: 'array',
-      of: [
-        {type: 'reference', name: location.name, title: location.title, to: {type: location.name}},
-      ],
     }),
   ],
 })
