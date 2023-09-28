@@ -2,7 +2,7 @@ import {type DocumentDefinition, type ObjectDefinition, SchemaTypeDefinition} fr
 
 
 // DOCUMENTS
-import page from './documents/page'
+import page from './documents/pages/page'
 import article from './documents/article'
 import artist from './documents/artist'
 import artwork from './documents/artwork'
