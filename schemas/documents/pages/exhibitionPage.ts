@@ -30,8 +30,8 @@ export default defineType({
   type: 'document',
   icon: BlockElementIcon,
   preview: {
-    select: {title: 'title', photos: 'photos'},
-    prepare: ({title, photos}) => ({title, media: photos?.[0]}),
+    select: {title: 'title', heroMedia: 'heroMedia'},
+    prepare: ({title, heroMedia}) => ({title, media: heroMedia?.image}),
   },
   groups: [
     {name: 'content', title: 'Exhibition', icon: ComposeIcon, default: true},

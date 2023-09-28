@@ -28,6 +28,10 @@ export default defineType({
   title: 'Exceptional Work',
   type: 'document',
   icon: BlockElementIcon,
+  preview: {
+    select: {title: 'title', heroMedia: 'heroMedia'},
+    prepare: ({title, heroMedia}) => ({title, media: heroMedia?.image}),
+  },
   groups: [
     {name: 'exceptionalWorkContent', title: 'Exceptional Work', icon: ComposeIcon, default: true},
     {name: 'content', title: 'Content', icon: DocumentIcon},
