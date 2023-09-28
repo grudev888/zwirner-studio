@@ -15,7 +15,6 @@ import {
   InfoOutlineIcon,
   ActivityIcon,
   PlayIcon,
-
 } from '@sanity/icons'
 import {StructureBuilder} from 'sanity/desk'
 
@@ -108,10 +107,15 @@ export const generalStructure = (S: StructureBuilder) =>
             .title('Special Pages')
             .filter('_type == "page"')
             .defaultOrdering([{field: 'name', direction: 'asc'}])
-            .child(
+            .child((childId) =>
               S.document()
+                .id(childId)
                 .schemaType('page')
-                .views([S.view.form(), S.view.component(ReferenceByTab).title('References')]),
+                .views([
+                  S.view.form(),
+                  S.view.component(PreviewIframe).options({url: getPreviewUrl}).title('Preview'),
+                  S.view.component(ReferenceByTab).title('References'),
+                ]),
             ),
         ),
       S.listItem()
@@ -172,7 +176,7 @@ export const generalStructure = (S: StructureBuilder) =>
                         .title('Preview'),
                     ]),
                 ),
-                S.listItem()
+              S.listItem()
                 .title('Exhibitions Past')
                 .icon(BlockElementIcon)
                 .child(

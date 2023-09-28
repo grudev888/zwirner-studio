@@ -38,8 +38,8 @@ export default defineType({
     {name: 'seo', title: 'SEO', icon: SearchIcon},
     {name: 'pressRelease', title: 'Press Release', icon: DocumentIcon},
     {name: 'explore', title: 'Explore', icon: DocumentIcon},
-    {name: 'installationViews', title: 'Installation Views', icon: DocumentIcon},
     {name: 'checklist', title: 'Checklist', icon: DocumentIcon},
+    {name: 'installationViews', title: 'Installation Views', icon: DocumentIcon},
   ],
   fields: [
     defineField({

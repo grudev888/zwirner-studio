@@ -65,6 +65,7 @@ const styles: any = {
     text-sm
     text-black-80
     outline-none
+    bg-white-100
   `,
   mobileViewer: `
     flex
