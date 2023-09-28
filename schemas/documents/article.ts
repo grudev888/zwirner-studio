@@ -20,6 +20,7 @@ import {GreyFootNote, GreyFootNoteDecorator} from '../../components/block/GreyFo
 import {ConditionalProperty} from 'sanity'
 import blockContentSimple from '../objects/utils/blockContentSimple'
 import artwork from './artwork'
+import * as dzMedia from '../objects/page/components/molecules/dzMedia'
 
 export interface ArticleSchema {
   title?: string
@@ -149,7 +150,7 @@ export default defineType({
       type: 'array',
       hidden: hideForTypes([ArticleTypes['External News'], ArticleTypes['Selected Press']]),
       of: [
-        defineArrayMember(Media.builder({name: 'headerImage', title: 'Image', group: 'content'})),
+        defineArrayMember(dzMedia.builder({name: 'headerImage', title: 'Image', group: 'content'})),
         defineArrayMember({
           name: 'artwork',
           title: 'Artwork',
@@ -224,26 +225,11 @@ export default defineType({
           },
         }),
         defineArrayMember(
-          Media.builder(
-            {
-              name: 'bodyImage',
-              icon: ImageIcon,
-              title: 'Image',
-              preview: {select: {media: 'image', title: 'image.caption'}},
-            },
-            {
-              type: Media.MediaTypes.IMAGE,
-              image: {
-                additionalFields: [
-                  defineField({
-                    type: 'string',
-                    name: 'caption',
-                    title: 'Caption',
-                  }),
-                ],
-              },
-            },
-          ),
+          dzMedia.builder({
+            name: 'bodyImage',
+            icon: ImageIcon,
+            title: 'Image',
+          }),
         ),
       ],
     }),
