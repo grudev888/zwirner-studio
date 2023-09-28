@@ -313,23 +313,7 @@ export const generalStructure = (S: StructureBuilder) =>
             ]),
         ),
       S.divider(),
-      S.listItem()
-        .title('Home (v2)')
-        .icon(BlockElementIcon)
-        .child(
-          S.document()
-            .schemaType('homev2')
-            .documentId('homev2')
-            .views([
-              S.view.form(),
-              S.view
-                .component(PreviewIframe)
-                .options({
-                  url: getSingletonPreviewUrl('/'),
-                })
-                .title('Preview'),
-            ]),
-        ),
+
       S.listItem()
         .title('Artists')
         .icon(UsersIcon)
