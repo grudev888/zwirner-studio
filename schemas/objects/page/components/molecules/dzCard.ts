@@ -52,6 +52,7 @@ export const builder = (
       title: 'Component title',
       group: 'content',
       validation: (rule) => rule.required(),
+      initialValue: 'Card',
     }),
     defineField({
       type: 'string',

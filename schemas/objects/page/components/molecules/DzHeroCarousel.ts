@@ -33,6 +33,7 @@ export const builder = (
       type: 'string',
       group: 'content',
       title: 'Component title',
+      initialValue: 'Hero Carousel',
     }),
     defineField({
       name: 'content',

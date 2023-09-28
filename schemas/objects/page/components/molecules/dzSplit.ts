@@ -44,6 +44,7 @@ export const builder = (
       type: 'string',
       title: 'Component title',
       group: 'content',
+      initialValue: 'Split',
     }),
     defineField({
       name: 'content',

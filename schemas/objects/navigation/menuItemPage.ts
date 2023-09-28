@@ -11,6 +11,7 @@ import collect from '../../singletons/collect'
 import consignments from '../../singletons/consignments'
 import stories from '../../singletons/stories'
 import utopiaEditions from '../../singletons/utopiaEditions'
+import page from '../../documents/pages/page'
 import {menuCommonFields} from '../utils/menu'
 
 export default defineType({
@@ -25,6 +26,7 @@ export default defineType({
       title: 'Page',
       type: 'reference',
       to: [
+        {type: page.name},
         {type: artistPage.name},
         {type: exhibitionPage.name},
         {type: availableArtworks.name},

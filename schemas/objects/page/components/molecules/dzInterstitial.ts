@@ -33,6 +33,7 @@ export const builder = (
       type: 'string',
       title: 'Component title',
       group: 'content',
+      initialValue: 'Interstitial',
     }),
     defineField({
       name: 'eyebrow',

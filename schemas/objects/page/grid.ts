@@ -64,6 +64,7 @@ export const builder = (
       description: 'Section name',
       ...(!options?.hideComponentTitle ? {validation: (rule: StringRule) => rule.required()} : {}),
       hidden: options?.hideComponentTitle,
+      initialValue: 'Grid',
     }),
     defineField({
       name: 'wrap',

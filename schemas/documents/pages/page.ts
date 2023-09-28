@@ -4,17 +4,17 @@ import {
   defineType,
   SchemaTypeDefinition,
 } from 'sanity'
-import {builder as slugURLBuilder} from '../objects/utils/slugUrl'
-import {builder as PageBuilder, PageBuilderComponents} from '../objects/utils/pageBuilder'
-import {GridComponents} from '../objects/page/grid'
-import blockContentSimple from '../objects/utils/blockContentSimple'
-import { franchiseBrandingField } from '../objects/data/franchiseBranding'
+import {builder as PageBuilder, PageBuilderComponents} from '../../objects/utils/pageBuilder'
+import {GridComponents} from '../../objects/page/grid'
+import blockContentSimple from '../../objects/utils/blockContentSimple'
+import { franchiseBrandingField } from '../../objects/data/franchiseBranding'
+import { hiddenSlug } from '../../objects/data/hiddenSlug'
 
-import artwork from './artwork'
-import location from './location'
-import book from './book'
-import artist from './artist'
-import podcast from './podcast'
+import artwork from '../artwork'
+import location from '../location'
+import book from '../book'
+import artist from '../artist'
+import podcast from '../podcast'
 
 
 export default defineType({
@@ -27,6 +27,7 @@ export default defineType({
     {name: 'seo', title: 'SEO', icon: SearchIcon},
   ],
   fields: [
+    hiddenSlug,
     defineField({
       name: 'title',
       title: 'Primary Title',
@@ -44,22 +45,6 @@ export default defineType({
         'Primary Subtitle of the page. On cards, it is displayed as Primary Subtitle.',
       group: 'content',
     }),
-    defineField(
-      slugURLBuilder(
-        {
-          name: 'slug',
-          title: 'Slug',
-          options: {
-            source: (object: any) => {
-              const defaultSlug = object?.title ?? ''
-              if (!defaultSlug) throw new Error('Please add a title to create a unique slug.')
-              return defaultSlug.slice(0, 95)
-            },
-          },
-          group: 'content',
-        },
-      ),
-    ),
     defineField({
       name: 'summary',
       title: 'Description',
@@ -92,6 +77,7 @@ export default defineType({
         },
         {
           components: [
+            PageBuilderComponents.dzHero,
             PageBuilderComponents.dzInterstitial,
             PageBuilderComponents.dzSplit,
             PageBuilderComponents.dzCard,
@@ -101,6 +87,9 @@ export default defineType({
             PageBuilderComponents.dzCarousel,
           ],
           references: {
+            dzHero: [
+              {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
+            ],
             dzCard: [
               artwork,
               book,
@@ -116,7 +105,10 @@ export default defineType({
               artist,
               {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
             ],
-            dzSplit: [{name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition],
+            dzSplit: [
+              podcast,
+              {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
+            ],
             grid: {
               references: {
                 dzCard: [

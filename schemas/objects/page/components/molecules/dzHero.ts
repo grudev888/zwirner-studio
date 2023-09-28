@@ -35,6 +35,7 @@ export const builder = (
       type: 'string',
       title: 'Component title',
       group: 'content',
+      initialValue: 'Hero',
     }),
 
     // (Hero) Supported Modules for “Moving Images” ONLY

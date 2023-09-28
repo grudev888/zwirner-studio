@@ -29,6 +29,7 @@ export const builder = (
       title: 'Component title',
       ...(!options?.hideComponentTitle ? {validation: (rule: StringRule) => rule.required()} : {}),
       hidden: options?.hideComponentTitle,
+      initialValue: 'Media',
     }),
     // (DzMedia) Modules to support both “Moving Images” and “Interactive Video”
     defineField(

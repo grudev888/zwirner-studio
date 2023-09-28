@@ -60,6 +60,7 @@ export const builder = (
       type: 'string',
       title: 'Component title',
       validation: (rule) => rule.required(),
+      initialValue: 'Carousel',
     }),
     defineField({
       name: 'size',

@@ -66,6 +66,7 @@ export const builder = (
       title: 'Component title',
       ...(!options?.hideComponentTitle ? {validation: (rule: StringRule) => rule.required()} : {}),
       hidden: options?.hideComponentTitle,
+      initialValue: 'Editorial',
     }),
     defineField({
       title: 'Type',
