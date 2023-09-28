@@ -1,9 +1,5 @@
 import {ComposeIcon, SearchIcon, HomeIcon} from '@sanity/icons'
-import {
-  defineField,
-  defineType,
-  SchemaTypeDefinition,
-} from 'sanity'
+import {defineField, defineType, StringRule, SchemaTypeDefinition} from 'sanity'
 
 import {builder as PageBuilder, PageBuilderComponents} from '../objects/utils/pageBuilder'
 import {GridComponents} from '../objects/page/grid'
@@ -50,9 +46,7 @@ export default defineType({
             PageBuilderComponents.dzCarousel,
           ],
           references: {
-            dzHero: [
-              {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
-            ],
+            dzHero: [{name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition],
             dzInterstitial: [
               artwork,
               book,
@@ -61,14 +55,11 @@ export default defineType({
             ],
             dzSplit: [
               {name: 'article', title: 'Article'} as SchemaTypeDefinition,
-              {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition
+              {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
             ],
             grid: {
               references: {
-                dzCard: [
-                  book,
-                  {name: 'article', title: 'Article'} as SchemaTypeDefinition,
-                ],
+                dzCard: [book, {name: 'article', title: 'Article'} as SchemaTypeDefinition],
               },
               components: [GridComponents.dzCard],
             },
@@ -88,14 +79,14 @@ export default defineType({
       ),
     ),
     defineField({
-        name: 'locations',
-        title: 'Locations',
-        group: 'content',
-        type: 'array',
-        of: [
-          {type: 'reference', name: location.name, title: location.title, to: {type: location.name}},
-        ],
-      }),
+      name: 'locations',
+      title: 'Locations',
+      group: 'content',
+      type: 'array',
+      of: [
+        {type: 'reference', name: location.name, title: location.title, to: {type: location.name}},
+      ],
+    }),
     defineField({
       name: 'seo',
       title: 'SEO',
