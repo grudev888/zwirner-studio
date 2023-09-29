@@ -33,7 +33,7 @@ export default defineType({
     defineField(
       PageBuilder(
         {
-          name: 'exceptionalWorkContent',
+          name: 'homeContent',
           title: 'Content',
           group: 'content',
         },
