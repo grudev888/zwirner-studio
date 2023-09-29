@@ -37,6 +37,13 @@ export default defineType({
         'This is the meta image presented in search and social on all pages where it is not defined.',
       title: 'Global Image',
       type: 'image',
+      fields: [
+        {
+          name: 'alt',
+          type: 'string',
+          title: 'Alternative text',
+        },
+      ],
       validation: (Rule) => Rule.required(),
     }),
   ],
