@@ -4,9 +4,13 @@ import {apiVersion} from '../../../env'
 import {ReferenceByTab} from '../../overrides/overrides'
 import {PreviewIframe} from '../../preview/customIframe/previewIframe'
 import {getEndDateExhibitionsDate} from '../../../queries/exhibitionPage.queries'
+import {getEndDateOnlineExhibitionsDate} from '../../../queries/onlineExhibition.queries'
+import {getFairEndDate} from '../../../queries/fair.queries'
 import {getExceptionalWorkEndDate} from '../../../queries/exceptionalWork.queries'
 import {getArtistByName} from '../../../queries/artist.queries'
 import exhibitionPage from '../../../schemas/documents/pages/exhibitionPage'
+import onlineExhibition from '../../../schemas/documents/pages/onlineExhibitionPage'
+import fair from '../../../schemas/documents/pages/fairPage'
 import {capitalize} from '../../util/strings'
 import {DocumentDefinition} from 'sanity'
 import article from '../../../schemas/documents/article'
@@ -23,6 +27,8 @@ interface StructureBuilderProps {
 
 const queryByType: any = {
   [exhibitionPage.name]: getEndDateExhibitionsDate,
+  [onlineExhibition.name]: getEndDateOnlineExhibitionsDate,
+  [fair.name]: getFairEndDate,
   [article.name]: getArticleByDate,
   [artistPage.name]: getArtistByName,
   [exceptionalWork.name]: getExceptionalWorkEndDate,

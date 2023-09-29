@@ -15,6 +15,8 @@ import locationType from './documents/location'
 import artistPage from './documents/pages/artistPage'
 import exceptionalWork from './documents/exceptionalWork'
 import exhibitionPage from './documents/pages/exhibitionPage'
+import onlineExhibitionPage from './documents/pages/onlineExhibitionPage'
+import fairPage from './documents/pages/fairPage'
 import press from './documents/press'
 import redirects from './documents/redirects'
 import strings from './documents/strings'
@@ -147,7 +149,7 @@ const shopifyObjects: ObjectDefinition[] = [
 ]
 const shopifyUtils: SchemaTypeDefinition[] = [proxyString]
 
-export const pageDocuments: DocumentDefinition[] = [artistPage, exhibitionPage, exceptionalWork]
+export const pageDocuments: DocumentDefinition[] = [artistPage, exhibitionPage, onlineExhibitionPage, fairPage, exceptionalWork]
 
 export const singletons: DocumentDefinition[] = [
   exhibitionsLanding,

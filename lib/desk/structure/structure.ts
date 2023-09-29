@@ -24,6 +24,8 @@ import {getSectionsByYear} from './structure.service'
 
 import article from '../../../schemas/documents/article'
 import exhibitionPage from '../../../schemas/documents/pages/exhibitionPage'
+import onlineExhibition from '../../../schemas/documents/pages/onlineExhibitionPage'
+import fair from '../../../schemas/documents/pages/fairPage'
 import exceptionalWork from '../../../schemas/documents/exceptionalWork'
 import {getPreviewUrl, getSingletonPreviewUrl} from './utils'
 
@@ -314,6 +316,14 @@ export const generalStructure = (S: StructureBuilder) =>
                 .title('Exhibitions')
                 .icon(DashboardIcon)
                 .child(() => getSectionsByYear({S, document: exhibitionPage, field: 'startDate'})),
+              S.listItem()
+                .title('Fairs')
+                .icon(DashboardIcon)
+                .child(() => getSectionsByYear({S, document: fair, field: 'startDate'})),
+              S.listItem()
+                .title('Online Exhibitions')
+                .icon(DashboardIcon)
+                .child(() => getSectionsByYear({S, document: onlineExhibition, field: 'startDate'})),
             ]),
         ),
       S.divider(),
