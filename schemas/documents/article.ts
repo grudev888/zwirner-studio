@@ -320,9 +320,18 @@ export default defineType({
     select: {
       title: 'title',
       image: 'image',
+      subtitle: 'subtitle',
+      header: 'header',
     },
-    prepare({title, image}) {
-      return {title, media: image?.image ?? DocumentTextIcon}
+    prepare: ({title, subtitle, header, image}) => {
+      return {
+        title,
+        subtitle,
+        media:
+          image?.image ||
+          header?.find((el: any) => !!el?.media?.image)?.media?.image ||
+          DocumentTextIcon,
+      }
     },
   },
 })
