@@ -1,7 +1,7 @@
 import {FieldDefinition, ObjectRule, SchemaTypeDefinition, defineField, defineType} from 'sanity'
 import {capitalize} from '../../../lib/util/strings'
 import {mediaAssetSource} from 'sanity-plugin-media'
-import {PresentationIcon} from '@sanity/icons'
+import {PresentationIcon, DocumentVideoIcon} from '@sanity/icons'
 import * as Video from './video'
 
 export enum MediaTypes {
@@ -25,7 +25,10 @@ export const builder = (
   type: 'object',
   preview: {select: {media: 'image', title: 'image.alt'}},
   options: {collapsible: false},
-  icon: PresentationIcon,
+  icon:
+    options?.type === MediaTypes.VIDEO_RECORD || options?.type === MediaTypes.VIDEO
+      ? DocumentVideoIcon
+      : PresentationIcon,
   fields: [
     defineField({
       name: 'type',

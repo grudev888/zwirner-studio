@@ -41,10 +41,8 @@ export enum ArticleCategory {
   'Press' = 'Press',
   'News' = 'News',
   'Event' = 'Event',
-  'Exhibition' = 'Exhibition',
+  'Museum Exhibition' = 'Museum Exhibition',
   'Museum Highlights' = 'Museum Highlights',
-  'Museum Exhibition Press' = 'Museum Exhibition Press',
-  'Museum Exhibition Record' = 'Museum Exhibition Record',
 }
 
 const findKey = (value: ArticleTypes) =>
@@ -98,6 +96,7 @@ export default defineType({
       options: {
         list: Object.entries(ArticleCategory).map(([title, value]) => ({title, value})),
       },
+      hidden: hideForTypes([ArticleTypes['Selected Press']]),
       initialValue: ArticleCategory.News,
     }),
     defineField({

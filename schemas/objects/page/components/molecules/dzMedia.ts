@@ -1,4 +1,4 @@
-import {MasterDetailIcon} from '@sanity/icons'
+import {ImagesIcon} from '@sanity/icons'
 import {defineField, defineType, StringRule, ObjectDefinition, ObjectRule} from 'sanity'
 import * as Media from '../../../../objects/utils/media'
 
@@ -21,7 +21,7 @@ export const builder = (
   } = {hideComponentTitle: false},
 ) => ({
   type: 'object',
-  icon: MasterDetailIcon,
+  icon: ImagesIcon,
   fields: [
     defineField({
       name: 'title',

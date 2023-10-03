@@ -1,4 +1,4 @@
-import {ComposeIcon, EditIcon, MasterDetailIcon} from '@sanity/icons'
+import {ComposeIcon, EditIcon, SquareIcon, MasterDetailIcon} from '@sanity/icons'
 import {
   defineField,
   defineType,
@@ -24,7 +24,7 @@ export const builder = (
   },
 ) => ({
   type: 'object',
-  icon: MasterDetailIcon,
+  icon: SquareIcon,
   groups: [
     {name: 'content', title: 'Content', icon: ComposeIcon, default: true},
     {name: 'overrides', title: 'Overrides', icon: EditIcon},
@@ -53,22 +53,6 @@ export const builder = (
       group: 'content',
       validation: (rule) => rule.required(),
       initialValue: 'Card',
-    }),
-    defineField({
-      type: 'string',
-      name: 'pressVariation',
-      group: 'content',
-      title: 'Press Variation',
-      options: {
-        list: [
-          {title: 'Selected Press', value: 'selectedPress'},
-          {title: 'Press Article', value: 'pressArticle'},
-        ],
-      },
-      // On article types attached, select Press Variation
-      hidden: ({parent}) => {
-        return parent?.content?.[0]?._type !== 'article'
-      },
     }),
 
     // (Content card) Supported Modules for “Moving Images” ONLY

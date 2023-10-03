@@ -13,10 +13,15 @@ const fields = [
   defineField({name: 'subtitle', type: 'string', title: 'Description'}),
   // (Interstitial) Supported Modules for “Moving Images” ONLY
   defineField(
-    Media.builder({
-      name: 'image',
-      title: 'Interstitial Media',
-    }),
+    Media.builder(
+      {
+        name: 'image',
+        title: 'Interstitial Media',
+      },
+      {
+        type: Media.MediaTypes.IMAGE,
+      },
+    ),
   ),
   defineField({name: 'cta', type: cta.name, title: 'CTA'}),
 

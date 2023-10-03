@@ -1,4 +1,4 @@
-import {ComposeIcon, EditIcon, MasterDetailIcon} from '@sanity/icons'
+import {ComposeIcon, EditIcon, InlineIcon, MasterDetailIcon} from '@sanity/icons'
 import {
   ObjectDefinition,
   defineArrayMember,
@@ -24,7 +24,7 @@ export const builder = (
   options: {references: SchemaTypeDefinition[]},
 ) => ({
   type: 'object',
-  icon: MasterDetailIcon,
+  icon: InlineIcon,
   groups: [
     {name: 'content', title: 'Content', icon: ComposeIcon, default: true},
     {name: 'overrides', title: 'Overrides', icon: EditIcon},

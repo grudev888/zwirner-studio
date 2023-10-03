@@ -1,4 +1,4 @@
-import {MasterDetailIcon} from '@sanity/icons'
+import {MasterDetailIcon, DocumentTextIcon} from '@sanity/icons'
 // Todo: import from the design system import {EditorialType} from '@zwirner/design-system'
 import {
   defineArrayMember,
@@ -57,7 +57,7 @@ export const builder = (
   },
 ) => ({
   type: 'object',
-  icon: MasterDetailIcon,
+  icon: DocumentTextIcon,
   preview: {select: {title: 'title'}},
   fields: [
     defineField({

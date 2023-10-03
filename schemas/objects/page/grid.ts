@@ -1,4 +1,4 @@
-import {MasterDetailIcon} from '@sanity/icons'
+import {ThLargeIcon, MasterDetailIcon} from '@sanity/icons'
 import {defineField, defineType, StringRule, ObjectDefinition, SchemaTypeDefinition} from 'sanity'
 import {builder as dzCardBuilder} from '../page/components/molecules/dzCard'
 import {builder as dzMediaBuilder} from '../page/components/molecules/dzMedia'
@@ -51,7 +51,7 @@ export const builder = (
   options: GridOptions,
 ) => ({
   type: 'object',
-  icon: MasterDetailIcon,
+  icon: ThLargeIcon,
   options: {
     collapsible: true,
     collapsed: false,

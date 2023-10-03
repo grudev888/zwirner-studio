@@ -1,6 +1,5 @@
 import {type DocumentDefinition, type ObjectDefinition, SchemaTypeDefinition} from 'sanity'
 
-
 // DOCUMENTS
 import page from './documents/pages/page'
 import article from './documents/article'
@@ -42,7 +41,7 @@ import dzCarousel from './objects/page/components/molecules/dzCarousel'
 import dzEditorial from './objects/page/components/molecules/dzEditorial'
 import dzHero from './objects/page/components/molecules/dzHero'
 import dzHeroCarousel from './objects/page/components/molecules/DzHeroCarousel'
-import dzInterstitial from './objects/page/components/molecules/dzInterstitial'
+
 import dzMedia from './objects/page/components/molecules/dzMedia'
 import dzSplit from './objects/page/components/molecules/dzSplit'
 import dzTitle from './objects/page/components/molecules/dzTitle'
@@ -110,7 +109,6 @@ export const pageComponents: ObjectDefinition[] = [
   dzHero,
   dzCard,
   dzEditorial,
-  dzInterstitial,
   dzSplit,
   dzTitle,
   dzHeroCarousel,

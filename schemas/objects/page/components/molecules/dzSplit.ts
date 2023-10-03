@@ -1,4 +1,4 @@
-import {ComposeIcon, EditIcon, MasterDetailIcon} from '@sanity/icons'
+import {ComposeIcon, EditIcon, SplitVerticalIcon, MasterDetailIcon} from '@sanity/icons'
 //Todo import form the design system import {SplitTypes} from '@zwirner/design-system'
 import {
   defineField,
@@ -33,7 +33,7 @@ export const builder = (
   options: {references: SchemaTypeDefinition[]},
 ) => ({
   type: 'object',
-  icon: MasterDetailIcon,
+  icon: SplitVerticalIcon,
   groups: [
     {name: 'content', title: 'Content', icon: ComposeIcon, default: true},
     {name: 'overrides', title: 'Overrides', icon: EditIcon},

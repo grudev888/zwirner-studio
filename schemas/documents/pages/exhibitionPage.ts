@@ -35,11 +35,11 @@ export default defineType({
   },
   groups: [
     {name: 'content', title: 'Exhibition', icon: ComposeIcon, default: true},
-    {name: 'seo', title: 'SEO', icon: SearchIcon},
     {name: 'pressRelease', title: 'Press Release', icon: DocumentIcon},
     {name: 'explore', title: 'Explore', icon: DocumentIcon},
     {name: 'checklist', title: 'Checklist', icon: DocumentIcon},
     {name: 'installationViews', title: 'Installation Views', icon: DocumentIcon},
+    {name: 'seo', title: 'SEO', icon: SearchIcon},
   ],
   fields: [
     defineField({
