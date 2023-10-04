@@ -9,6 +9,19 @@ Duplicate the `.env.local.example` file and rename it as `.env`. Ask engineering
 - `SANITY_STUDIO_VERCEL_URL`
 - `SANITY_STUDIO_SANITY_API_VERSION`
 
+`SANITY_STUDIO_TEST_DATABASE` should always be set to `dev` when working locally. 
+
+Run 
+```
+yarn
+```
+
+then
+```
+yarn dev
+```
+This will open a local copy on http://localhost:3333
+
 # Feature-scoped datasets
 
 When working on new features, it can be helpful to create a new dataset with
@@ -35,7 +48,7 @@ Login successful
 
 # Sync the dev database with prod
 
-Run this script to sync the dev database with prod
+Run this script to sync the dev database with prod. USE WITH CAUTION!!
 
 ```bash
 yarn sync-dev-db
