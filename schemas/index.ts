@@ -24,13 +24,9 @@ import strings from './documents/strings'
 import footer from './singletons/footer'
 import navigation from './singletons/navigation'
 import availableArtworks from './singletons/availableArtworks'
-import collect from './singletons/collect'
 import home from './singletons/home'
 import settings from './singletons/settings'
-import stories from './singletons/stories'
-import utopiaEditions from './singletons/utopiaEditions'
-import consignments from './singletons/consignments'
-import artworkListing from './singletons/artistListing'
+import artistListing from './singletons/artistListing'
 import exhibitionsLanding from './singletons/exhibitionsLanding'
 import exhibitionPast from './singletons/exhibitionsPast'
 
@@ -147,21 +143,23 @@ const shopifyObjects: ObjectDefinition[] = [
 ]
 const shopifyUtils: SchemaTypeDefinition[] = [proxyString]
 
-export const pageDocuments: DocumentDefinition[] = [artistPage, exhibitionPage, onlineExhibitionPage, fairPage, exceptionalWork]
+export const pageDocuments: DocumentDefinition[] = [
+  artistPage,
+  exhibitionPage,
+  onlineExhibitionPage,
+  fairPage,
+  exceptionalWork,
+]
 
 export const singletons: DocumentDefinition[] = [
   exhibitionsLanding,
   exhibitionPast,
-  artworkListing,
+  artistListing,
   settings,
-  stories,
   home,
-  collect,
-  utopiaEditions,
   globalSEO,
   availableArtworks,
   navigation,
-  consignments,
   footer,
 ]
 

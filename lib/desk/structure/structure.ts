@@ -196,40 +196,6 @@ export const generalStructure = (S: StructureBuilder) =>
                     ]),
                 ),
               S.listItem()
-                .title('Collect')
-                .icon(BlockElementIcon)
-                .child(
-                  S.document()
-                    .schemaType('collect')
-                    .documentId('collect')
-                    .views([
-                      S.view.form(),
-                      S.view
-                        .component(PreviewIframe)
-                        .options({
-                          url: getSingletonPreviewUrl('/collect'),
-                        })
-                        .title('Preview'),
-                    ]),
-                ),
-              S.listItem()
-                .title('Stories')
-                .icon(BlockElementIcon)
-                .child(
-                  S.document()
-                    .schemaType('stories')
-                    .documentId('stories')
-                    .views([
-                      S.view.form(),
-                      S.view
-                        .component(PreviewIframe)
-                        .options({
-                          url: getSingletonPreviewUrl('/stories'),
-                        })
-                        .title('Preview'),
-                    ]),
-                ),
-              S.listItem()
                 .title('Available Artworks')
                 .icon(ThLargeIcon)
                 .child(
@@ -242,40 +208,6 @@ export const generalStructure = (S: StructureBuilder) =>
                         .component(PreviewIframe)
                         .options({
                           url: getSingletonPreviewUrl('/available-artworks'),
-                        })
-                        .title('Preview'),
-                    ]),
-                ),
-              S.listItem()
-                .title('Utopia Editions')
-                .icon(BlockElementIcon)
-                .child(
-                  S.document()
-                    .schemaType('utopiaEditions')
-                    .documentId('utopiaEditions')
-                    .views([
-                      S.view.form(),
-                      S.view
-                        .component(PreviewIframe)
-                        .options({
-                          url: getSingletonPreviewUrl('/utopia-editions'),
-                        })
-                        .title('Preview'),
-                    ]),
-                ),
-              S.listItem()
-                .title('Consignments')
-                .icon(BlockElementIcon)
-                .child(
-                  S.document()
-                    .schemaType('consignments')
-                    .documentId('consignments')
-                    .views([
-                      S.view.form(),
-                      S.view
-                        .component(PreviewIframe)
-                        .options({
-                          url: getSingletonPreviewUrl('/consignments'),
                         })
                         .title('Preview'),
                     ]),

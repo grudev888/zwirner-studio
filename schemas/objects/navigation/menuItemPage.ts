@@ -7,10 +7,6 @@ import exhibitionLanding from '../../singletons/exhibitionsLanding'
 import artistListing from '../../singletons/artistListing'
 import exhibitionPage from '../../documents/pages/exhibitionPage'
 import availableArtworks from '../../singletons/availableArtworks'
-import collect from '../../singletons/collect'
-import consignments from '../../singletons/consignments'
-import stories from '../../singletons/stories'
-import utopiaEditions from '../../singletons/utopiaEditions'
 import page from '../../documents/pages/page'
 import {menuCommonFields} from '../utils/menu'
 
@@ -30,10 +26,6 @@ export default defineType({
         {type: artistPage.name},
         {type: exhibitionPage.name},
         {type: availableArtworks.name},
-        {type: collect.name},
-        {type: consignments.name},
-        {type: stories.name},
-        {type: utopiaEditions.name},
         {type: exhibitionLanding.name},
         {type: artistListing.name},
       ],
