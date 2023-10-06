@@ -43,12 +43,6 @@ export default defineType({
   ],
   fields: [
     defineField({
-      name: 'seo',
-      title: 'SEO',
-      type: 'seo',
-      group: 'seo',
-    }),
-    defineField({
       name: 'title',
       title: 'Primary Title',
       type: 'string',
@@ -65,32 +59,6 @@ export default defineType({
         'It will be combined with Primary Title to display the full title: [Primary Title]: [Primary Subtitle]. On cards, it is displayed as Primary Subtitle.',
       group: 'content',
     }),
-    defineField(
-      slugURLBuilder(
-        {
-          name: 'slug',
-          title: 'Slug',
-          options: {
-            source: (object: any) => {
-              const defaultSlug = object?.title ?? ''
-              if (!defaultSlug) throw new Error('Please add a title to create a unique slug.')
-              return defaultSlug.slice(0, 95)
-            },
-          },
-          group: 'content',
-        },
-        {
-          prefix: async (parent) => {
-            const dateFormatter = new Intl.DateTimeFormat('en-US', {
-              timeZone: 'America/New_York',
-              year: 'numeric',
-            })
-            const year = dateFormatter.format(new Date(parent.startDate))
-            return `/exhibitions/${year}`
-          },
-        },
-      ),
-    ),
     defineField({
       name: 'summary',
       title: 'Description',
@@ -199,6 +167,32 @@ export default defineType({
         title: 'Interstitial',
         options: {collapsible: true, collapsed: true},
       }),
+    ),
+    defineField(
+      slugURLBuilder(
+        {
+          name: 'slug',
+          title: 'Slug',
+          options: {
+            source: (object: any) => {
+              const defaultSlug = object?.title ?? ''
+              if (!defaultSlug) throw new Error('Please add a title to create a unique slug.')
+              return defaultSlug.slice(0, 95)
+            },
+          },
+          group: 'content',
+        },
+        {
+          prefix: async (parent) => {
+            const dateFormatter = new Intl.DateTimeFormat('en-US', {
+              timeZone: 'America/New_York',
+              year: 'numeric',
+            })
+            const year = dateFormatter.format(new Date(parent.startDate))
+            return `/exhibitions/${year}`
+          },
+        },
+      ),
     ),
 
     // EXPLORE CONTENT
@@ -378,6 +372,12 @@ export default defineType({
       type: 'seo',
       group: 'pressRelease',
       options: {collapsible: true, collapsed: true},
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      group: 'seo',
     }),
   ],
 })

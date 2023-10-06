@@ -31,23 +31,6 @@ export default defineType({
   icon: ThLargeIcon,
   fields: [
     defineField({
-      name: 'seo',
-      title: 'SEO',
-      type: 'seo',
-      group: 'seo',
-    }),
-    defineField({
-      name: 'shopify',
-      title: 'Shopify',
-      type: 'reference',
-      to: [{type: 'product'}],
-      options: {
-        disableNew: true,
-        filter: '', // need to filter out any products that have count(*[references(^._id)]) > 0
-      },
-      group: 'shopify',
-    }),
-    defineField({
       name: 'title',
       title: 'Title',
       group: 'content',
@@ -92,77 +75,6 @@ export default defineType({
       ],
       hidden: ({parent}) => !parent?.displayCustomTitle,
     }),
-    // should be in format of /artworks/[artist-slug]-[artwork-slug]-[hash]
-    // artist-slug — artist's full name field, with replaced spaces and special characters with dashes, and converted to lowercase
-    // artwork-slug — artwork's title with replaced spaces and special characters with dashes, and converted to lowercase
-    // hash — last 5 chars of id (slice(-5))
-    defineField(
-      slugBuilder(
-        {
-          name: 'slug',
-          title: 'Slug',
-          group: 'content',
-          description:
-            'Should be in format of /artworks/[artist-slug]-[artwork-slug]-[hash]. artist-slug is the full artist name, artwork-slug is the title of the artwork, and hash is a 5 digit semi-random hash generated from the artwork UID.',
-          options: {
-            source: async (object: any, context: any) => {
-              const artistId = object.artists?.[0]?._ref
-              const client = context.getClient({apiVersion})
-              if (!artistId) throw new Error('Link an artist to generate a slug')
-              if (!object.title) throw new Error('Please add a title to create a unique slug.')
-              const artistFullName = await client.fetch(
-                `*[_type == "artist" && _id == $artistId][0].fullName`,
-                {artistId},
-              )
-              const defaultSlug = `${artistFullName}-${object.title}`
-              if (!defaultSlug) throw new Error('Please add a title to create a unique slug.')
-              return defaultSlug
-            },
-          },
-          validation: (rule: SlugRule) => [
-            rule.custom(async (value, context: any) => {
-              const slug = value?.current || ''
-              if (slug.length > SLUG_MAX_LENGTH) return 'Slug is too long'
-              const artistId = context.parent.artists[0]?._ref
-              const client = context.getClient({apiVersion})
-              const artistFullName = await client.fetch(
-                `*[_type == "artist" && _id == $artistId][0].fullName`,
-                {artistId},
-              )
-              const normalizedFullName = slugify(artistFullName)
-              const isSlugValid = slug.includes(normalizedFullName)
-              return isSlugValid || 'Author name should be displayed correctly'
-            }),
-            rule
-              .custom(async (value, context: any) => {
-                const slug = value?.current || ''
-                if (slug.length > SLUG_MAX_LENGTH) return 'Slug is too long'
-                const artistId = context.parent.artists[0]?._ref
-                const client = context.getClient({apiVersion})
-                const artistFullName = await client.fetch(
-                  `*[_type == "artist" && _id == $artistId][0].fullName`,
-                  {artistId},
-                )
-                const normalizedTitle = slugify(context.parent.title)
-                const normalizedFullName = slugify(artistFullName)
-                const MAX_TITLE_LENGTH = SLUG_BODY_LENGTH - normalizedFullName.length - 1 // 1 for the dash
-                const expectedTitle = normalizedTitle.slice(0, MAX_TITLE_LENGTH)
-                const isSlugValid = slug.includes(expectedTitle)
-                return isSlugValid || 'It is recommended to display the title of the artwork.'
-              })
-              .warning(),
-          ],
-        },
-        {
-          prefix: ARTWORKS_PREFIX,
-          suffix: async (parent) => {
-            const hash = parent._id?.slice(-HASH_LENGTH)
-            if (!hash) throw new Error('Artwork ID is missing or invalid')
-            return `-${hash}`
-          },
-        },
-      ),
-    ),
     defineField({
       name: 'artists',
       title: 'Artists',
@@ -479,6 +391,94 @@ export default defineType({
       group: 'content',
       type: 'array',
       of: blockContentSimple,
+    }),
+    // should be in format of /artworks/[artist-slug]-[artwork-slug]-[hash]
+    // artist-slug — artist's full name field, with replaced spaces and special characters with dashes, and converted to lowercase
+    // artwork-slug — artwork's title with replaced spaces and special characters with dashes, and converted to lowercase
+    // hash — last 5 chars of id (slice(-5))
+    defineField(
+      slugBuilder(
+        {
+          name: 'slug',
+          title: 'Slug',
+          group: 'content',
+          description:
+            'Should be in format of /artworks/[artist-slug]-[artwork-slug]-[hash]. artist-slug is the full artist name, artwork-slug is the title of the artwork, and hash is a 5 digit semi-random hash generated from the artwork UID.',
+          options: {
+            source: async (object: any, context: any) => {
+              const artistId = object.artists?.[0]?._ref
+              const client = context.getClient({apiVersion})
+              if (!artistId) throw new Error('Link an artist to generate a slug')
+              if (!object.title) throw new Error('Please add a title to create a unique slug.')
+              const artistFullName = await client.fetch(
+                `*[_type == "artist" && _id == $artistId][0].fullName`,
+                {artistId},
+              )
+              const defaultSlug = `${artistFullName}-${object.title}`
+              if (!defaultSlug) throw new Error('Please add a title to create a unique slug.')
+              return defaultSlug
+            },
+          },
+          validation: (rule: SlugRule) => [
+            rule.custom(async (value, context: any) => {
+              const slug = value?.current || ''
+              if (slug.length > SLUG_MAX_LENGTH) return 'Slug is too long'
+              const artistId = context.parent.artists[0]?._ref
+              const client = context.getClient({apiVersion})
+              const artistFullName = await client.fetch(
+                `*[_type == "artist" && _id == $artistId][0].fullName`,
+                {artistId},
+              )
+              const normalizedFullName = slugify(artistFullName)
+              const isSlugValid = slug.includes(normalizedFullName)
+              return isSlugValid || 'Author name should be displayed correctly'
+            }),
+            rule
+              .custom(async (value, context: any) => {
+                const slug = value?.current || ''
+                if (slug.length > SLUG_MAX_LENGTH) return 'Slug is too long'
+                const artistId = context.parent.artists[0]?._ref
+                const client = context.getClient({apiVersion})
+                const artistFullName = await client.fetch(
+                  `*[_type == "artist" && _id == $artistId][0].fullName`,
+                  {artistId},
+                )
+                const normalizedTitle = slugify(context.parent.title)
+                const normalizedFullName = slugify(artistFullName)
+                const MAX_TITLE_LENGTH = SLUG_BODY_LENGTH - normalizedFullName.length - 1 // 1 for the dash
+                const expectedTitle = normalizedTitle.slice(0, MAX_TITLE_LENGTH)
+                const isSlugValid = slug.includes(expectedTitle)
+                return isSlugValid || 'It is recommended to display the title of the artwork.'
+              })
+              .warning(),
+          ],
+        },
+        {
+          prefix: ARTWORKS_PREFIX,
+          suffix: async (parent) => {
+            const hash = parent._id?.slice(-HASH_LENGTH)
+            if (!hash) throw new Error('Artwork ID is missing or invalid')
+            return `-${hash}`
+          },
+        },
+      ),
+    ),
+    defineField({
+      name: 'shopify',
+      title: 'Shopify',
+      type: 'reference',
+      to: [{type: 'product'}],
+      options: {
+        disableNew: true,
+        filter: '', // need to filter out any products that have count(*[references(^._id)]) > 0
+      },
+      group: 'shopify',
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      group: 'seo',
     }),
   ],
   preview: {

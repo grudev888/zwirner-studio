@@ -73,12 +73,6 @@ export default defineType({
   ],
   fields: [
     defineField({
-      type: 'seo',
-      name: 'seo',
-      title: 'SEO',
-      group: 'seo',
-    }),
-    defineField({
       type: 'string',
       name: 'type',
       group: 'content',
@@ -250,6 +244,25 @@ export default defineType({
       ],
     }),
     defineField(
+      Interstitial.builder(
+        {
+          name: 'interstitial',
+          group: 'content',
+          title: 'Interstitial',
+          hidden: hideForTypes([ArticleTypes['External News']]),
+        },
+        {excludeFields: ['subtitle']},
+      ),
+    ),
+    defineField({
+      name: 'pdf',
+      title: 'PDF',
+      group: 'content',
+      type: 'file',
+      hidden: hideForTypes([ArticleTypes['External News']]),
+      options: {accept: 'application/pdf'},
+    }),
+    defineField(
       slugBuilder(
         {
           name: 'slug',
@@ -295,25 +308,13 @@ export default defineType({
         },
       ),
     ),
-    defineField(
-      Interstitial.builder(
-        {
-          name: 'interstitial',
-          group: 'content',
-          title: 'Interstitial',
-          hidden: hideForTypes([ArticleTypes['External News']]),
-        },
-        {excludeFields: ['subtitle']},
-      ),
-    ),
     defineField({
-      name: 'pdf',
-      title: 'PDF',
-      group: 'content',
-      type: 'file',
-      hidden: hideForTypes([ArticleTypes['External News']]),
-      options: {accept: 'application/pdf'},
+      type: 'seo',
+      name: 'seo',
+      title: 'SEO',
+      group: 'seo',
     }),
+    
   ],
   preview: {
     select: {

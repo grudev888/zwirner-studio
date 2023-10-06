@@ -35,12 +35,7 @@ export default defineType({
   ],
   type: 'document',
   fields: [
-    defineField({
-      type: 'seo',
-      name: 'seo',
-      title: 'SEO',
-      group: 'seo',
-    }),
+    
     defineField({
       name: 'title',
       title: 'Title',
@@ -48,34 +43,6 @@ export default defineType({
       type: 'string',
       validation: (rule: StringRule) => rule.required(),
     }),
-    defineField(
-      slugBuilder(
-        {
-          name: 'slug',
-          title: 'Slug',
-          options: {
-            source: async (object: any, context: any) => {
-              const artistRef = object?.artist?._ref
-              const defaultSlug = object?.title ?? ''
-
-              if (!defaultSlug && !artistRef)
-                throw new Error('Please add a title or an artist to create a unique slug.')
-
-              if (!artistRef) return defaultSlug
-
-              const {getClient} = context
-              const client = getClient({apiVersion})
-              const params = {artistId: artistRef}
-
-              const result = await client.fetch(artistById, params)
-              return result?.[0]?.fullName ?? defaultSlug
-            },
-          },
-          group: 'content',
-        },
-        {prefix: '/artists'},
-      ),
-    ),
     defineField({
       name: 'artist',
       title: 'Artist',
@@ -182,7 +149,35 @@ export default defineType({
       group: 'content',
       type: 'interstitial',
     }),
+    defineField(
+      slugBuilder(
+        {
+          name: 'slug',
+          title: 'Slug',
+          options: {
+            source: async (object: any, context: any) => {
+              const artistRef = object?.artist?._ref
+              const defaultSlug = object?.title ?? ''
 
+              if (!defaultSlug && !artistRef)
+                throw new Error('Please add a title or an artist to create a unique slug.')
+
+              if (!artistRef) return defaultSlug
+
+              const {getClient} = context
+              const client = getClient({apiVersion})
+              const params = {artistId: artistRef}
+
+              const result = await client.fetch(artistById, params)
+              return result?.[0]?.fullName ?? defaultSlug
+            },
+          },
+          group: 'content',
+        },
+        {prefix: '/artists'},
+      ),
+    ),
+    
     // Subpages
 
     defineField(
@@ -270,7 +265,6 @@ export default defineType({
         {reference: article},
       ),
     ),
-
     defineField({
       name: 'pressInterstitialSubpage',
       title: 'Press Interstitial',
@@ -283,6 +277,12 @@ export default defineType({
       title: 'Press Subpage Seo',
       group: 'press',
       type: 'seo',
+    }),
+    defineField({
+      type: 'seo',
+      name: 'seo',
+      title: 'SEO',
+      group: 'seo',
     }),
   ],
   preview: {
