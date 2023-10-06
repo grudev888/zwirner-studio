@@ -34,10 +34,12 @@ export const builder = (
       name: 'type',
       title: 'Media Type',
       type: 'string',
-      hidden: !!options?.type,
+      // hidden: !!options?.type,
       options: {
         list: Object.values(MediaTypes)
-          .filter((type) => (!!options?.type ? type === options?.type : true))
+          .filter((type) =>
+            !!options?.type ? type === options?.type || type === MediaTypes.UNSET : true,
+          )
           .map((type) => ({title: capitalize(type), value: type})),
       },
       initialValue: options?.type || MediaTypes.UNSET,

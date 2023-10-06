@@ -40,9 +40,10 @@ export default defineType({
   fields: [
     defineField({
       name: 'hideToggle',
-      title: 'Hide',
+      title: 'Private',
       type: 'boolean',
       group: 'exceptionalWorkContent',
+      initialValue: false,
       description: 'Hide this page from Exhibitions, Past and Current.',
     }),
     defineField({

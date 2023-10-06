@@ -12,7 +12,7 @@ import {builder as slugURLBuilder} from '../../objects/utils/slugUrl'
 import {builder as PageBuilder, PageBuilderComponents} from '../../objects/utils/pageBuilder'
 import {GridComponents} from '../../objects/page/grid'
 import blockContentSimple from '../../objects/utils/blockContentSimple'
-import { franchiseBrandingField } from '../../objects/data/franchiseBranding'
+import {franchiseBrandingField} from '../../objects/data/franchiseBranding'
 
 import artistType from '../artist'
 import artwork from '../artwork'
@@ -37,9 +37,10 @@ export default defineType({
   fields: [
     defineField({
       name: 'hideToggle',
-      title: 'Hide',
+      title: 'Private',
       type: 'boolean',
       group: 'onlineExhibitionContent',
+      initialValue: false,
       description: 'Hide this page from Exhibitions, Past and Current.',
     }),
     defineField({
