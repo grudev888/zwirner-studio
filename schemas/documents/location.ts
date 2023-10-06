@@ -41,6 +41,7 @@ export default defineType({
       title: 'Operating Hours',
       name: 'hours',
       type: 'availability',
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'phone',
@@ -48,7 +49,7 @@ export default defineType({
       type: 'string',
       validation: (Rule) =>
         Rule.regex(
-          /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
+          /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/,
         ).error('Check the phone number format'),
       // todo create a custom field with country selection, masks and validation
       // https://www.sanity.io/docs/validation#4dc8b38bc411

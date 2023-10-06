@@ -8,6 +8,6 @@ const onlineExhibitionDateFields = groq`
 `
 
 export const getEndDateOnlineExhibitionsDate = groq`
-*[_type == "onlineExhibition"] {
+*[_type == "onlineExhibitionPage"] {
   ${onlineExhibitionDateFields}
 }`
