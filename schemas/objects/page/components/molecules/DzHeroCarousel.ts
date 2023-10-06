@@ -70,9 +70,6 @@ export const builder = (
       of: [
         defineArrayMember({
           type: 'image',
-          options: {
-            hotspot: true,
-          },
           fields: [
             {
               name: 'alt',

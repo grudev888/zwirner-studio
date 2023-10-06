@@ -9,7 +9,7 @@ export default defineField({
       name: 'image',
       type: 'image',
       title: 'Image',
-      options: {hotspot: true, collapsible: false},
+      options: {collapsible: false},
       fields: [
         defineField({
           name: 'alt',

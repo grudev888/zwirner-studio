@@ -134,9 +134,6 @@ export const builder = (
       type: 'image',
       title: 'Image',
       hidden: ({parent}) => parent?.editorialType !== EDITORIAL_TYPES.COMPLEX,
-      options: {
-        hotspot: true,
-      },
       fields: [
         {
           name: 'alt',

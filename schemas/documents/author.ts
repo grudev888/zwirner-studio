@@ -17,9 +17,6 @@ export default defineType({
       name: 'picture',
       title: 'Picture',
       type: 'image',
-      options: {
-        hotspot: true,
-      },
       fields: [
         {
           name: 'alt',

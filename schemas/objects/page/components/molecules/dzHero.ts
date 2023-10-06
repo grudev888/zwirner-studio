@@ -78,9 +78,6 @@ export const builder = (
       type: 'image',
       title: 'Image',
       group: 'overrides',
-      options: {
-        hotspot: true,
-      },
       fields: [
         {
           name: 'alt',

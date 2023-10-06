@@ -27,7 +27,6 @@ const fields = (references: Reference[]) => [
     name: 'image',
     type: 'image',
     title: 'Image',
-    options: {hotspot: true},
     fields: [{name: 'alt', type: 'string', title: 'Alternative text', hidden: true}],
   }),
   defineField({name: 'category', type: 'string', title: 'Category'}),

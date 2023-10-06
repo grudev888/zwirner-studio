@@ -62,7 +62,7 @@ export const builder = (
       name: 'image',
       title: 'Image',
       type: 'image',
-      options: {hotspot: true, collapsible: false, sources: [mediaAssetSource]},
+      options: {collapsible: false, sources: [mediaAssetSource]},
       fields: [
         defineField({
           name: 'alt',

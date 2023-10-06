@@ -100,7 +100,6 @@ export default defineType({
       type: `image`,
       description:
         'This is the meta image presented in search, Open Graph, Twitter and other social for this page when shared. If left empty, will default to global image.',
-      options: {hotspot: true},
       fieldset: 'openGraph',
       validation: (rule) =>
         rule.custom((value) => {
