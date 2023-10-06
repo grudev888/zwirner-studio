@@ -1,5 +1,5 @@
 import {defineField, defineType, ObjectDefinition, SchemaTypeDefinition} from 'sanity'
-import {MasterDetailIcon} from '@sanity/icons'
+import {MasterDetailIcon, ImagesIcon} from '@sanity/icons'
 import {builder as dzCardBuilder} from './dzCard'
 import {builder as dzMediaBuilder} from './dzMedia'
 
@@ -53,7 +53,7 @@ export const builder = (
   options: CarouselOptions,
 ) => ({
   type: 'object',
-  icon: MasterDetailIcon,
+  icon: ImagesIcon,
   fields: [
     defineField({
       name: 'title',

@@ -1,4 +1,4 @@
-import {MasterDetailIcon} from '@sanity/icons'
+import {BlockElementIcon} from '@sanity/icons'
 import {ObjectDefinition, defineField, defineType} from 'sanity'
 import cta from '../../../utils/cta'
 import * as Media from '../../../utils/media'
@@ -38,7 +38,7 @@ export const builder = (
   const {excludeFields} = options || {excludeFields: []}
   return {
     type: 'object',
-    icon: MasterDetailIcon,
+    icon: BlockElementIcon,
     fields: fields.filter((field) => !excludeFields?.includes(field.name)),
     ...params,
   }
