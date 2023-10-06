@@ -32,6 +32,18 @@ export default [
             render: ({children}: any) => <sub>{children}</sub>,
           },
         },
+        {
+          title: 'Strikethrough',
+          value: 'strikethrough',
+          blockEditor: {
+            icon: () => (
+              <div>
+                <s>abc</s>
+              </div>
+            ),
+            render: ({children}: any) => <s>{children}</s>,
+          },
+        },
       ],
       annotations: [],
     },
