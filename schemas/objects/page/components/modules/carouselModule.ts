@@ -10,6 +10,7 @@ const fields = (reference: SchemaTypeDefinition | SchemaTypeDefinition[]) => {
       type: 'string',
       title: 'Size',
       options: {list: [{value: 'XL', title: 'XL'}, 'L', 'M', 'S']},
+      validation: (rule) => rule.required(),
     }),
     defineField({name: 'title', type: 'string', title: 'Title'}),
     ...(references

@@ -67,6 +67,7 @@ export const builder = (
       type: 'string',
       title: 'Size',
       options: {list: [{value: 'XL', title: 'XL'}, 'L', 'M', 'S']},
+      validation: (rule) => rule.required(),
     }),
     {
       type: 'array',
