@@ -97,6 +97,10 @@ export const utilsObjects: SchemaTypeDefinition[] = [
   jsonLD,
   breadcrumbItem,
   slugUrl,
+  strings,
+  dateRange,
+  redirects,
+  blockContent,
 ]
 
 export const primitiveComponents: ObjectDefinition[] = [interstitial, hero]
@@ -128,7 +132,8 @@ export const objects: ObjectDefinition[] = [
   menuItemPage,
 ]
 
-const shopifyDocuments: DocumentDefinition[] = [collection, product, productVariant]
+export const shopifyDocuments: DocumentDefinition[] = [collection, product, productVariant]
+
 const shopifyObjects: ObjectDefinition[] = [
   accordion,
   accordionGroup,
@@ -149,9 +154,10 @@ export const pageDocuments: DocumentDefinition[] = [
   onlineExhibitionPage,
   fairPage,
   exceptionalWork,
+  page,
 ]
 
-export const singletons: DocumentDefinition[] = [
+export const singletonDocuments: DocumentDefinition[] = [
   exhibitionsLanding,
   exhibitionPast,
   artistListing,
@@ -163,31 +169,28 @@ export const singletons: DocumentDefinition[] = [
   footer,
 ]
 
-export const schema: {types: SchemaTypeDefinition[]} = {
-  types: [
-    page,
-    article,
-    press,
-    bookType,
-    podcast,
-    video,
-    locationType,
-    artwork,
-    strings,
-    artist,
-    authorType,
-    dateRange,
-    redirects,
-    blockContent,
+export const recordDocuments: DocumentDefinition[] = [
+  article,
+  press,
+  bookType,
+  podcast,
+  video,
+  locationType,
+  artwork,
+  artist,
+  authorType,
+]
+
+export const schemaTypes: SchemaTypeDefinition[] = [
     ...pageDocuments,
     ...objects,
     ...pageComponents,
     ...pageModules,
     ...primitiveComponents,
-    ...singletons,
+    ...singletonDocuments,
     ...utilsObjects,
     ...shopifyDocuments,
     ...shopifyObjects,
     ...shopifyUtils,
-  ],
-}
+    ...recordDocuments,
+  ]

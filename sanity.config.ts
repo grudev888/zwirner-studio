@@ -2,11 +2,26 @@ import {defineConfig} from 'sanity'
 import {deskTool} from 'sanity/desk'
 import {availability} from 'sanity-plugin-availability'
 import {visionTool} from '@sanity/vision'
-import {schema} from './schemas'
+import {schemaTypes, singletonDocuments, shopifyDocuments} from './schemas'
 import {dataset, projectId} from './env'
 import {generalStructure} from './lib/desk/structure/structure'
 import {defaultDocumentNode} from './lib/desk/document'
 import {media, mediaAssetSource} from 'sanity-plugin-media'
+
+const singletonActions = new Set<string>(["publish", "discardChanges", "restore"])
+
+const templateFilterTypes = [
+  ...singletonDocuments,
+  ...shopifyDocuments,
+  {
+    name: "media.tag"
+  }
+]
+
+const actionFilterTypes = [
+  ...singletonDocuments,
+  ...shopifyDocuments,
+]
 
 export default defineConfig({
   title: 'Zwirner Gallery Website',
@@ -16,15 +31,27 @@ export default defineConfig({
     deskTool({structure: generalStructure, defaultDocumentNode}),
     media(),
     visionTool(),
-    availability()
+    availability(),
   ],
-  schema,
+  schema: {
+    types: schemaTypes,
+    templates: (templates) => {
+      const filteredTemplates = templates.filter((template) => 
+        !templateFilterTypes.some((singletonDoc) => template.schemaType === singletonDoc.name))
+      return filteredTemplates;
+    }
+  },
+  document: {
+    actions: (input, context) => 
+      actionFilterTypes.some((singletonDoc) => singletonDoc.name === context.schemaType)
+      ? input.filter(({ action }) => action && singletonActions.has(action))
+      : input,
+  },
   form: {
-    // Don't use this plugin when selecting files only (but allow all other enabled asset sources)
     file: {
       assetSources: () => [mediaAssetSource],
       directUploads: true,
-      },
+    },
     image: {
       assetSources: () => [mediaAssetSource],
       directUploads: true,
@@ -32,6 +59,6 @@ export default defineConfig({
     video: {
       assetSources: () => [mediaAssetSource],
       directUploads: true,
-      }
-  }
+    },
+  },
 })
