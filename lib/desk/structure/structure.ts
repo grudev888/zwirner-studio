@@ -190,7 +190,7 @@ export const generalStructure = (S: StructureBuilder) =>
                       S.view
                         .component(PreviewIframe)
                         .options({
-                          url: getSingletonPreviewUrl('/exhibitions'),
+                          url: getSingletonPreviewUrl('/exhibitions/past-exhibitions'),
                         })
                         .title('Preview'),
                     ]),
@@ -255,7 +255,9 @@ export const generalStructure = (S: StructureBuilder) =>
               S.listItem()
                 .title('Online Exhibitions')
                 .icon(DashboardIcon)
-                .child(() => getSectionsByYear({S, document: onlineExhibition, field: 'startDate'})),
+                .child(() =>
+                  getSectionsByYear({S, document: onlineExhibition, field: 'startDate'}),
+                ),
             ]),
         ),
       S.divider(),
