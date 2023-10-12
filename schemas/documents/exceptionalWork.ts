@@ -16,7 +16,6 @@ import {franchiseBrandingField} from '../objects/data/franchiseBranding'
 
 import artistType from './artist'
 import artwork from './artwork'
-import location from './location'
 import book from './book'
 import artist from './artist'
 import podcast from './podcast'
@@ -200,47 +199,21 @@ export default defineType({
             PageBuilderComponents.dzCarousel,
           ],
           references: {
-            dzCard: [
-              artwork,
-              book,
-              location,
-              artist,
-              podcast,
-              {name: 'article', title: 'Article'} as SchemaTypeDefinition,
-              {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
-            ],
+            dzCard: [artwork, book, podcast],
             dzInterstitial: [
-              artwork,
-              book,
               artist,
               {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
             ],
             dzSplit: [{name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition],
             grid: {
               references: {
-                dzCard: [
-                  artwork,
-                  book,
-                  location,
-                  artist,
-                  podcast,
-                  {name: 'article', title: 'Article'} as SchemaTypeDefinition,
-                  {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
-                ],
+                dzCard: [artwork, book],
               },
               components: [GridComponents.dzCard, GridComponents.dzMedia],
             },
             dzCarousel: {
               references: {
-                dzCard: [
-                  artwork,
-                  book,
-                  location,
-                  artist,
-                  podcast,
-                  {name: 'article', title: 'Article'} as SchemaTypeDefinition,
-                  {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
-                ],
+                dzCard: [artwork, book],
               },
               components: [GridComponents.dzCard, GridComponents.dzMedia],
             },

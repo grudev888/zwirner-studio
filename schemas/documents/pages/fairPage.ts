@@ -15,7 +15,6 @@ import blockContentSimple from '../../objects/utils/blockContentSimple'
 
 import artistType from '../artist'
 import artwork from '../artwork'
-import location from '../location'
 import book from '../book'
 import artist from '../artist'
 import podcast from '../podcast'
@@ -53,38 +52,38 @@ export default defineType({
       group: 'fairContent',
     }),
     defineField({
-        name: 'externalLinkToggle',
-        title: 'External Link Toggle',
-        group: 'fairContent',
-        type: 'boolean',
-        description: 'This will prevent the page from being rendered and instead redirect to the provided URL below.',
-        initialValue: false,
+      name: 'externalLinkToggle',
+      title: 'External Link Toggle',
+      group: 'fairContent',
+      type: 'boolean',
+      description:
+        'This will prevent the page from being rendered and instead redirect to the provided URL below.',
+      initialValue: false,
     }),
     defineField({
-        name: 'externalLink',
-        title: 'External Link',
-        group: 'fairContent',
-        type: 'url',
-        description: 'If the External Link Toggle is on, this will redirect to the provided URL.',
-        validation: (rule) => [
-          rule.uri({
-            allowRelative: false,
-            scheme: ['https', 'http'],
-          }),
-          rule.custom((value, {parent}:any) => {
-            if (parent.externalLinkToggle && !value) {
-              return 'Please provide a URL.'
-            }
-            return true
-          })
-        ],
+      name: 'externalLink',
+      title: 'External Link',
+      group: 'fairContent',
+      type: 'url',
+      description: 'If the External Link Toggle is on, this will redirect to the provided URL.',
+      validation: (rule) => [
+        rule.uri({
+          allowRelative: false,
+          scheme: ['https', 'http'],
+        }),
+        rule.custom((value, {parent}: any) => {
+          if (parent.externalLinkToggle && !value) {
+            return 'Please provide a URL.'
+          }
+          return true
+        }),
+      ],
     }),
     defineField({
       name: 'summary',
       title: 'Description',
       group: 'fairContent',
-      description:
-        'This is used to describe the fair and appears as the text in fair cards.',
+      description: 'This is used to describe the fair and appears as the text in fair cards.',
       type: 'array',
       of: blockContentSimple,
     }),
@@ -215,47 +214,21 @@ export default defineType({
             PageBuilderComponents.dzCarousel,
           ],
           references: {
-            dzCard: [
-              artwork,
-              book,
-              location,
-              artist,
-              podcast,
-              {name: 'article', title: 'Article'} as SchemaTypeDefinition,
-              {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
-            ],
+            dzCard: [artwork, book, podcast],
             dzInterstitial: [
-              artwork,
-              book,
               artist,
               {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
             ],
             dzSplit: [{name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition],
             grid: {
               references: {
-                dzCard: [
-                  artwork,
-                  book,
-                  location,
-                  artist,
-                  podcast,
-                  {name: 'article', title: 'Article'} as SchemaTypeDefinition,
-                  {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
-                ],
+                dzCard: [artwork, book],
               },
               components: [GridComponents.dzCard, GridComponents.dzMedia],
             },
             dzCarousel: {
               references: {
-                dzCard: [
-                  artwork,
-                  book,
-                  location,
-                  artist,
-                  podcast,
-                  {name: 'article', title: 'Article'} as SchemaTypeDefinition,
-                  {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
-                ],
+                dzCard: [artwork, book],
               },
               components: [GridComponents.dzCard, GridComponents.dzMedia],
             },
@@ -263,47 +236,46 @@ export default defineType({
         },
       ),
     ),
-     // PRESS RELEASE CONTENT
+    // PRESS RELEASE CONTENT
 
-     defineField({
-        name: 'pressReleasePDF',
-        title: 'Press Release PDF',
-        group: 'pressRelease',
-        type: 'file',
-        options: {accept: 'application/pdf'},
-      }),
-      defineField(
-        DzEditorial.builder(
-          {
-            name: 'pressRelease',
-            title: 'Press Release',
-            group: 'pressRelease',
-            description: 'Editorial Module',
-          },
-          {references: [], hideComponentTitle: true},
-        ),
-      ),
-      defineField(
-        Interstitial.builder({
-          name: 'pressReleaseInterstitial',
+    defineField({
+      name: 'pressReleasePDF',
+      title: 'Press Release PDF',
+      group: 'pressRelease',
+      type: 'file',
+      options: {accept: 'application/pdf'},
+    }),
+    defineField(
+      DzEditorial.builder(
+        {
+          name: 'pressRelease',
+          title: 'Press Release',
           group: 'pressRelease',
-          title: 'Press Release Interstitial',
-          options: {collapsible: true, collapsed: true},
-        }),
+          description: 'Editorial Module',
+        },
+        {references: [], hideComponentTitle: true},
       ),
-      defineField({
-        name: 'pressReleaseSEO',
-        title: 'Press Release SEO',
-        type: 'seo',
+    ),
+    defineField(
+      Interstitial.builder({
+        name: 'pressReleaseInterstitial',
         group: 'pressRelease',
+        title: 'Press Release Interstitial',
         options: {collapsible: true, collapsed: true},
       }),
-      defineField({
-        name: 'seo',
-        title: 'SEO',
-        type: 'seo',
-        group: 'seo',
-      }),
+    ),
+    defineField({
+      name: 'pressReleaseSEO',
+      title: 'Press Release SEO',
+      type: 'seo',
+      group: 'pressRelease',
+      options: {collapsible: true, collapsed: true},
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      group: 'seo',
+    }),
   ],
-  
 })
