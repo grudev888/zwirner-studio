@@ -7,6 +7,7 @@ import {dataset, projectId} from './env'
 import {generalStructure} from './lib/desk/structure/structure'
 import {defaultDocumentNode} from './lib/desk/document'
 import {media, mediaAssetSource} from 'sanity-plugin-media'
+import { scheduledPublishing, ScheduleAction } from '@sanity/scheduled-publishing'
 
 const singletonActions = new Set<string>(["publish", "discardChanges", "restore"])
 
@@ -18,17 +19,13 @@ const templateFilterTypes = [
   }
 ]
 
-const actionFilterTypes = [
-  ...singletonDocuments,
-  ...shopifyDocuments,
-]
-
 export default defineConfig({
   title: 'Zwirner Gallery Website',
   projectId,
   dataset,
   plugins: [
     deskTool({structure: generalStructure, defaultDocumentNode}),
+    scheduledPublishing(),
     media(),
     visionTool(),
     availability(),
@@ -37,15 +34,23 @@ export default defineConfig({
     types: schemaTypes,
     templates: (templates) => {
       const filteredTemplates = templates.filter((template) => 
-        !templateFilterTypes.some((singletonDoc) => template.schemaType === singletonDoc.name))
+        !templateFilterTypes.some((doc) => template.schemaType === doc.name))
       return filteredTemplates;
     }
   },
   document: {
-    actions: (input, context) => 
-      actionFilterTypes.some((singletonDoc) => singletonDoc.name === context.schemaType)
-      ? input.filter(({ action }) => action && singletonActions.has(action))
-      : input,
+    actions: (actions, context) => {
+      if (singletonDocuments.some((doc) => doc.name === context.schemaType)) {
+        const filteredActions = actions.filter(({ action }) => action && singletonActions.has(action))
+        filteredActions.push(ScheduleAction)
+        return filteredActions
+      }
+      if (shopifyDocuments.some((doc) => doc.name === context.schemaType)) {
+        const filteredActions = actions.filter(({ action }) => action && singletonActions.has(action))
+        return filteredActions
+      }
+      return actions
+    }
   },
   form: {
     file: {
