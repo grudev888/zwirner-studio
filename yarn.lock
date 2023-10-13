@@ -2002,7 +2002,7 @@
     "@types/uuid" "^8.0.0"
     uuid "^8.0.0"
 
-"@sanity/vision@^3.17.0":
+"@sanity/vision@^3.18.0":
   version "3.18.0"
   resolved "https://registry.yarnpkg.com/@sanity/vision/-/vision-3.18.0.tgz#28c1f29e3762cae01b50fbdff7261609738bbc47"
   integrity sha512-BeXhqdQlwnyJMzZoyJGGSRKrEDmwJkM3z72FVhG5VXzFHJ3Ws/lNL8shdmh1KQcXSALOWpG+u1Fy/W4QBid6mw==
@@ -4092,7 +4092,7 @@ groq@^3.0.0:
   resolved "https://registry.yarnpkg.com/groq/-/groq-3.16.7.tgz#abc39e12b8e9decbe874a8fe117ee71338b4d40a"
   integrity sha512-4Qlmwi9uQOyvc8YLFP5d+y8YssFnfK4imY3ZzP+U06LrV/KectnLsl/nDUQS2YfyTrQ7sGZQVNbhKw8DjT3phw==
 
-groq@^3.17.0:
+groq@^3.18.0:
   version "3.18.0"
   resolved "https://registry.yarnpkg.com/groq/-/groq-3.18.0.tgz#e76d023376a53138f52e45608daa2972223ded95"
   integrity sha512-pATzkw+v/aHIldGieazeyDQRaIO+4HtzygiaPjiYmwKWPo21Bn+DhrTvhi27EIvg4VBoedEOlWONZEgc+PVn5w==
@@ -6010,7 +6010,7 @@ sanity-plugin-media@^2.2.1:
     rxjs "^7.0.0"
     zod "^3.21.4"
 
-sanity@^3.17.0:
+sanity@^3.18.0:
   version "3.18.0"
   resolved "https://registry.yarnpkg.com/sanity/-/sanity-3.18.0.tgz#f43368c2e46eb6199a2ab5bba4313e6b77cca842"
   integrity sha512-StgUXkgib4TTl84DbC56dBeurIHTSl3z8thGiXVbSsvFvDu9bUiPS40js3YW0aO8C8Xdom250Ux0FGt3TYGH5Q==
