@@ -46,6 +46,7 @@ export const builder = (
       group: 'content',
       type: 'array',
       icon: MasterDetailIcon,
+      validation: (rule: any) => rule.required(),
       of: [
         defineArrayMember(
           Content.builder(
@@ -56,7 +57,7 @@ export const builder = (
             },
             {
               references: options.references,
-              validation: (rule: any) => rule.max(1),
+              validation: (rule: any) => rule.max(1).required(),
               video: {
                 type: MediaTypes.MOVING_IMAGE,
               },
