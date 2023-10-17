@@ -1,4 +1,5 @@
 import {defineField, defineArrayMember} from 'sanity'
+import blockContentSimple from '../objects/utils/blockContentSimple'
 
 /**
  * This is the schema definition for the rich text fields used for
@@ -15,10 +16,7 @@ export default defineField({
   name: 'blockContent',
   type: 'array',
   of: [
-    defineArrayMember({
-      title: 'Block',
-      type: 'block',
-    }),
+    ...blockContentSimple,
     // You can add additional types here. Note that you can't use
     // primitive types such as 'string' and 'number' in the same array
     // as a block type.

@@ -9,14 +9,15 @@ import {
   RuleDef,
   ArrayRule,
 } from 'sanity'
-import {DocumentTextIcon, ComposeIcon, SearchIcon, ImageIcon} from '@sanity/icons'
+import {DocumentTextIcon, ComposeIcon, SearchIcon} from '@sanity/icons'
+
+import blockContentBody from '../objects/utils/blockContentBody'
 
 import location from './location'
 import * as Interstitial from '../objects/page/components/primitives/interstitial'
 import exhibitionPage from './pages/exhibitionPage'
 import {builder as slugBuilder} from '../objects/utils/slugUrl'
 import * as Media from '../objects/utils/media'
-import {GreyFootNote, GreyFootNoteDecorator} from '../../components/block/GreyFootnote'
 import {ConditionalProperty} from 'sanity'
 import blockContentSimple from '../objects/utils/blockContentSimple'
 import artwork from './artwork'
@@ -200,31 +201,7 @@ export default defineType({
         'artiblecobdy',
       ),
       hidden: hideForTypes([ArticleTypes['External News']]),
-      of: [
-        defineArrayMember({
-          type: 'block',
-          name: 'block',
-          marks: {
-            decorators: [
-              {title: 'Strong', value: 'strong'},
-              {title: 'Emphasis', value: 'em'},
-              {
-                title: 'Grey Note',
-                value: 'greyNote',
-                icon: GreyFootNote,
-                component: GreyFootNoteDecorator,
-              },
-            ],
-          },
-        }),
-        defineArrayMember(
-          dzMedia.builder({
-            name: 'bodyImage',
-            icon: ImageIcon,
-            title: 'Image',
-          }),
-        ),
-      ],
+      of: blockContentBody,
     }),
     defineField({
       name: 'articles',
@@ -314,7 +291,6 @@ export default defineType({
       title: 'SEO',
       group: 'seo',
     }),
-    
   ],
   preview: {
     select: {
