@@ -86,6 +86,7 @@ export default defineType({
       description: `Hide this page from search engines and the sitemap.`,
       type: 'boolean',
       initialValue: false,
+      validation: (rule) => rule.required(),
       fieldset: 'robots',
     }),
     defineField({
@@ -93,6 +94,7 @@ export default defineType({
       description: `Hide this page from search engines and the sitemap.`,
       type: 'boolean',
       initialValue: false,
+      validation: (rule) => rule.required(),
       fieldset: 'robots',
     }),
     defineField({
