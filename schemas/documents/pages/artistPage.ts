@@ -7,18 +7,18 @@ import {artistById} from '../../../queries/artist.queries'
 
 import artist from '../artist'
 import interstitial from '../../objects/page/components/primitives/interstitial'
-import gridModule, {
-  builder as gridModuleBuilder,
-} from '../../objects/page/components/modules/gridModule'
-import splitModule from '../../objects/page/components/modules/splitModule'
-import carouselModule, {
-  builder as carouselModuleBuilder,
-} from '../../objects/page/components/modules/carouselModule'
+
 import article from '../article'
 import book from '../book'
 import artwork from '../artwork'
-import media from '../../objects/utils/media'
 import exhibitionPage from './exhibitionPage'
+
+import {
+  builder as dzCarouselBuilder,
+  CarouselComponents,
+} from '../../objects/page/components/molecules/dzCarousel'
+import {builder as dzGridBuilder, GridComponents} from '../../objects/page/grid'
+import {builder as dzSplitBuilder} from '../../objects/page/components/molecules/dzSplit'
 
 export default defineType({
   name: 'artistPage',
@@ -35,7 +35,6 @@ export default defineType({
   ],
   type: 'document',
   fields: [
-    
     defineField({
       name: 'title',
       title: 'Title',
@@ -58,47 +57,89 @@ export default defineType({
       type: 'text',
       validation: (rule) => rule.required(),
     }),
-    defineField({
-      name: 'featured',
-      title: 'Featured Item',
-      type: 'reference',
-      to: [exhibitionPage, article, artwork].map(({name}) => ({
-        type: name as string,
-      })),
-      group: 'content',
-    }),
-    defineField({
-      name: 'survey',
-      title: 'Survey',
-      group: 'content',
-      type: carouselModule.name,
-    }),
-    defineField({
-      name: 'availableWorksBooks',
-      title: 'Available Works/Books Split',
-      group: 'content',
-      type: splitModule.name,
-    }),
-    defineField({
-      name: 'availableWorks',
-      title: 'Available Works',
-      group: 'content',
-      type: gridModule.name,
-    }),
+    defineField(
+      dzSplitBuilder(
+        {
+          name: 'featured',
+          title: 'Featured Item',
+          group: 'content',
+          options: {collapsible: true, collapsed: false},
+        },
+        {references: [exhibitionPage, article], hideComponentTitle: true},
+      ),
+    ),
+    defineField(
+      dzCarouselBuilder(
+        {
+          name: 'survey',
+          title: 'Survey',
+          group: 'content',
+          options: {collapsible: true, collapsed: false},
+        },
+        {
+          hideComponentTitle: true,
+          componentOptions: {title: 'Artworks'},
+          components: [CarouselComponents.dzCard],
+          references: {
+            dzCard: [exhibitionPage, article, artwork],
+          },
+        },
+      ),
+    ),
+    defineField(
+      dzSplitBuilder(
+        {
+          name: 'availableWorksBooks',
+          title: 'Available Works/Books Split',
+          group: 'content',
+          options: {collapsible: true, collapsed: false},
+        },
+        {references: [], hideComponentTitle: true, showAsPlainComponent: true},
+      ),
+    ),
+    defineField(
+      dzGridBuilder(
+        {
+          name: 'availableWorks',
+          title: 'Available Works',
+          group: 'content',
+        },
+        {
+          gridProps: {
+            title: 'Artworks',
+          },
+          hideComponentTitle: true,
+          references: {
+            dzCard: [artwork],
+          },
+          components: [GridComponents.dzCard],
+        },
+      ),
+    ),
     defineField({
       name: 'availableWorksInterstitial',
       title: 'Available Works Interstitial',
       group: 'content',
+      options: {collapsible: true, collapsed: false},
       type: interstitial.name,
     }),
     defineField(
-      gridModuleBuilder(
+      dzGridBuilder(
         {
           name: 'latestExhibitions',
           title: 'Latest Exhibitions',
           group: 'content',
         },
-        {reference: exhibitionPage},
+        {
+          gridProps: {
+            title: 'Exhibition',
+          },
+          hideComponentTitle: true,
+          references: {
+            dzCard: [exhibitionPage],
+          },
+          components: [GridComponents.dzCard],
+        },
       ),
     ),
     defineField({
@@ -106,6 +147,7 @@ export default defineType({
       title: 'Exhibitions Interstitial',
       group: 'content',
       type: interstitial.name,
+      options: {collapsible: true, collapsed: false},
     }),
     defineField({
       name: 'moveGuideUp',
@@ -114,33 +156,60 @@ export default defineType({
       type: 'boolean',
     }),
     defineField(
-      carouselModuleBuilder(
+      dzCarouselBuilder(
         {
           name: 'guide',
           title: 'Guide',
           group: 'content',
+          options: {collapsible: true, collapsed: false},
         },
-        {reference: article},
+        {
+          hideComponentTitle: true,
+          componentOptions: {title: 'Article'},
+          components: [CarouselComponents.dzCard],
+          references: {
+            dzCard: [article],
+          },
+        },
       ),
     ),
+
     defineField(
-      gridModuleBuilder(
+      dzGridBuilder(
         {
           name: 'selectedPress',
           title: 'Selected Press',
           group: 'content',
         },
-        {reference: article},
+        {
+          gridProps: {
+            title: 'Articles',
+          },
+          hideComponentTitle: true,
+          references: {
+            dzCard: [article],
+          },
+          components: [GridComponents.dzCard],
+        },
       ),
     ),
+
     defineField(
-      carouselModuleBuilder(
+      dzCarouselBuilder(
         {
           name: 'books',
           title: 'Books',
           group: 'content',
+          options: {collapsible: true, collapsed: false},
         },
-        {reference: book},
+        {
+          hideComponentTitle: true,
+          componentOptions: {title: 'Books'},
+          components: [CarouselComponents.dzCard],
+          references: {
+            dzCard: [book],
+          },
+        },
       ),
     ),
     defineField({
@@ -148,6 +217,7 @@ export default defineType({
       title: 'Interstitial',
       group: 'content',
       type: 'interstitial',
+      options: {collapsible: true, collapsed: false},
     }),
     defineField(
       slugBuilder(
@@ -177,17 +247,26 @@ export default defineType({
         {prefix: '/artists'},
       ),
     ),
-    
+
     // Subpages
 
     defineField(
-      gridModuleBuilder(
+      dzGridBuilder(
         {
           name: 'surveySubpage',
           title: 'Survey',
           group: 'survey',
         },
-        {reference: [artwork, media]},
+        {
+          gridProps: {
+            title: 'Content',
+          },
+          hideComponentTitle: true,
+          references: {
+            dzCard: [artwork],
+          },
+          components: [GridComponents.dzCard, GridComponents.dzMedia],
+        },
       ),
     ),
 
@@ -199,13 +278,22 @@ export default defineType({
     }),
 
     defineField(
-      gridModuleBuilder(
+      dzGridBuilder(
         {
           name: 'availableWorksSubpage',
           title: 'Available Works',
           group: 'availableWorks',
         },
-        {reference: [artwork, media]},
+        {
+          gridProps: {
+            title: 'Content',
+          },
+          hideComponentTitle: true,
+          references: {
+            dzCard: [artwork],
+          },
+          components: [GridComponents.dzCard, GridComponents.dzMedia],
+        },
       ),
     ),
 
@@ -231,13 +319,22 @@ export default defineType({
     }),
 
     defineField(
-      gridModuleBuilder(
+      dzGridBuilder(
         {
           name: 'guideSubpage',
           title: 'Guide',
           group: 'guide',
         },
-        {reference: [exhibitionPage, article]},
+        {
+          gridProps: {
+            title: 'Content',
+          },
+          hideComponentTitle: true,
+          references: {
+            dzCard: [article, exhibitionPage],
+          },
+          components: [GridComponents.dzCard],
+        },
       ),
     ),
 
@@ -256,15 +353,25 @@ export default defineType({
     }),
 
     defineField(
-      gridModuleBuilder(
+      dzGridBuilder(
         {
           name: 'pressSubpage',
           title: 'Press',
           group: 'press',
         },
-        {reference: article},
+        {
+          gridProps: {
+            title: 'Content',
+          },
+          hideComponentTitle: true,
+          references: {
+            dzCard: [article],
+          },
+          components: [GridComponents.dzCard],
+        },
       ),
     ),
+
     defineField({
       name: 'pressInterstitialSubpage',
       title: 'Press Interstitial',

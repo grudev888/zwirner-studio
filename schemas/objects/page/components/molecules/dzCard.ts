@@ -29,6 +29,53 @@ export const builder = (
     {name: 'content', title: 'Content', icon: ComposeIcon, default: true},
     {name: 'overrides', title: 'Overrides', icon: EditIcon},
   ],
+  preview: {
+    select: {
+      contentTitle: 'content.0.title',
+      locationTitle: 'content.0.name',
+      artistTitle: 'content.0.fullName',
+      artworkMedia: 'content.0.photos.0.image',
+      exhibitionMedia: 'content.0.heroMedia.image',
+      articleWithArtworkMedia: 'content.0.header.0.photos.0.image',
+      articleMedia: 'content.0.header.0.media.image',
+      articleMediaSelected: 'content.0.image.image',
+      bookMedia: 'content.0.photos.0',
+      locationMedia: 'content.0.photos',
+      artistMedia: 'content.0.picture',
+    },
+    prepare: ({
+      contentTitle,
+      locationTitle,
+      artistTitle,
+      artworkMedia,
+      exhibitionMedia,
+      articleWithArtworkMedia,
+      articleMedia,
+      bookMedia,
+      locationMedia,
+      artistMedia,
+      articleMediaSelected,
+    }: any) => {
+      const mediaObject =
+        artworkMedia ??
+        exhibitionMedia ??
+        articleWithArtworkMedia ??
+        articleMedia ??
+        bookMedia ??
+        artistMedia ??
+        locationMedia ??
+        articleMediaSelected ??
+        SquareIcon
+
+      const titleObject = contentTitle ?? locationTitle ?? artistTitle
+
+      return {
+        title: titleObject,
+        media: mediaObject,
+        icon: SquareIcon,
+      }
+    },
+  },
   fields: [
     defineField({
       type: 'string',
@@ -45,14 +92,6 @@ export const builder = (
       hidden: ({parent}) => {
         return parent?.content?.[0]?._type !== 'book'
       },
-    }),
-    defineField({
-      name: 'title',
-      type: 'string',
-      title: 'Component title',
-      group: 'content',
-      validation: (rule) => rule.required(),
-      initialValue: 'Card',
     }),
 
     // (Content card) Supported Modules for “Moving Images” ONLY

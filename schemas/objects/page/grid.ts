@@ -27,6 +27,7 @@ export type GridOptions = {
   references: FullGridReferencePerType
   referencesFilter?: ReferencesFilterOptions
   hideComponentTitle?: boolean
+  gridProps?: any
 }
 
 const getComponents = (
@@ -75,11 +76,24 @@ export const builder = (
       initialValue: false,
     }),
     defineField({
+      name: 'displayNumberOfItems',
+      type: 'boolean',
+      title: 'Show Number of Items',
+      description: 'This will show the number of items within the grid.',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'displayGridSlider',
+      type: 'boolean',
+      title: 'Show Grid Slider',
+      description: 'This will enable users to change the number of items per row.',
+      initialValue: false,
+    }),
+    defineField({
       name: 'itemsPerRow',
       type: 'number',
       title: 'Items per row',
       description: 'Number of components per row',
-      validation: (rule) => rule.required(),
       options: {
         list: [1, 2, 3, 4],
       },
@@ -94,6 +108,7 @@ export const builder = (
         options.referencesFilter,
       ),
       name: 'grid',
+      ...options?.gridProps,
     },
   ],
   ...params,

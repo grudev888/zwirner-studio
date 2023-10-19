@@ -30,6 +30,8 @@ export type CarouselOptions = {
   components: CarouselComponents[]
   references: FullGridReferencePerType
   referencesFilter?: ReferencesFilterOptions
+  hideComponentTitle?: boolean
+  componentOptions?: any
 }
 
 const getComponents = (
@@ -59,7 +61,7 @@ export const builder = (
       name: 'title',
       type: 'string',
       title: 'Component title',
-      validation: (rule) => rule.required(),
+      hidden: () => options?.hideComponentTitle ?? false,
       initialValue: 'Carousel',
     }),
     defineField({
@@ -77,7 +79,8 @@ export const builder = (
         options.references,
         options.referencesFilter,
       ),
-      ...params,
+      name: 'dzCarousel',
+      ...options?.componentOptions,
     },
   ],
   ...params,

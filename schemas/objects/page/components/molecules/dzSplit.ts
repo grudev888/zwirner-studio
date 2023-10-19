@@ -4,7 +4,6 @@ import {
   defineField,
   defineArrayMember,
   defineType,
-  ObjectRule,
   ObjectDefinition,
   SchemaTypeDefinition,
 } from 'sanity'
@@ -25,33 +24,51 @@ export interface DzSplitTypeProps {
   enableOverrides: boolean
 }
 
+type DzSplitBuilderOptions = {
+  references: SchemaTypeDefinition[]
+  hideComponentTitle?: boolean
+  showAsPlainComponent?: boolean
+}
+
+const getOptionalProperty = (data: any, options: DzSplitBuilderOptions) => {
+  return !options?.showAsPlainComponent ? data : {}
+}
+
 export const builder = (
   params: {name: string; title: string; [key: string]: any} = {
     name: 'dzSplit',
     title: 'Split',
   },
-  options: {references: SchemaTypeDefinition[]},
+  options: DzSplitBuilderOptions,
 ) => ({
   type: 'object',
   icon: SplitVerticalIcon,
-  groups: [
-    {name: 'content', title: 'Content', icon: ComposeIcon, default: true},
-    {name: 'overrides', title: 'Overrides', icon: EditIcon},
-  ],
+  ...getOptionalProperty(
+    {
+      groups: [
+        {name: 'content', title: 'Content', icon: ComposeIcon, default: true},
+        {name: 'overrides', title: 'Overrides', icon: EditIcon},
+      ],
+    },
+    options,
+  ),
   fields: [
     defineField({
       name: 'title',
       type: 'string',
       title: 'Component title',
-      group: 'content',
+      ...getOptionalProperty({group: 'content'}, options),
       initialValue: 'Split',
+      hidden: () => options.hideComponentTitle ?? false,
     }),
+
     defineField({
       name: 'content',
       title: 'Content',
-      group: 'content',
+      ...getOptionalProperty({group: 'content'}, options),
       type: 'array',
       icon: MasterDetailIcon,
+      hidden: () => options?.showAsPlainComponent,
       validation: (rule) => rule.max(1),
       of: options.references.map((reference) =>
         defineArrayMember({
@@ -66,7 +83,7 @@ export const builder = (
       title: 'Type',
       name: 'splitType',
       type: 'string',
-      group: 'content',
+      ...getOptionalProperty({group: 'content'}, options),
       options: {
         list: [
           {title: 'Tall', value: 'tall'},
@@ -80,15 +97,7 @@ export const builder = (
       name: 'reverse',
       title: 'Reverse row',
       type: 'boolean',
-      group: 'content',
-      initialValue: false,
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'animate',
-      title: 'Animate image',
-      type: 'boolean',
-      group: 'content',
+      ...getOptionalProperty({group: 'content'}, options),
       initialValue: false,
       validation: (rule) => rule.required(),
     }),
@@ -96,7 +105,7 @@ export const builder = (
       name: 'enableOverrides',
       type: 'boolean',
       title: 'Enable Overrides',
-      group: 'overrides',
+      ...getOptionalProperty({group: 'overrides'}, options),
       initialValue: false,
     }),
     // (Split) Modules to support both “Moving Images” and “Interactive Video”
@@ -106,8 +115,7 @@ export const builder = (
           name: 'media',
           title: 'Media',
           description: 'Media module',
-          group: 'overrides',
-          validation: (rule: ObjectRule) => rule.required(),
+          ...getOptionalProperty({group: 'overrides'}, options),
         },
         {
           // This enables video type selection
@@ -119,19 +127,19 @@ export const builder = (
       name: 'titleOverride',
       type: 'string',
       title: 'Component title',
-      group: 'overrides',
+      ...getOptionalProperty({group: 'overrides'}, options),
+    }),
+    defineField({
+      name: 'subtitleOverride',
+      type: 'text',
+      title: 'Component subtitle',
+      ...getOptionalProperty({group: 'overrides'}, options),
     }),
     defineField({
       name: 'primaryCTA',
       title: 'Primary CTA',
       type: 'cta',
-      group: 'overrides',
-    }),
-    defineField({
-      name: 'subtitleOverride',
-      type: 'string',
-      title: 'Component subtitle',
-      group: 'overrides',
+      ...getOptionalProperty({group: 'overrides'}, options),
     }),
   ],
   ...params,
