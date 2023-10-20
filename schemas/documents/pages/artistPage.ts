@@ -79,6 +79,7 @@ export default defineType({
         {
           hideComponentTitle: true,
           componentOptions: {title: 'Artworks'},
+          carouselSizes: [{value: 'XL', title: 'XL'}, 'L'],
           components: [CarouselComponents.dzCard],
           references: {
             dzCard: [exhibitionPage, article, artwork],
@@ -164,6 +165,7 @@ export default defineType({
           options: {collapsible: true, collapsed: false},
         },
         {
+          hideSize: true,
           hideComponentTitle: true,
           componentOptions: {title: 'Article'},
           components: [CarouselComponents.dzCard],

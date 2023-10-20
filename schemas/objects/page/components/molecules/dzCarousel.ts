@@ -30,7 +30,9 @@ export type CarouselOptions = {
   components: CarouselComponents[]
   references: FullGridReferencePerType
   referencesFilter?: ReferencesFilterOptions
+  carouselSizes?: (string | {value: string; title: string})[]
   hideComponentTitle?: boolean
+  hideSize?: boolean
   componentOptions?: any
 }
 
@@ -46,6 +48,7 @@ const getComponents = (
     }),
   )
 }
+const DEFAULT_SIZES = [{value: 'XL', title: 'XL'}, 'L', 'M', 'S']
 
 export const builder = (
   params: {name: string; title: string; [key: string]: any} = {
@@ -64,13 +67,17 @@ export const builder = (
       hidden: () => options?.hideComponentTitle ?? false,
       initialValue: 'Carousel',
     }),
-    defineField({
-      name: 'size',
-      type: 'string',
-      title: 'Size',
-      options: {list: [{value: 'XL', title: 'XL'}, 'L', 'M', 'S']},
-      validation: (rule) => rule.required(),
-    }),
+    ...(!options?.hideSize
+      ? [
+          defineField({
+            name: 'size',
+            type: 'string',
+            title: 'Size',
+            options: {list: options.carouselSizes ? options.carouselSizes : DEFAULT_SIZES},
+            validation: (rule) => rule.required(),
+          }),
+        ]
+      : []),
     {
       type: 'array',
       icon: MasterDetailIcon,
