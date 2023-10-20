@@ -1,7 +1,5 @@
 //Todo import from the design system import {BUTTON_VARIANTS, ButtonVariant} from '@zwirner/design-system'
-import {defineField} from 'sanity'
-
-import {linkSchemaType} from '../../../schemas/objects/utils/link'
+import {defineField, defineType, SchemaTypeDefinition} from 'sanity'
 
 export const BUTTON_VARIANTS = {
   PRIMARY: 'primary',
@@ -28,17 +26,14 @@ export enum CtaActions {
   LINK_CONTENT = 'Link Content',
 }
 
-export interface CTASchemaType {
-  type: 'button' | 'link'
-  action: CtaActions
-  text: string
-  link?: linkSchemaType
-  variant?: ButtonVariant
+export type CTAOptions = {
+  linkContentEnabled?: boolean
 }
 
-export default defineField({
-  name: 'cta',
-  title: 'CTA',
+export const builder = (
+  params: {name: string; title: string; [key: string]: any},
+  options?: CTAOptions,
+) => ({
   type: 'object',
   fields: [
     defineField({
@@ -67,7 +62,7 @@ export default defineField({
       title: 'File Download',
       type: 'file',
       options: {accept: 'application/pdf'},
-      hidden: ({parent}) => parent?.action !== 'Download PDF',
+      hidden: ({parent}) => parent?.action !== CtaActions.DOWNLOAD_PDF,
     }),
     defineField({
       name: 'link',
@@ -87,7 +82,31 @@ export default defineField({
           type: 'boolean',
         }),
       ],
-      hidden: ({parent}) => parent?.action !== 'Link',
+      hidden: ({parent}) => parent?.action !== CtaActions.LINK,
     }),
+    ...(options?.linkContentEnabled
+      ? [
+          defineField({
+            name: 'linkedContent',
+            title: 'Content',
+            type: 'reference',
+            to: [
+              {type: 'article'},
+              {type: 'artwork'},
+              {type: 'exhibitionPage'},
+              {type: 'exceptionalWork'},
+              {type: 'artistPage'},
+              {type: 'fairPage'},
+              {type: 'onlineExhibitionPage'},
+              {type: 'page'},
+            ],
+            options: {filter: 'defined(slug)'},
+            hidden: ({parent}) => parent?.action !== CtaActions.LINK_CONTENT,
+          }),
+        ]
+      : []),
   ],
+  ...params,
 })
+
+export default defineType(builder({name: 'cta', title: 'CTA'})) as SchemaTypeDefinition

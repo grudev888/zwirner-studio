@@ -1,6 +1,6 @@
 import {BlockElementIcon} from '@sanity/icons'
 import {ObjectDefinition, defineField, defineType} from 'sanity'
-import cta from '../../../utils/cta'
+import {builder as CTABuilder} from '../../../utils/cta'
 import * as Media from '../../../utils/media'
 
 const fields = [
@@ -23,7 +23,7 @@ const fields = [
       },
     ),
   ),
-  defineField({name: 'cta', type: cta.name, title: 'CTA'}),
+  defineField(CTABuilder({name: 'cta', title: 'CTA'}, {linkContentEnabled: true})),
 
   defineField({name: 'mode', type: 'string', options: {list: ['Light', 'Dark']}, title: 'Mode'}),
 ]
