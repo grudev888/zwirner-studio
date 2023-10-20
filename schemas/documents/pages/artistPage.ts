@@ -185,6 +185,7 @@ export default defineType({
           gridProps: {
             title: 'Articles',
           },
+          hideItemsPerRow: true,
           hideComponentTitle: true,
           references: {
             dzCard: [article],

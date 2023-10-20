@@ -26,6 +26,7 @@ export type GridOptions = {
   components: GridComponents[]
   references: FullGridReferencePerType
   referencesFilter?: ReferencesFilterOptions
+  hideItemsPerRow?: boolean
   hideComponentTitle?: boolean
   gridProps?: any
 }
@@ -89,16 +90,20 @@ export const builder = (
       description: 'This will enable users to change the number of items per row.',
       initialValue: false,
     }),
-    defineField({
-      name: 'itemsPerRow',
-      type: 'number',
-      title: 'Items per row',
-      description: 'Number of components per row',
-      options: {
-        list: [1, 2, 3, 4],
-      },
-      initialValue: 1,
-    }),
+    ...(!options?.hideItemsPerRow
+      ? [
+          defineField({
+            name: 'itemsPerRow',
+            type: 'number',
+            title: 'Items per row',
+            description: 'Number of components per row',
+            options: {
+              list: [1, 2, 3, 4],
+            },
+            initialValue: 1,
+          }),
+        ]
+      : []),
     {
       type: 'array',
       icon: MasterDetailIcon,
