@@ -19,6 +19,7 @@ import fairPage from './documents/pages/fairPage'
 import press from './documents/press'
 import redirects from './documents/redirects'
 import strings from './documents/strings'
+import curator from './documents/curator'
 
 // SINGLETONS
 import footer from './singletons/footer'
@@ -179,18 +180,19 @@ export const recordDocuments: DocumentDefinition[] = [
   artwork,
   artist,
   authorType,
+  curator,
 ]
 
 export const schemaTypes: SchemaTypeDefinition[] = [
-    ...pageDocuments,
-    ...objects,
-    ...pageComponents,
-    ...pageModules,
-    ...primitiveComponents,
-    ...singletonDocuments,
-    ...utilsObjects,
-    ...shopifyDocuments,
-    ...shopifyObjects,
-    ...shopifyUtils,
-    ...recordDocuments,
-  ]
+  ...pageDocuments,
+  ...objects,
+  ...pageComponents,
+  ...pageModules,
+  ...primitiveComponents,
+  ...singletonDocuments,
+  ...utilsObjects,
+  ...shopifyDocuments,
+  ...shopifyObjects,
+  ...shopifyUtils,
+  ...recordDocuments,
+]

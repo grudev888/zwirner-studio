@@ -15,6 +15,7 @@ import {
   InfoOutlineIcon,
   ActivityIcon,
   PlayIcon,
+  RobotIcon,
 } from '@sanity/icons'
 import {StructureBuilder} from 'sanity/desk'
 
@@ -323,20 +324,6 @@ export const generalStructure = (S: StructureBuilder) =>
                 ]),
             ),
         ),
-      // S.listItem()
-      //   .title('Artworks by Artist')
-      //   .icon(ImagesIcon)
-      //   .child(
-      //     S.documentTypeList('artist')
-      //       .title('Artworks by Artist')
-      //       .defaultOrdering([{field: 'lastName', direction: 'asc'}])
-      //       .child((artistId) =>
-      //         S.documentList()
-      //           .title('Artworks')
-      //           .filter('_type == "artwork" && $artistId in artists[]._ref')
-      //           .params({artistId})
-      //       )
-      //   ),
       S.listItem()
         .title('Authors')
         .icon(UsersIcon)
@@ -395,5 +382,14 @@ export const generalStructure = (S: StructureBuilder) =>
           S.documentTypeList('video')
             .title('Videos')
             .defaultOrdering([{field: 'dateSelection', direction: 'asc'}]),
+        ),
+
+      S.listItem()
+        .title('Curators')
+        .icon(RobotIcon)
+        .child(
+          S.documentTypeList('curator')
+            .title('Curators')
+            .defaultOrdering([{field: 'name', direction: 'asc'}]),
         ),
     ])

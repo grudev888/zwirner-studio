@@ -19,6 +19,7 @@ import location from '../location'
 import book from '../book'
 import artist from '../artist'
 import podcast from '../podcast'
+import curator from '../curator'
 
 import * as Media from '../../objects/utils/media'
 import * as DzEditorial from '../../objects/page/components/molecules/dzEditorial'
@@ -148,6 +149,19 @@ export default defineType({
         defineArrayMember({
           type: 'reference',
           to: [{type: artistType.name}],
+        }),
+      ],
+    }),
+    defineField({
+      name: 'curator',
+      title: 'Curator',
+      type: 'array',
+      group: 'content',
+      of: [
+        defineArrayMember({
+          title: 'Curator',
+          type: 'reference',
+          to: [{type: curator.name}],
         }),
       ],
     }),
