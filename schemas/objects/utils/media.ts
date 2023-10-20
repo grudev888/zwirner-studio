@@ -1,5 +1,6 @@
 import {FieldDefinition, ObjectRule, SchemaTypeDefinition, defineField, defineType} from 'sanity'
 import {capitalize} from '../../../lib/util/strings'
+import blockContentSimple from '../utils/blockContentSimple'
 import {mediaAssetSource} from 'sanity-plugin-media'
 import {PresentationIcon, DocumentVideoIcon} from '@sanity/icons'
 import * as Video from './video'
@@ -79,6 +80,19 @@ export const builder = (
         }),
         ...(options?.image?.additionalFields || []),
       ],
+      hidden: ({parent}) =>
+        parent?.type === MediaTypes.VIDEO ||
+        parent?.type === MediaTypes.VIDEO_RECORD ||
+        options?.type === MediaTypes.VIDEO ||
+        options?.type === MediaTypes.VIDEO_RECORD ||
+        parent?.type === MediaTypes.UNSET ||
+        !parent?.type,
+    }),
+    defineField({
+      name: 'caption',
+      type: 'array',
+      title: 'Caption',
+      of: blockContentSimple,
       hidden: ({parent}) =>
         parent?.type === MediaTypes.VIDEO ||
         parent?.type === MediaTypes.VIDEO_RECORD ||

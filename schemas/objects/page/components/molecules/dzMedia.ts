@@ -2,8 +2,6 @@ import {ImageIcon} from '@sanity/icons'
 import {defineField, defineType, StringRule, ObjectDefinition, ObjectRule} from 'sanity'
 import * as Media from '../../../../objects/utils/media'
 
-import blockContentSimple from '../../../utils/blockContentSimple'
-
 export interface DzInterstitialTypeProps {
   title: string
   split: boolean
@@ -46,12 +44,6 @@ export const builder = (
         },
       ),
     ),
-    defineField({
-      name: 'caption',
-      type: 'array',
-      title: 'Caption',
-      of: blockContentSimple,
-    }),
   ],
   preview: {
     select: {

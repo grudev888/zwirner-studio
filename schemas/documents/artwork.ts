@@ -136,15 +136,6 @@ export default defineType({
             },
             {
               type: Media.MediaTypes.IMAGE,
-              image: {
-                additionalFields: [
-                  defineField({
-                    type: 'string',
-                    name: 'caption',
-                    title: 'Caption',
-                  }),
-                ],
-              },
             },
           ),
         ),
