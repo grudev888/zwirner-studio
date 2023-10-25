@@ -178,7 +178,7 @@ export default defineType({
       name: 'displayDate',
       title: 'Display Date',
       description:
-        'This field will override the default display dates used by the date selector below.',
+        'This field will override the publish date.',
       group: 'content',
       type: 'string',
       hidden: hideForTypes([ArticleTypes['External News']]),
