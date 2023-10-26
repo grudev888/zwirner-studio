@@ -49,7 +49,6 @@ export default defineConfig({
         }
         return originalAction
       })
-      console.log('newActions', newActions)
       // remove actions form singleton documents, include schedule action
       if (singletonDocuments.some((doc) => doc.name === context.schemaType)) {
         const filteredActions = newActions.filter(

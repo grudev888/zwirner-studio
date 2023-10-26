@@ -8,7 +8,8 @@ import {
   SchemaTypeDefinition,
   StringRule,
 } from 'sanity'
-import {builder as slugURLBuilder} from '../../objects/utils/slugUrl'
+import {slugify} from '../../../lib/util/strings'
+import {SLUG_MAX_LENGTH, builder as slugURLBuilder} from '../../objects/utils/slugUrl'
 import {builder as PageBuilder, PageBuilderComponents} from '../../objects/utils/pageBuilder'
 import {GridComponents} from '../../objects/page/grid'
 import blockContentSimple from '../../objects/utils/blockContentSimple'
@@ -22,6 +23,9 @@ import podcast from '../podcast'
 
 import * as Media from '../../objects/utils/media'
 import * as DzEditorial from '../../objects/page/components/molecules/dzEditorial'
+
+const EXHIBITIONS_PREFIX = '/exhibitions/year/'
+const SLUG_BODY_LENGTH = SLUG_MAX_LENGTH - EXHIBITIONS_PREFIX.length
 
 export default defineType({
   name: 'onlineExhibitionPage',
@@ -167,12 +171,30 @@ export default defineType({
           title: 'Slug',
           options: {
             source: (object: any) => {
-              const defaultSlug = object?.title ?? ''
+              const defaultSlug = object?.subtitle
+                ? `${object?.title}-${object?.subtitle}`
+                : object?.title
               if (!defaultSlug) throw new Error('Please add a title to create a unique slug.')
-              return defaultSlug.slice(0, 95)
+              return defaultSlug.slice(0, SLUG_BODY_LENGTH)
             },
           },
           group: 'onlineExhibitionContent',
+          validation: (Rule) => [
+            Rule.custom((slug, parent) => {
+              const {title} = parent.parent
+              const titleSlug = slugify(title)
+              if (!slug.current.includes(titleSlug)) {
+                return `Slug should include the title: ${titleSlug}`
+              }
+              return true
+            }).warning(),
+            Rule.custom((slug) => {
+              if (slug.current.length > SLUG_MAX_LENGTH) {
+                return `Slug should be  more than ${SLUG_BODY_LENGTH} characters. `
+              }
+              return true
+            }).warning(),
+          ],
         },
         {
           prefix: async (parent) => {
