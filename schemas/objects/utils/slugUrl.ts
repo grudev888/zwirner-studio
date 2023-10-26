@@ -10,8 +10,8 @@ import {
 import {slugify} from '../../../lib/util/strings'
 import {getClientFromContext} from '../../../lib/util/sanity'
 
-// URLs recommended length is 120 chars.
-export const SLUG_MAX_LENGTH = 120 - 'https://www.davidzwirner.com'.length
+// URLs recommended length is 150 chars.
+export const SLUG_MAX_LENGTH = 150 - 'https://www.davidzwirner.com'.length
 
 type UrlExtension =
   | ((parent: Record<string, any>, client: SanityClient) => Promise<string>)
