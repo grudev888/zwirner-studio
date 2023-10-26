@@ -220,6 +220,7 @@ export default defineType({
           {title: 'Not Applicable', value: 'NotApplicable'},
           {title: 'Framed', value: 'Framed'},
           {title: 'Unframed', value: 'Unframed'},
+          {title: 'Sold Out', value: 'soldout'},
         ],
       },
       validation: (rule) =>
@@ -263,6 +264,7 @@ export default defineType({
               {title: 'Inquire', value: 'inquire'},
               {title: 'E-Comm', value: 'ecomm'},
               {title: 'Custom', value: 'custom'},
+              {title: 'Sold Out', value: 'soldout'},
             ],
           },
         }),
