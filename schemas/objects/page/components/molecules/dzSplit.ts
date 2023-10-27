@@ -101,13 +101,6 @@ export const builder = (
       initialValue: false,
       validation: (rule) => rule.required(),
     }),
-    defineField({
-      name: 'enableOverrides',
-      type: 'boolean',
-      title: 'Enable Overrides',
-      ...getOptionalProperty({group: 'overrides'}, options),
-      initialValue: false,
-    }),
     // (Split) Modules to support both “Moving Images” and “Interactive Video”
     defineField(
       Media.builder(

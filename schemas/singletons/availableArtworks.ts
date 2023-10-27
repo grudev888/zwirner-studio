@@ -1,8 +1,8 @@
 import {BlockElementIcon, SearchIcon, ComposeIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
-import {builder as gridBuilder} from '../objects/page/components/modules/gridModule'
 import artwork from '../documents/artwork'
-import { hiddenSlug } from '../objects/data/hiddenSlug'
+import {hiddenSlug} from '../objects/data/hiddenSlug'
+import {builder as dzGridBuilder, GridComponents} from '../objects/page/grid'
 
 export default defineType({
   name: 'availableArtworks',
@@ -22,14 +22,23 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField(
-      gridBuilder(
+      dzGridBuilder(
         {
           name: 'artworksGrid',
           title: 'Artworks Grid',
           group: 'content',
         },
-        {excludedFields: ['title'], reference: artwork}
-      )
+        {
+          gridProps: {
+            title: 'Artworks',
+          },
+          hideComponentTitle: true,
+          references: {
+            dzCard: [artwork],
+          },
+          components: [GridComponents.dzCard],
+        },
+      ),
     ),
     defineField({
       name: 'seo',

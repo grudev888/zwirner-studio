@@ -19,6 +19,7 @@ import {
 } from '../../objects/page/components/molecules/dzCarousel'
 import {builder as dzGridBuilder, GridComponents} from '../../objects/page/grid'
 import {builder as dzSplitBuilder} from '../../objects/page/components/molecules/dzSplit'
+import {builder as PageBuilder, PageBuilderComponents} from '../../objects/utils/pageBuilder'
 
 export default defineType({
   name: 'artistPage',
@@ -88,68 +89,68 @@ export default defineType({
       ),
     ),
     defineField(
-      dzSplitBuilder(
-        {
-          name: 'availableWorksBooks',
-          title: 'Available Works/Books Split',
-          group: 'content',
-          options: {collapsible: true, collapsed: false},
-        },
-        {references: [], hideComponentTitle: true, showAsPlainComponent: true},
-      ),
-    ),
-    defineField(
-      dzGridBuilder(
+      PageBuilder(
         {
           name: 'availableWorks',
           title: 'Available Works',
           group: 'content',
+          options: {collapsible: true, collapsed: false},
         },
         {
-          gridProps: {
-            title: 'Artworks',
-          },
-          hideComponentTitle: true,
+          components: [
+            PageBuilderComponents.dzInterstitial,
+            PageBuilderComponents.dzSplit,
+            PageBuilderComponents.dzCarousel,
+          ],
           references: {
-            dzCard: [artwork],
+            dzSplit: [artwork, book],
+            dzCarousel: {
+              references: {
+                dzCard: [artwork, book],
+              },
+              components: [GridComponents.dzCard, GridComponents.dzMedia],
+            },
           },
-          components: [GridComponents.dzCard],
+          componentOptions: {
+            dzSplit: {hideComponentTitle: true, showAsPlainComponent: true},
+            dzCarousel: {
+              carouselSizes: ['S'],
+            },
+          },
         },
       ),
     ),
-    defineField({
-      name: 'availableWorksInterstitial',
-      title: 'Available Works Interstitial',
-      group: 'content',
-      options: {collapsible: true, collapsed: false},
-      type: interstitial.name,
-    }),
     defineField(
-      dzGridBuilder(
+      PageBuilder(
         {
           name: 'latestExhibitions',
           title: 'Latest Exhibitions',
           group: 'content',
+          options: {collapsible: true, collapsed: false},
         },
         {
-          gridProps: {
-            title: 'Exhibition',
-          },
-          hideComponentTitle: true,
+          components: [
+            PageBuilderComponents.dzGrid,
+            PageBuilderComponents.dzHero,
+            PageBuilderComponents.dzInterstitial,
+            PageBuilderComponents.dzSplit,
+          ],
           references: {
-            dzCard: [exhibitionPage],
+            dzSplit: [exhibitionPage],
+            dzHero: [exhibitionPage],
+            grid: {
+              references: {
+                dzCard: [exhibitionPage],
+              },
+              components: [GridComponents.dzCard],
+            },
           },
-          components: [GridComponents.dzCard],
+          componentOptions: {
+            grid: {hideComponentTitle: true},
+          },
         },
       ),
     ),
-    defineField({
-      name: 'exhibitionsInterstitial',
-      title: 'Exhibitions Interstitial',
-      group: 'content',
-      type: interstitial.name,
-      options: {collapsible: true, collapsed: false},
-    }),
     defineField({
       name: 'moveGuideUp',
       title: 'Move Guide Up',
@@ -254,21 +255,41 @@ export default defineType({
     // Subpages
 
     defineField(
-      dzGridBuilder(
+      PageBuilder(
         {
           name: 'surveySubpage',
           title: 'Survey',
           group: 'survey',
+          options: {collapsible: true, collapsed: false},
         },
         {
-          gridProps: {
-            title: 'Content',
-          },
-          hideComponentTitle: true,
+          components: [
+            PageBuilderComponents.dzInterstitial,
+            PageBuilderComponents.dzGrid,
+            PageBuilderComponents.dzCarousel,
+          ],
           references: {
-            dzCard: [artwork],
+            dzCarousel: {
+              references: {
+                dzCard: [artwork],
+              },
+              components: [CarouselComponents.dzCard, CarouselComponents.dzMedia],
+            },
+            grid: {
+              references: {
+                dzCard: [artwork],
+              },
+              components: [GridComponents.dzCard, GridComponents.dzMedia],
+            },
           },
-          components: [GridComponents.dzCard, GridComponents.dzMedia],
+          componentOptions: {
+            dzCarousel: {
+              carouselSizes: [{value: 'XL', title: 'XL'}],
+            },
+            grid: {
+              hideComponentTitle: true,
+            },
+          },
         },
       ),
     ),

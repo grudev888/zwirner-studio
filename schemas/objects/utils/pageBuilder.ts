@@ -46,12 +46,18 @@ export type ReferencePerType = {
   [key in PageBuilderComponents]?: any
 }
 export type FullReferencePerType = ReferencePerType & {all?: SchemaTypeDefinition[]}
+export type OptionsPerType = ReferencePerType & {all?: any}
 export type PageBuilderOptions = {
   components: PageBuilderComponents[]
   references: FullReferencePerType
+  componentOptions?: OptionsPerType
 }
 
-const getComponents = (list: PageBuilderComponents[], references: FullReferencePerType) => {
+const getComponents = (
+  list: PageBuilderComponents[],
+  references: FullReferencePerType,
+  componentOptions?: any,
+) => {
   return list.map((component: PageBuilderComponents) => {
     if (
       component === PageBuilderComponents.dzGrid ||
@@ -60,10 +66,12 @@ const getComponents = (list: PageBuilderComponents[], references: FullReferenceP
       return componentBuilder[component](undefined, {
         references: references[component]?.references ?? references?.all ?? [],
         components: references[component]?.components,
+        ...componentOptions?.[component],
       })
     }
     return componentBuilder[component](undefined, {
       references: references[component] ?? references.all ?? [],
+      ...componentOptions?.[component],
     })
   })
 }
@@ -81,6 +89,7 @@ export const builder = (
       return normalizedFirst > normalizedSecond ? 1 : -1
     }) ?? Object.values(PageBuilderComponents),
     options.references,
+    options.componentOptions,
   ),
   ...params,
 })

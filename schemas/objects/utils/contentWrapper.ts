@@ -1,4 +1,4 @@
-import {MasterDetailIcon} from '@sanity/icons'
+import {MasterDetailIcon, SquareIcon} from '@sanity/icons'
 import {
   ObjectDefinition,
   defineArrayMember,
@@ -22,12 +22,54 @@ export const builder = (
 ) => ({
   type: 'object',
   icon: MasterDetailIcon,
+  preview: {
+    select: {
+      contentTitle: 'content.0.title',
+      locationTitle: 'content.0.name',
+      artistTitle: 'content.0.fullName',
+      artworkMedia: 'content.0.photos.0.image',
+      exhibitionMedia: 'content.0.heroMedia.image',
+      articleWithArtworkMedia: 'content.0.header.0.photos.0.image',
+      articleMedia: 'content.0.header.0.media.image',
+      articleMediaSelected: 'content.0.image.image',
+      bookMedia: 'content.0.photos.0',
+      locationMedia: 'content.0.photos',
+      artistMedia: 'content.0.picture',
+    },
+    prepare: ({
+      contentTitle,
+      locationTitle,
+      artistTitle,
+      artworkMedia,
+      exhibitionMedia,
+      articleWithArtworkMedia,
+      articleMedia,
+      bookMedia,
+      locationMedia,
+      artistMedia,
+      articleMediaSelected,
+    }: any) => {
+      const mediaObject =
+        artworkMedia ??
+        exhibitionMedia ??
+        articleWithArtworkMedia ??
+        articleMedia ??
+        bookMedia ??
+        artistMedia ??
+        locationMedia ??
+        articleMediaSelected ??
+        SquareIcon
+
+      const titleObject = contentTitle ?? locationTitle ?? artistTitle
+
+      return {
+        title: titleObject,
+        media: mediaObject,
+        icon: SquareIcon,
+      }
+    },
+  },
   fields: [
-    defineField({
-      name: 'title',
-      type: 'string',
-      title: 'Content Title',
-    }),
     defineField(
       Video.builder(
         {
