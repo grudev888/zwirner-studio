@@ -46,7 +46,10 @@ export default defineType({
             PageBuilderComponents.dzCarousel,
           ],
           references: {
-            dzHero: [{name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition],
+            dzHero: [
+              {name: 'article', title: 'Article'} as SchemaTypeDefinition,
+              {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
+            ],
             dzInterstitial: [
               artwork,
               book,

@@ -19,7 +19,6 @@ export interface DzSplitTypeProps {
   title: string
   splitType: SplitTypes
   reverse: boolean
-  animate: boolean
   imageOverride?: any
   enableOverrides: boolean
 }
