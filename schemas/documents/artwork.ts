@@ -272,7 +272,14 @@ export default defineType({
           name: 'CTAText',
           title: 'CTA Text',
           type: 'string',
-          validation: (Rule) => Rule.max(20),
+          validation: (Rule) => [
+            Rule.max(20),
+            Rule.custom((value, context) => {
+              const parent = context.parent as {CTA: string}
+              if (!value && parent.CTA === 'custom') return 'Custom CTA Text is required if CTA is set to Custom'
+              return true
+            }),
+          ],
           hidden: ({parent}) => parent?.CTA === 'none' || parent?.CTA === undefined,
         }),
         defineField({
