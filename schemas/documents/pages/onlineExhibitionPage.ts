@@ -37,6 +37,13 @@ export default defineType({
     {name: 'content', title: 'Content', icon: DocumentIcon},
     {name: 'seo', title: 'SEO', icon: SearchIcon},
   ],
+  preview: {
+    select: {title: 'title', heroMedia: 'heroMedia', cardMedia: 'cardViewMedia'},
+    prepare: ({title, heroMedia, cardMedia}) => ({
+      title,
+      media: cardMedia?.image ?? heroMedia?.image,
+    }),
+  },
   fields: [
     defineField({
       name: 'hideToggle',
@@ -136,6 +143,18 @@ export default defineType({
         }),
       ],
     }),
+    defineField(
+      Media.builder(
+        {
+          name: 'cardViewMedia',
+          title: 'Card View Media',
+          group: 'content',
+          description:
+            'It appears on a card throughout the site, if this field is empty, cards should display the Hero media',
+        },
+        {type: Media.MediaTypes.IMAGE},
+      ),
+    ),
     defineField(
       Media.builder({
         name: 'heroMedia',

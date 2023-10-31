@@ -28,7 +28,8 @@ export const builder = (
       locationTitle: 'content.0.name',
       artistTitle: 'content.0.fullName',
       artworkMedia: 'content.0.photos.0.image',
-      exhibitionMedia: 'content.0.heroMedia.image',
+      exhibitionCardMedia: 'content.0.cardViewMedia.image',
+      exhibitionMediaHero: 'content.0.heroMedia.image',
       articleWithArtworkMedia: 'content.0.header.0.photos.0.image',
       articleMedia: 'content.0.header.0.media.image',
       articleMediaSelected: 'content.0.image.image',
@@ -41,7 +42,8 @@ export const builder = (
       locationTitle,
       artistTitle,
       artworkMedia,
-      exhibitionMedia,
+      exhibitionCardMedia,
+      exhibitionMediaHero,
       articleWithArtworkMedia,
       articleMedia,
       bookMedia,
@@ -51,7 +53,8 @@ export const builder = (
     }: any) => {
       const mediaObject =
         artworkMedia ??
-        exhibitionMedia ??
+        exhibitionCardMedia ??
+        exhibitionMediaHero ??
         articleWithArtworkMedia ??
         articleMedia ??
         bookMedia ??

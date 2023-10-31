@@ -32,8 +32,11 @@ export default defineType({
   type: 'document',
   icon: BlockElementIcon,
   preview: {
-    select: {title: 'title', heroMedia: 'heroMedia'},
-    prepare: ({title, heroMedia}) => ({title, media: heroMedia?.image}),
+    select: {title: 'title', heroMedia: 'heroMedia', cardMedia: 'cardViewMedia'},
+    prepare: ({title, heroMedia, cardMedia}) => ({
+      title,
+      media: cardMedia?.image ?? heroMedia?.image,
+    }),
   },
   groups: [
     {name: 'exceptionalWorkContent', title: 'Exceptional Work', icon: ComposeIcon, default: true},
@@ -139,6 +142,18 @@ export default defineType({
         }),
       ],
     }),
+    defineField(
+      Media.builder(
+        {
+          name: 'cardViewMedia',
+          title: 'Card View Media',
+          group: 'content',
+          description:
+            'It appears on a card throughout the site, if this field is empty, cards should display the Hero media',
+        },
+        {type: Media.MediaTypes.IMAGE},
+      ),
+    ),
     defineField(
       Media.builder({
         name: 'heroMedia',
