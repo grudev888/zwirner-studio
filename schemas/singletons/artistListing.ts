@@ -1,8 +1,8 @@
 import {ComposeIcon, SearchIcon} from '@sanity/icons'
 import {BlockElementIcon} from '@sanity/icons'
-import {StringRule, defineField, defineType} from 'sanity'
+import {defineField, defineType} from 'sanity'
 import interstitial from '../objects/page/components/primitives/interstitial'
-import { hiddenSlug } from '../objects/data/hiddenSlug'
+import {hiddenSlug} from '../objects/data/hiddenSlug'
 
 export default defineType({
   name: 'artistListing',
@@ -28,7 +28,7 @@ export default defineType({
       type: 'string',
       group: 'content',
       hidden: true,
-      validation: (rule: StringRule) => rule.required(),
+      initialValue: 'Artists',
     }),
     defineField({
       type: interstitial.name,
@@ -41,5 +41,5 @@ export default defineType({
   ],
   initialValue: {
     title: 'Artists',
-  }
+  },
 })
