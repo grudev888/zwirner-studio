@@ -1,4 +1,5 @@
 import {NumberRule, SlugRule, defineArrayMember, defineField, defineType} from 'sanity'
+import groq from 'groq'
 
 import * as Media from '../objects/utils/media'
 import {SLUG_MAX_LENGTH, builder as slugBuilder} from '../objects/utils/slugUrl'
@@ -276,7 +277,8 @@ export default defineType({
             Rule.max(20),
             Rule.custom((value, context) => {
               const parent = context.parent as {CTA: string}
-              if (!value && parent.CTA === 'custom') return 'Custom CTA Text is required if CTA is set to Custom'
+              if (!value && parent.CTA === 'custom')
+                return 'Custom CTA Text is required if CTA is set to Custom'
               return true
             }),
           ],
@@ -473,6 +475,24 @@ export default defineType({
         filter: '', // need to filter out any products that have count(*[references(^._id)]) > 0
       },
       group: 'shopify',
+      validation: (Rule) =>
+        Rule.custom(async (value, context) => {
+          const parent = context.parent as {artworkCTA: {CTA: string}; _id: string}
+          if (parent.artworkCTA?.CTA === 'ecomm') {
+            if (!value) return 'Shopify is required if CTA is set to E-Comm'
+            const client = context.getClient({apiVersion})
+            const artworks = await client.fetch(
+              groq`*[_type == "artwork" && shopify._ref == $shopify_ref && _id != $_id  ] {
+                ...
+              }`,
+              {shopify_ref: value._ref, _id: parent._id},
+            )
+            if (artworks.length)
+              return `Shopify product must be unique. (Artwork using this Product: ${artworks[0].title}`
+            return true
+          }
+          return true
+        }),
     }),
     defineField({
       name: 'seo',
