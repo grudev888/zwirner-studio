@@ -289,10 +289,17 @@ export default defineType({
           title: 'CTA Link',
           type: 'url',
           hidden: ({parent}) => parent?.CTA !== 'custom',
-          validation: (Rule) =>
+          validation: (Rule) => [
             Rule.uri({
               allowRelative: true,
             }),
+            Rule.custom((value, context) => {
+              const parent = context.parent as {CTA: string}
+              if (!value && parent.CTA === 'custom')
+                return 'CTA Link is required if CTA is set to Custom'
+              return true
+            }),
+          ],
         }),
         defineField({
           name: 'secondaryCTA',
@@ -312,7 +319,15 @@ export default defineType({
           name: 'SecondaryCTAText',
           title: 'Secondary CTA Text',
           type: 'string',
-          validation: (Rule) => Rule.max(20),
+          validation: (Rule) => [
+            Rule.max(20),
+            Rule.custom((value, context) => {
+              const parent = context.parent as {secondaryCTA: string}
+              if (!value && parent.secondaryCTA === 'custom')
+                return 'Secondary CTA Text is required if secondaryCTA is set to Custom'
+              return true
+            }),
+          ],
           hidden: ({parent}) =>
             parent?.secondaryCTA === 'none' || parent?.secondaryCTA === undefined,
         }),
@@ -321,10 +336,17 @@ export default defineType({
           title: 'Secondary CTA Link',
           type: 'url',
           hidden: ({parent}) => parent?.secondaryCTA !== 'custom',
-          validation: (Rule) =>
+          validation: (Rule) => [
             Rule.uri({
               allowRelative: true,
             }),
+            Rule.custom((value, context) => {
+              const parent = context.parent as {secondaryCTA: string}
+              if (!value && parent.secondaryCTA === 'custom')
+                return 'Secondary CTA Link is required if secondaryCTA is set to Custom'
+              return true
+            }),
+          ],
         }),
       ],
     }),
