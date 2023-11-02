@@ -504,7 +504,7 @@ export default defineType({
             if (!value) return 'Shopify is required if CTA is set to E-Comm'
             const client = context.getClient({apiVersion})
             const artworks = await client.fetch(
-              groq`*[_type == "artwork" && shopify._ref == $shopify_ref && _id != $_id  ] {
+              groq`*[_type == "artwork" && shopify._ref == $shopify_ref && _id != $_id && "drafts." + _id != $_id ] {
                 ...
               }`,
               {shopify_ref: value._ref, _id: parent._id},
