@@ -35,7 +35,7 @@ export default defineType({
   type: 'document',
   icon: BlockElementIcon,
   preview: {
-    select: {title: 'title', heroMedia: 'heroMedia', exhibitionCardMedia: 'cardViewMedia'},
+    select: {title: 'subtitle', heroMedia: 'heroMedia', exhibitionCardMedia: 'cardViewMedia'},
     prepare: ({title, heroMedia, exhibitionCardMedia}) => ({
       title,
       media: exhibitionCardMedia?.image ?? heroMedia?.image,
