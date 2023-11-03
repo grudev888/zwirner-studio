@@ -147,6 +147,10 @@ export default defineType({
           },
           componentOptions: {
             grid: {hideComponentTitle: true},
+            dzInterstitial: {
+              // FE manage logic here, no need to display any option for content editors
+              hideCtaOptions: true,
+            },
           },
         },
       ),

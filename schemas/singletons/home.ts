@@ -5,10 +5,8 @@ import {builder as PageBuilder, PageBuilderComponents} from '../objects/utils/pa
 import {GridComponents} from '../objects/page/grid'
 import {hiddenSlug} from '../objects/data/hiddenSlug'
 
-import artwork from '../documents/artwork'
 import location from '../documents/location'
 import book from '../documents/book'
-import artist from '../documents/artist'
 import podcast from '../documents/podcast'
 
 export default defineType({
@@ -48,12 +46,6 @@ export default defineType({
           references: {
             dzHero: [
               {name: 'article', title: 'Article'} as SchemaTypeDefinition,
-              {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
-            ],
-            dzInterstitial: [
-              artwork,
-              book,
-              artist,
               {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
             ],
             dzSplit: [

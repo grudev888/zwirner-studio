@@ -18,7 +18,6 @@ import {franchiseBrandingField} from '../../objects/data/franchiseBranding'
 import artistType from '../artist'
 import artwork from '../artwork'
 import book from '../book'
-import artist from '../artist'
 import podcast from '../podcast'
 
 import * as Media from '../../objects/utils/media'
@@ -249,10 +248,6 @@ export default defineType({
           ],
           references: {
             dzCard: [artwork, book, podcast],
-            dzInterstitial: [
-              artist,
-              {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
-            ],
             dzSplit: [{name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition],
             grid: {
               references: {

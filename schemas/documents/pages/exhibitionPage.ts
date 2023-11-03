@@ -18,7 +18,6 @@ import artistType from '../artist'
 import artwork from '../artwork'
 import location from '../location'
 import book from '../book'
-import artist from '../artist'
 import podcast from '../podcast'
 import curator from '../curator'
 
@@ -268,10 +267,6 @@ export default defineType({
           ],
           references: {
             dzCard: [artwork, book, podcast],
-            dzInterstitial: [
-              artist,
-              {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
-            ],
             dzSplit: [{name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition],
             grid: {
               references: {

@@ -1,21 +1,16 @@
 import {DocumentTextIcon, ComposeIcon, SearchIcon} from '@sanity/icons'
-import {
-  defineField,
-  defineType,
-  SchemaTypeDefinition,
-} from 'sanity'
+import {defineField, defineType, SchemaTypeDefinition} from 'sanity'
 import {builder as PageBuilder, PageBuilderComponents} from '../../objects/utils/pageBuilder'
 import {GridComponents} from '../../objects/page/grid'
 import blockContentSimple from '../../objects/utils/blockContentSimple'
-import { franchiseBrandingField } from '../../objects/data/franchiseBranding'
-import { hiddenSlug } from '../../objects/data/hiddenSlug'
+import {franchiseBrandingField} from '../../objects/data/franchiseBranding'
+import {hiddenSlug} from '../../objects/data/hiddenSlug'
 
 import artwork from '../artwork'
 import location from '../location'
 import book from '../book'
 import artist from '../artist'
 import podcast from '../podcast'
-
 
 export default defineType({
   name: 'page',
@@ -32,25 +27,22 @@ export default defineType({
       name: 'title',
       title: 'Primary Title',
       type: 'string',
-      description:
-        'Primary Title of the page. On cards, it is displayed as Primary Title.',
+      description: 'Primary Title of the page. On cards, it is displayed as Primary Title.',
       group: 'content',
-      validation: rule => rule.required(),
+      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'subtitle',
       title: 'Primary Subtitle',
       type: 'string',
-      description:
-        'Primary Subtitle of the page. On cards, it is displayed as Primary Subtitle.',
+      description: 'Primary Subtitle of the page. On cards, it is displayed as Primary Subtitle.',
       group: 'content',
     }),
     defineField({
       name: 'summary',
       title: 'Description',
       group: 'content',
-      description:
-        'This is used to describe the page and appears as the text in page cards.',
+      description: 'This is used to describe the page and appears as the text in page cards.',
       type: 'array',
       of: blockContentSimple,
     }),
@@ -64,7 +56,6 @@ export default defineType({
       validation: (rule) => rule.max(100),
     }),
     defineField(franchiseBrandingField({group: 'content'})),
-
 
     // CONTENT
 
@@ -87,9 +78,7 @@ export default defineType({
             PageBuilderComponents.dzCarousel,
           ],
           references: {
-            dzHero: [
-              {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
-            ],
+            dzHero: [{name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition],
             dzCard: [
               artwork,
               book,
@@ -97,12 +86,6 @@ export default defineType({
               artist,
               podcast,
               {name: 'article', title: 'Article'} as SchemaTypeDefinition,
-              {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
-            ],
-            dzInterstitial: [
-              artwork,
-              book,
-              artist,
               {name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition,
             ],
             dzSplit: [
@@ -142,10 +125,10 @@ export default defineType({
       ),
     ),
     defineField({
-        name: 'seo',
-        title: 'SEO',
-        type: 'seo',
-        group: 'seo',
-      }),
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      group: 'seo',
+    }),
   ],
 })

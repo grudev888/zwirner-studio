@@ -26,8 +26,20 @@ export enum CtaActions {
   LINK_CONTENT = 'Link Content',
 }
 
+const DEFAULT_ACTIONS = [
+  CtaActions.NEWSLETTER,
+  CtaActions.LINK,
+  CtaActions.DOWNLOAD_PDF,
+  CtaActions.LINK_CONTENT,
+  CtaActions.INQUIRE,
+  CtaActions.ECOMM,
+  CtaActions.CUSTOM,
+]
+
 export type CTAOptions = {
   linkContentEnabled?: boolean
+  ctaOptions?: CtaActions[]
+  hideCtaOptions?: boolean
 }
 
 export const builder = (
@@ -41,22 +53,18 @@ export const builder = (
       type: 'string',
       title: 'CTA Text',
     }),
-    defineField({
-      name: 'action',
-      type: 'string',
-      title: 'CTA Type',
-      options: {
-        list: [
-          CtaActions.NEWSLETTER,
-          CtaActions.LINK,
-          CtaActions.DOWNLOAD_PDF,
-          CtaActions.LINK_CONTENT,
-          CtaActions.INQUIRE,
-          CtaActions.ECOMM,
-          CtaActions.CUSTOM,
-        ],
-      },
-    }),
+    ...(!options?.hideCtaOptions
+      ? [
+          defineField({
+            name: 'action',
+            type: 'string',
+            title: 'CTA Type',
+            options: {
+              list: options?.ctaOptions ? options?.ctaOptions : DEFAULT_ACTIONS,
+            },
+          }),
+        ]
+      : []),
     defineField({
       name: 'file',
       title: 'File Download',
