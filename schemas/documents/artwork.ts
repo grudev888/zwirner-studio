@@ -351,6 +351,20 @@ export default defineType({
       ],
     }),
     defineField({
+      name: 'backgroundColor',
+      title: 'Background Color',
+      group: 'content',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Transparent', value: 'transparent'},
+          {title: 'Light Grey', value: 'lightGrey'},
+          {title: 'Dark Grey', value: 'darkGrey'},
+        ],
+      },
+      initialValue: 'lightGrey',
+    }),
+    defineField({
       name: 'price',
       title: 'Price',
       group: 'content',
