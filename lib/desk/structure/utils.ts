@@ -1,4 +1,4 @@
-import {envHost} from '../../../env'
+import {envHost, PREVIEW_BASE_URL} from '../../../env'
 
 export const getPreviewUrl = (doc: any) => {
   const slug = doc?.slug?.current
@@ -9,7 +9,7 @@ export const getPreviewUrl = (doc: any) => {
     query.set('path', slug?.replace(/^\//, '').split('/').join(','))
   }
 
-  return `${envHost}/api/sanity/preview?${query.toString()}`
+  return `${envHost}${PREVIEW_BASE_URL}?${query.toString()}`
 }
 
 export const getSingletonPreviewUrl = (relativePath: string) => {
@@ -19,5 +19,5 @@ export const getSingletonPreviewUrl = (relativePath: string) => {
 
   query.set('path', relativePath?.replace(/^\//, '').split('/').join(','))
 
-  return `${envHost}/api/sanity/preview?${query.toString()}`
+  return `${envHost}${PREVIEW_BASE_URL}?${query.toString()}`
 }

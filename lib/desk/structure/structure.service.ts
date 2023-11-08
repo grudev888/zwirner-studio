@@ -2,7 +2,6 @@ import {type DocumentListBuilder, type ListBuilder, StructureBuilder} from 'sani
 
 import {apiVersion} from '../../../env'
 import {ReferenceByTab} from '../../overrides/overrides'
-import {PreviewIframe} from '../../preview/customIframe/previewIframe'
 import {getEndDateExhibitionsDate} from '../../../queries/exhibitionPage.queries'
 import {getEndDateOnlineExhibitionsDate} from '../../../queries/onlineExhibition.queries'
 import {getFairEndDate} from '../../../queries/fair.queries'
@@ -17,7 +16,9 @@ import article from '../../../schemas/documents/article'
 import {getArticleByDate} from '../../../queries/article.queries'
 import artistPage from '../../../schemas/documents/pages/artistPage'
 import exceptionalWork from '../../../schemas/documents/exceptionalWork'
-import {getPreviewUrl} from './utils'
+import {Iframe} from 'sanity-plugin-iframe-pane'
+
+import {iframeOptions} from '../../draftView/draftViewSettings'
 
 interface StructureBuilderProps {
   S: StructureBuilder
@@ -67,9 +68,7 @@ export async function getSectionsByYear({
     years[year].push(_id)
   })
 
-  const includePreview = [
-    S.view.component(PreviewIframe).options({url: getPreviewUrl}).title('Preview'),
-  ]
+  const includePreview = [S.view.component(Iframe).options(iframeOptions).title('Draft View')]
 
   return S.list()
     .title(`${title}s by Year`)

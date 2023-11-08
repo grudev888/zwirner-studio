@@ -1,6 +1,7 @@
 import {DefaultDocumentNodeResolver} from 'sanity/desk'
-import {PreviewIframe} from '../../preview/customIframe/previewIframe'
-import {getPreviewUrl} from '../structure/utils'
+import {Iframe} from 'sanity-plugin-iframe-pane'
+
+import {iframeOptions} from '../../draftView/draftViewSettings'
 
 export const defaultDocumentNode: DefaultDocumentNodeResolver = (S, {schemaType}) => {
   switch (schemaType) {
@@ -9,7 +10,7 @@ export const defaultDocumentNode: DefaultDocumentNodeResolver = (S, {schemaType}
     case 'exhibitionPage':
       return S.document().views([
         S.view.form(),
-        S.view.component(PreviewIframe).options({url: getPreviewUrl}).title('Preview'),
+        S.view.component(Iframe).options(iframeOptions).title('Draft View'),
       ])
     default:
       return S.document().views([S.view.form()])

@@ -19,8 +19,11 @@ import {
 } from '@sanity/icons'
 import {StructureBuilder} from 'sanity/desk'
 
+import {Iframe} from 'sanity-plugin-iframe-pane'
+
+import {iframeOptions} from '../../draftView/draftViewSettings'
+
 import {ReferenceByTab} from './../../overrides/overrides'
-import {PreviewIframe} from './../../preview/customIframe/previewIframe'
 import {getSectionsByYear} from './structure.service'
 
 import article from '../../../schemas/documents/article'
@@ -28,7 +31,6 @@ import exhibitionPage from '../../../schemas/documents/pages/exhibitionPage'
 import onlineExhibition from '../../../schemas/documents/pages/onlineExhibitionPage'
 import fair from '../../../schemas/documents/pages/fairPage'
 import exceptionalWork from '../../../schemas/documents/exceptionalWork'
-import {getPreviewUrl, getSingletonPreviewUrl} from './utils'
 
 export const generalStructure = (S: StructureBuilder) =>
   S.list()
@@ -116,7 +118,7 @@ export const generalStructure = (S: StructureBuilder) =>
                 .schemaType('page')
                 .views([
                   S.view.form(),
-                  S.view.component(PreviewIframe).options({url: getPreviewUrl}).title('Preview'),
+                  S.view.component(Iframe).options(iframeOptions).title('Draft View'),
                   S.view.component(ReferenceByTab).title('References'),
                 ]),
             ),
@@ -137,12 +139,7 @@ export const generalStructure = (S: StructureBuilder) =>
                     .documentId('home')
                     .views([
                       S.view.form(),
-                      S.view
-                        .component(PreviewIframe)
-                        .options({
-                          url: getSingletonPreviewUrl('/'),
-                        })
-                        .title('Preview'),
+                      S.view.component(Iframe).options(iframeOptions).title('Draft View'),
                     ]),
                 ),
               S.listItem()
@@ -154,12 +151,7 @@ export const generalStructure = (S: StructureBuilder) =>
                     .documentId('artistListing')
                     .views([
                       S.view.form(),
-                      S.view
-                        .component(PreviewIframe)
-                        .options({
-                          url: getSingletonPreviewUrl('/artists'),
-                        })
-                        .title('Preview'),
+                      S.view.component(Iframe).options(iframeOptions).title('Draft View'),
                     ]),
                 ),
               S.listItem()
@@ -171,12 +163,7 @@ export const generalStructure = (S: StructureBuilder) =>
                     .documentId('exhibitionsLanding')
                     .views([
                       S.view.form(),
-                      S.view
-                        .component(PreviewIframe)
-                        .options({
-                          url: getSingletonPreviewUrl('/exhibitions'),
-                        })
-                        .title('Preview'),
+                      S.view.component(Iframe).options(iframeOptions).title('Draft View'),
                     ]),
                 ),
               S.listItem()
@@ -188,12 +175,7 @@ export const generalStructure = (S: StructureBuilder) =>
                     .documentId('exhibitionsPast')
                     .views([
                       S.view.form(),
-                      S.view
-                        .component(PreviewIframe)
-                        .options({
-                          url: getSingletonPreviewUrl('/exhibitions/past-exhibitions'),
-                        })
-                        .title('Preview'),
+                      S.view.component(Iframe).options(iframeOptions).title('Draft View'),
                     ]),
                 ),
               S.listItem()
@@ -205,12 +187,7 @@ export const generalStructure = (S: StructureBuilder) =>
                     .documentId('availableArtworks')
                     .views([
                       S.view.form(),
-                      S.view
-                        .component(PreviewIframe)
-                        .options({
-                          url: getSingletonPreviewUrl('/available-artworks'),
-                        })
-                        .title('Preview'),
+                      S.view.component(Iframe).options(iframeOptions).title('Draft View'),
                     ]),
                 ),
               S.divider(),
@@ -233,10 +210,7 @@ export const generalStructure = (S: StructureBuilder) =>
                         .schemaType('artistPage')
                         .views([
                           S.view.form(),
-                          S.view
-                            .component(PreviewIframe)
-                            .options({url: getPreviewUrl})
-                            .title('Preview'),
+                          S.view.component(Iframe).options(iframeOptions).title('Draft View'),
                           S.view.component(ReferenceByTab).title('References'),
                         ]),
                     ),
@@ -319,7 +293,7 @@ export const generalStructure = (S: StructureBuilder) =>
                 .schemaType('artwork')
                 .views([
                   S.view.form(),
-                  S.view.component(PreviewIframe).options({url: getPreviewUrl}).title('Preview'),
+                  S.view.component(Iframe).options(iframeOptions).title('Draft View'),
                   S.view.component(ReferenceByTab).title('References'),
                 ]),
             ),
