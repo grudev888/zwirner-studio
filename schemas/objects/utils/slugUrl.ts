@@ -68,14 +68,14 @@ const structure: SlugDefinition = {
     'Unique slug that will represent the page URL and the canonical URL for SEO purposes.',
   type: 'slug',
   options: {
-    source: (object: any, b: any) => {
+    source: (object: any) => {
       const defaultSlug = object?.title ?? ''
       if (!defaultSlug) throw new Error('Please add a title to create a unique slug.')
       return defaultSlug.slice(0, SLUG_MAX_LENGTH)
     },
-    maxLength: 71,
+    maxLength: SLUG_MAX_LENGTH,
     isUnique: (value, context) => context.defaultIsUnique(value, context),
-    slugify: (input, b, c) => {
+    slugify: (input) => {
       const normalized = slugify(input).slice(0, SLUG_MAX_LENGTH)
       const hasSlash = input.substring(0, 1) === '/'
       return hasSlash ? normalized : `/${normalized}`

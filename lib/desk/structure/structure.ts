@@ -16,6 +16,7 @@ import {
   ActivityIcon,
   PlayIcon,
   RobotIcon,
+  ComponentIcon,
 } from '@sanity/icons'
 import {StructureBuilder} from 'sanity/desk'
 
@@ -357,13 +358,20 @@ export const generalStructure = (S: StructureBuilder) =>
             .title('Videos')
             .defaultOrdering([{field: 'dateSelection', direction: 'asc'}]),
         ),
-
       S.listItem()
         .title('Curators')
         .icon(RobotIcon)
         .child(
           S.documentTypeList('curator')
             .title('Curators')
+            .defaultOrdering([{field: 'name', direction: 'asc'}]),
+        ),
+      S.listItem()
+        .title('Series')
+        .icon(ComponentIcon)
+        .child(
+          S.documentTypeList('series')
+            .title('Series')
             .defaultOrdering([{field: 'name', direction: 'asc'}]),
         ),
     ])

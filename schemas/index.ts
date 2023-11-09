@@ -20,6 +20,7 @@ import press from './documents/press'
 import redirects from './documents/redirects'
 import strings from './documents/strings'
 import curator from './documents/curator'
+import series from './documents/series'
 
 // SINGLETONS
 import footer from './singletons/footer'
@@ -181,6 +182,7 @@ export const recordDocuments: DocumentDefinition[] = [
   artist,
   authorType,
   curator,
+  series,
 ]
 
 export const schemaTypes: SchemaTypeDefinition[] = [

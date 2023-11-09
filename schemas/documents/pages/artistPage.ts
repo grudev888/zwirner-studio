@@ -1,4 +1,11 @@
-import {ReferenceRule, StringRule, defineField, defineType} from 'sanity'
+import {
+  ReferenceRule,
+  StringRule,
+  defineField,
+  defineType,
+  defineArrayMember,
+  SchemaTypeDefinition,
+} from 'sanity'
 import {UserIcon, DocumentsIcon, SearchIcon} from '@sanity/icons'
 
 import {builder as slugBuilder} from '../../objects/utils/slugUrl'
@@ -76,6 +83,8 @@ export default defineType({
           title: 'Survey',
           group: 'content',
           options: {collapsible: true, collapsed: false},
+          // This is a temp solution for thomas Ruff, must be removed on series unification
+          hidden: ({parent}: any) => parent?.slug?.current?.endsWith('thomas-ruff'),
         },
         {
           hideComponentTitle: true,
@@ -84,6 +93,32 @@ export default defineType({
           components: [CarouselComponents.dzCard],
           references: {
             dzCard: [exhibitionPage, article, artwork],
+          },
+        },
+      ),
+    ),
+    // This is a temp solution for thomas Ruff, must be removed on series unification
+    defineField(
+      dzCarouselBuilder(
+        {
+          name: 'surveyThomas',
+          title: 'Survey',
+          group: 'content',
+          options: {collapsible: true, collapsed: false},
+          hidden: ({parent}: any) => !parent?.slug?.current?.endsWith('thomas-ruff'),
+        },
+        {
+          hideComponentTitle: true,
+          componentOptions: {title: 'Artworks'},
+          carouselSizes: [{value: 'XL', title: 'XL'}, 'L'],
+          components: [CarouselComponents.dzCard],
+          references: {
+            dzCard: [
+              exhibitionPage,
+              article,
+              artwork,
+              {name: 'series', title: 'Series'} as SchemaTypeDefinition,
+            ],
           },
         },
       ),
@@ -297,6 +332,21 @@ export default defineType({
         },
       ),
     ),
+
+    defineField({
+      name: 'surveySeries',
+      title: 'Series',
+      type: 'array',
+      group: 'survey',
+      hidden: ({parent}) => !parent?.slug?.current?.endsWith('thomas-ruff'),
+      of: [
+        defineArrayMember({
+          title: 'Series',
+          type: 'reference',
+          to: [{type: 'series'}],
+        }),
+      ],
+    }),
 
     defineField({
       name: 'surveySeo',
