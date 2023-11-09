@@ -16,6 +16,7 @@ export const builder = (
   },
   options: {
     hideComponentTitle?: boolean
+    mediaProps?: Media.MediaOptions
   } = {hideComponentTitle: false},
 ) => ({
   type: 'object',
@@ -39,8 +40,8 @@ export const builder = (
           validation: (rule: ObjectRule) => rule.required(),
         },
         {
-          // This enables video type selection
           video: {enabledSelection: true},
+          ...options?.mediaProps,
         },
       ),
     ),

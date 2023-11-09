@@ -22,6 +22,7 @@ import {ConditionalProperty} from 'sanity'
 import blockContentSimple from '../objects/utils/blockContentSimple'
 import artwork from './artwork'
 import * as dzMedia from '../objects/page/components/molecules/dzMedia'
+import * as Video from '../objects/utils/video'
 
 export interface ArticleSchema {
   title?: string
@@ -144,7 +145,12 @@ export default defineType({
       type: 'array',
       hidden: hideForTypes([ArticleTypes['External News'], ArticleTypes['Selected Press']]),
       of: [
-        defineArrayMember(dzMedia.builder({name: 'headerImage', title: 'Image', group: 'content'})),
+        defineArrayMember(
+          dzMedia.builder(
+            {name: 'headerImage', title: 'Media', group: 'content'},
+            {hideComponentTitle: true, mediaProps: {video: {type: Video.MediaTypes.MOVING_IMAGE}}},
+          ),
+        ),
         defineArrayMember({
           name: 'artwork',
           title: 'Artwork',
@@ -177,8 +183,7 @@ export default defineType({
     defineField({
       name: 'displayDate',
       title: 'Display Date',
-      description:
-        'This field will override the publish date.',
+      description: 'This field will override the publish date.',
       group: 'content',
       type: 'string',
       hidden: hideForTypes([ArticleTypes['External News']]),
