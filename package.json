@@ -22,7 +22,7 @@
     "@portabletext/toolkit": "^2.0.10",
     "@sanity/demo": "^1.0.2",
     "@sanity/scheduled-publishing": "^1.2.1",
-    "@sanity/vision": "^3.18.0",
+    "@sanity/vision": "^3.19.2",
     "groq": "^3.18.0",
     "lodash": "^4.17.21",
     "lodash.get": "^4.4.2",
