@@ -92,7 +92,7 @@ export default defineType({
           carouselSizes: [{value: 'XL', title: 'XL'}, 'L'],
           components: [CarouselComponents.dzCard],
           references: {
-            dzCard: [exhibitionPage, article, artwork],
+            dzCard: [artwork],
           },
         },
       ),
@@ -113,12 +113,7 @@ export default defineType({
           carouselSizes: [{value: 'XL', title: 'XL'}, 'L'],
           components: [CarouselComponents.dzCard],
           references: {
-            dzCard: [
-              exhibitionPage,
-              article,
-              artwork,
-              {name: 'series', title: 'Series'} as SchemaTypeDefinition,
-            ],
+            dzCard: [artwork, {name: 'series', title: 'Series'} as SchemaTypeDefinition],
           },
         },
       ),

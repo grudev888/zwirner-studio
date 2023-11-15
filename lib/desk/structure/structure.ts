@@ -372,6 +372,16 @@ export const generalStructure = (S: StructureBuilder) =>
         .child(
           S.documentTypeList('series')
             .title('Series')
-            .defaultOrdering([{field: 'name', direction: 'asc'}]),
+            .defaultOrdering([{field: 'name', direction: 'asc'}])
+            .child((childId) =>
+              S.document()
+                .id(childId)
+                .schemaType('series')
+                .views([
+                  S.view.form(),
+                  S.view.component(Iframe).options(iframeOptions).title('Draft View'),
+                  S.view.component(ReferenceByTab).title('References'),
+                ]),
+            ),
         ),
     ])
