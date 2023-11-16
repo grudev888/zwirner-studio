@@ -115,36 +115,6 @@ export default defineType({
       ],
     }),
 
-    defineField({
-      name: 'artworks',
-      title: 'Artworks',
-      type: 'array',
-      group: 'content',
-      hidden: ({parent}) => !parent?.type || parent?.type === SeriesTypes.Collection,
-      of: [
-        defineArrayMember({
-          title: 'Artworks',
-          type: 'reference',
-          to: [{type: 'artwork'}],
-        }),
-      ],
-    }),
-
-    defineField({
-      name: 'books',
-      title: 'Books',
-      type: 'array',
-      group: 'content',
-      hidden: ({parent}) => !parent?.type || parent?.type === SeriesTypes.Series,
-      of: [
-        defineArrayMember({
-          title: 'Book',
-          type: 'reference',
-          to: [{type: 'book'}],
-        }),
-      ],
-    }),
-
     defineField(
       PageBuilder(
         {

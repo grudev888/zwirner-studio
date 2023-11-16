@@ -88,6 +88,7 @@ export default defineType({
         },
         {
           hideComponentTitle: true,
+          optionalComponent: true,
           componentOptions: {title: 'Artworks'},
           carouselSizes: [{value: 'XL', title: 'XL'}, 'L'],
           components: [CarouselComponents.dzCard],
@@ -109,6 +110,7 @@ export default defineType({
         },
         {
           hideComponentTitle: true,
+          optionalComponent: true,
           componentOptions: {title: 'Artworks'},
           carouselSizes: [{value: 'XL', title: 'XL'}, 'L'],
           components: [CarouselComponents.dzCard],
@@ -295,6 +297,7 @@ export default defineType({
           title: 'Survey',
           group: 'survey',
           options: {collapsible: true, collapsed: false},
+          hidden: ({parent}: Record<string, any>) => parent?.slug?.current?.endsWith('thomas-ruff'),
         },
         {
           components: [

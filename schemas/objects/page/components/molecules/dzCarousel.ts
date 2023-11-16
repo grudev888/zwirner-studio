@@ -34,6 +34,7 @@ export type CarouselOptions = {
   hideComponentTitle?: boolean
   hideSize?: boolean
   componentOptions?: any
+  optionalComponent?: boolean
 }
 
 const getComponents = (
@@ -74,7 +75,7 @@ export const builder = (
             type: 'string',
             title: 'Size',
             options: {list: options.carouselSizes ? options.carouselSizes : DEFAULT_SIZES},
-            validation: (rule) => rule.required(),
+            validation: options?.optionalComponent ? undefined : (rule) => rule.required(),
           }),
         ]
       : []),
