@@ -27,8 +27,8 @@ export default defineType({
       title: 'Title',
       type: 'string',
       group: 'content',
-      hidden: true,
       initialValue: 'Artists',
+      validation: (rule) => rule.required(),
     }),
     defineField({
       type: interstitial.name,
