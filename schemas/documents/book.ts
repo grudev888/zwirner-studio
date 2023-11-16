@@ -27,7 +27,6 @@ export default defineType({
       name: 'tagline',
       title: 'Tagline',
       description: 'The tagline that will appear on the book page. Will display in books cards',
-      validation: (rule) => rule.required(),
       type: 'array',
       of: blockContentSimple,
     }),
@@ -36,13 +35,11 @@ export default defineType({
       title: 'Publisher',
       type: 'string',
       description: 'The publisher of the book. Will display in books cards',
-      validation: (rule) => rule.required(),
     }),
     defineField({
       title: 'Books URL',
       name: 'booksUrl',
       type: 'url',
-      validation: (rule) => rule.required(),
       description: 'The URL to the book on www.davidzwirnerbooks.com',
     }),
     defineField({
