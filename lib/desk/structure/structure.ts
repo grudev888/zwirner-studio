@@ -35,7 +35,11 @@ import fair from '../../../schemas/documents/pages/fairPage'
 import exceptionalWork from '../../../schemas/documents/exceptionalWork'
 import {orderableDocumentListDeskItem} from '@sanity/orderable-document-list'
 
+
+import {apiVersion} from '../../../env'
+
 export const generalStructure = (S: StructureBuilder, context: any) =>
+
   S.list()
     .title('Content')
     .items([
@@ -57,11 +61,21 @@ export const generalStructure = (S: StructureBuilder, context: any) =>
               S.listItem()
                 .title('Redirects')
                 .icon(LinkRemovedIcon)
-                .child(S.documentList().title('Page Redirects').filter('_type == "redirect"')),
+                .child(
+                  S.documentList()
+                    .title('Page Redirects')
+                    .apiVersion(apiVersion)
+                    .filter('_type == "redirect"'),
+                ),
               S.listItem()
                 .title('Global Strings')
                 .icon(TiersIcon)
-                .child(S.documentList().title('Strings').filter('_type == "strings"')),
+                .child(
+                  S.documentList()
+                    .title('Strings')
+                    .apiVersion(apiVersion)
+                    .filter('_type == "strings"'),
+                ),
               S.listItem()
                 .title('Main Navigation')
                 .icon(BlockElementIcon)
@@ -92,6 +106,7 @@ export const generalStructure = (S: StructureBuilder, context: any) =>
                             S.documentList()
                               .title('Variants')
                               .schemaType('productVariant')
+                              .apiVersion(apiVersion)
                               .filter(`_type == "productVariant" && store.productId == $productId`)
                               .params({
                                 productId: Number(id.replace('shopifyProduct-', '')),
@@ -113,6 +128,7 @@ export const generalStructure = (S: StructureBuilder, context: any) =>
         .child(
           S.documentList()
             .title('Special Pages')
+            .apiVersion(apiVersion)
             .filter('_type == "page"')
             .defaultOrdering([{field: 'name', direction: 'asc'}])
             .child((childId) =>
@@ -205,6 +221,7 @@ export const generalStructure = (S: StructureBuilder, context: any) =>
                 .child(
                   S.documentList()
                     .title('Artist Pages')
+                    .apiVersion(apiVersion)
                     .filter('_type == "artistPage"')
                     .defaultOrdering([{field: 'artist->lastName', direction: 'asc'}])
                     .child((childId) =>
@@ -252,6 +269,7 @@ export const generalStructure = (S: StructureBuilder, context: any) =>
                 .child(
                   S.documentList()
                     .title('Artists')
+                    .apiVersion(apiVersion)
                     .filter('_type == "artist" && affiliation == true')
                     .defaultOrdering([{field: 'lastName', direction: 'asc'}])
                     .child(
@@ -270,6 +288,7 @@ export const generalStructure = (S: StructureBuilder, context: any) =>
                   S.documentList()
                     .schemaType('artist')
                     .title('Artists')
+                    .apiVersion(apiVersion)
                     .filter('_type == "artist" && affiliation == false')
                     .defaultOrdering([{field: 'lastName', direction: 'asc'}])
                     .child(
@@ -307,6 +326,7 @@ export const generalStructure = (S: StructureBuilder, context: any) =>
         .child(
           S.documentList()
             .title('Authors')
+            .apiVersion(apiVersion)
             .filter('_type == "author"')
             .defaultOrdering([{field: 'name', direction: 'asc'}])
             .child(
@@ -321,6 +341,7 @@ export const generalStructure = (S: StructureBuilder, context: any) =>
         .child(
           S.documentList()
             .title('Books')
+            .apiVersion(apiVersion)
             .filter('_type == "book"')
             .defaultOrdering([{field: 'title', direction: 'asc'}])
             .child(
@@ -335,6 +356,7 @@ export const generalStructure = (S: StructureBuilder, context: any) =>
         .child(
           S.documentList()
             .title('Locations')
+            .apiVersion(apiVersion)
             .filter('_type == "location"')
             .schemaType('location')
             .defaultOrdering([{field: 'name', direction: 'asc'}])
