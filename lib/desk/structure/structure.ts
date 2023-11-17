@@ -17,6 +17,7 @@ import {
   PlayIcon,
   RobotIcon,
   ComponentIcon,
+  CaseIcon,
 } from '@sanity/icons'
 import {StructureBuilder} from 'sanity/desk'
 
@@ -32,8 +33,9 @@ import exhibitionPage from '../../../schemas/documents/pages/exhibitionPage'
 import onlineExhibition from '../../../schemas/documents/pages/onlineExhibitionPage'
 import fair from '../../../schemas/documents/pages/fairPage'
 import exceptionalWork from '../../../schemas/documents/exceptionalWork'
+import {orderableDocumentListDeskItem} from '@sanity/orderable-document-list'
 
-export const generalStructure = (S: StructureBuilder) =>
+export const generalStructure = (S: StructureBuilder, context: any) =>
   S.list()
     .title('Content')
     .items([
@@ -384,4 +386,11 @@ export const generalStructure = (S: StructureBuilder) =>
                 ]),
             ),
         ),
+      orderableDocumentListDeskItem({
+        type: 'campaign',
+        title: 'Campaigns',
+        icon: CaseIcon,
+        S,
+        context,
+      }),
     ])

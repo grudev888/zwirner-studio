@@ -21,6 +21,7 @@
     "@headlessui/react": "^1.7.14",
     "@portabletext/toolkit": "^2.0.10",
     "@sanity/demo": "^1.0.2",
+    "@sanity/orderable-document-list": "^1.1.0",
     "@sanity/scheduled-publishing": "^1.2.1",
     "@sanity/vision": "^3.19.2",
     "groq": "^3.19.2",

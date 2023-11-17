@@ -170,7 +170,7 @@ export default defineType({
             const defaultSlug = parent?.slugTitle ?? ''
             if (!defaultSlug) throw new Error('Please add a slug title to create a unique slug.')
             if (!seriesId) return defaultSlug
-            const params = {id: seriesId.replace('drafts.', '')}
+            const params = {id: seriesId.replace(/^drafts\./, '')}
             const result = await client.fetch(artistPageWithSurvey, params)
             return result?.artistPageSlug ? `${result?.artistPageSlug}/survey/` : ''
           },

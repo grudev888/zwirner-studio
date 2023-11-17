@@ -21,6 +21,7 @@ import redirects from './documents/redirects'
 import strings from './documents/strings'
 import curator from './documents/curator'
 import series from './documents/series'
+import campaign from './documents/campaign'
 
 // SINGLETONS
 import footer from './singletons/footer'
@@ -88,6 +89,8 @@ import shopifyProduct from './objects/shopifyProduct'
 import shopifyProductVariant from './objects/shopifyProductVariant'
 // block content
 import blockContent from './blocks/blockContent'
+import popup from './objects/popup'
+import filterSections from './objects/utils/filterSections'
 
 export const utilsObjects: SchemaTypeDefinition[] = [
   textComplex,
@@ -103,6 +106,7 @@ export const utilsObjects: SchemaTypeDefinition[] = [
   dateRange,
   redirects,
   blockContent,
+  filterSections,
 ]
 
 export const primitiveComponents: ObjectDefinition[] = [interstitial, hero]
@@ -132,6 +136,7 @@ export const objects: ObjectDefinition[] = [
   menu,
   menuItemLink,
   menuItemPage,
+  popup,
 ]
 
 export const shopifyDocuments: DocumentDefinition[] = [collection, product, productVariant]
@@ -183,6 +188,7 @@ export const recordDocuments: DocumentDefinition[] = [
   authorType,
   curator,
   series,
+  campaign,
 ]
 
 export const schemaTypes: SchemaTypeDefinition[] = [

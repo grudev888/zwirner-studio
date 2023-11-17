@@ -1,10 +1,8 @@
 import {
-  SlugSourceContext,
   UrlRule,
   defineArrayMember,
   defineField,
   defineType,
-  ConditionalPropertyCallbackContext,
   StringRule,
   RuleDef,
   ArrayRule,
@@ -18,11 +16,12 @@ import * as Interstitial from '../objects/page/components/primitives/interstitia
 import exhibitionPage from './pages/exhibitionPage'
 import {builder as slugBuilder} from '../objects/utils/slugUrl'
 import * as Media from '../objects/utils/media'
-import {ConditionalProperty} from 'sanity'
+
 import blockContentSimple from '../objects/utils/blockContentSimple'
 import artwork from './artwork'
 import * as dzMedia from '../objects/page/components/molecules/dzMedia'
 import * as Video from '../objects/utils/video'
+import {hideForTypes} from '../../utils/hideSections'
 
 export interface ArticleSchema {
   title?: string
@@ -58,11 +57,6 @@ const requireForTypes =
         ? `This field is required when Article Type is ${types.map(findKey).join(', ')}`
         : true,
     )
-
-const hideForTypes =
-  (types: ArticleTypes[]): ConditionalProperty =>
-  (context: SlugSourceContext | ConditionalPropertyCallbackContext) =>
-    types.includes(context.parent.type)
 
 export default defineType({
   type: 'document',

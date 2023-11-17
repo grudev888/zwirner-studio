@@ -7,6 +7,7 @@ import {
   defineType,
   SchemaTypeDefinition,
   StringRule,
+  SlugRule,
 } from 'sanity'
 import {slugify} from '../../../lib/util/strings'
 import {SLUG_MAX_LENGTH, builder as slugURLBuilder} from '../../objects/utils/slugUrl'
@@ -222,16 +223,18 @@ export default defineType({
             },
           },
           group: 'content',
-          validation: (Rule) => [
+          validation: (Rule: SlugRule) => [
             Rule.custom((slug, parent) => {
-              const {title} = parent.parent
+              const {title} = parent.parent as Record<string, string>
               const titleSlug = slugify(title)
+              if (!slug?.current) return `Add a Slug first`
               if (!slug.current.includes(titleSlug)) {
                 return `Slug should include the title: ${titleSlug}`
               }
               return true
             }).warning(),
             Rule.custom((slug) => {
+              if (!slug?.current) return `Add a Slug first`
               if (slug.current.length > SLUG_MAX_LENGTH) {
                 return `Slug should be  more than ${SLUG_BODY_LENGTH} characters. `
               }
