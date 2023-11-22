@@ -30,7 +30,7 @@
     "sanity": "^3.19.3",
     "sanity-plugin-availability": "^1.0.1",
     "sanity-plugin-iframe-pane": "^2.6.0",
-    "sanity-plugin-media": "^2.2.1",
+    "sanity-plugin-media": "^2.2.4",
     "styled-components": "^5.2 || ^6"
   },
   "devDependencies": {
