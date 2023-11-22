@@ -1692,14 +1692,7 @@
   dependencies:
     "@portabletext/types" "^2.0.8"
 
-"@portabletext/toolkit@^2.0.4":
-  version "2.0.8"
-  resolved "https://registry.npmjs.org/@portabletext/toolkit/-/toolkit-2.0.8.tgz"
-  integrity sha512-MI3FKYZiL+/dYsClkkTDRjSvNS7K4j+U2LNZ5XIEoq67qCY0l7CYjvT0fn+lFBEUxjegtEmbxLk6T9nV/iXA+Q==
-  dependencies:
-    "@portabletext/types" "^2.0.6"
-
-"@portabletext/types@^2.0.6", "@portabletext/types@^2.0.8":
+"@portabletext/types@^2.0.8":
   version "2.0.8"
   resolved "https://registry.yarnpkg.com/@portabletext/types/-/types-2.0.8.tgz#34aec838701482f838bdd0ee07a9e31dc01a9230"
   integrity sha512-eiq9/kMX2bYezS4/kLFk3xNnruCFjCDdw6aYEv5ECHVKkYROiuLd3/AsP5d7tWF3+kPPy6tB0Wq8aqDG/URHGA==
