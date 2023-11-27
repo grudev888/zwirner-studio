@@ -19,18 +19,18 @@ enum PageSections {
   'Landing Page: Exhibitions Landing' = 'exhibitionsLanding',
   'Landing Page: Exhibitions Past' = 'exhibitionsPast',
   'Landing Page: Home Page' = 'home',
-  'Singleton Pages' = 'page',
+  'Special Pages' = 'page',
   'Single Page Record' = 'singlePageRecord',
 }
 
 enum AllPageFilterTypes {
   'All' = 'all',
-  'All Articles' = 'article',
-  'All Artist Pages' = 'artistPage',
-  'All Exhibition Pages' = 'exhibitionPage',
-  'All Exceptional Works' = 'exceptionalWork',
-  'All Fairs' = 'fairPage',
-  'All Online Exhibitions' = 'onlineExhibitionPage',
+  'Articles' = 'article',
+  'Artist Pages' = 'artistPage',
+  'Exhibition Pages' = 'exhibitionPage',
+  'Exceptional Works' = 'exceptionalWork',
+  'Fairs' = 'fairPage',
+  'Online Exhibitions' = 'onlineExhibitionPage',
 }
 
 enum AllPagesWithStatusFilter {
@@ -64,7 +64,10 @@ export default defineField({
       type: 'type',
     },
     prepare({type}) {
-      return {title: toTitle(type), media: ControlsIcon}
+      const indexOfType = Object.values(PageSections).indexOf(type as unknown as PageSections)
+      const keyDescription = Object.keys(PageSections)[indexOfType]
+
+      return {title: toTitle(keyDescription), media: ControlsIcon}
     },
   },
   fields: [
@@ -81,7 +84,7 @@ export default defineField({
     defineField({
       type: 'string',
       name: 'pageCategory',
-      title: 'Page Category',
+      title: 'Page Filter By Category',
       hidden: showForTypes([PageSections['Single Page Record']]),
       options: {
         list: Object.entries(AllPageFilterTypes).map(([title, value]) => ({title, value})),
@@ -95,10 +98,10 @@ export default defineField({
       title: 'Exhibitions Date Filter',
       hidden: showForTypes(
         [
-          AllPageFilterTypes['All Exhibition Pages'],
-          AllPageFilterTypes['All Fairs'],
-          AllPageFilterTypes['All Online Exhibitions'],
-          AllPageFilterTypes['All Exceptional Works'],
+          AllPageFilterTypes['Exhibition Pages'],
+          AllPageFilterTypes['Fairs'],
+          AllPageFilterTypes['Online Exhibitions'],
+          AllPageFilterTypes['Exceptional Works'],
         ],
         'pageCategory',
       ),
@@ -121,7 +124,7 @@ export default defineField({
         {type: 'onlineExhibitionPage'},
         {type: 'page'},
       ],
-      hidden: showForTypes([PageSections['Single Page Record'], PageSections['Singleton Pages']]),
+      hidden: showForTypes([PageSections['Single Page Record'], PageSections['Special Pages']]),
       options: {
         disableNew: true,
         filter: ({parent}: any) => {
@@ -129,7 +132,7 @@ export default defineField({
           if (parent?.openStatusFilter) {
             statusFilters = statusFilters + openStatusFilters[parent?.openStatusFilter]
           }
-          if (parent?.type === PageSections['Singleton Pages']) {
+          if (parent?.type === PageSections['Special Pages']) {
             return {
               filter: '_type == "page"',
               params: {},

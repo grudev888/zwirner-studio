@@ -37,7 +37,7 @@ export default defineType({
       description:
         'Number of days after which browser cookie for the pop-up will expire. Once expired, the same pop-up will be displayed to the user if they visit the same page after the cookie has expired.',
       type: 'number',
-      initialValue: 0,
+      initialValue: 30,
       validation: (rule: NumberRule) => rule.integer().min(0).max(365).required(),
     }),
     orderRankField({type: 'category'}),
