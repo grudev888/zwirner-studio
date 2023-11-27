@@ -1,5 +1,4 @@
 import {StringRule, defineField, defineType, NumberRule, defineArrayMember} from 'sanity'
-import blockContentSimple from './utils/blockContentSimple'
 import * as Media from '../objects/utils/media'
 import {SplitHorizontalIcon} from '@sanity/icons'
 import {toTitle} from '../../utils/textTransform'
@@ -8,7 +7,6 @@ import {hideForTypes} from '../../utils/hideSections'
 enum PopUpTypes {
   'Newsletter' = 'newsletter',
   'Inquire' = 'inquire',
-  'Custom Newsletter' = 'customNewsletter',
   'Custom Promo' = 'customPromo',
 }
 
@@ -129,73 +127,34 @@ export default defineType({
       type: 'string',
       name: 'title',
       title: 'Primary Title',
-      hidden: hideForTypes([PopUpTypes.Inquire, PopUpTypes.Newsletter]),
+      hidden: hideForTypes([PopUpTypes.Inquire]),
     }),
     defineField({
-      type: 'array',
+      type: 'text',
       name: 'description',
       title: 'Description',
       description: 'Popup description text.',
-      hidden: hideForTypes([PopUpTypes.Inquire, PopUpTypes.Newsletter]),
-      of: blockContentSimple,
+      hidden: hideForTypes([PopUpTypes.Inquire]),
     }),
     defineField({
       name: 'primaryCTA',
       title: 'CTA Button',
       type: 'cta',
-      hidden: hideForTypes([PopUpTypes.Inquire, PopUpTypes.Newsletter]),
+      hidden: hideForTypes([PopUpTypes.Inquire]),
     }),
     defineField({
       name: 'submissionCTA',
       title: 'Submission success CTA',
-      hidden: hideForTypes([
-        PopUpTypes['Custom Newsletter'],
-        PopUpTypes.Inquire,
-        PopUpTypes.Newsletter,
-      ]),
+      hidden: hideForTypes([PopUpTypes.Inquire, PopUpTypes.Newsletter]),
       type: 'cta',
     }),
     defineField(
       Media.builder(
         {
-          name: 'desktopMedia',
-          title: 'Desktop Media',
-          description: 'Desktop Image',
-          hidden: hideForTypes([
-            PopUpTypes['Custom Promo'],
-            PopUpTypes.Inquire,
-            PopUpTypes.Newsletter,
-          ]),
-        },
-        {type: Media.MediaTypes.IMAGE},
-      ),
-    ),
-    defineField(
-      Media.builder(
-        {
-          name: 'promoMedia',
-          title: 'Promo Media',
-          description: 'Promo Image',
-          hidden: hideForTypes([
-            PopUpTypes['Custom Newsletter'],
-            PopUpTypes.Inquire,
-            PopUpTypes.Newsletter,
-          ]),
-        },
-        {type: Media.MediaTypes.IMAGE},
-      ),
-    ),
-    defineField(
-      Media.builder(
-        {
-          name: 'mobileMedia',
-          title: 'Mobile Media',
-          description: 'Mobile Image',
-          hidden: hideForTypes([
-            PopUpTypes['Custom Promo'],
-            PopUpTypes.Inquire,
-            PopUpTypes.Newsletter,
-          ]),
+          name: 'media',
+          title: 'Popup Media',
+          description: 'Popup Image',
+          hidden: hideForTypes([PopUpTypes.Inquire]),
         },
         {type: Media.MediaTypes.IMAGE},
       ),
