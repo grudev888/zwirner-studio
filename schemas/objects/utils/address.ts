@@ -34,7 +34,6 @@ export default defineField({
       name: 'country',
       title: 'Country',
       type: 'string',
-      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'state',
@@ -45,18 +44,16 @@ export default defineField({
       name: 'city',
       title: 'City',
       type: 'string',
-      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'zipCode',
       title: 'Zip Code',
       type: 'string',
-      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'reverseZipAndCity',
       title: 'Reverse Zip Code and City',
-      type: 'boolean'
+      type: 'boolean',
     }),
     defineField({
       name: 'geoLocation',

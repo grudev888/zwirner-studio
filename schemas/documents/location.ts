@@ -41,7 +41,6 @@ export default defineType({
       title: 'Operating Hours',
       name: 'hours',
       type: 'availability',
-      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'phone',
