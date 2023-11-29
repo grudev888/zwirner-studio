@@ -35,13 +35,12 @@ import exhibitionPast from './singletons/exhibitionsPast'
 
 // OBJECTS
 import social from './objects/data/social'
-import dzCard from './objects/page/components/molecules/dzCard'
 import dzCarousel from './objects/page/components/molecules/dzCarousel'
 import dzEditorial from './objects/page/components/molecules/dzEditorial'
 import dzHero from './objects/page/components/molecules/dzHero'
 import dzHeroCarousel from './objects/page/components/molecules/DzHeroCarousel'
 
-import dzMedia from './objects/page/components/molecules/dzMedia'
+import oneUpWrapper from './objects/page/components/molecules/oneUpWrapper'
 import dzSplit from './objects/page/components/molecules/dzSplit'
 import dzTitle from './objects/page/components/molecules/dzTitle'
 import grid from './objects/page/grid'
@@ -113,7 +112,6 @@ export const primitiveComponents: ObjectDefinition[] = [interstitial, hero]
 
 export const pageComponents: ObjectDefinition[] = [
   dzHero,
-  dzCard,
   dzEditorial,
   dzSplit,
   dzTitle,
@@ -121,7 +119,7 @@ export const pageComponents: ObjectDefinition[] = [
   dzCarousel,
   dzButton,
   dzConsignment,
-  dzMedia,
+  oneUpWrapper,
 ]
 
 export const pageModules: ObjectDefinition[] = [splitModule, carouselModule, gridModule]

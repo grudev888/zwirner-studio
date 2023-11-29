@@ -2,22 +2,34 @@ import {ImageIcon} from '@sanity/icons'
 import {defineField, defineType, StringRule, ObjectDefinition, ObjectRule} from 'sanity'
 import * as Media from '../../../../objects/utils/media'
 
-export interface DzInterstitialTypeProps {
-  title: string
-  split: boolean
-  imageOverride?: any
-  enableOverrides: boolean
+type dzMediaOptions = {
+  hideComponentTitle?: boolean
+  mediaProps?: Media.MediaOptions
 }
+
+export const getDzMediaFields = (options: dzMediaOptions) => [
+  defineField(
+    Media.builder(
+      {
+        name: 'media',
+        title: 'Media',
+        description: 'Media module',
+        validation: (rule: ObjectRule) => rule.required(),
+      },
+      {
+        video: {enabledSelection: true},
+        ...options?.mediaProps,
+      },
+    ),
+  ),
+]
 
 export const builder = (
   params: {name: string; title: string; [key: string]: any} = {
     name: 'dzMedia',
     title: 'Media',
   },
-  options: {
-    hideComponentTitle?: boolean
-    mediaProps?: Media.MediaOptions
-  } = {hideComponentTitle: false},
+  options: dzMediaOptions = {hideComponentTitle: false},
 ) => ({
   type: 'object',
   icon: ImageIcon,
@@ -31,20 +43,7 @@ export const builder = (
       initialValue: 'Media',
     }),
     // (DzMedia) Modules to support both “Moving Images” and “Interactive Video”
-    defineField(
-      Media.builder(
-        {
-          name: 'media',
-          title: 'Media',
-          description: 'Media module',
-          validation: (rule: ObjectRule) => rule.required(),
-        },
-        {
-          video: {enabledSelection: true},
-          ...options?.mediaProps,
-        },
-      ),
-    ),
+    ...getDzMediaFields(options),
   ],
   preview: {
     select: {

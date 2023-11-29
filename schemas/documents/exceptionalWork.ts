@@ -228,14 +228,13 @@ export default defineType({
           components: [
             PageBuilderComponents.dzInterstitial,
             PageBuilderComponents.dzSplit,
-            PageBuilderComponents.dzCard,
-            PageBuilderComponents.dzMedia,
             PageBuilderComponents.dzEditorial,
             PageBuilderComponents.dzGrid,
             PageBuilderComponents.dzCarousel,
+            PageBuilderComponents.oneUp,
           ],
           references: {
-            dzCard: [artwork, book, podcast],
+            oneUp: [artwork, book, podcast],
             dzSplit: [{name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition],
             grid: {
               references: {

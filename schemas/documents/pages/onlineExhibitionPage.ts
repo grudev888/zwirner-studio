@@ -247,7 +247,7 @@ export default defineType({
             PageBuilderComponents.dzCarousel,
           ],
           references: {
-            dzCard: [artwork, book, podcast],
+            oneUp: [artwork, book, podcast],
             dzSplit: [{name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition],
             grid: {
               references: {

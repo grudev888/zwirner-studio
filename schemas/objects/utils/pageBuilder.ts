@@ -9,7 +9,7 @@ import {builder as dzSplitBuilder} from '../page/components/molecules/dzSplit'
 import {builder as dzTitleBuilder} from '../page/components/molecules/dzTitle'
 import {builder as dzInterstitialBuilder} from '../page/components/primitives/interstitial'
 import {builder as dzMediaBuilder} from '../page/components/molecules/dzMedia'
-
+import {builder as oneUpBuilder} from '../page/components/molecules/oneUpWrapper'
 import {builder as dzGridBuilder} from '../page/grid'
 
 export enum PageBuilderComponents {
@@ -23,6 +23,7 @@ export enum PageBuilderComponents {
   dzMedia = 'dzMedia',
   dzSplit = 'dzSplit',
   dzTitle = 'dzTitle',
+  oneUp = 'oneUp',
 }
 
 export type BuilderOptions = {
@@ -40,6 +41,7 @@ const componentBuilder = {
   [PageBuilderComponents.dzCarousel]: dzCarouselBuilder,
   [PageBuilderComponents.dzCard]: dzCardBuilder,
   [PageBuilderComponents.dzMedia]: dzMediaBuilder,
+  [PageBuilderComponents.oneUp]: oneUpBuilder,
 }
 
 export type ReferencePerType = {

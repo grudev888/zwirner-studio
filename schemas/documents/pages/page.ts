@@ -71,15 +71,14 @@ export default defineType({
             PageBuilderComponents.dzHero,
             PageBuilderComponents.dzInterstitial,
             PageBuilderComponents.dzSplit,
-            PageBuilderComponents.dzCard,
-            PageBuilderComponents.dzMedia,
             PageBuilderComponents.dzEditorial,
             PageBuilderComponents.dzGrid,
             PageBuilderComponents.dzCarousel,
+            PageBuilderComponents.oneUp,
           ],
           references: {
             dzHero: [{name: 'exhibitionPage', title: 'Exhibition'} as SchemaTypeDefinition],
-            dzCard: [
+            oneUp: [
               artwork,
               book,
               location,

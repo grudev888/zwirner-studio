@@ -323,9 +323,6 @@ export default defineType({
             dzCarousel: {
               carouselSizes: [{value: 'XL', title: 'XL'}],
             },
-            grid: {
-              hideComponentTitle: true,
-            },
           },
         },
       ),
