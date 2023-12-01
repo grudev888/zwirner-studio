@@ -1,4 +1,12 @@
-import {StringRule, defineField, defineType, NumberRule, defineArrayMember} from 'sanity'
+import {
+  StringRule,
+  defineField,
+  defineType,
+  NumberRule,
+  defineArrayMember,
+  Rule,
+  RuleDef,
+} from 'sanity'
 import * as Media from '../objects/utils/media'
 import {SplitHorizontalIcon} from '@sanity/icons'
 import {toTitle} from '../../utils/textTransform'
@@ -14,6 +22,28 @@ enum PopUpTriggers {
   'Time Based' = 'timeBased',
   'Scroll Based' = 'scrollBased',
 }
+
+type CTAValueType = {
+  text?: string
+  action?: string
+  link?: {href?: string; blank?: boolean}
+}
+type MediaValueType = {
+  type?: Media.MediaTypes
+  image?: {asset?: {_ref: string}; url?: string}
+}
+
+const findKey = (value: PopUpTypes) =>
+  Object.keys(PopUpTypes)[Object.values(PopUpTypes).indexOf(value)]
+
+const requireForTypes =
+  <T extends RuleDef<T>>(types: PopUpTypes[]) =>
+  (rule: T) =>
+    rule.custom((value, context) =>
+      types.includes((context.parent as any).type) && !!value === false
+        ? `This field is required when Popup Type is ${types.map(findKey).join(', ')}`
+        : true,
+    )
 
 export default defineType({
   name: 'popup',
@@ -128,25 +158,36 @@ export default defineType({
       name: 'title',
       title: 'Primary Title',
       hidden: hideForTypes([PopUpTypes.Inquire]),
+      validation: requireForTypes<StringRule>([PopUpTypes['Custom Promo']]),
     }),
     defineField({
       type: 'text',
       name: 'description',
       title: 'Description',
       description: 'Popup description text.',
+      validation: requireForTypes<StringRule>([PopUpTypes['Custom Promo']]),
       hidden: hideForTypes([PopUpTypes.Inquire]),
     }),
     defineField({
       name: 'primaryCTA',
       title: 'CTA Button',
       type: 'cta',
+      validation: (rule) =>
+        rule.custom((value, context) => {
+          const {type} = context.parent as {type: PopUpTypes}
+          if (type === PopUpTypes['Custom Promo']) {
+            if (!value) return 'CTA is required'
+            const {text, action, link} = value as CTAValueType
+            if (!text) return 'CTA text is required'
+            if (!action || action !== 'Link') return 'CTA Type is required and must be a "Link"'
+            if (!link) return 'CTA Link data is required'
+            if (!link.href) return 'CTA Link href is required'
+            if (typeof link.blank !== 'boolean') return 'Choose "open in new tab" behavior'
+            if (!value && type === PopUpTypes['Custom Promo']) return 'CTA is required'
+          }
+          return true
+        }),
       hidden: hideForTypes([PopUpTypes.Inquire]),
-    }),
-    defineField({
-      name: 'submissionCTA',
-      title: 'Submission success CTA',
-      hidden: hideForTypes([PopUpTypes.Inquire, PopUpTypes.Newsletter]),
-      type: 'cta',
     }),
     defineField(
       Media.builder(
@@ -155,6 +196,18 @@ export default defineType({
           title: 'Popup Media',
           description: 'Popup Image',
           hidden: hideForTypes([PopUpTypes.Inquire]),
+          validation: (rule: Rule) =>
+            rule.custom(async (value, context) => {
+              const {type: valueType, image} = (value ?? {}) as MediaValueType
+              const {type} = context.parent as {type: PopUpTypes}
+              if (type === PopUpTypes['Custom Promo'] && valueType !== Media.MediaTypes.IMAGE) {
+                return 'Media Type should be "Image"'
+              }
+              if (valueType === Media.MediaTypes.IMAGE) {
+                if (!image || !image.asset?._ref) return 'Image is required'
+              }
+              return true
+            }),
         },
         {type: Media.MediaTypes.IMAGE},
       ),

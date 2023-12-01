@@ -50,7 +50,7 @@ const findKey = (value: ArticleTypes) =>
   Object.keys(ArticleTypes)[Object.values(ArticleTypes).indexOf(value)]
 
 const requireForTypes =
-  <T extends RuleDef<T>>(types: ArticleTypes[], asas: string = '') =>
+  <T extends RuleDef<T>>(types: ArticleTypes[]) =>
   (rule: T) =>
     rule.custom((value, context) =>
       types.includes((context.parent as any).type) && !!value === false
@@ -195,10 +195,10 @@ export default defineType({
       title: 'Article Body',
       group: 'content',
       type: 'array',
-      validation: requireForTypes<ArrayRule<unknown>>(
-        [ArticleTypes['Guide/Internal News'], ArticleTypes['Selected Press']],
-        'artiblecobdy',
-      ),
+      validation: requireForTypes<ArrayRule<unknown>>([
+        ArticleTypes['Guide/Internal News'],
+        ArticleTypes['Selected Press'],
+      ]),
       hidden: hideForTypes([ArticleTypes['External News']]),
       of: blockContentBody,
     }),
