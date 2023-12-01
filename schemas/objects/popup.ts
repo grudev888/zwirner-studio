@@ -209,7 +209,7 @@ export default defineType({
               return true
             }),
         },
-        {type: Media.MediaTypes.IMAGE},
+        {type: Media.MediaTypes.UNSET},
       ),
     ),
   ],
