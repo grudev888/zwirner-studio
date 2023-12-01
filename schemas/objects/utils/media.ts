@@ -14,6 +14,7 @@ export enum MediaTypes {
 
 export type MediaOptions = {
   type?: MediaTypes
+  defaultUnset?: boolean
   video?: Video.MediaOptions
   image?: {additionalFields?: FieldDefinition[]}
   required?: boolean
@@ -43,7 +44,7 @@ export const builder = (
           )
           .map((type) => ({title: capitalize(type), value: type})),
       },
-      initialValue: options?.type || MediaTypes.UNSET,
+      initialValue: options?.type && !options?.defaultUnset ? options?.type : MediaTypes.UNSET,
     }),
     defineField(
       Video.builder(
