@@ -92,7 +92,7 @@ export default defineType({
         'Choose between time-based, scroll-based, or enable both triggers to display the pop-up based on the first occurrence (either time or scroll).',
       type: 'object',
       options: {
-        columns: 2,
+        columns: 1,
       },
       validation: (rule) =>
         rule.custom((value) => {
@@ -111,15 +111,16 @@ export default defineType({
             layout: 'checkbox',
           },
         }),
-        defineField({
-          name: PopUpTriggers['Scroll Based'],
-          title: 'Scroll Based',
-          type: 'boolean',
-          initialValue: false,
-          options: {
-            layout: 'checkbox',
-          },
-        }),
+        // temporary disabled (post-ADP)
+        // defineField({
+        //   name: PopUpTriggers['Scroll Based'],
+        //   title: 'Scroll Based',
+        //   type: 'boolean',
+        //   initialValue: false,
+        //   options: {
+        //     layout: 'checkbox',
+        //   },
+        // }),
         defineField({
           name: 'triggerTime',
           title: 'Trigger Time',
@@ -129,15 +130,16 @@ export default defineType({
           hidden: ({parent}) => !parent?.timeBased,
           validation: (rule: NumberRule) => rule.min(0),
         }),
-        defineField({
-          name: 'scrollValue',
-          title: 'Scroll Percentage',
-          description: 'Percentage of the page scrolled. (0-100)',
-          type: 'number',
-          initialValue: 50,
-          hidden: ({parent}) => !parent?.scrollBased,
-          validation: (rule: NumberRule) => rule.min(0).integer().max(100),
-        }),
+        // temporary disabled (post-ADP)
+        // defineField({
+        //   name: 'scrollValue',
+        //   title: 'Scroll Percentage',
+        //   description: 'Percentage of the page scrolled. (0-100)',
+        //   type: 'number',
+        //   initialValue: 50,
+        //   hidden: ({parent}) => !parent?.scrollBased,
+        //   validation: (rule: NumberRule) => rule.min(0).integer().max(100),
+        // }),
       ],
     }),
 
