@@ -22,19 +22,19 @@
     "@sanity/demo": "^1.0.2",
     "@sanity/orderable-document-list": "^1.1.0",
     "@sanity/scheduled-publishing": "^1.2.1",
-    "@sanity/vision": "^3.19.3",
-    "groq": "^3.19.3",
+    "@sanity/vision": "^3.20.2",
+    "groq": "^3.20.2",
     "lodash.get": "^4.4.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "sanity": "^3.19.3",
+    "sanity": "^3.20.2",
     "sanity-plugin-availability": "^1.0.1",
     "sanity-plugin-iframe-pane": "^2.6.0",
     "sanity-plugin-media": "^2.2.4",
     "styled-components": "^5.2 || ^6"
   },
   "devDependencies": {
-    "@rollup/plugin-alias": "^5.0.1",
+    "@rollup/plugin-alias": "^5.1.0",
     "@sanity/eslint-config-studio": "^2.0.1",
     "@types/lodash": "^4.14.201",
     "@types/lodash.get": "^4.4.9",
@@ -43,7 +43,7 @@
     "postcss": "^8.4.23",
     "prettier": "^3.1.0",
     "tailwindcss": "^3.3.5",
-    "typescript": "^5.1.6"
+    "typescript": "^5.3.2"
   },
   "prettier": {
     "semi": false,
