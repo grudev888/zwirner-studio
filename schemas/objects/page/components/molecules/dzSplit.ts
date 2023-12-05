@@ -27,6 +27,7 @@ type DzSplitBuilderOptions = {
   references: SchemaTypeDefinition[]
   hideComponentTitle?: boolean
   showAsPlainComponent?: boolean
+  showImageBackgroundOption?: boolean
 }
 
 const getOptionalProperty = (data: any, options: DzSplitBuilderOptions) => {
@@ -112,6 +113,7 @@ export const builder = (
         {
           // This enables video type selection
           video: {enabledSelection: true},
+          backgroundColor: options?.showImageBackgroundOption,
         },
       ),
     ),

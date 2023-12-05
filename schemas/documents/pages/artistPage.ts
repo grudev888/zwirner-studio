@@ -144,7 +144,11 @@ export default defineType({
             },
           },
           componentOptions: {
-            dzSplit: {hideComponentTitle: true, showAsPlainComponent: true},
+            dzSplit: {
+              hideComponentTitle: true,
+              showAsPlainComponent: true,
+              showImageBackgroundOption: true,
+            },
             dzCarousel: {
               carouselSizes: ['S'],
             },

@@ -13,6 +13,7 @@ import ShopifyIcon from '../../components/icons/Shopify'
 
 import {apiVersion} from '../../env'
 import {slugify} from '../../lib/util/strings'
+import {backgroundColorParams} from '../objects/utils/backgroundColor'
 
 const ARTWORKS_PREFIX = '/artworks/'
 const HASH_LENGTH = 5
@@ -351,18 +352,8 @@ export default defineType({
       ],
     }),
     defineField({
-      name: 'backgroundColor',
-      title: 'Background Color',
+      ...backgroundColorParams,
       group: 'content',
-      type: 'string',
-      options: {
-        list: [
-          {title: 'Transparent', value: 'transparent'},
-          {title: 'Light Grey', value: 'lightGrey'},
-          {title: 'Dark Grey', value: 'darkGrey'},
-        ],
-      },
-      initialValue: 'lightGrey',
     }),
     defineField({
       name: 'price',

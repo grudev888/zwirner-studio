@@ -4,6 +4,7 @@ import blockContentSimple from '../utils/blockContentSimple'
 import {mediaAssetSource} from 'sanity-plugin-media'
 import {PresentationIcon, DocumentVideoIcon} from '@sanity/icons'
 import * as Video from './video'
+import {backgroundColorParams} from './backgroundColor'
 
 export enum MediaTypes {
   IMAGE = 'Image',
@@ -18,6 +19,7 @@ export type MediaOptions = {
   video?: Video.MediaOptions
   image?: {additionalFields?: FieldDefinition[]}
   required?: boolean
+  backgroundColor?: boolean
 }
 
 export const builder = (
@@ -82,6 +84,17 @@ export const builder = (
         ...(options?.image?.additionalFields || []),
       ],
       hidden: ({parent}) =>
+        parent?.type === MediaTypes.VIDEO ||
+        parent?.type === MediaTypes.VIDEO_RECORD ||
+        options?.type === MediaTypes.VIDEO ||
+        options?.type === MediaTypes.VIDEO_RECORD ||
+        parent?.type === MediaTypes.UNSET ||
+        !parent?.type,
+    }),
+    defineField({
+      ...backgroundColorParams,
+      hidden: ({parent}) =>
+        !options?.backgroundColor ||
         parent?.type === MediaTypes.VIDEO ||
         parent?.type === MediaTypes.VIDEO_RECORD ||
         options?.type === MediaTypes.VIDEO ||
