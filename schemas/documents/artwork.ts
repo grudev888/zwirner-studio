@@ -20,9 +20,29 @@ const HASH_LENGTH = 5
 const ARTWORK_SUFFIX_LENGTH = HASH_LENGTH + 1 // 1 for the dash
 const SLUG_BODY_LENGTH = SLUG_MAX_LENGTH - ARTWORKS_PREFIX.length - ARTWORK_SUFFIX_LENGTH
 
-// Check If we will need prefilled fields
+export enum ArtWorkDefaultFields {
+  'Artist Name' = 'artistName',
+  'Artwork Title' = 'artworkTitle',
+  'Artwork Description' = 'artworkDescription',
+  'Artwork Media' = 'artworkMedia',
+  'Date' = 'artworkDateSelection',
+  'Medium' = 'artworkMedium',
+  'Dimensions' = 'artworkDimensions',
+  'Edition' = 'artworkEdition',
+  'Framed' = 'artworkFramed',
+  'Framed Dimensions' = 'artworkFramedDimensions',
+  'Artwork CTA' = 'artworkCTA',
+}
+
+export enum ArtWorkComplementaryFields {
+  'Price' = 'artworkPrice',
+  'Additional Information' = 'artworkAdditionalInformation',
+}
+
+export const ARTWORK_NAME = 'artwork'
+
 export default defineType({
-  name: 'artwork',
+  name: ARTWORK_NAME,
   title: 'Artworks',
   type: 'document',
   groups: [
@@ -236,7 +256,6 @@ export default defineType({
           return true
         }),
     }),
-
     defineField({
       name: 'availability',
       title: 'Availability',

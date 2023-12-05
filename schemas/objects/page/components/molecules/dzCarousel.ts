@@ -1,7 +1,11 @@
 import {defineField, defineType, ObjectDefinition, SchemaTypeDefinition} from 'sanity'
-import {MasterDetailIcon, ImagesIcon} from '@sanity/icons'
+import {MasterDetailIcon, ImagesIcon, ComposeIcon, CheckmarkCircleIcon} from '@sanity/icons'
+
 import {builder as dzCardBuilder} from './dzCard'
 import {builder as dzMediaBuilder} from './dzMedia'
+import {ARTWORK_NAME} from '../../../../documents/artwork'
+
+import * as ContentFilters from '../../../utils/displayContentFilters'
 
 export interface DzCarouselSchemaProps {
   title: string
@@ -60,11 +64,16 @@ export const builder = (
 ) => ({
   type: 'object',
   icon: ImagesIcon,
+  groups: [
+    {name: 'content', title: 'Content', icon: ComposeIcon, default: true},
+    {name: 'displaySettings', title: 'Artwork Display Settings', icon: CheckmarkCircleIcon},
+  ],
   fields: [
     defineField({
       name: 'title',
       type: 'string',
       title: 'Component title',
+      group: 'content',
       hidden: () => options?.hideComponentTitle ?? false,
       initialValue: 'Carousel',
     }),
@@ -74,13 +83,33 @@ export const builder = (
             name: 'size',
             type: 'string',
             title: 'Size',
+            group: 'content',
             options: {list: options.carouselSizes ? options.carouselSizes : DEFAULT_SIZES},
             validation: options?.optionalComponent ? undefined : (rule) => rule.required(),
           }),
         ]
       : []),
+
+    ...(Object.values(options.references)
+      .flat()
+      .some((reference) => reference.name === ARTWORK_NAME)
+      ? [
+          ContentFilters.builder(
+            {
+              name: 'artworkFilters',
+              title: 'Artwork Filters',
+              group: 'displaySettings',
+            },
+            {
+              type: ContentFilters.ContentMolecules.dzCarousel,
+              referenceName: ARTWORK_NAME,
+            },
+          ),
+        ]
+      : []),
     {
       type: 'array',
+      group: 'content',
       icon: MasterDetailIcon,
       of: getComponents(
         options?.components ?? Object.values(CarouselComponents),

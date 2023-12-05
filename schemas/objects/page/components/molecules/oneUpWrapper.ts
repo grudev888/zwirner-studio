@@ -1,4 +1,4 @@
-import {SquareIcon, ComposeIcon, EditIcon} from '@sanity/icons'
+import {SquareIcon, ComposeIcon, EditIcon, CheckmarkCircleIcon} from '@sanity/icons'
 import {
   defineField,
   defineType,
@@ -14,6 +14,8 @@ import * as Video from '../../../utils/video'
 import {hideForTypes} from '../../../../../utils/hideSections'
 import {getDzCardFields} from './dzCard'
 import {getDzMediaFields} from './dzMedia'
+import {ARTWORK_NAME} from '../../../../documents/artwork'
+import * as ContentFilters from '../../../utils/displayContentFilters'
 
 enum OneUpMolecules {
   'Card' = 'dzCard',
@@ -74,6 +76,7 @@ export const builder = (
   groups: [
     {name: 'content', title: 'Content', icon: ComposeIcon, default: true},
     {name: 'overrides', title: 'Overrides', icon: EditIcon},
+    {name: 'displaySettings', title: 'Artwork Display Settings', icon: CheckmarkCircleIcon},
   ],
   preview: {
     select: {
@@ -155,6 +158,21 @@ export const builder = (
       initialValue: options?.type ?? OneUpMolecules.Card,
     }),
     ...getOneUpFields(options),
+    ...(Object.values(options.references).some((reference) => reference.name === ARTWORK_NAME)
+      ? [
+          ContentFilters.builder(
+            {
+              name: 'artworkFilters',
+              title: 'Artwork Filters',
+              group: 'displaySettings',
+            },
+            {
+              type: ContentFilters.ContentMolecules.oneUp,
+              referenceName: ARTWORK_NAME,
+            },
+          ),
+        ]
+      : []),
   ],
   ...params,
 })

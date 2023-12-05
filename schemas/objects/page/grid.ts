@@ -1,7 +1,9 @@
-import {ThLargeIcon, MasterDetailIcon} from '@sanity/icons'
+import {ThLargeIcon, MasterDetailIcon, ComposeIcon, CheckmarkCircleIcon} from '@sanity/icons'
 import {defineField, defineType, StringRule, ObjectDefinition, SchemaTypeDefinition} from 'sanity'
 import {builder as dzCardBuilder} from '../page/components/molecules/dzCard'
 import {builder as dzMediaBuilder} from '../page/components/molecules/dzMedia'
+import {ARTWORK_NAME} from '../../documents/artwork'
+import * as ContentFilters from '../utils/displayContentFilters'
 
 export enum GridComponents {
   dzCard = 'dzCard',
@@ -58,12 +60,17 @@ export const builder = (
     collapsible: true,
     collapsed: false,
   },
+  groups: [
+    {name: 'content', title: 'Content', icon: ComposeIcon, default: true},
+    {name: 'displaySettings', title: 'Artwork Display Settings', icon: CheckmarkCircleIcon},
+  ],
   fields: [
     defineField({
       name: 'title',
       title: 'Title',
       type: 'string',
       description: 'Section name',
+      group: 'content',
       ...(!options?.hideComponentTitle ? {validation: (rule: StringRule) => rule.required()} : {}),
       hidden: options?.hideComponentTitle,
       initialValue: 'Grid',
@@ -73,6 +80,7 @@ export const builder = (
       type: 'boolean',
       title: 'Wrap columns',
       description: 'Enable wrapping',
+      group: 'content',
       validation: (rule) => rule.required(),
       initialValue: false,
     }),
@@ -81,12 +89,31 @@ export const builder = (
       type: 'boolean',
       title: 'Show Number of Items',
       description: 'This will show the number of items within the grid.',
+      group: 'content',
       initialValue: false,
     }),
+    ...(Object.values(options.references)
+      .flat()
+      .some((reference) => reference.name === ARTWORK_NAME)
+      ? [
+          ContentFilters.builder(
+            {
+              name: 'artworkFilters',
+              title: 'Artwork Filters',
+              group: 'displaySettings',
+            },
+            {
+              type: ContentFilters.ContentMolecules.grid,
+              referenceName: ARTWORK_NAME,
+            },
+          ),
+        ]
+      : []),
     defineField({
       name: 'displayGridSlider',
       type: 'boolean',
       title: 'Show Grid Slider',
+      group: 'content',
       description: 'This will enable users to change the number of items per row.',
       initialValue: false,
     }),
@@ -96,6 +123,7 @@ export const builder = (
             name: 'itemsPerRow',
             type: 'number',
             title: 'Items per row',
+            group: 'content',
             description: 'Number of components per row',
             options: {
               list: [1, 2, 3, 4],
@@ -107,6 +135,7 @@ export const builder = (
     {
       type: 'array',
       icon: MasterDetailIcon,
+      group: 'content',
       of: getComponents(
         options?.components ?? Object.values(GridComponents),
         options.references,
