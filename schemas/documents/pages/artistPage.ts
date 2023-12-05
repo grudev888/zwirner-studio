@@ -308,8 +308,10 @@ export default defineType({
             PageBuilderComponents.dzInterstitial,
             PageBuilderComponents.dzGrid,
             PageBuilderComponents.dzCarousel,
+            PageBuilderComponents.oneUp,
           ],
           references: {
+            oneUp: [artwork],
             dzCarousel: {
               references: {
                 dzCard: [artwork],
@@ -355,21 +357,40 @@ export default defineType({
     }),
 
     defineField(
-      dzGridBuilder(
+      PageBuilder(
         {
           name: 'availableWorksSubpage',
           title: 'Available Works',
           group: 'availableWorks',
+          options: {collapsible: true, collapsed: false},
         },
         {
-          gridProps: {
-            title: 'Content',
-          },
-          hideComponentTitle: true,
+          components: [
+            PageBuilderComponents.dzInterstitial,
+            PageBuilderComponents.dzGrid,
+            PageBuilderComponents.dzCarousel,
+            PageBuilderComponents.oneUp,
+          ],
           references: {
-            dzCard: [artwork],
+            oneUp: [artwork],
+            dzCarousel: {
+              references: {
+                dzCard: [artwork],
+              },
+              components: [CarouselComponents.dzCard, CarouselComponents.dzMedia],
+            },
+            grid: {
+              references: {
+                dzCard: [artwork],
+              },
+              components: [GridComponents.dzCard, GridComponents.dzMedia],
+            },
           },
-          components: [GridComponents.dzCard, GridComponents.dzMedia],
+          componentOptions: {
+            dzCarousel: {
+              carouselSizes: [{value: 'XL', title: 'XL'}],
+            },
+          },
         },
       ),
     ),
