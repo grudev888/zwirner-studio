@@ -21,7 +21,7 @@
     "@portabletext/toolkit": "^2.0.10",
     "@sanity/demo": "^1.0.2",
     "@sanity/orderable-document-list": "^1.1.0",
-    "@sanity/scheduled-publishing": "^1.2.1",
+    "@sanity/scheduled-publishing": "^1.2.2",
     "@sanity/vision": "^3.20.2",
     "groq": "^3.20.2",
     "lodash.get": "^4.4.2",

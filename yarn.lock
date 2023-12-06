@@ -1989,10 +1989,10 @@
   dependencies:
     "@sanity/uuid" "3.0.2"
 
-"@sanity/scheduled-publishing@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@sanity/scheduled-publishing/-/scheduled-publishing-1.2.1.tgz#f6669d0136b0dbe9a1ebf6c270a28d68acb0044f"
-  integrity sha512-C/j4k9FbMqs25CCTOyk6JCh3wAunNJHJ5MxcG3iN90mZvF1iJQj9suWF31l6j0L9moCVBERAxGgQldPFBb5x0w==
+"@sanity/scheduled-publishing@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@sanity/scheduled-publishing/-/scheduled-publishing-1.2.2.tgz#98cb1d3f02076f45f28edb93fc2bca78822c8eef"
+  integrity sha512-W4MTtzLV9n32cJKRgIjNxqsOwjuuBe/tboG86umfYO9b0D/gnyTr0yMZNKmDtBC12t2ysqVglApR7biLK3qMug==
   dependencies:
     "@sanity/color" "^2.1.20"
     "@sanity/icons" "^2.0.0"
