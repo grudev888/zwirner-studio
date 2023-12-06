@@ -1,62 +1,26 @@
-import home from '../../schemas/singletons/home'
-import exhibitionPage from '../../schemas/documents/pages/exhibitionPage'
-import artistPage from '../../schemas/documents/pages/artistPage'
-import artwork from '../../schemas/documents/artwork'
-import availableArtworks from '../../schemas/singletons/availableArtworks'
+import {SANITY_STUDIO_PREVIEW_BASE_URL, envHost} from '../../env'
 
-import {previewSecretId, SANITY_STUDIO_PREVIEW_BASE_URL, envHost} from '../../env'
-
-import {defineUrlResolver, type IframeOptions} from 'sanity-plugin-iframe-pane'
-import page from '../../schemas/documents/pages/page'
-import exceptionalWork from '../../schemas/documents/exceptionalWork'
-import onlineExhibitionPage from '../../schemas/documents/pages/onlineExhibitionPage'
-import fairPage from '../../schemas/documents/pages/fairPage'
-import artistListing from '../../schemas/singletons/artistListing'
-import exhibitionsLanding from '../../schemas/singletons/exhibitionsLanding'
-import exhibitionsPast from '../../schemas/singletons/exhibitionsPast'
-import article from '../../schemas/documents/article'
-
-export const PREVIEWABLE_DOCUMENT_TYPES = [
-  home.name,
-  exhibitionPage.name,
-  artistPage.name,
-  artwork.name,
-  availableArtworks.name,
-  page.name,
-  article.name,
-  exceptionalWork.name,
-  exhibitionPage.name,
-  onlineExhibitionPage.name,
-  fairPage.name,
-  availableArtworks.name,
-  artistListing.name,
-  exhibitionsLanding.name,
-  exhibitionsPast.name,
-] satisfies string[]
-
-export const PREVIEWABLE_DOCUMENT_TYPES_REQUIRING_SLUGS = [
-  exhibitionPage.name,
-  artistPage.name,
-  artwork.name,
-  availableArtworks.name,
-  page.name,
-  article.name,
-  exceptionalWork.name,
-  exhibitionPage.name,
-  onlineExhibitionPage.name,
-  fairPage.name,
-  availableArtworks.name,
-  artistListing.name,
-  exhibitionsLanding.name,
-  exhibitionsPast.name,
-] satisfies typeof PREVIEWABLE_DOCUMENT_TYPES
-
-export const urlResolver = defineUrlResolver({
-  base: `${envHost}${SANITY_STUDIO_PREVIEW_BASE_URL}`,
-  requiresSlug: PREVIEWABLE_DOCUMENT_TYPES_REQUIRING_SLUGS,
-})
+import {type IframeOptions} from 'sanity-plugin-iframe-pane'
 
 export const iframeOptions = {
-  url: urlResolver,
-  urlSecretId: previewSecretId,
+  url: {
+    origin: `${envHost}`, // or 'same-origin' if the app and studio are on the same origin
+    preview: (document) => {
+      if (document?._type === 'home') {
+        return '/'
+      }
+      return document?.slug?.current
+    },
+    draftMode: `${SANITY_STUDIO_PREVIEW_BASE_URL}`, // the route you enable draft mode, see: https://github.com/sanity-io/visual-editing/tree/main/packages/preview-url-secret#sanitypreview-url-secret
+  },
+  // Optional: Display the Url in the pane
+  showDisplayUrl: true, // boolean. default `true`.
+
+  // Optional: Set the default size
+  defaultSize: `desktop`, // default `desktop`, optionally `mobile`
+
+  // Optional: Add a reload button
+  reload: {
+    button: true, // default `undefined`
+  },
 } satisfies IframeOptions
