@@ -30,6 +30,7 @@ export type GridOptions = {
   referencesFilter?: ReferencesFilterOptions
   hideItemsPerRow?: boolean
   hideComponentTitle?: boolean
+  hideLayoutOptions?: boolean
   gridProps?: any
 }
 
@@ -75,23 +76,35 @@ export const builder = (
       hidden: options?.hideComponentTitle,
       initialValue: 'Grid',
     }),
-    defineField({
-      name: 'wrap',
-      type: 'boolean',
-      title: 'Wrap columns',
-      description: 'Enable wrapping',
-      group: 'content',
-      validation: (rule) => rule.required(),
-      initialValue: false,
-    }),
-    defineField({
-      name: 'displayNumberOfItems',
-      type: 'boolean',
-      title: 'Show Number of Items',
-      description: 'This will show the number of items within the grid.',
-      group: 'content',
-      initialValue: false,
-    }),
+    ...(options.hideLayoutOptions
+      ? []
+      : [
+          defineField({
+            name: 'wrap',
+            type: 'boolean',
+            title: 'Wrap columns',
+            description: 'Enable wrapping',
+            group: 'content',
+            validation: (rule) => rule.required(),
+            initialValue: false,
+          }),
+          defineField({
+            name: 'displayNumberOfItems',
+            type: 'boolean',
+            title: 'Show Number of Items',
+            description: 'This will show the number of items within the grid.',
+            group: 'content',
+            initialValue: false,
+          }),
+          defineField({
+            name: 'displayGridSlider',
+            type: 'boolean',
+            title: 'Show Grid Slider',
+            group: 'content',
+            description: 'This will enable users to change the number of items per row.',
+            initialValue: false,
+          }),
+        ]),
     ...(Object.values(options.references)
       .flat()
       .some((reference) => reference.name === ARTWORK_NAME)
@@ -109,15 +122,7 @@ export const builder = (
           ),
         ]
       : []),
-    defineField({
-      name: 'displayGridSlider',
-      type: 'boolean',
-      title: 'Show Grid Slider',
-      group: 'content',
-      description: 'This will enable users to change the number of items per row.',
-      initialValue: false,
-    }),
-    ...(!options?.hideItemsPerRow
+    ...(!options?.hideItemsPerRow && !options.hideLayoutOptions
       ? [
           defineField({
             name: 'itemsPerRow',

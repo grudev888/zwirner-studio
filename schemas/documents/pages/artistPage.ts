@@ -210,9 +210,7 @@ export default defineType({
           hideComponentTitle: true,
           componentOptions: {title: 'Article'},
           components: [CarouselComponents.dzCard],
-          references: {
-            dzCard: [article],
-          },
+          references: {dzCard: [article]},
         },
       ),
     ),
@@ -225,14 +223,10 @@ export default defineType({
           group: 'content',
         },
         {
-          gridProps: {
-            title: 'Articles',
-          },
-          hideItemsPerRow: true,
+          gridProps: {title: 'Articles'},
           hideComponentTitle: true,
-          references: {
-            dzCard: [article],
-          },
+          hideLayoutOptions: true,
+          references: {dzCard: [article]},
           components: [GridComponents.dzCard],
         },
       ),
@@ -424,14 +418,11 @@ export default defineType({
           group: 'guide',
         },
         {
-          gridProps: {
-            title: 'Content',
-          },
+          gridProps: {title: 'Content'},
           hideComponentTitle: true,
-          references: {
-            dzCard: [article, exhibitionPage],
-          },
+          references: {dzCard: [article, exhibitionPage]},
           components: [GridComponents.dzCard],
+          hideLayoutOptions: true,
         },
       ),
     ),
@@ -458,14 +449,11 @@ export default defineType({
           group: 'press',
         },
         {
-          gridProps: {
-            title: 'Content',
-          },
+          gridProps: {title: 'Content'},
           hideComponentTitle: true,
-          references: {
-            dzCard: [article],
-          },
+          references: {dzCard: [article]},
           components: [GridComponents.dzCard],
+          hideLayoutOptions: true,
         },
       ),
     ),
