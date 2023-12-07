@@ -25,6 +25,7 @@
 # Misc
 .DS_Store
 *.pem
+*.code-workspace
 
 # Typescript
 *.tsbuildinfo
