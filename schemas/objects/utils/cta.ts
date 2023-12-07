@@ -20,7 +20,7 @@ export enum CtaActions {
   ECOMM = 'ecomm',
   CUSTOM = 'custom',
   NONE = 'none',
-  NEWSLETTER = 'Newsletter',
+  NEWSLETTER = 'newsletter',
   LINK = 'Link',
   DOWNLOAD_PDF = 'Download PDF',
   LINK_CONTENT = 'Link Content',
