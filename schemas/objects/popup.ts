@@ -202,7 +202,7 @@ export default defineType({
             rule.custom(async (value, context) => {
               const {type: valueType, image} = (value ?? {}) as MediaValueType
               const {type} = context.parent as {type: PopUpTypes}
-              if (!valueType) {
+              if (!valueType && type !== PopUpTypes['Inquire']) {
                 return 'Media Type should be defined. If an image is not needed, choose "Unset"'
               }
               if (type === PopUpTypes['Custom Promo'] && valueType !== Media.MediaTypes.IMAGE) {
