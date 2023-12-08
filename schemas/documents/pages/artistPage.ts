@@ -127,6 +127,7 @@ export default defineType({
           title: 'Available Works',
           group: 'content',
           options: {collapsible: true, collapsed: false},
+          validation: (rule: any) => rule.max(1),
         },
         {
           components: [
