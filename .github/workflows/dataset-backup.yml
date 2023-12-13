@@ -1,0 +1,53 @@
+name: Backup Routine
+on:
+  workflow_dispatch:
+  schedule:
+    # Runs at 00:00 UTC every day of the month
+    - cron: '0 0 * * *'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  backup-migration:
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        dataset:
+          - migration
+          - production-v1
+    runs-on: ubuntu-latest
+    name: Backup ${{ matrix.dataset }} dataset
+    env:
+      SANITY_DATABASE: ${{ matrix.dataset }}
+    steps:
+      # Delete unnecessary dependencies to maximize available space
+      - name: Maximize build space
+        uses: AdityaGarg8/remove-unwanted-software@v1
+        with:
+          remove-android: 'true'
+          remove-dotnet: 'true'
+          remove-haskell: 'true'
+      - uses: actions/checkout@v4
+      - name: Echo free space
+        run: |
+          echo "Free space:"
+          df -h
+      - name: Export dataset
+        uses: ./.github/actions/sanity-cli
+        env:
+          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
+          SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT_ID }}
+        with:
+          args: dataset export $SANITY_DATABASE --asset-concurrency 24 backup/backup.tar.gz --overwrite
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::942268620820:role/GithubAction-StudioSanityBackups
+          aws-region: us-east-1
+      - name: Upload backup to S3
+        run: |
+          PATHNAME=$(date +"%Y/%m/%d-%H%S")
+          aws s3 cp backup/backup.tar.gz s3://sanity-test-backups/$SANITY_DATABASE/$PATHNAME.tar.gz
