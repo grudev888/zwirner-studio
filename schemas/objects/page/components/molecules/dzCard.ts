@@ -99,7 +99,7 @@ export const getDzCardFields = (options: dzCardOptions) => [
     type: 'array',
     group: 'content',
     icon: MasterDetailIcon,
-    validation: (rule) => rule.max(1),
+    validation: (rule) => rule.max(1).required(),
     of: options.references.map((reference) => {
       const filterForReference = options?.referencesFilter?.[reference.name]
       const extraOptions = filterForReference ? {options: {filter: filterForReference}} : {}

@@ -37,7 +37,7 @@ export type CarouselOptions = {
   carouselSizes?: (string | {value: string; title: string})[]
   hideComponentTitle?: boolean
   hideSize?: boolean
-  componentOptions?: any
+  contentOptions?: any
   optionalComponent?: boolean
 }
 
@@ -117,7 +117,7 @@ export const builder = (
         options.referencesFilter,
       ),
       name: 'dzCarousel',
-      ...options?.componentOptions,
+      ...options?.contentOptions,
     },
   ],
   ...params,

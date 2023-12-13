@@ -5,6 +5,7 @@ import {
   defineType,
   defineArrayMember,
   SchemaTypeDefinition,
+  ObjectRule,
 } from 'sanity'
 import {UserIcon, DocumentsIcon, SearchIcon} from '@sanity/icons'
 
@@ -89,7 +90,7 @@ export default defineType({
         {
           hideComponentTitle: true,
           optionalComponent: true,
-          componentOptions: {title: 'Artworks'},
+          contentOptions: {title: 'Artworks'},
           carouselSizes: [{value: 'XL', title: 'XL'}, 'L'],
           components: [CarouselComponents.dzCard],
           references: {
@@ -111,7 +112,7 @@ export default defineType({
         {
           hideComponentTitle: true,
           optionalComponent: true,
-          componentOptions: {title: 'Artworks'},
+          contentOptions: {title: 'Artworks'},
           carouselSizes: [{value: 'XL', title: 'XL'}, 'L'],
           components: [CarouselComponents.dzCard],
           references: {
@@ -209,7 +210,7 @@ export default defineType({
         {
           hideSize: true,
           hideComponentTitle: true,
-          componentOptions: {title: 'Article'},
+          contentOptions: {title: 'Article'},
           components: [CarouselComponents.dzCard],
           references: {dzCard: [article]},
         },
@@ -243,7 +244,7 @@ export default defineType({
         },
         {
           hideComponentTitle: true,
-          componentOptions: {title: 'Books'},
+          contentOptions: {title: 'Books'},
           components: [CarouselComponents.dzCard],
           references: {
             dzCard: [book],
@@ -323,6 +324,14 @@ export default defineType({
           componentOptions: {
             dzCarousel: {
               carouselSizes: [{value: 'XL', title: 'XL'}],
+              contentOptions: {
+                validation: (rule: ObjectRule) => rule.required(),
+              },
+            },
+            grid: {
+              gridProps: {
+                validation: (rule: ObjectRule) => rule.required(),
+              },
             },
           },
         },

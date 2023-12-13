@@ -1,10 +1,24 @@
 import {ImageIcon} from '@sanity/icons'
 import {defineField, defineType, StringRule, ObjectDefinition, ObjectRule} from 'sanity'
 import * as Media from '../../../../objects/utils/media'
+import {MediaTypes as VideoMediaTypes} from '../../../utils/video'
 
 type dzMediaOptions = {
   hideComponentTitle?: boolean
   mediaProps?: Media.MediaOptions
+}
+
+type MediaValue = {
+  image?: any
+  video?: any
+  videoSelectorReference?: {
+    type: VideoMediaTypes
+    videoReference: {
+      _type: 'reference'
+      _ref: string
+    }
+  }
+  type: Media.MediaTypes
 }
 
 export const getDzMediaFields = (options: dzMediaOptions) => [
@@ -14,7 +28,17 @@ export const getDzMediaFields = (options: dzMediaOptions) => [
         name: 'media',
         title: 'Media',
         description: 'Media module',
-        validation: (rule: ObjectRule) => rule.required(),
+        validation: (rule: ObjectRule) =>
+          rule.custom((value) => {
+            const {image, video, type, videoSelectorReference} = value as MediaValue
+            if (type === Media.MediaTypes.UNSET || !type) return 'Media Type should be defined.'
+            if (type === Media.MediaTypes.IMAGE && !image?.asset) return 'Image is required'
+            if (type === Media.MediaTypes.VIDEO && !video) return 'Video is required'
+            if (type === Media.MediaTypes.VIDEO_RECORD && !videoSelectorReference?.videoReference) {
+              return 'Video is required'
+            }
+            return true
+          }),
       },
       {
         video: {enabledSelection: true},

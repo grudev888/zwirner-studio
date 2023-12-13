@@ -138,7 +138,7 @@ export const builder = (
         if (!value) return {message: `${params.name} is required`}
 
         if (value.type === MediaTypes.IMAGE && !value.image?.asset) return {message: `Required`}
-        if (value.type === MediaTypes.VIDEO && !value.video && !value.externalVideo) {
+        if (value.type === MediaTypes.VIDEO && !value.video) {
           return {message: `Required`}
         }
 
