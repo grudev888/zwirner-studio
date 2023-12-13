@@ -6,7 +6,7 @@ import {builder as dzGridBuilder, GridComponents} from '../objects/page/grid'
 
 export default defineType({
   name: 'availableArtworks',
-  title: 'Available Works',
+  title: 'Available Artworks',
   type: 'document',
   icon: BlockElementIcon,
   groups: [
