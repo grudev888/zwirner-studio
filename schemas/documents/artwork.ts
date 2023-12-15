@@ -297,7 +297,7 @@ export default defineType({
                     disableEcomm
                   }`,
                 )
-                if (eComm.disableEcomm) return 'E-Comm function is disabled in Setting.'
+                if (eComm?.disableEcomm) return 'E-Comm function is disabled in Setting.'
                 return true
               }
               return true
