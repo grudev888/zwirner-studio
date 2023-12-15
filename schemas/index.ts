@@ -32,6 +32,7 @@ import settings from './singletons/settings'
 import artistListing from './singletons/artistListing'
 import exhibitionsLanding from './singletons/exhibitionsLanding'
 import exhibitionPast from './singletons/exhibitionsPast'
+import eComm from './singletons/eComm'
 
 // OBJECTS
 import social from './objects/data/social'
@@ -165,6 +166,7 @@ export const pageDocuments: DocumentDefinition[] = [
 export const singletonDocuments: DocumentDefinition[] = [
   exhibitionsLanding,
   exhibitionPast,
+  eComm,
   artistListing,
   settings,
   home,

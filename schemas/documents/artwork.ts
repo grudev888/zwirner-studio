@@ -288,6 +288,20 @@ export default defineType({
               {title: 'Sold Out', value: 'soldout'},
             ],
           },
+          validation: (Rule) =>
+            Rule.custom(async (value, context) => {
+              if (value === 'ecomm') {
+                const client = context.getClient({apiVersion})
+                const eComm = await client.fetch(
+                  groq`*[_type == "eComm"][0] {
+                    disableEcomm
+                  }`,
+                )
+                if (eComm.disableEcomm) return 'E-Comm function is disabled in Setting.'
+                return true
+              }
+              return true
+            }),
         }),
         defineField({
           name: 'CTAText',

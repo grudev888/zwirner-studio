@@ -18,6 +18,7 @@ import {
   RobotIcon,
   ComponentIcon,
   CaseIcon,
+  WrenchIcon,
 } from '@sanity/icons'
 import {StructureBuilder} from 'sanity/desk'
 
@@ -35,11 +36,9 @@ import fair from '../../../schemas/documents/pages/fairPage'
 import exceptionalWork from '../../../schemas/documents/exceptionalWork'
 import {orderableDocumentListDeskItem} from '@sanity/orderable-document-list'
 
-
 import {apiVersion} from '../../../env'
 
 export const generalStructure = (S: StructureBuilder, context: any) =>
-
   S.list()
     .title('Content')
     .items([
@@ -119,6 +118,10 @@ export const generalStructure = (S: StructureBuilder, context: any) =>
                 .title('Collections')
                 .schemaType('collection')
                 .child(S.documentTypeList('collection')),
+              S.listItem()
+                .title('E-Comm Setting')
+                .icon(WrenchIcon)
+                .child(S.document().schemaType('eComm').documentId('eComm')),
             ]),
         ),
       S.divider(),
