@@ -25,7 +25,7 @@ jobs:
     steps:
       # Delete unnecessary dependencies to maximize available space
       - name: Maximize build space
-        uses: AdityaGarg8/remove-unwanted-software@v1
+        uses: AdityaGarg8/remove-unwanted-software@v2
         with:
           remove-android: 'true'
           remove-dotnet: 'true'
